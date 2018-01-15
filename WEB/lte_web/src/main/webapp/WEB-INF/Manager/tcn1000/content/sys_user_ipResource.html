@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});
+		
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$("input[type='checkbox']:gt(0):checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录?")){
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				
+				var snet_idArray = [];
+				var snet_idArrayIndex = 0;
+				$("input[type='checkbox']:gt(0):checked").each(function(){
+					snet_idArray[snet_idArrayIndex]=$(this).val();
+					snet_idArrayIndex++;
+				});
+
+
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteIpResource.do",
+					data:"userIpResourceModel.snet_id="+snet_idArray,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoIpResource.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;		
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}			
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			
+			if(confirm("确定要删除该条记录?")){
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				
+				var snet_id = $(this).siblings("input").val();
+
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteIpResource.do",
+					data:"userIpResourceModel.snet_id="+snet_id,
+					dataType:"json",
+					success:function(data){
+
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoIpResource.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;		
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}					
+				});
+			}			
+			
+		});
+
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoIpResource.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoIpResource.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoIpResource.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoIpResource.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		
+		
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turntoIpResourceAdd.do?onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+	});
+	
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+
+	var myForm = '<form action="'+basePath+'/lte/turntoIpResource.do" id="myForm" method="post">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';
+	
+	$("#hiddenDiv").html(myForm);
+	$("#myForm").submit();
+	$("#hiddenDiv").html("");
+	//window.location=basePath+'/lte/turntoIpResource.do?onlinePage.currentPageNum='+curP+'&onlinePage.totalPages='+totalPages;
+	
+}
+
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>用户IP资源</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<!-- <li><label></label><a href="${base}/lte/turntoIpResourceAdd.do?onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}" target="mainFrame" class="btn">增加</a></li>
+				<li><label></label><a href="#" id="batchDelete" target="mainFrame" class="btn">批量删除</a></li>	 -->
+				<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+				<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>		
+			</ul>
+		</div>
+		<table width="100%" class="enbTable changeRowColor">
+		  <tr>
+			<th scope="col" class="checkWidth"><input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th>  
+			<th scope="col" style="width:50px;">修改</th>
+			<th scope="col" width="20%">地址池ID</th>
+			<th scope="col" width="20%">起始地址</th>
+			<th scope="col" width="20%">结束地址</th>
+			<th scope="col" class="">地址池类型</th>
+			<th scope="col" style="width:50px;">修改</th>
+			<th scope="col" style="width:50px;">删除</th>
+		  </tr>
+		  <#list userIpResourceModelList! as userIpResourceModel>
+		  	<tr>
+				<th scope="row"><input type="checkbox" name="checkson" value="${userIpResourceModel.snet_id!}" /></th>
+				<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyIpResource.do?userIpResourceModel.snet_id=${userIpResourceModel.snet_id!}&userIpResourceModel.snet_startip=${userIpResourceModel.snet_startip!}&userIpResourceModel.snet_endip=${userIpResourceModel.snet_endip!}&userIpResourceModel.ippoll_type=${userIpResourceModel.ippoll_type!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+				<td>${userIpResourceModel.snet_id!}<input type="hidden" value="1" id="noRecordInput"/></td>
+				<td>${userIpResourceModel.snet_startip!}</td>
+				<td>${userIpResourceModel.snet_endip!}</td>
+				<td>
+					<#if userIpResourceModel.ippoll_type! == '0'>
+						用户
+					<#elseif userIpResourceModel.ippoll_type! == '1'>
+						组呼
+					<#elseif userIpResourceModel.ippoll_type! == '2'>
+						静态IP地址
+					<#elseif userIpResourceModel.ippoll_type! == '3'>
+						静态IP地址段
+					</#if>
+				</td>
+				<td><a href="${base}/lte/toModifyIpResource.do?userIpResourceModel.snet_id=${userIpResourceModel.snet_id!}&userIpResourceModel.snet_startip=${userIpResourceModel.snet_startip!}&userIpResourceModel.snet_endip=${userIpResourceModel.snet_endip!}&userIpResourceModel.ippoll_type=${userIpResourceModel.ippoll_type!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}">修改</a></td>
+				<td><a class="deleteOne" style="cursor:pointer;">删除</a><input type="hidden" value="${userIpResourceModel.snet_id!}"/></td>
+			 </tr>
+		  </#list>
+		 <#if userIpResourceModelList?size < 1>
+	  			<tr>
+	  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+	  				<td></td>
+			  		<td class="hide1">${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  			</tr>
+		  </#if>
+		</table>
+			<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+</body>
+</html>

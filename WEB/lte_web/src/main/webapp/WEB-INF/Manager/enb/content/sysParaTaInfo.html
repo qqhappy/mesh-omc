@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	var basePath = "${base}";
+	$(function(){	
+		//首次查询跟踪区码列表
+		var currentPage = "${currentPage!}";
+		if(currentPage == "0" || currentPage == "" || typeof(currentPage) == "undefined"){
+			currentPage =1;
+		}
+		queryTaList(currentPage);
+		//刷新跟踪区码列表		
+		$("#fresh").click(function(){
+			var currentPage = $("#currentPage").html();
+			queryTaList(currentPage);
+		});
+		//首页
+		$("#firstPage").click(function(){
+			queryTaList(1);
+		});
+		//上一页
+		$("#previousPage").click(function(){
+			var currentPage = $("#currentPage").html();
+			if(parseInt(currentPage) != 1){
+				queryTaList(parseInt(currentPage)-1);
+			}
+		});
+		//下一页
+		$("#nextPage").click(function(){
+			var currentPage = $("#currentPage").html();
+			var totalPages = $("#totalPage").html();
+			if(parseInt(currentPage) < parseInt(totalPages)){
+				queryTaList(parseInt(currentPage)+1);
+			}
+		})
+		//尾页
+		$("#endPage").click(function(){
+			var totalPages = $("#totalPage").html();
+			queryTaList(totalPages);
+		})
+		//目标页
+		$("#targetPage").click(function(){
+			var isNum = /^\d+$/;
+			var targetPage = $("#targetPageInput").val();
+			var totalPages = $("#totalPage").html();
+			if(isNum.test(targetPage)){
+				if(targetPage >= 1 && targetPage<= parseInt(totalPage)){
+					queryTaList(targetPage);
+				}else if(targetPage <= 1){
+					queryTaList(1);
+				}else{
+					queryTaList(totalPages);
+				}
+			}else{
+				queryTaList(1);
+			} 
+		})
+		//跳往新增跟踪区码页面
+		$("#newAdd").click(function(){
+			var currentPage = $("#currentPage").html();
+			window.location.href="${base}/lte/htmlDispactcher.do?htmlFileName=sysParaTaInfo_add&currentPage="+currentPage;
+		});
+		//删除
+		$(".delete").live("click",function(event){
+			event.preventDefault();
+			if(confirm("确定删除该条记录?")){
+				var id = $(this).siblings("input").val();
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteSysParaTa.do",
+					data:"idArray="+id,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}						
+						var status = data.status;
+						switch(status){
+							case 0:
+								var currentPage = "${currentPage!}";
+								if(currentPage == "0" || currentPage == "" || typeof(currentPage) == "undefined"){
+									currentPage =1;
+								}
+								window.location=basePath+"/lte/htmlDispactcher.do?htmlFileName=sysParaTaInfo&currentPage="+currentPage;
+								break;
+							default:
+								$("#error").html("error:"+data.error);
+								break;
+						}
+					}				
+				});
+				
+			}
+		});
+		//批量删除
+		$("#multiDelete").click(function(){
+			var checkCount = 0;
+			$("input[type='checkbox']:gt(0):checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录?")){
+				var mmeta_idArray = [];
+				$("input[type='checkbox']:gt(0):checked").each(function(){
+					mmeta_idArray.push($(this).val())
+				});
+
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteSysParaTa.do",
+					data:"idArray="+mmeta_idArray,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}						
+						var status = data.status;
+						switch(status){
+							case 0:
+								var currentPage = "${currentPage!}";
+								if(currentPage == "0" || currentPage == "" || typeof(currentPage) == "undefined"){
+									currentPage =1;
+								}
+								window.location=basePath+"/lte/htmlDispactcher.do?htmlFileName=sysParaTaInfo&currentPage="+currentPage;
+								break;
+							default:
+								var currentPage = "${currentPage!}";
+								queryTaList(currentPage);
+								$("#error").html("error:"+data.error);								
+								break;
+						}
+					}			
+				});
+			}			
+			
+		});
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});
+	});
+	//查询跟踪区码列表 
+	function queryTaList(currentPage){
+		$.ajax({
+			type:"post",
+			url:"queryTaList.do",
+			data:"condition.currentPage="+currentPage+
+					"&condition.numPerPage=10",
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data.status == 0){
+					var messLength = data.message.results.length;
+					var tr = "";
+					if(messLength == 0){
+						tr = '<tr><td></td><td></td><td>暂无相关数据</td><td></td><td></td><td></td><td></td><tr>';
+						$("#taTableBody").html(tr);
+						$("#currentPage").html("1");
+						$("#totalPage").html("1");
+						$("#targetPageInput").val(1);
+						$("#error").html("");
+					}else{
+						for(var i = 0;i<messLength;i++){
+							tr = tr + '<tr>'+
+										'<th scope="row"><input type="checkbox" name="checkson" value="'+data.message.results[i].id+'" /></th>'+
+										'<th scope="row" style="cursor:pointer;" onclick="turnToModifyTaHtml('+data.message.results[i].id+')"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>'+
+										'<td>'+data.message.results[i].id+'</td>'+
+										'<td>'+data.message.results[i].code+'</td>'+
+										'<td>'+data.message.results[i].remark+'</td>'+ 
+										'<td><a href="${base}/lte/turnToModifyTaHtml.do?idArray='+data.message.results[i].id+'&currentPage='+data.message.currentPage+'">修改</a></td>'+
+										'<td><a style="cursor: pointer;" class="delete">删除</a><input type="hidden" value="'+data.message.results[i].id+'"/></td>'+
+									  '</tr>';
+						}
+						$("#taTableBody").html(tr);
+						$("#currentPage").html(data.message.currentPage);
+						$("#totalPage").html(data.message.totalPages);
+						$("#targetPageInput").val(data.message.currentPage);
+						$("#error").html("");
+					}
+				}else{
+					tr = '<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><tr>';
+					$("#taTableBody").html(tr);
+					$("#currentPage").html("1");
+					$("#totalPage").html("1");
+					$("#targetPageInput").val(1);
+					$("#error").html("error:"+data.error);
+				}
+			}
+		});
+	}
+	function turnToModifyTaHtml(id){
+		var currentPage = $("#currentPage").html();
+		window.location.href = "${base}/lte/turnToModifyTaHtml.do?idArray="+id+"&currentPage="+currentPage;
+	}
+</script>
+<title>无标题文档</title>
+</head>
+<body>
+	<div class="enbPage" style="padding:0px;">
+		<div class="toolBar" style="margin-bottom:3px;">
+			<ul>
+				<li><label></label><input type="button" id="newAdd" value="新增" /></li>
+				<li><label></label><input type="button" id="fresh" value="刷新" /></li>
+				<li><label></label><input type="button" id="multiDelete" value="批量删除" /></li>
+			</ul>
+			<div style="float: right;">
+				<div>
+					<table id="pageTable" style="width: 316px;">
+						<tr>
+							<td><span id="currentPage"></span>
+							</td>
+							<td>/</td>
+							<td><span id="totalPage"></span>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/first_page.png" id="firstPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/previous_page.png" id="previousPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/next_page.png" id="nextPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/end_page.png" id="endPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td><input type="text"
+								style="width: 20px; height: 18px; line-height: 18px;"
+								id="targetPageInput" value="" />
+							</td>
+							<td><img src="${base}/Manager/images/change_page_bt.png"
+								id="targetPage" style="cursor: pointer;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>	
+		</div>
+		<div>
+			<table width="100%" id="enbListTable" class="enbTable changeRowColor">
+				<thead>
+					<tr>
+
+						<th scope="col" class="checkWidth"><input type="checkbox"
+							value="checkbox" id="checkfather" />
+						</th>
+						<th scope="col" width="50px;">修改</th>
+						<th scope="col" width="20%">ID</th>
+						<th scope="col" width="25%">跟踪区码</th>
+						<th scope="col">备注</th>
+						<th scope="col" width="60px;">修改</th>
+						<th scope="col" width="60px;">配置</th>
+					</tr>
+				</thead>
+				<tbody id="taTableBody">
+					
+				</tbody>
+			</table>
+			<span style="color:red" id="error"></span>
+		</div>
+	</div>
+</body>
+</html>

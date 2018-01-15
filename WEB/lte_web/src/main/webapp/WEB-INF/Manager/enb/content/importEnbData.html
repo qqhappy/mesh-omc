@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+ 	$(function(){
+		//判断是否已上传
+		var importState = $("#importState").val();
+		if(importState == 1){
+			$("#importsuccess").css("display","block");
+		}
+		if(importState == 2){
+			$("#importerror").css("display","block");
+			$("#error").html("${error!}");
+		}
+		//导入
+		$("#import").click(function(){
+			if($("#fileName").val() == "" || $("#fileName").val() == null){
+				alert("请选择一个文件");
+			} else{
+				if(!confirm("请确认导入数据的正确性，否则将造成系统无法正常使用！")){
+					return null;
+				}
+				
+				//显示上传图标
+				$(".hideDiv").css("display","none");
+				$("#importing").css("display","block");
+				$(this).attr("disabled",true);
+				//提交上传
+				$("input[name='browseTime']").val(getBrowseTime());
+				$("#form_import").submit();
+			}
+		});
+		//返回
+		$("#return").click(function(){
+			window.location.href="${base}/lte/queryEnbList.do?browseTime="+getBrowseTime();
+		});
+ 	});
+</script>
+<title>基站配置导入</title>
+</head>
+<body  style="overflow:hidden;">
+	<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站配置导入</a>
+		</div>
+	<div style="overflow:auto;" class="add_div">
+	<div class="clearfix wrap ad_Input" style="width:900px;">
+		<div class="title">&nbsp;</div>	
+		<input type="hidden" value="${importState!}" id="importState" />
+		<input type="hidden"  name="browseTime" />
+		<div class="content">
+			<div>
+				<form action="${base}/lte/importEnbData.do"  id="form_import" enctype="multipart/form-data"  method="post">		
+					<span  style="color:#0099FF;font-size:12px;">请选择数据文件 :</span>
+					<input type="file"  name="dataFile" style="margin-left:10px; height:23px; color:#595757" id="fileName"/>
+					<input type="button"  value="导入" style="margin-left:5px;" id="import"/>
+					<input type="button"  value="返回" style="margin-left:5px;" id="return"/>			
+				</form>
+			</div>
+			<div style="margin-left:101px; display:none;" id="importing" class="hideDiv">
+				<img src="${base}/Manager/images/loading.gif" />
+				<span style="color:#0099FF;font-size:12px;">正在导入</span>
+			</div>
+			<div style="margin-left:101px; display:none;" id="importsuccess" class="hideDiv">
+				<img src="${base}/Manager/images/onCorrect.gif" />
+				<span style="color:#0099FF;font-size:12px;">${dataFileFileName}</span><span>&nbsp;</span><span style="color:#0099FF;font-size:12px;">导入成功</span>
+			</div>
+			<div style="margin-left:101px; display:none;" id="importerror" class="hideDiv">
+				<img src="${base}/Manager/images/clos.png" />
+				<span style="color:#0099FF;font-size:12px;">导入失败</span>
+				<span style="color:#0099FF;font-size:12px;" id="error"></span>
+			</div>		
+		</div>	
+	</div>
+	</div>			
+</body>
+</html>

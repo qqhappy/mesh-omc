@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/currentAsset.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/tc.min.js"></script>
+
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+
+<!-- <script type="text/javascript" src="${base}/Manager/js/common/jquery-ui-1.8.16.custom.js"></script> -->
+<!-- <link type="text/css" rel="stylesheet" href="${base}/Manager/js/common/jquery-ui.css"/> -->
+<script type="text/javascript">
+	$(function(){
+		 $(".ui_timepicker").datetimepicker({
+           showSecond: true,
+           timeFormat: 'hh:mm:ss',
+           stepHour: 1,
+           stepMinute: 1,
+           stepSecond: 1
+	      });
+		 $("#timepicker").datepicker({dateFormat:"yy-mm-dd",timeFormat:"hh:mm:ss",changeMonth:true,changeYear:true,yearRange:"1990:2100"});
+		 
+	});
+</script>
+<style type="text/css">
+	i{ font-style:normal;color:white;}
+	#detail{position:absolute;width:400px;height:200px;border:1px solid #ccc;background:#fff; display:none;}
+	#detail .tit{ background:#1185de; display:block; height:33px; cursor:default;}
+	#detail .tit i{ float:right; line-height:33px; padding:0 8px;cursor:pointer;}
+	#detail ul li{line-height:40px;}
+</style>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<input type="hidden" id="basePath" name="basePath" value="${base}"/>	
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>资产管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>当前资产</a>
+		</div>
+	<div class="enbPage" > 
+		<div class="asset_div" style="width:1400px;padding-right:20px;">
+			<div style="padding:10px;border-bottom:solid 1px #cccccc;height:90px;">
+				<ul>
+					<li style="float:left;">
+						<div style="padding:0 20px 0 0 ;">
+							<ul>
+								<li><input type="checkbox" id="startTime_flag" style="margin:0 5px 0 0;"></input><label>开始使用时间范围:</label></li>
+								<li><input type="text" style="width:150px;" id="startTime_begin" class="ui_timepicker startTime" readonly="readonly"/></li>
+								<li>---</li>
+								<li><input type="text" style="width:150px;" id="startTime_end" class="ui_timepicker startTime" readonly="readonly"/></li>
+							</ul>
+						</div>
+					</li>
+					<li style="float:left;">
+						<div style="padding:0 20px 0 20px;">
+							<ul>
+								<li><input type="checkbox" id="stopTime_flag" style="margin:0 5px 0 0;"></input><label>停止使用时间范围:</label></li>
+								<li><input type="text" style="width:150px;" id="stopTime_begin" class="ui_timepicker stopTime" readonly="readonly"/></li>
+								<li>---</li>
+								<li><input type="text" style="width:150px;" id="stopTime_end" class="ui_timepicker stopTime" readonly="readonly"/></li>
+							</ul>
+						</div>
+					</li>
+					<li style="float:left;">
+						<div style="padding:0 20px 0 20px;">
+							<ul>
+								<li>&nbsp;</li>
+								<li>
+									<label>资产状态:</label>
+									<select  style="width:152px;border:1px solid #c4d7e5;height:22px;" id="status">
+										<option value="-1">全部</option>
+										<option value="0">正常使用</option>
+										<option value="1">停止使用</option>
+									</select>								
+								</li>
+								<li>&nbsp;</li>
+								<li>
+									<label>节点类型:</label>
+									<select  style="width:152px;border:1px solid #c4d7e5;height:22px;" id="nodeType">
+										<option value="-1">全部</option>
+										<option value="1">BBU</option>
+										<option value="2">RRU</option>
+									</select>									
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li style="float:left;">
+						<div style="padding:0 20px 0 20px;">
+							<ul>
+								<li>&nbsp;</li>
+								<li>
+									<label>资产序列号:</label>
+									<input type="text" style="width:150px;" id="productionSN"/>							
+								</li>
+								<li>&nbsp;</li>
+								<li>
+									<label>eNB标识:</label>
+									<input type="text" style="width:150px;margin-left:12px;" id="enbHexId"/>									
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li style="float:left;">
+						<div style="padding:0 10px 0 10px;">
+							<ul>
+								<li>&nbsp;</li>
+								<li>&nbsp;</li>
+								<li>&nbsp;</li>
+								<li>
+									<input type="button" style="" value="查询" id="query" onclick="queryCurrentAsset(1)"/>																	
+<!-- 									<input type="button" style="" value="查询" id="query"/> -->
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div style="width:100%;height:30px;" >				
+				<div style="position:absolute;right:10px;">
+					<div style="padding: 5px;">
+						<table id="pageTable" style="width: 316px;">
+							<tr>
+								<td><span id="currentPage"></span></td>
+								<td>/</td>
+								<td><span id="totalPage"></span></td>
+								<td style="width: 58px;"><img src="${base}/Manager/images/first_page.png" id="firstPage" style="cursor: pointer;"/></td>
+								<td style="width: 58px;"><img src="${base}/Manager/images/previous_page.png" id="previousPage" style="cursor: pointer;"/></td>
+								<td style="width: 58px;"><img src="${base}/Manager/images/next_page.png" id="nextPage" style="cursor: pointer;"/></td>
+								<td style="width: 58px;"><img src="${base}/Manager/images/end_page.png" id="endPage" style="cursor: pointer;"/></td>
+								<td style="width: 22px;"><input type="text" style="width: 20px; height: 18px; line-height: 18px;" id="targetPageInput" value="" /></td>
+								<td><img src="${base}/Manager/images/change_page_bt.png" id="targetPage" style="cursor: pointer;"/></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<table  width="100%" id="" class="enbTable changeRowColor">
+				<thead>
+					<tr>
+						<th scope="col"  class="checkWidth"><input type="checkbox" value="checkbox" id="checkfather"/></th>
+						<th scope="col">eNB标识</th>
+						<th scope="col">节点类型</th>
+						<th scope="col">位置信息</th>
+						<th scope="col">供应商名称</th>
+						<th scope="col">资产版本号</th>
+						<th scope="col">资产序列号</th>
+						<th scope="col">生产日期</th>
+						<th scope="col">开始使用时间</th>
+						<th scope="col">停止使用时间</th>
+						<th scope="col">最近服务日期</th>
+						<th scope="col">其他信息</th>
+						<th scope="col" style="width:60px;">确认资产</th>
+					</tr>
+				</thead>
+				<tbody id="asset_tbody">
+<!-- 						<tr> -->
+<!-- 							<th scope="row"><input type="checkbox" value="checkbox" name="checkson"/></th> -->
+<!-- 							<td>00000001</td> -->
+<!-- 							<td>BBU</td> -->
+<!-- 							<td>1-1-1-0</td> -->
+<!-- 							<td>xinwei</td> -->
+<!-- 							<td>BBU20M00_BPMH01.02.01.01.03</td> -->
+<!-- 							<td>BBBU20MBPM103100091</td> -->
+<!-- 							<td>2015-04-21 17:59:02</td> -->
+<!-- 							<td>2015-04-21 17:59:02</td> -->
+<!-- 							<td>2015-04-21 17:59:02</td> -->
+<!-- 							<td></td> -->
+<!-- 						</tr> -->
+				</tbody>					
+			</table>
+			<span style="color:red" id="error"></span>
+		</div>
+	</div>
+	<div id="detail">
+		<div class="tit"><i class="close">关闭</i></div>
+		<div style="padding:20px 60px;">
+			<ul>
+				<li><input type = "hidden" id="assetId"/></li>
+				<li><input type = "hidden" id="actionType"/></li>
+				<li id="LST_li"><label>最近服务日期：</label><input type="text" style="width:150px;" id="timepicker" readonly="readonly"/></li>
+				<li id="remark_li" style="line-height:80px;"><label>其他信息：</label><textarea style="width:200px;height:60px;resize:none;" id="remark"></textarea></li>
+				<li><input type="button" value="确认" style="margin-left:30px;" id="confirm_submit"></input><input type="button" value="取消" id="confirm_cancle" style="margin-left:30px;"></input></li>
+				<li><span style="color:red" id="confirm_error" ></span></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

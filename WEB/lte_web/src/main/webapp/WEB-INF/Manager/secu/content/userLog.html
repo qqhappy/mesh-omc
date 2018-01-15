@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/secu/userLog.js"></script>
+
+
+
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+
+
+<script type="text/javascript">
+	$(function(){
+		//时间控件
+		 $(".ui_timepicker").datetimepicker({
+         showSecond: true,
+         timeFormat: 'hh:mm:ss',
+         stepHour: 1,
+         stepMinute: 1,
+         stepSecond: 1
+	      });
+	  	//获取当前时间
+	  	var date = new Date();
+	  	
+		var yy = date.getFullYear();
+		var mm = date.getMonth()+1;
+		var dd = date.getDate();
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		//获取前一天时间
+		var yy1 = 0;
+		var mm1 = 0;
+		var dd1 = 0;
+		if(dd == 1){
+			if(mm == 1){
+				yy1 = yy - 1;
+				mm1 = 12;
+				dd1 = 31;
+			}
+			if(mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11){
+				yy1 = yy;
+				mm1 = mm -1 ;
+				dd1 = 31;
+			}
+			if(mm == 5 || mm == 7 || mm == 10 || mm == 12){
+				yy1 = yy;
+				mm1 = mm -1 ;
+				dd1 = 30;
+			}
+			if(mm == 3){
+				yy1 = yy;
+				mm1 = 2;
+				if((yy % 4 == 0 && yy % 100 != 0) || yy % 400 == 0){	
+					dd1 = 29
+				}else{
+					dd1 = 28;
+				}
+			}
+		}else{
+			yy1 = yy;
+			mm1 = mm;
+			dd1 = dd - 1;
+		}
+		if(mm < 10){
+			mm = "0"+mm;
+		}
+		if(dd < 10){
+			dd = "0"+dd;
+		}
+		if(mm1 < 10){
+			mm1 = "0"+mm1;
+		}
+		if(dd1 < 10){
+			dd1 = "0"+dd1;
+		}
+		if(hour < 10){
+			hour = "0"+hour;
+		}
+		if(minute < 10){
+			minute = "0"+minute;
+		}
+		if(second < 10){
+			second = "0"+second;
+		}
+		//获取时间字符串
+		var nowTime = yy+"-"+mm+"-"+dd+" "+hour+":"+minute+":"+second;
+		var pastTime = yy1+"-"+mm1+"-"+dd1+" "+hour+":"+minute+":"+second;	
+		$("input[name='beginTime']").val(pastTime);
+		$("input[name='endTime']").val(nowTime);
+		
+		//页面初次加载
+		queryUserLog(1);
+		
+	});
+	
+</script>
+
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>安全管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>操作员日志管理</a>
+		</div>
+	<div class="alarmPage" style="overflow:auto;">
+	<div id="allAlarmDiv" style="width:1191px;">
+		<div style="border-bottom:solid 1px #cccccc;height:100px;width:1190px;overflow:hidden;">
+			<table style="line-height:40px;">
+				<tr>
+					<td>
+						业务类型 :
+					</td>
+					<td>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:152px;">
+							<select  style="width:152px; border:1px solid #fff;" id="workType">
+								<option value="none">全部</option>
+								<option value="Config">配置管理</option>
+								<option value="Alarm">故障管理</option>
+								<option value="Security">安全管理</option>
+								<option value="UT_User">终端用户管理</option>
+							</select></div>
+					</td>
+					<td style="width:40px;"></td>
+					<td>
+						操作用户 :
+					</td>
+					<td>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:152px;">
+							<select  style="width:152px;border:1px solid #fff;" id="operUser">								
+								<#if roleId! == 1>
+									<option value="none">全部</option>
+									<#list loginUserList! as loginModel>
+										<option value="${loginModel.user.username!}">${loginModel.user.username!}</option>
+									</#list>
+								<#else>
+									<option value="${userName!}">${userName!}</option>
+								</#if>
+							</select></div>
+					</td>
+					<td style="width:40px;"></td>
+					<td>
+						开始时间 :
+					</td>
+					<td>
+						<input type="text" name="beginTime" class="ui_timepicker"  readonly="readonly"/>
+					</td>
+					<td style="width:40px;"></td>
+					<td>
+						结束时间 :
+					</td>
+					<td>
+						<input type="text" name="endTime" class="ui_timepicker"  readonly="readonly"/>
+					</td>	
+					<td style="width:40px;"></td>
+					<td><input type="button"  value="查询" id="queryUserLog"/></td>			
+				</tr>
+				<tr>
+					<td>
+						操作对象类型 :
+					</td>
+					<td>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:152px;">
+							<select  style="width:152px;border:1px solid #fff;" id="operObjectType">
+								<option value="none">全部</option>
+								<option value="System">系统</option>
+								<option value="User">用户</option>
+								<option value="Alarm">告警</option>
+								<option value="eNB">eNB</option>
+								<option value="TCN1000">TCN1000设备</option>
+								<option value="UT_User">终端用户</option>
+							</select></div>
+					</td>
+					<td></td>
+					<td>
+						操作类型 :
+					</td>
+					<td>					
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:152px;">
+						<select  style="width:152px;border:1px solid #fff;" id="operType">
+							<option value="none">全部</option>
+							<option value="Config">配置</option>
+							<option value="Add">增加</option>
+							<option value="BatchAdd">批量增加</option>
+							<option value="Delete">删除</option>
+							<option value="Modify">修改</option>
+							<option value="Synchronize">同步</option>
+							<option value="Upload">上传</option>
+							<option value="Download">下载</option>
+							<option value="Upgrade">升级</option>
+							<option value="Confirm">确认</option>
+							<option value="Backup">备份</option>
+							<option value="Restore">恢复</option>
+							<option value="Login">登录</option>
+							<option value="Logout">退出</option>
+						</select></div>
+					</td>
+					<td></td>
+					<td>操作对象ID :</td>
+					<td><input type="text"  id="operObjectId"  /></td>	
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>	
+				</tr>
+			</table>
+		</div>
+		<div style="padding:10px;">
+			<table class="conditionTable changeRowColor" width=100% id="userLogTable">
+				 <tr>
+					<th scope="col" width="12%">操作用户</th>
+					<th scope="col" width="10%">操作对象类型</th>
+					<th scope="col" width="10%">操作对象ID</th>
+					<th scope="col" width="16%">业务名称</th>
+					<th scope="col" width="10%">操作类型</th>
+					<th scope="col" width="13%">业务类型</th>
+					<th scope="col" width="13%">操作时间</th>
+					<th scope="col" width="%">操作详细</th>  
+				  </tr>
+				 <tbody id="userLogBody">
+				  	
+				 </tbody>
+				 	  
+			</table>
+			<div style="float:right;">
+				<div style="padding:5px;">
+					<table id="pageTable" style="width:316px;">
+						<tr>
+							<td><span id="currentPage">0</span></td>
+							<td>/</td>
+							<td><span id="totalPage">0</span></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" id = "firstPage" style="cursor:pointer;"></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png" id="previousPage" style="cursor:pointer;"></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/next_page.png" id="nextPage" style="cursor:pointer;"></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/end_page.png" id = "endPage" style="cursor:pointer;"></td>
+							<td><input type="text" style="width:20px;height:18px;line-height:18px;" id="targetPageInput" /></td>
+							<td><img src="${base}/Manager/images/change_page_bt.png" id="targetPage" style="cursor:pointer;"></td>
+						</tr>
+					</table>
+				</div>
+			</div><!-- end of page div -->
+		</div><!-- end of content table div -->
+		<div id="logDetail_div" style="border:solid 1px #cccccc;height:80px;margin-top:30px;color:#595757;padding:10px 1em;overflow-y:auto;overflow-x:hidden;word-wrap:break-word;">
+		</div>
+		</div><!-- end of second whole div -->
+	</div>
+</body>
+</html>

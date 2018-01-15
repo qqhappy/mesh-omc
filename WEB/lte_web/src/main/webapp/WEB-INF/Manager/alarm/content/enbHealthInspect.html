@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+<!-- <script type="text/javascript" src="${base}/Manager/js/ems/alarm/blackboxfile.js"></script> -->
+<style>
+	.bb_condition_div{
+		padding:10px 10px;
+		border-bottom:solid 1px #cccccc;
+		height:180px;
+	}
+	.gap_10{
+		margin:0 10px;
+	}
+	.time_ul li{ 
+		line-height:60px;
+	}
+	.bb_content_div{
+		padding:10px 10px;
+	}
+	.bb_content_table_action{
+		height:30px;
+	}
+	#queryBB_info{
+		float:right;
+		margin-top:20px;
+	}
+	#enb_device{
+		height:150px;
+		width:300px;
+		border:solid 1px #cccccc;
+		overflow:auto;
+	}
+	#bb_condition{
+		height:150px;
+		width:300px;
+		border:solid 1px #cccccc;
+		overflow:auto;
+	}
+	#bb_condition li{
+		white-space:nowrap;
+	}
+	#pageTable td{
+		border:none;
+	}
+</style>
+<script>
+	$(function(){
+		$(".bb_condition_div input[type='checkbox']").attr("checked","checked");
+		// 全选_device
+		$("#checkfather_device").live("click", function() {
+			$("[name=checkson_device]:checkbox").attr("checked", this.checked);
+		});
+		$("[name=checkson_device]:checkbox").live("click", function() {
+			var flag = true;
+			$("[name=checkson_device]:checkbox").each(function() {
+				if (!this.checked) {
+					flag = false;
+				}
+			});
+			$("#checkfather_device").attr("checked", flag);
+		});
+		$("#queryBB_info").click(function(){
+			var enbids = new Array();
+			$("input[name='checkson_device']:checked").each(function(){
+				var value = $(this).val();
+				enbids.push(value);				
+			});
+			doCheck(enbids);
+		});
+		queryCheckFile();
+		setInterval(queryCheckFile,3000);
+	});
+	function doCheck(enbids){
+		$.ajax({
+			type : "post",
+			url : "checkHealth.do",
+			data:"enbids="+enbids,
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if(data.status == 0){
+					if(data.result == 0){
+						alert("查询成功，若结果有延迟，请稍作等待");
+						queryCheckFile();
+					}else{
+						alert("当前有正在执行的检查");
+					}				
+				}else{
+					alert("error!");
+				}
+			}
+		});
+	}
+	function queryCheckFile(){
+		$.ajax({
+			type : "post",
+			url : "queryCheckFile.do",
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if(data.message.length != 0){
+					var tr = "";
+					for(var i = 0 ;i<data.message.length;i++){
+						tr  = tr+'<tr>'+
+									'<td>'+data.message[i].checkDate+'</td>'+
+									'<td>'+data.message[i].checkEnbNum+'</td>'+
+									'<td>'+data.message[i].breakEnbNum+'</td>'+
+									'<td>'+data.message[i].fileName+'</td>'+
+									'<td><a href="${base}/lte/downLoadHealthFile.do?fileName='+data.message[i].fileName+'">下载</a></td>'+
+								'</tr>';
+					}
+					$("#blackBoxFile_content").html(tr);
+				}else{
+					var tr = '<tr>'+
+								'<td>暂无相关记录</td>'+
+								'<td></td>'+
+								'<td></td>'+
+								'<td></td>'+
+								'<td></td>'+
+							'</tr>';
+					$("#blackBoxFile_content").html(tr);
+				}
+			}
+		});
+	}
+</script>
+<title>黑匣子文件分析</title>
+</head>
+<body style="overflow: hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>故障管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站健康检查</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站健康检查</a>
+	</div>
+	<div class="ltePage">
+		<div class="bb_condition_div">
+			<ul class="bb_condition_ul">
+				<li class="fleft">
+					<div class="gap_10">
+						<label>设备: </label>
+						<div id="enb_device">
+							<ul>
+								<li>&nbsp;<input type="checkbox" id="checkfather_device" value=""></input>&nbsp;全选</li>
+								<#list enbModelList! as enb>
+								<li>
+									&nbsp;<input type="checkbox" name="checkson_device" value="${enb.enb.moId}">&nbsp;${enb.enbId}(${enb.enb.name})</input>
+								</li>
+								</#list>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="fleft">
+					<input type="button" value="开始检查" id="queryBB_info" ></input>
+				</li>									
+			</ul>
+		</div>
+		<div class="bb_content_div">
+			<div class="bb_content_table_action">
+				<ul >
+					<li class="fleft gap_10">
+<!-- 						<input type="button" value="批量下载" id="batch_download"></input> -->
+					</li>
+					<li class="fleft">
+						<input type="button" value="刷新" id="fresh" onclick="queryCheckFile();"></input>
+					</li>
+				</ul>
+			</div>
+			<table width="100%" class="changeRowColor">
+				<thead>
+					<tr>
+						<th>健康检查时间</th>
+						<th>检查站点总数</th>
+						<th>存在故障站点</th>
+						<th>报告文件名</th>
+						<th>下载</th>
+					</tr>
+				</thead>
+				<tbody id="blackBoxFile_content">
+					<tr>
+						<td>暂无相关记录</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<input type="hidden" id = "basePath" value = "${base}"/>
+</body>
+</html>

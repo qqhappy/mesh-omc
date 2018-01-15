@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".cancel").click(function(){
+			//window.history.back();
+			var basePath = $("#basePath").val();
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+			
+		});
+		
+		var tmp_pdn_cat = $("#tmp_pdn_catSelect").val();
+		var tmp_default = $("#tmp_defaultSelect").val();
+		var tmp_qci = $("#tmp_qciSelect").val();
+		var tmp_arp_pri = $("#tmp_arp_priSelect").val();
+		$("#tmp_pdn_cat option").each(function(){
+			if($(this).val() == tmp_pdn_cat){
+				$(this).attr("selected",true);
+			}
+		});
+		$("#tmp_default option").each(function(){
+			if($(this).val() == tmp_default){
+				$(this).attr("selected",true);
+			}
+		});
+		$("#tmp_qci option").each(function(){
+			if($(this).val() == tmp_qci){
+				$(this).attr("selected",true);
+			}
+		});
+		$("#tmp_arp_pri option").each(function(){
+			if($(this).val() == tmp_arp_pri){
+				$(this).attr("selected",true);
+			}
+		}); 
+		
+		//修改
+		$("#modifyBtn").click(function(){
+			var valTest = /^[1-9]\d*$/;
+			
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+
+			var tmp_id = $("#tmp_id").val();
+			var tmp_name=$.trim($("#tmp_name").val());
+			var tmp_ul_bw=$("#tmp_ul_bw").val();
+			var temp_dl_bw=$("#temp_dl_bw").val();
+			var tmp_pdn_cat = $("#tmp_pdn_cat").val();
+			var tmp_apn_ulbw=$("#tmp_apn_ulbw").val();
+			var tmp_apn_dlbw=$("#tmp_apn_dlbw").val();
+			var tmp_qci=$("#tmp_qci").val();
+			var tmp_arp_pri = $("#tmp_arp_pri").val();
+			var tmp_arp_reave=$("#tmp_arp_reave").val();
+			var tmp_arp_reaved = $("#tmp_arp_reaved").val(); 
+			var tmp_default=$("#tmp_default").val();
+
+			var tmp_nameTest = /^([\u4E00-\u9FA5]|\w)*$/;
+			
+			if(tmp_name == null || tmp_name == ""){
+				alert("模板名称不可为空");
+				return false;
+			}
+			
+			if(!tmp_nameTest.test(tmp_name)){
+				alert("模板名称不可包含特殊字符");
+				return false;
+			}
+
+			if(tmp_ul_bw == null || tmp_ul_bw == ''){
+				alert("最大上行带宽不可为空");
+				return false;
+			}
+			if(!valTest.test(tmp_ul_bw) || tmp_ul_bw > 4000000){
+				alert("最大上行带宽格式或取值范围错误");
+				return false;
+			}
+			
+			if(temp_dl_bw == null || temp_dl_bw ==''){
+				alert("最大下行带宽不可为空");
+				return false;
+			}
+			if(!valTest.test(temp_dl_bw) || temp_dl_bw > 4000000){
+				alert("最大下行带宽格式或取值范围错误");
+				return false;
+			}
+			
+			if(tmp_apn_ulbw == null || tmp_apn_ulbw == ''){
+				alert("APN最大上行带宽不可为空");
+				return false;
+			}
+			if((!valTest.test(tmp_apn_ulbw)) || tmp_apn_ulbw > 4000000){
+				alert("APN最大上行带宽格式或取值范围错误");
+				return false;
+			}
+			
+			if(parseInt(tmp_apn_ulbw) < parseInt(tmp_ul_bw)){
+				alert("最大上行带宽需小于等于APN最大上行带宽");
+				return false;
+			}
+			
+			if(tmp_apn_dlbw == null || tmp_apn_dlbw == ''){
+				alert("APN最大下行带宽不可为空");
+				return false;
+			}
+			if((!valTest.test(tmp_apn_dlbw)) || tmp_apn_dlbw > 4000000){
+				alert("APN最大下行带宽格式或取值范围错误");
+				return false;
+			}
+			
+			if(parseInt(tmp_apn_dlbw) < parseInt(temp_dl_bw)){
+				alert("最大下行带宽需小于等于APN最大下行带宽");
+				return false;
+			}
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/modifyUserTemplate.do",
+				data:"userTemplateModel.tmp_id="+tmp_id+
+					"&userTemplateModel.tmp_name="+tmp_name+
+					"&userTemplateModel.tmp_ul_bw="+tmp_ul_bw+
+					"&userTemplateModel.temp_dl_bw="+temp_dl_bw+
+					"&userTemplateModel.tmp_pdn_cat="+tmp_pdn_cat+
+					"&userTemplateModel.tmp_apn_ulbw="+tmp_apn_ulbw+
+					"&userTemplateModel.tmp_apn_dlbw="+tmp_apn_dlbw+
+					"&userTemplateModel.tmp_qci="+tmp_qci+
+					"&userTemplateModel.tmp_arp_pri="+tmp_arp_pri+
+					"&userTemplateModel.tmp_arp_reave="+tmp_arp_reave+
+					"&userTemplateModel.tmp_arp_reaved="+tmp_arp_reaved+	
+					"&userTemplateModel.tmp_default="+tmp_default,
+				dataType:"json",
+				success:function(data){
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0: 
+							window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+currentPageNum+
+									"&onlinePage.totalPages="+totalPages;
+							break;
+						default:
+							alert(data.message);
+							break;
+					}
+				},
+				error:function(data){
+					alert("操作失败");
+				}
+			});
+		});
+		
+		//最大上行带宽
+		$("#tmp_ul_bw").blur(function(){
+			var valTest = /^[1-9]\d*$/;
+			var tmp_ul_bw = $.trim($(this).val());
+			if(!valTest.test(tmp_ul_bw) ||tmp_ul_bw > 4000000){
+				$(this).val("取值范围1~4000000");
+				$(this).css("color","red");
+				$(this).css("font-style","italic");
+			}
+		});
+		$("#tmp_ul_bw").focus(function(){
+			$(this).css("color","");
+			$(this).css("font-style","normal");
+			var valTest = /^[1-9]\d*$/;
+			var tmp_ul_bw = $.trim($(this).val());
+			if(!valTest.test(tmp_ul_bw) ||tmp_ul_bw > 4000000){
+				$(this).val("");
+			}
+		});
+		
+		//最大下行带宽
+		$("#temp_dl_bw").blur(function(){
+			var valTest = /^[1-9]\d*$/;
+			var temp_dl_bw = $.trim($(this).val());
+			if(!valTest.test(temp_dl_bw) || temp_dl_bw > 4000000){
+				$(this).val("取值范围1~4000000");
+				$(this).css("color","red");
+				$(this).css("font-style","italic");
+			}
+		});
+		$("#temp_dl_bw").focus(function(){
+			$(this).css("color","");
+			$(this).css("font-style","normal");
+			var valTest = /^[1-9]\d*$/;
+			var temp_dl_bw = $.trim($(this).val());
+			if(!valTest.test(temp_dl_bw) || temp_dl_bw > 4000000){
+				$(this).val("");
+			}
+		});
+		
+		//APN最大上行带宽
+		$("#tmp_apn_ulbw").blur(function(){
+			var valTest = /^[1-9]\d*$/;
+			var tmp_apn_ulbw = $.trim($(this).val());
+			if((!valTest.test(tmp_apn_ulbw)) || tmp_apn_ulbw > 4000000){
+				$(this).val("取值范围1~4000000");
+				$(this).css("color","red");
+				$(this).css("font-style","italic");
+			}
+		});
+		$("#tmp_apn_ulbw").focus(function(){
+			$(this).css("color","");
+			$(this).css("font-style","normal");
+			var valTest = /^[1-9]\d*$/;
+			var tmp_apn_ulbw = $.trim($(this).val());
+			if((!valTest.test(tmp_apn_ulbw)) || tmp_apn_ulbw > 4000000){
+				$(this).val("");
+			}
+		});
+		
+		//APN最大下行带宽
+		$("#tmp_apn_dlbw").blur(function(){
+			var valTest = /^[1-9]\d*$/;
+			var tmp_apn_dlbw = $.trim($(this).val());
+			if((!valTest.test(tmp_apn_dlbw)) || tmp_apn_dlbw > 4000000){
+				$(this).val("取值范围1~4000000");
+				$(this).css("color","red");
+				$(this).css("font-style","italic");
+			}
+		});
+		$("#tmp_apn_dlbw").focus(function(){
+			$(this).css("color","");
+			$(this).css("font-style","normal");
+			var valTest = /^[1-9]\d*$/;
+			var tmp_apn_dlbw = $.trim($(this).val());
+			if((!valTest.test(tmp_apn_dlbw)) || tmp_apn_dlbw > 4000000){
+				$(this).val("");
+			}
+		});
+	})
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>用户参数模板</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>配置</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>模板ID :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" value="${userTemplateModel.tmp_id!}" id="tmp_id" disabled="disabled"/></td>
+							<td class="redColor">*</td>
+						<tr>
+						</tr>
+							<td>模板名 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" value="${userTemplateModel.tmp_name!}" id="tmp_name" maxlength="10"/></td>
+							<td class="redColor">*</td>
+						</tr>
+						<tr>
+							<td>最大上行带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="7" style="width:240px;" value="${userTemplateModel.tmp_ul_bw!}"  id="tmp_ul_bw"  title="取值范围1~4000000"/></td>
+							<td class="redColor">* &nbsp;针对单个用户</td>
+						<tr>
+						</tr>
+							<td>最大下行带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="7" style="width:240px;" value="${userTemplateModel.temp_dl_bw!}"  id="temp_dl_bw"  title="取值范围1~4000000"/></td>
+							<td class="redColor">* &nbsp;针对单个用户</td>
+						</tr>
+						<tr>
+							<td>PDN类型 :</td>	
+							<td class="blankTd"></td>						
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff" id="tmp_pdn_cat">
+									<option value="1">IPv4</option>
+									<!-- <option value="2">IPv6</option> -->
+									<option value="3">IPv4v6</option>
+								</select></div>							
+							</td>
+							<td class="redColor">*</td>
+						<tr>
+						</tr>
+							<td>默认模板标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff"  id="tmp_default">
+									<#if userTemplateModel.tmp_default! == "0">
+										<option value="0">NO</option>
+										<option value="1">YES</option>
+									<#else>
+										<option value="1">YES</option>
+										<option value="0">NO</option>									
+									</#if>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>
+						<tr>
+							<td>APN最大上行带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="7" style="width:240px;" value="${userTemplateModel.tmp_apn_ulbw!}" id="tmp_apn_ulbw"  title="取值范围1~4000000"/></td>
+							<td class="redColor">* &nbsp;针对所有用户</td>
+						<tr>
+						</tr>
+							<td>APN最大下行带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="7" style="width:240px;" value="${userTemplateModel.tmp_apn_dlbw!}" id="tmp_apn_dlbw"  title="取值范围1~4000000"/></td>
+							<td class="redColor">* &nbsp;针对所有用户</td>
+						</tr>
+						<tr>
+							<td>QoS等级 :</td>		
+							<td class="blankTd"></td>					
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff"  id="tmp_qci">
+								<!-- 	<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option> -->
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9" selected="selected">9</option>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>						
+						<tr>
+							<td>ARP优先级 : </td>
+							<td class="blankTd"></td>	
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								 <select class="add_select" style="width:251px;border:1px solid #fff"  id="tmp_arp_pri">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>						
+						<tr>
+							<td>ARP抢占能力 :</td>
+							<td class="blankTd"></td>	
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select id="tmp_arp_reave" style="width:251px;border:1px solid #fff">
+									<#if userTemplateModel.tmp_arp_reave! == "0">
+										<option value="0" selected="selected">NO</option>
+										<option value="1">YES</option>
+									<#else>
+										<option value="0">NO</option>
+										<option value="1" selected="selected">YES</option>
+									</#if>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>						
+						<tr>
+							<td>ARP被抢占能力 :</td>
+							<td class="blankTd"></td>	
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select id="tmp_arp_reaved" style="width:251px;border:1px solid #fff">
+									<#if userTemplateModel.tmp_arp_reaved! == "0">
+										<option value="0" selected="selected">NO</option>
+										<option value="1">YES</option>
+									<#else>
+										<option value="0">NO</option>
+										<option value="1" selected="selected">YES</option>
+									</#if>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								 <input id="modifyBtn" type="button" value="确定" style="padding:3px 25px;"/>
+								 <input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${userTemplateModel.tmp_pdn_cat!}" id="tmp_pdn_catSelect"/>
+<input type="hidden" value="${userTemplateModel.tmp_default!}" id="tmp_defaultSelect"/>
+<input type="hidden" value="${userTemplateModel.tmp_qci!}" id="tmp_qciSelect"/>
+<input type="hidden" value="${userTemplateModel.tmp_arp_pri!}" id="tmp_arp_priSelect"/>
+</body>
+</html>

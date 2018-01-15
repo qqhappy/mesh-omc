@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="7102" extends="struts-base" namespace="/lte">
+		<!-- 跳转至enb配置左部菜单 -->
+		<action name="turnEnbWebLmtLeft_xw7102" class="com.xinwei.lte.web.enb.xw7102.TurnToHtmlAction"
+			method="turnEnbWebLmtLeft_xw7102">
+			<!-- xw7102 -->
+			<result name="xw7102-biz-menu-1.1.5" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7102/xw7102-biz-menu-1.1.5.html</result>			
+		</action>
+	</package>
+</struts>

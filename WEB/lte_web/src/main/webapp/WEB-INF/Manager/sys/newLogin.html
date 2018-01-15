@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>iM6000s网管</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+	$(function(){	
+		if(window != top){
+			top.location.href=location.href;
+		}
+		//IE8兼容
+		var width = $(window).width();
+		var height = $(window).height();
+		$("#loginBody").css("height",height);
+		$("#loginBody").css("width",width);
+		$("#sunShine").css("height",height);
+		$("#sunShine").css("width",width-300);
+		//登录图片居中
+		var windowHeight = $(window).height();
+		var windowWidth = $(window).width();
+		var loginHeight = $("#login").height();
+		var loginWidth = $("#login").width();
+		$("#login").css({"top":(windowHeight-loginHeight)/2,"left":(windowWidth-loginWidth+200)/2});
+		
+		window.onresize = function(){
+			//IE8兼容
+			var width = $(window).width();
+			var height = $(window).height();
+			$("#loginBody").css("height",height);
+			$("#loginBody").css("width",width);
+			$("#sunShine").css("height",height);
+			$("#sunShine").css("width",width-300);
+			//登录图片居中
+			var windowHeight = $(window).height();
+			var windowWidth = $(window).width();
+			var loginHeight = $("#login").height();
+			var loginWidth = $("#login").width();
+			$("#login").css({"top":(windowHeight-loginHeight)/2,"left":(windowWidth-loginWidth+200)/2});
+		}
+		
+		$("#userName").focus();
+		
+		//点击登录
+		$("#loginButton").click(function(){
+			var userName = $.trim($("#userName").val());
+			var passWord = $.trim($("#passWord").val());
+			if(userName == ""){
+				$("#loginError").html("Username cannot be null !");
+				return ;
+			}
+			if(passWord == ""){
+				$("#loginError").html("Password cannot be null !");
+				return ;
+			}
+			$("input[name='browseTime']").val(getBrowseTime());
+			$("#loginForm").submit();
+		});
+		//重置
+		$("#resetButton").click(function(){
+			$("#resetForm").click();
+		});
+		$("#passWord").keyup(function(e){
+			e=e||window.e;
+			var userName = $.trim($("#userName").val());
+			var passWord = $.trim($("#passWord").val());
+			if(userName != "" && passWord != "" && e.keyCode == 13){
+				$("#loginButton").click();
+			}
+		});
+		//登录失败
+		if("${error!}" != ""){
+			$("#loginError").html("${error!}");
+		}else{
+			$("#loginError").html("");
+		}
+	});
+	function getBrowseTime(){
+		var time = new Date();
+		return time.getTime();
+	}
+</script>
+</head>
+
+<body style="overflow:hidden;background-color:#1154A5;" id="loginBody">
+		<div style="position:absolute;overflow:hidden;margin-top:30px;margin-left:20px;width:175px;height:68px;
+ 			background:url('${base}/Manager/images/tnc/company.png');">
+ 		</div>
+<!-- 	<div style="float:left;overflow:hidden;background:url('${base}/Manager/images/tnc/sunshineBack.png');" id="sunShine"> -->
+ 		<div style="position:absolute;overflow:hidden;width:548px;height:635px;
+ 			background:url('${base}/Manager/images/tnc/loginInputz.png');" id="login">
+ 			<form action="${base}/login/login.do" id="loginForm" method="post">
+ 				<input type="text" id="userName" name="userName" style="margin-top:195px;margin-left:135px;"/>
+ 				<input type="password" id="passWord" name="passWord"  style="margin-top:56px;margin-left:135px;width:150px;"/>	
+ 				<input type="hidden" name = "browseTime">
+ 				<input type="reset" id="resetForm" style="display:none;"/>			
+ 			</form>
+ 			<input type="button" value="登录" style="margin-top:40px;margin-left:60px;" id="loginButton"/>
+ 			<input type="button" value="重置" style="margin-top:40px;margin-left:50px;" id="resetButton"/> 	
+ 			<div style="width:260px;margin-top:20px;color:white;margin-left:40px;text-align: center;word-wrap:break-word;" id="loginError"></div>
+ 		</div>
+<!--  	</div> -->
+</body>
+</html>

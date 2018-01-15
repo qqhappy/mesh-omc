@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="mcBtsBasicDAO"
+		class="com.xinwei.minas.server.mcbts.dao.impl.McBtsBasicDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsBizDAO" class="com.xinwei.minas.server.mcbts.dao.impl.McBtsBizDAOImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="l1generalSettingDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfL1GeneralSettingDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="calibrationTypeDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfCalibrationTypeDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="rfConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfRfConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="subPsConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfSubRfPsConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="genConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfCalibGenConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="subGenConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfSubCalibGenConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="antConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer1.impl.TConfCalibAntDataConfigDAOImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="airlinkConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.TConfAirlinkConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="subChannelConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.TConfSubChannelConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="subScaleConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.TConfSubScaleConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="subW0ConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.TConfSubW0ConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="loadBalanceDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.LoadBalanceDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="faultSwitchDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfFaultSwitchDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="weakVoiceFaultDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfWeakVoiceFaultDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="dnInfoDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfDnInfoDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="resManagementDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.ResManagementDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="changeAlgParamDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.ChangeAlgParamDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="antijammingParamDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.AntijammingParamDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="backupSagDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfBackupSagDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="wcpedao"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfWCPEDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="rcpedao"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfRCPEDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="rcpeItemDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfRCPEItemDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="remoteBtsDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfRemoteBtsDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mbmsBtsDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfMBMSBtsDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="freqSetDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.FreqSetDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="neighbourDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.NeighborDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="appendNeighbourDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.AppendNeighborDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="neighborFailedDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.McbtsNeighborFailedDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="tosConfDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TosConfDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="terminalParamDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TerminalParamDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="aCLDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.ACLDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="TSysFreqDao"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TSysFreqDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="repeaterDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.RepeaterDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="vlanDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.VlanDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="locAreaDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.LocAreaDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="supportedBizDAO"
+		class="com.xinwei.minas.server.mcbts.dao.oamManage.impl.SupportedBizDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="terminalVersionManageDao"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.TerminalVersionManageDAOImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+		<property name="platformLang" value="${platform.i18n.language}" />
+		<property name="platformDesc" value="${platform.i18n.language}" />
+	</bean>
+
+	<bean id="tvForceUpdateDao"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.TerminalVersionForceUpdateDaoImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="systemPropertyDao"
+		class="com.xinwei.minas.server.core.conf.dao.impl.SystemPropertyDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsVersionManageDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.McBtsVersionManageDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsVersionHistoryManageDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.McBtsVersionHistoryManageDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="gpsDataDao"
+		class="com.xinwei.minas.server.mcbts.dao.common.impl.GPSDataDaoImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="gpsData2Dao"
+		class="com.xinwei.minas.server.mcbts.dao.common.impl.GPSData2DaoImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="mcBtsTemplateManageDao"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.McBtsTemplateManageDaoImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="mcBtsTemplateDataManageDao"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.McBtsTemplateDataManageDaoImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+		<property name="ftpIp" value="${platform.ftp.ip}" />
+		<property name="ftpUserName" value="${platform.ftp.username}" />
+		<property name="ftpPassword" value="${platform.ftp.password}" />
+	</bean>
+
+	<bean id="mcBtsSNDAO"
+		class="com.xinwei.minas.server.mcbts.dao.common.impl.McBtsSNDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsStateQueryDAO"
+		class="com.xinwei.minas.server.mcbts.dao.oamManage.impl.McBtsStateQueryDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsRfPanelStatusDAO"
+		class="com.xinwei.minas.server.mcbts.dao.oamManage.impl.McBtsRfPanelStatusDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsUserCountsQueryDAO"
+		class="com.xinwei.minas.server.mcbts.dao.oamManage.impl.McBtsUserCountsQueryDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="sdmaDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer2.impl.SDMAConifgDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="neighborValidatorDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.NeighborValidatorDAOImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="dataPackageFilterDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.DataPackageFilterDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="switchOptimizeDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.SwitchOptimizeDAOImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+
+	<bean id="mcBtsBatchUpgradeDAO"
+		class="com.xinwei.minas.server.mcbts.dao.common.impl.McBtsBatchUpgradeDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="mcBtsBatchUpgradeArchiveDAO"
+		class="com.xinwei.minas.server.mcbts.dao.common.impl.McBtsBatchUpgradeArchiveDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="districtManageDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.DistrictManageDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="simulcastManageDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.SimulcastManageDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+	
+	<bean id="mBMSClusterDAO"
+		class="com.xinwei.minas.server.mcbts.dao.layer3.impl.TConfMBMSClusterDAOImpl">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+	
+	<bean id="commonChannelSynDAO"
+		class="com.xinwei.minas.server.mcbts.dao.common.impl.CommonChannelSynDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+	
+	<bean id="powerSupplyManagerDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.PowerSupplyManagerDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+	
+	<bean id="mcBtsPowerConfigDAO"
+		class="com.xinwei.minas.server.mcbts.dao.sysManage.impl.McBtsPowerConfigDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate">
+		</property>
+		 
+	</bean>
+	
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer3.TConfDnInfo"
+		table="t_conf_dn_info">
+		<composite-id name="id" class="com.xinwei.minas.mcbts.core.model.layer3.TConfDnInfoPK">
+			<key-property name="parentid" type="long" >
+				<column name="parentid" not-null="true"/>
+			</key-property>
+			<key-property name="rowindex" type="int" >
+				<column name="rowindex" not-null="true"/>
+			</key-property>
+		</composite-id>
+		<property generated="never" lazy="false" name="dn_prefix"
+			type="string">
+			<column name="dn_prefix" />
+		</property>
+		<property generated="never" lazy="false" name="dn_len"
+			type="int">
+			<column name="dn_len" />
+		</property>
+	</class>
+</hibernate-mapping>

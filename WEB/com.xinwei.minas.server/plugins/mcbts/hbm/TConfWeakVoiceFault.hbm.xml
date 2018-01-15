@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer3.TConfWeakVoiceFault"
+		table="t_conf_weak_voice_fault">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property generated="never" lazy="false" name="flag"
+			type="int">
+			<column name="flag" />
+		</property>
+		<property generated="never" lazy="false" name="voice_user_list_file"
+			type="int">
+			<column name="voice_user_list_file" />
+		</property>
+		<property generated="never" lazy="false" name="voice_user_list_file2"
+			type="int">
+			<column name="voice_user_list_file2" />
+		</property>
+		<property generated="never" lazy="false" name="trunk_list_file"
+			type="int">
+			<column name="trunk_list_file" />
+		</property>
+		<property generated="never" lazy="false"
+			name="multi_call_idle_time" type="int">
+			<column name="multi_call_idle_time" />
+		</property>
+		<property generated="never" lazy="false"
+			name="voice_max_time" type="int">
+			<column name="voice_max_time" />
+		</property>
+		<property generated="never" lazy="false" name="multi_call_max_time"
+			type="int">
+			<column name="multi_call_max_time" />
+		</property>
+		<property generated="never" lazy="false" name="delay_interval"
+			type="int">
+			<column name="delay_interval" />
+		</property>
+		<property generated="never" lazy="false" name="division_code"
+			type="string">
+			<column name="division_code" />
+		</property>
+	</class>
+</hibernate-mapping>

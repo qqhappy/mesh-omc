@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!--初始化数据库 -->
+	<bean id="platform.dataSourceManager" class="com.xinwei.common.dbcp.DataSourceManager"
+		factory-method="getInstance" destroy-method="destroy">
+	</bean>
+
+	<bean id="platform.dataSource.initDb"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod">
+			<value>com.xinwei.common.dbcp.PropsDBCPConfigurator.configure</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>plugins/platform/dbcp-config.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--DataSouce 管理器 -->
+	<bean id="platform.dataSource"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref bean="platform.dataSourceManager" />
+		</property>
+		<property name="targetMethod">
+			<value>getDataSource</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>minas</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="platform.sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="platform.dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${platform.hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${platform.hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${platform.hibernate.format_sql}</prop>
+			</props>
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<!-- 请在此加入各个模块的hbm文件的路径 -->
+				<value>plugins/conf/hbm</value>
+				<value>plugins/mcbts/hbm</value>
+				<value>plugins/sxc/hbm</value>
+				<value>plugins/ut/hbm</value>
+				<value>plugins/enb/hbm</value>
+				<value>plugins/xstat/hbm</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>	
+	
+	<bean id="platform.hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="platform.sessionFactory" />
+	</bean>
+	
+	<bean id="platform.transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="platform.dataSource" />
+	</bean>
+	
+	<bean id="platform.transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="platform.transactionManager" />
+	</bean>
+	
+</beans>

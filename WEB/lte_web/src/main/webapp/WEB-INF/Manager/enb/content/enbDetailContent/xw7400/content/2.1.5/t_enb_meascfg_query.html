@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/t_enb_meascfg.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_enb_meascfg1").html(
+				  '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8MeasCfgIdx">测量配置索引</th>'
+					+'<th scope="col" class="u8TrigQuan">事件触发量</th>'
+					+'<th scope="col" class="u8ReportQuan">测量报告量</th>'
+					+'<th scope="col" class="u8RptCriteria">上报规则</th>'
+					+'<th scope="col" class="u8EvtId">事件标识</th>'
+					+'<th scope="col" class="u8RsrpThreshold">事件判决的RSRP绝对门限(dBm)</th>'
+					+'<th scope="col" class="u8RsrqThreshold">事件判决的RSRQ绝对门限(dB)</th>'
+					+'<th scope="col" class="u8A3offset">A3事件偏移(dB)</th>'
+					+'<th scope="col" class="u8A5Thrd2Rsrp">A5事件判决的RSRP绝对门限2(dBm)</th>'
+					+'<th scope="col" class="u8A5Thrd2Rsrq">A5事件判决的RSRQ绝对门限2(dB)</th>'
+					+'<th scope="col" class="u8Hysteresis">事件迟滞参数(dB)</th>'
+					+'<th scope="col" class="u8TrigTime">触发测量报告的时间(ms)</th>'
+					+'<th scope="col" class="u8RptIntvl">事件触发周期报告间隔</th>'
+					+'<th scope="col" class="u8RptAmt">事件触发周期报告次数</th>'
+					+'<th scope="col" class="u8PrdRptInterval">周期报告规则中的报告间隔</th>'
+					+'<th scope="col" class="u8PrdRptAmount">周期报告规则中报告次数</th>'
+					+'<th scope="col" class="u8MaxRptCellNum">最大上报小区数目</th>'
+					+'<th scope="col" class="u8ReportOnLeave">A3事件离开上报指示</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th scope="row" class="justForView"></th>'
+					+'<td class="u8MeasCfgIdx">暂无相关数据</td>'
+					+'<td class="u8TrigQuan"></td>'
+					+'<td class="u8ReportQuan"></td>'
+					+'<td class="u8RptCriteria"></td>'
+					+'<td class="u8EvtId"></td>'
+					+'<td class="u8RsrpThreshold"></td>'
+					+'<td class="u8RsrqThreshold"></td>'
+					+'<td class="u8A3offset"></td>'
+					+'<td class="u8A5Thrd2Rsrp"></td>'
+					+'<td class="u8A5Thrd2Rsrq"></td>'
+					+'<td class="u8Hysteresis"></td>'
+					+'<td class="u8TrigTime"></td>'
+					+'<td class="u8RptIntvl"></td>'
+					+'<td class="u8RptAmt"></td>'
+					+'<td class="u8PrdRptInterval"></td>'
+					+'<td class="u8PrdRptAmount"></td>'
+					+'<td class="u8MaxRptCellNum"></td>'
+					+'<td class="u8ReportOnLeave"></td>'		
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_ENB_MEASCFG-2.1.5";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>测量配置表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button" id="delete" value="批量删除"/></li>
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_enb_meascfg_div">  -->
+			<div style="width:3200px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_enb_meascfg1" class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>  
+					<th scope="col" class="u8MeasCfgIdx">测量配置索引</th>
+					<th scope="col" class="u8TrigQuan">事件触发量</th>
+					<th scope="col" class="u8ReportQuan">测量报告量</th>
+					<th scope="col" class="u8RptCriteria">上报规则</th>
+					<th scope="col" class="u8EvtId">事件标识</th>
+					<th scope="col" class="u8RsrpThreshold">事件判决的RSRP绝对门限(dBm)</th>
+					<th scope="col" class="u8RsrqThreshold">事件判决的RSRQ绝对门限(dB)</th>
+					<th scope="col" class="u8A3offset">A3事件偏移(dB)</th>
+					<th scope="col" class="u8A5Thrd2Rsrp">A5事件判决的RSRP绝对门限2(dBm)</th>
+					<th scope="col" class="u8A5Thrd2Rsrq">A5事件判决的RSRQ绝对门限2(dB)</th>
+					<th scope="col" class="u8Hysteresis">事件迟滞参数(dB)</th>
+					<th scope="col" class="u8TrigTime">触发测量报告的时间(ms)</th>
+					<th scope="col" class="u8RptIntvl">事件触发周期报告间隔</th>
+					<th scope="col" class="u8RptAmt">事件触发周期报告次数</th>
+					<th scope="col" class="u8PrdRptInterval">周期报告规则中的报告间隔</th>
+					<th scope="col" class="u8PrdRptAmount">周期报告规则中报告次数</th>
+					<th scope="col" class="u8MaxRptCellNum">最大上报小区数目</th>
+					<th scope="col" class="u8ReportOnLeave">A3事件离开上报指示</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+					<th scope="col" class="justForView" width="60px;">删除</th>
+				  </tr>
+				 <#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8MeasCfgIdx">${record.fieldMap["u8MeasCfgIdx"].value!}</td>
+						<td class="u8TrigQuan">${record.fieldMap["u8TrigQuan"].value!}</td>
+						<td class="u8ReportQuan">${record.fieldMap["u8ReportQuan"].value!}</td>
+						<td class="u8RptCriteria">${record.fieldMap["u8RptCriteria"].value!}</td>
+						<td class="u8EvtId">${record.fieldMap["u8EvtId"].value!}</td>
+						<td class="u8RsrpThreshold">${record.fieldMap["u8RsrpThreshold"].value!}</td>
+						<td class="u8RsrqThreshold">${record.fieldMap["u8RsrqThreshold"].value!}</td>
+						<td class="u8A3offset">${record.fieldMap["u8A3offset"].value!}</td>
+						<td class="u8A5Thrd2Rsrp">${record.fieldMap["u8A5Thrd2Rsrp"].value!}</td>
+						<td class="u8A5Thrd2Rsrq">${record.fieldMap["u8A5Thrd2Rsrq"].value!}</td>
+						<td class="u8Hysteresis">${record.fieldMap["u8Hysteresis"].value!}</td>
+						<td class="u8TrigTime">${record.fieldMap["u8TrigTime"].value!}</td>
+						<td class="u8RptIntvl">${record.fieldMap["u8RptIntvl"].value!}</td>
+						<td class="u8RptAmt">${record.fieldMap["u8RptAmt"].value!}</td>
+						<td class="u8PrdRptInterval">${record.fieldMap["u8PrdRptInterval"].value!}</td>
+						<td class="u8PrdRptAmount">${record.fieldMap["u8PrdRptAmount"].value!}</td>
+						<td class="u8MaxRptCellNum">${record.fieldMap["u8MaxRptCellNum"].value!}</td>
+						<td class="u8ReportOnLeave">${record.fieldMap["u8ReportOnLeave"].value!}</td>	
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td>
+					</tr>
+					</#list>
+				</table>
+			</div>
+			
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

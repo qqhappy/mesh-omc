@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});
+
+		//设置查询条件默认值
+		var first = $("#firstHidden").val();	
+		
+		if(first != 0){
+			var queryValue = $("#queryValueHidden").val();
+			$("#queryValue").val(queryValue);
+		}
+		
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$("input[type='checkbox']:gt(0):checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+		
+			if(confirm("确定要删除所有选择的记录?")){
+				var basePath = "${base}";
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var first = $("#firstHidden").val();
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				
+				var monitor_indexArray = [];
+				var monitor_indexArrayIndex = 0;
+				$("input[type='checkbox']:gt(0):checked").each(function(){
+					monitor_indexArray[monitor_indexArrayIndex]=$(this).val();
+					monitor_indexArrayIndex++;
+				});
+
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/vmgCfg!deleteVmgCfg.do",
+					data:"vmgCfgModel.monitor_index="+monitor_indexArray,
+					dataType:"json",
+					success:function(data){
+						
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0:
+								window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?queryVmgCfgModel.first="+first+
+								"&queryVmgCfgModel.queryType="+queryType+
+								"&queryVmgCfgModel.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+								
+						}
+						
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}			
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			if(confirm("确定要删除该条记录?")){
+				var basePath = "${base}";
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var first = $("#firstHidden").val();
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				
+				var monitor_index = $(this).siblings("input").val();
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/vmgCfg!deleteVmgCfg.do",
+					data:"vmgCfgModel.monitor_index="+monitor_index,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0:
+								window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?queryVmgCfgModel.first="+first+
+								"&queryVmgCfgModel.queryType="+queryType+
+								"&queryVmgCfgModel.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+								
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}			
+			
+		});
+		
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var queryValue = $("#queryValue").val();
+			if(queryValue == null || $.trim(queryValue) == ''){
+				return;
+			}
+			window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?queryVmgCfgModel.first=1&queryVmgCfgModel.queryValue="+queryValue+"&onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;			
+		});
+		
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/vmgCfg!turntoVmgCfg.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/vmgCfg!turntoVmgCfgAdd.do?queryVmgCfgModel.first=${queryVmgCfgModel.first!}&queryVmgCfgModel.queryValue=${queryVmgCfgModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+	});
+	
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var first = $("#firstHidden").val();
+	var queryType = $("#queryTypeHidden").val();
+	var queryValue = $("#queryValueHidden").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+	
+	var myForm = '<form action="'+basePath+'/lte/vmgCfg!turntoVmgCfg.do" id="myForm" method="post">'+
+					'<input name="queryVmgCfgModel.first" value="'+first+'">'+
+					'<input name="queryVmgCfgModel.queryType" value="'+queryType+'">'+
+					'<input name="queryVmgCfgModel.queryValue" value="'+queryValue+'">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';
+
+	$("#hiddenDiv").html(myForm);
+	$("#myForm").submit();
+	$("#hiddenDiv").html("");
+
+	//window.location=basePath+'/lte/turntoSysAddress.do?querysystemAddressModel.ip_id='+ip_id+'&onlinePage.currentPageNum='+currentPageNum+'&onlinePage.totalPages='+totalPages;
+}
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/lte/icons/home.png" /></span>
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>视频监控设备</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+					<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>		
+			</ul>
+			<div class="fright">
+				<span>视频监控设备:</span>
+				<input type="text" id="queryValue" style="margin-top:1px;"/>
+				<input type="button" id="searchBtn" value="查询"/>
+			</div>
+		</div>
+		
+		<table width="100%" id="table_address" class="enbTable changeRowColor">
+			<thead>
+				<tr>
+					<th scope="col" class="checkWidth"><input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th>   
+					<th scope="col"  style="width:50px;">修改</th>
+					<th scope="col" width="12%">设备名称</th>
+					<th scope="col" width="12%">设备类型</th>
+					<th scope="col" width="12%">远端IP地址</th>
+					<th scope="col" width="12%">远端IP端口号</th>
+					<th scope="col" width="12%">用户名</th>
+					<!-- <th scope="col" width="12%">密码</th> -->
+					<th scope="col" class="">设备信息</th>
+					<th scope="col"  style="width:50px;">修改</th>
+					<th scope="col"  style="width:50px;">删除</th>
+				  </tr>
+			</thead>
+			
+			<tbody style="overflow-y:auto;">
+				<#list vmgCfgModelList! as vmgCfgModel>
+				  	<tr>
+						<th scope="row"><input type="checkbox" name="checkson" value="${vmgCfgModel.monitor_index!}" /></th>
+						<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/vmgCfg!toModifyVmgCfg.do?vmgCfgModel.monitor_index=${vmgCfgModel.monitor_index!}&queryVmgCfgModel.first=${queryVmgCfgModel.first!}&queryVmgCfgModel.queryValue=${queryVmgCfgModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+						<td>${vmgCfgModel.monitor_name!}<input type="hidden" value="1" id="noRecordInput"/></td>
+						<td><#if vmgCfgModel.monitor_type! == '0'>
+								海康SDK
+							<#else>
+								ONVIF
+							</#if>
+						</td>
+						<td>${vmgCfgModel.monitor_ip!}</td>
+						<td>${vmgCfgModel.monitor_port!}</td>
+						<td>${vmgCfgModel.user_name!}</td>
+						<!-- <td>${vmgCfgModel.user_password!}</td> -->
+						<td>${vmgCfgModel.comment!}</td>
+						<td><a href="${base}/lte/vmgCfg!toModifyVmgCfg.do?vmgCfgModel.monitor_index=${vmgCfgModel.monitor_index!}&queryVmgCfgModel.first=${queryVmgCfgModel.first!}&queryVmgCfgModel.queryValue=${queryVmgCfgModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}">修改</a></td> 
+						<td><a class="deleteOne" style="cursor:pointer;">删除</a><input type="hidden" value="${vmgCfgModel.monitor_index!}"/></td>
+					 </tr>
+			  </#list>
+			  <#if vmgCfgModelList?size < 1>
+		  			<tr>
+		  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+		  				<td class="hide1"></td>
+		  				<td class="hide1">${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+		  				<td class="hide1"></td>
+		  				<td class="hide1"></td>
+		  				<td class="hide1"></td>
+		  				<td class="hide1"></td>
+		  				<td class="hide1"></td>
+		  				<td class="hide1"></td>
+		  				<td class="hide1"></td>
+		  			</tr>
+			  </#if>
+			 
+			</tbody>
+		  
+	  
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+	
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${queryVmgCfgModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${queryVmgCfgModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${queryVmgCfgModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

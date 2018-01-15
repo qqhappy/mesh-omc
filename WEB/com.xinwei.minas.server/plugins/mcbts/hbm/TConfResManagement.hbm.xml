@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                 
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.TConfResmanagement"
+		table="t_conf_resmanagement">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property generated="never" lazy="false" name="bandwidth_requst_interval"
+			type="int">
+			<column name="bandwidth_requst_interval" />
+		</property>
+		<property generated="never" lazy="false" name="session_release_threshold"
+			type="int">
+			<column name="session_release_threshold" />
+		</property>
+		<property generated="never" lazy="false" name="sustained_min_ul_signal_strength"
+			type="int">
+			<column name="sustained_min_ul_signal_strength" />
+		</property>
+		<property generated="never" lazy="false" name="max_dl_power_per_user"
+			type="int">
+			<column name="max_dl_power_per_user" />
+		</property>
+		<property generated="never" lazy="false" name="sustained_ul_bandwidth_per_user"
+			type="int">
+			<column name="sustained_dl_bandwidth_per_user" />
+		</property>
+		<property generated="never" lazy="false" name="sustained_dl_bandwidth_per_user"
+			type="int">
+			<column name="sustained_ul_bandwidth_per_user" />
+		</property>
+		<property generated="never" lazy="false" name="reserved_power_for_pc"
+			type="int">
+			<column name="reserved_power_for_pc" />
+		</property>
+		<property generated="never" lazy="false" name="pc_range"
+			type="int">
+			<column name="pc_range" />
+		</property>
+		<property generated="never" lazy="false" name="reassignment_step_size"
+			type="int">
+			<column name="reassignment_step_size" />
+		</property>
+		<property generated="never" lazy="false" name="max_simultaneous_user"
+			type="int">
+			<column name="max_simultaneous_user" />
+		</property>
+		<property generated="never" lazy="false" name="reserved_tch_for_access"
+			type="int">
+			<column name="reserved_tch_for_access" />
+		</property>
+		<property generated="never" lazy="false" name="ul_modulation_mask"
+			type="int">
+			<column name="ul_modulation_mask" />
+		</property>
+		<property generated="never" lazy="false" name="dl_modulation_mask"
+			type="int">
+			<column name="dl_modulation_mask" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass0"
+			type="int">
+			<column name="bandwidthClass0" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass1"
+			type="int">
+			<column name="bandwidthClass1" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass2"
+			type="int">
+			<column name="bandwidthClass2" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass3"
+			type="int">
+			<column name="bandwidthClass3" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass4"
+			type="int">
+			<column name="bandwidthClass4" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass5"
+			type="int">
+			<column name="bandwidthClass5" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass6"
+			type="int">
+			<column name="bandwidthClass6" />
+		</property>
+		<property generated="never" lazy="false" name="bandwidthClass7"
+			type="int">
+			<column name="bandwidthClass7" />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_sps.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/fieldLevel_modify.js"></script>
+<title>单板表新增</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>SPS配置参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;"><div class="title">&nbsp;</div>
+				<div class="content">
+					<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+					<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_SPS-3.0.6" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CellId">
+							<td>小区标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CellId">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							
+							<td class="error" style="width:250px;" id="u8CellIdError"></td>						
+						</tr>
+						<tr class="u8SpsPackNum">
+							<td>SPS稳态判断连续包个数(0~20) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="5"  id="u8SpsPackNum"/>
+							</td>
+							<td id="u8SpsPackNumError" class="error"></td>
+						</tr>
+						<tr class="u16SpsPacketStdDev">
+							<td>SPS稳态判断包长变化标准差门限值(0~500) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="10"  id="u16SpsPacketStdDev"/>
+							</td>
+							<td id="u16SpsPacketStdDevError" class="error"></td>
+						</tr>
+						<tr class="u8SpsJitter">
+							<td>SPS稳态判断抖动范围(0~60) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="20"  id="u8SpsJitter"/>
+							</td>
+							<td id="u8SpsJitterError" class="error"></td>
+						</tr>
+						<tr class="u8NumHarqFail">
+							<td>去激活条件HarqFail门限值(0~10) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="4"  id="u8NumHarqFail"/>
+							</td>
+							<td id="u8NumHarqFailError" class="error"></td>
+						</tr>
+						<tr class="u8SpsTargetBler">
+							<td>SPS BLER目标值(0~1,步长0.01) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="0.1"  id="u8SpsTargetBler"/>
+							</td>
+							<td id="u8SpsTargetBlerError" class="error"></td>
+						</tr>
+						<tr class="u8StepForSps">
+							<td>SPS外环调整步长(0~1,步长0.1) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="0.5"  id="u8StepForSps"/>
+							</td>
+							<td id="u8StepForSpsError" class="error"></td>
+						</tr>
+						<tr class="u8DeltaToDynamicSch">
+							<td>SPS MCS相对动态调度MCS偏移值(1~15) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="5"  id="u8DeltaToDynamicSch"/>
+							</td>
+							<td id="u8DeltaToDynamicSchError" class="error"></td>
+						</tr>
+						<tr class="u8SpsDownLinkSwicth">
+							<td>下行SPS开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8SpsDownLinkSwicth" value="0" checked="checked">关</input>
+								<input type="radio" name="u8SpsDownLinkSwicth" value="1" style="margin-left:80px;">开</input>
+							</td>
+							<td id="u8SpsDownLinkSwicthError" class="error"></td>
+						</tr>
+						<tr class="u8SemiPersistSchedIntervalDl">
+							<td>下行SPS调度周期 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff;" id="u8SemiPersistSchedIntervalDl">
+									<option value="0">sf10</option>
+									<option value="1" selected="selected">sf20</option>
+									<option value="2">sf30</option>
+									<option value="3">sf40</option>
+									<option value="4">sf60</option>
+									<option value="5">sf80</option>
+									<option value="6">sf120</option>
+									<option value="7">sf160</option>
+									<option value="8">sf320</option>
+									<option value="9">sf640</option>
+								</select></div>
+							</td>
+							<td id="u8SemiPersistSchedIntervalDlError" class="error"></td>
+						</tr>
+						<tr class="u8NumberOfConfSpsProcesses">
+							<td>为下行SPS预留的进程数(1~8) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="2"  id="u8NumberOfConfSpsProcesses"/>
+							</td>
+							<td id="u8NumberOfConfSpsProcessesError" class="error"></td>
+						</tr>
+						<tr class="u8ReTxTimesDlSPS">
+							<td>下行SPS重传次数(1~4) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="2"  id="u8ReTxTimesDlSPS"/>
+							</td>
+							<td id="u8ReTxTimesDlSPSError" class="error"></td>
+						</tr>
+						<tr class="u16N_SpsANChn">
+							<td>下行SPS ACK PUCCH可用码道资源个数(0~1024) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="72"  id="u16N_SpsANChn"/>
+							</td>
+							<td id="u16N_SpsANChnError" class="error"></td>
+						</tr>
+						<tr class="u8SpsUpLinkSwicth">
+							<td>上行SPS开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8SpsUpLinkSwicth" value="0" checked="checked">关</input>
+								<input type="radio" name="u8SpsUpLinkSwicth" value="1" style="margin-left:80px;">开</input>
+							</td>
+							<td id="u8SpsUpLinkSwicthError" class="error"></td>
+						</tr>
+						<tr class="u8SemiPersistSchedIntervalUl">
+							<td>上行SPS调度周期 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff;" id="u8SemiPersistSchedIntervalUl">
+									<option value="0">sf10</option>
+									<option value="1" selected="selected">sf20</option>
+									<option value="2">sf30</option>
+									<option value="3">sf40</option>
+									<option value="4">sf60</option>
+									<option value="5">sf80</option>
+									<option value="6">sf120</option>
+									<option value="7">sf160</option>
+									<option value="8">sf320</option>
+									<option value="9">sf640</option>
+								</select></div>
+							</td>
+							<td id="u8SemiPersistSchedIntervalUlError" class="error"></td>
+						</tr>
+						<tr class="u8ImplicitReleaseAfter">
+							<td>上行SPS隐式释放次数 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff;" id="u8ImplicitReleaseAfter">
+									<option value="0">2</option>
+									<option value="1">3</option>
+									<option value="2" selected="selected">4</option>
+									<option value="3">8</option>
+								</select></div>
+							</td>
+							<td id="u8ImplicitReleaseAfterError" class="error"></td>
+						</tr>
+						<tr class="u8TwoIntervalsConfig">
+							<td>上行SPS双间隔配置参数 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8TwoIntervalsConfig" value="0" >关</input>
+								<input type="radio" name="u8TwoIntervalsConfig" value="1" style="margin-left:82px;" checked="checked">开</input>
+							</td>
+							<td id="u8TwoIntervalsConfigError" class="error"></td>
+						</tr>
+						<tr class="u8ReTxTimesUlSps">
+							<td>上行SPS重传次数(1~4) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="2"  id="u8ReTxTimesUlSps"/>
+							</td>
+							<td id="u8ReTxTimesUlSpsError" class="error"></td>
+						</tr>
+						
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel" onclick = "refresh_sync('${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','')">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+			
+		</form>
+		</div>
+</body>
+</html>

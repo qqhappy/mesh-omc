@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-3-9 16:30:01 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.sysManage.LocationArea" table="location_area">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="operator" type="java.lang.String">
+			<column name="operator" not-null="true"/>
+		</property>
+		<property name="subnet" type="java.lang.String">
+			<column name="subnet" not-null="true"/>
+		</property>
+		<property name="lac" type="java.lang.String">
+			<column name="lac" not-null="true"/>
+		</property>
+		<property name="locAreaName" type="java.lang.String">
+			<column name="locAreaName" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

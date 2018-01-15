@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                   
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer3.McBtsACL" table="mcbts_acl">
+		<id name="idx" type="java.lang.Long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="java.lang.Long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="protocol" type="java.lang.Integer">
+			<column name="protocol" not-null="true"/>
+		</property>
+		<property name="sourceIP" type="java.lang.Long">
+			<column name="sourceIP" not-null="true"/>
+		</property>
+		<property name="sourceIPMask" type="java.lang.Long">
+			<column name="sourceIPMask" not-null="true"/>
+		</property>
+		<property name="sourcePort" type="java.lang.Integer">
+			<column name="sourcePort" not-null="true"/>
+		</property>
+		<property name="sourceOper" type="java.lang.Integer">
+			<column name="sourceOper" not-null="true"/>
+		</property>
+		<property name="desIp" type="java.lang.Long">
+			<column name="desIp" not-null="true"/>
+		</property>
+		<property name="desIPMask" type="java.lang.Long">
+			<column name="desIPMask" not-null="true"/>
+		</property>
+		<property name="desPort" type="java.lang.Integer">
+			<column name="desPort" not-null="true"/>
+		</property>
+		<property name="desOper" type="java.lang.Integer">
+			<column name="desOper" not-null="true"/>
+		</property>
+		<property name="permission" type="java.lang.Integer">
+			<column name="permission" not-null="true"/>
+		</property>
+		
+	</class>
+</hibernate-mapping>                                      

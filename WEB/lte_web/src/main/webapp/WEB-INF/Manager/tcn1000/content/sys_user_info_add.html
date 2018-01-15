@@ -1,0 +1,988 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		if(checkVideoServerState() == 0){
+			$("#video_tr").css("display","none");
+		}
+		
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		
+		Address("#usr_staticipDiv");
+		Address("#usr_start_staticipDiv");
+		Address("#usr_end_staticipDiv");
+
+		$("#usr_haveimsi").change(function(){
+			var val = $(this).val();
+			if(val == 0){
+				$("#tmp_id").attr("disabled",true);
+				$("#imsi").attr("disabled",true);
+				/* $("#usr_staticipDiv input").attr("disabled",true); */
+			}else{
+				$("#tmp_id").attr("disabled",false);
+				$("#imsi").attr("disabled",false);
+				/* $("#usr_staticipDiv input").attr("disabled",false); */
+			}
+		});
+		//基本业务开关控制显示
+		$("input[name='baseBuzRadio']").click(function(){
+			var val = $(this).val();
+			if(val == 0){
+				$("#singleCallBuz").children("input").attr("disabled",true);
+				$("#groupBuz").children("input").attr("disabled",true);
+				$("#audioRecord").children("input").attr("disabled",true);
+				$("#churu").children("input").attr("disabled",true);
+				$("#srv_usr_pri").attr("disabled",true);
+			 	$("#forwardBuz").find("input").attr("disabled",true);
+				$("#forwardBuz").find("select").attr("disabled",true); 
+				$("#vscVedioCheck").attr("disabled",true);
+				$("#srv_locationCheck").attr("disabled",true);
+				//$("#singleCallBuz").children("input").attr("checked",false);
+				//$("#groupBuz").children("input").attr("checked",false);
+			}else{
+				$("#singleCallBuz").children("input").attr("disabled",false);
+				$("#groupBuz").children("input").attr("disabled",false);
+				$("#audioRecord").children("input").attr("disabled",false);
+				$("#churu").children("input").attr("disabled",false);
+				$("#srv_usr_pri").attr("disabled",false);
+				$("#vscVedioCheck").attr("disabled",false);
+				$("#srv_locationCheck").attr("disabled",false);
+				
+				var status = $("#nightBuz").attr("checked");
+				if(status == "checked"){
+					$("#fwd_condition").attr("disabled",false);
+					var fwd_condition = $("#fwd_condition").val();
+					
+					if(fwd_condition == "1"){
+						$("#fwd_servtype").attr("disabled",false);
+						var fwd_servtype = $("#fwd_servtype").val();
+						if(fwd_servtype == 0){
+							$("#fwd_servtype").attr("disabled",false);
+							$("#fwd_number").attr("disabled",false);
+						}else{
+							$("#shour").attr("disabled",false);
+							$("#fwd_servtype").attr("disabled",false);
+							$("#ehour").attr("disabled",false);
+							$("#fwd_number").attr("disabled",false);
+						}
+					}				
+				}else{
+					$("#forwardBuz").find("input").attr("disabled",true);
+					$("#forwardBuz").find("select").attr("disabled",true);
+				}
+				/* $("#forwardBuz").find("input").attr("disabled",false);
+				$("#forwardBuz").find("select").attr("disabled",false); */
+			}
+		});
+	
+		//夜服业务控制前转业务
+		$("#nightBuz").click(function(){
+			var status = $(this).attr("checked");
+			if(status == "checked"){
+				$(".forward_buz").show();
+				$("#fwd_condition").attr("disabled",false);
+				var fwd_condition = $("#fwd_condition").val();
+			
+				if(fwd_condition == "1"){
+					$("#fwd_number").attr("disabled",false);
+					var fwd_servtype = $("#fwd_servtype").val();
+					
+					if(fwd_servtype == 0){
+						$("#fwd_servtype").attr("disabled",false);
+						$("#fwd_number").attr("disabled",false);
+					}else{
+						$("#shour").attr("disabled",false);
+						$("#fwd_servtype").attr("disabled",false);
+						$("#ehour").attr("disabled",false);
+						$("#fwd_number").attr("disabled",false);
+					}
+				}					
+			}else{
+				$(".forward_buz").hide();
+				$("#forwardBuz").find("input").attr("disabled",true);
+				$("#forwardBuz").find("select").attr("disabled",true);
+			}
+		});
+		
+		//前转条件控制前传业务
+		$("#fwd_condition").change(function(){
+			if($(this).val() == 0){
+				$("#shour").attr("disabled",true);
+				$("#fwd_servtype").attr("disabled",true);
+				$("#ehour").attr("disabled",true);
+				$("#fwd_number").attr("disabled",true);
+			}else{
+				var fwd_servtype = $("#fwd_servtype").val();
+				if(fwd_servtype == 0){
+					$("#fwd_servtype").attr("disabled",false);
+					$("#fwd_number").attr("disabled",false);
+				}else{
+					$("#shour").attr("disabled",false);
+					$("#fwd_servtype").attr("disabled",false);
+					$("#ehour").attr("disabled",false);
+					$("#fwd_number").attr("disabled",false);
+				}
+			}
+		});
+		//夜服类型控制起始时间点
+		$("#fwd_servtype").change(function(){
+			if($(this).val() == 0){
+				$("#shour").attr("disabled",true);
+				$("#ehour").attr("disabled",true);
+			}else{
+				$("#shour").attr("disabled",false);
+				$("#ehour").attr("disabled",false);				
+			}
+		});
+		
+		$("#submitBtn").click(function(){
+			//var nickNameTest = /^\w*$/;
+			var nickNameTest = /^([\u4E00-\u9FA5]|\w)*$/;
+			var passwordTest = /^\w+$/;
+			var valTest = /^[0-9]*$/;
+			var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+
+			//基本信息
+			var usr_number = $("#usr_number").val();		
+			
+			if(usr_number == null || usr_number == ''){
+				alert("用户号码不可为空");
+				return false;
+			}
+			if(!valTest.test(usr_number)){
+				alert("用户号码格式错误");
+				return false;
+			}
+			var usr_numbertype=$("#usr_numbertype").val();
+			var usr_neckname=$.trim($("#usr_neckname").val());
+	
+			if(usr_neckname == null || usr_neckname == ''){
+				alert("昵称不可为空");
+				return false;
+			}
+			if(!nickNameTest.test(usr_neckname)){
+				alert("昵称不可包含特殊字符");
+				return false;
+			}
+
+			var usr_password=$.trim($("#usr_password").val());
+			if(usr_password == null || usr_password == ""){
+				alert("密码不可为空");
+				return false;
+			}
+
+			if(!passwordTest.test(usr_password)){
+				alert("密码只能输入由数字和26个英文字母或者下划线组成的字符串");
+				return false;
+			}
+			var usr_comment=$.trim($("#usr_comment").val());		
+			if(usr_comment == null || usr_comment == ""){
+				alert("用户信息不可为空");
+				return false;
+			}
+			var usr_state = $("#usr_state").val();
+			var usr_haveimsi=$("#usr_haveimsi").val();
+			var imsi=$("#imsi").val();
+			var tmp_id=$("#tmp_id").val();
+			//var usr_staticipStr=$("#usr_staticip").val();
+			
+			var usr_authflag = $("#usr_authflag").val();
+			if(usr_haveimsi == "1"){
+				
+				if(imsi == null || imsi == ''){
+					alert("绑定的IMSI不可为空");
+					return false;
+				}
+				
+				if((!valTest.test(imsi)) || (imsi.length<4) || (imsi.length>15)){
+					alert("绑定的IMSI格式或取值范围错误");
+					return false;
+				}
+			}			
+			
+			//用户IP地址分配方式
+			var ipaddr_allocate_type = parseInt($("#ipaddr_allocate_type").val());
+			
+			var usr_staticipStr="";
+			$("#usr_staticipDiv input").each(function(){
+				usr_staticipStr+=$(this).val()+".";
+			});
+			//静态ip
+			var usr_staticip = usr_staticipStr.substring(0,usr_staticipStr.length-1);
+			
+			var usr_start_staticipStr = "";
+			$("#usr_start_staticipDiv input").each(function(){
+				usr_start_staticipStr+=$(this).val()+".";
+			});
+			//起始ip
+			var usr_start_staticip = usr_start_staticipStr.substring(0,usr_start_staticipStr.length-1);
+			
+			var usr_end_staticipStr = "";
+			$("#usr_end_staticipDiv input").each(function(){
+				usr_end_staticipStr+=$(this).val()+".";
+			});
+			//结束ip
+			var usr_end_staticip = usr_end_staticipStr.substring(0,usr_end_staticipStr.length-1);
+			if(ipaddr_allocate_type == 1){
+			
+				if(!ipTest.test(usr_staticip)){
+					alert("静态IP格式错误");
+					return false;
+				}
+				if(!checkIP_style(usr_staticip)){
+					alert("静态IP不合法");
+					return false;
+				}
+		
+			}else if(ipaddr_allocate_type == 2){
+				if(!ipTest.test(usr_start_staticip)){
+					alert("起始静态IP地址格式错误");
+					return false;
+				}
+				if(!checkIP_style(usr_start_staticip)){
+					alert("起始静态IP地址不合法");
+					return false;
+				}
+				
+				if(!ipTest.test(usr_end_staticip)){
+					alert("结束静态IP地址格式错误");
+					return false;
+				}
+				if(!checkIP_style(usr_end_staticip)){
+					alert("结束静态IP地址不合法");
+					return false;
+				}
+			}
+			
+			//基本业务		
+			var lte_usestate = $("input[name='baseBuzRadio']:checked").val();
+			var srv_sigcalllte_flag="";
+			
+			//---联机活动
+			if($("#linkagePhone").attr("checked") == "checked"){
+				srv_sigcalllte_flag+="1,";
+			}else{
+				srv_sigcalllte_flag+="0,";
+			};
+			//--夜服业务
+			if($("#nightBuz").attr("checked") == "checked"){
+				srv_sigcalllte_flag+="1,";
+			}else{
+				srv_sigcalllte_flag+="0,";
+			};
+			//--漏呼短信提醒
+			if($("#missInfoCall").attr("checked") == "checked"){
+				srv_sigcalllte_flag+="1,";
+			}else{
+				srv_sigcalllte_flag+="0,";
+			};
+			//--数据业务
+			if($("#dataBuz").attr("checked") == "checked"){
+				srv_sigcalllte_flag+="1,";
+			}else{
+				srv_sigcalllte_flag+="0,";
+			};
+			//--视频单呼
+			if($("#videoCall").attr("checked") == "checked"){
+				srv_sigcalllte_flag+="1,";
+			}else{
+				srv_sigcalllte_flag+="0,";
+			};
+			//--音频单呼
+			if($("#voiceCall").attr("checked") == "checked"){
+				srv_sigcalllte_flag+="1";
+			}else{
+				srv_sigcalllte_flag+="0";
+			};
+			
+			var srv_grpcalllte_flag="";
+			//可视组呼
+			if($("#visualGroupCall").attr("checked") == "checked"){
+				srv_grpcalllte_flag+="1,";
+			}else{
+				srv_grpcalllte_flag+="0,";
+			}
+			//广播呼叫
+			if($("#broadCall").attr("checked") == "checked"){
+				srv_grpcalllte_flag+="1,";
+			}else{
+				srv_grpcalllte_flag+="0,";
+			}
+			
+			//PGIS业务
+			var srv_location_flag="";
+			
+			if($("#srv_locationCheck").attr("checked") == "checked"){
+				srv_location_flag="1";
+			}else{
+				srv_location_flag="0";
+			}
+			
+			//组呼开关
+			if($("#groupCallBtn").attr("checked") == "checked"){
+				srv_grpcalllte_flag+="1";
+			}else{
+				srv_grpcalllte_flag+="0";
+			}
+			
+			var srv_usr_pri=$("#srv_usr_pri").val();
+			
+			var audioRecordFlag = "";
+			if($("#recordcheck").attr("checked") == "checked" && $("#radiocheck").attr("checked")== "checked"){
+				audioRecordFlag = "3";
+			}else if($("#recordcheck").attr("checked") == undefined && $("#radiocheck").attr("checked")== "checked"){
+				audioRecordFlag = "2";
+			}else if($("#recordcheck").attr("checked") == "checked" && $("#radiocheck").attr("checked")== undefined){
+				audioRecordFlag ="1";
+			}else{
+				audioRecordFlag ="0";
+			}
+
+			var srv_bai_flag = "";
+			if($("#rucheck").attr("checked") == "checked" && $("#chucheck").attr("checked")== "checked"){
+				srv_bai_flag = "3";
+			}else if($("#rucheck").attr("checked") == undefined && $("#chucheck").attr("checked")== "checked"){
+				srv_bai_flag = "2";
+			}else if($("#rucheck").attr("checked") == "checked" && $("#chucheck").attr("checked")== undefined){
+				srv_bai_flag ="1";
+			}else{
+				srv_bai_flag ="0";
+			}
+			//前转业务
+			var fwd_condition=$("#fwd_condition").val();
+			var fwd_servtype=$("#fwd_servtype").val();
+			var shour=$("#shour").val();
+			var ehour=$("#ehour").val();
+			var fwd_number=$("#fwd_number").val();
+			if(fwd_number == usr_number){
+				alert("夜服号码不能和用户号码相同");
+				return;
+			}
+
+			//查询条件
+			var queryfirst = parseInt($("#firstHidden").val());
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/addUserInfo.do",
+				data:"userInfoModel.usr_number="+usr_number+
+					"&userInfoModel.usr_numbertype="+usr_numbertype+
+					"&userInfoModel.usr_neckname="+usr_neckname+
+					"&userInfoModel.usr_password="+usr_password+
+					"&userInfoModel.usr_comment="+usr_comment+
+					"&userInfoModel.usr_state="+usr_state+
+					"&userInfoModel.usr_haveimsi="+usr_haveimsi+
+					"&userInfoModel.imsi="+imsi+
+					"&userInfoModel.tmp_id="+tmp_id+
+					"&userInfoModel.ipaddr_allocate_type="+ipaddr_allocate_type+
+					"&userInfoModel.usr_staticip="+usr_staticip+
+					"&userInfoModel.usr_start_staticip="+usr_start_staticip+
+					"&userInfoModel.usr_end_staticip="+usr_end_staticip+
+					"&userInfoModel.usr_authflag="+usr_authflag+	
+					"&userInfoModel.lte_usestate="+lte_usestate+
+					"&userInfoModel.srv_sigcalllte_flag="+srv_sigcalllte_flag+
+					"&userInfoModel.srv_grpcalllte_flag="+srv_grpcalllte_flag+
+					"&userInfoModel.audioRecordFlag="+audioRecordFlag+
+					"&userInfoModel.srv_bai_flag="+srv_bai_flag+
+					"&userInfoModel.srv_usr_pri="+srv_usr_pri+
+					"&userInfoModel.fwd_condition="+fwd_condition+
+					"&userInfoModel.fwd_servtype="+fwd_servtype+
+					"&userInfoModel.shour="+shour+
+					"&userInfoModel.ehour="+ehour+
+					"&userInfoModel.fwd_number="+fwd_number+
+					"&userInfoModel.srv_location_flag="+srv_location_flag,
+				dataType:"json",
+				success:function(data){
+	
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0: 
+							alert(data.message);
+							break;
+						default:
+							var errorInfo = '';
+							
+							//若开通了基本业务
+							if(data.hasBuz){
+								//基本业务失败
+								if(!data.buzResult){
+									errorInfo+=' 基本业务:'+data.buzMessage;
+								}
+							}
+							
+							if(data.hasForward){
+								//前转业务失败
+								if(!data.forwardResult){
+									errorInfo+=' 前转业务:'+data.forwardMessage;
+								}
+							}
+							
+							if(errorInfo == ''){
+								
+								//添加视频会议用户
+								if(1 == checkVideoServerState()){
+									if(!$("#vscVedioCheck").attr("disabled")){
+										if($("#vscVedioCheck").attr("checked")){
+											var a = addVscUser(usr_number);
+											if(a.length > 0){
+												if(a[0] != 0){
+													alert(a[1]);
+												}
+											}
+										}
+									}
+								}
+
+								if(currentPageNum == 0){
+									currentPageNum = 1;
+									totalPages = 1;
+								}
+								window.location=basePath+"/lte/turntoUserInfo.do?queryuserInfoModel.first="+queryfirst+				
+								"&queryuserInfoModel.queryType="+queryType+
+								"&queryuserInfoModel.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+
+							}else{
+								alert(errorInfo);
+							}
+							break;
+					}
+					
+					/* if(successCount == 1 || successCount == 2 || successCount == 3 ){
+						if(currentPageNum == 0){
+							currentPageNum = 1;
+							totalPages = 1;
+						}
+						window.location=basePath+"/lte/turntoUserInfo.do?queryuserInfoModel.first="+queryfirst+
+							"&queryuserInfoModel.usr_number="+queryusr_number+
+							"&queryuserInfoModel.usr_numbertype="+queryusr_numbertype+
+							"&queryuserInfoModel.usr_neckname="+queryusr_neckname+
+							"&queryuserInfoModel.usr_state="+queryusr_state+
+							"&queryuserInfoModel.imsi="+queryimsi+
+							"&queryuserInfoModel.tmp_id="+querytmp_id+
+							"&queryuserInfoModel.srv_usr_pri="+querysrv_usr_pri+"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+					} */
+					/* if(result == "success"){
+						alert("添加成功");
+						window.location=basePath+"/lte/turntoUserInfo.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+					} */
+				},
+				error:function(data){
+					alert("操作失败");
+				}
+			});
+		});	
+		
+		//对输入数据进行判断
+		//用户号码
+		$("#usr_number").blur(function(){
+			var basePath = $("#basePath").val();
+			var usr_number = $.trim($(this).val());
+			var valTest = /^[0-9]*$/;
+			if(!valTest.test(usr_number)){
+				$(this).css("color","red");
+				$(this).css("font-style","italic");
+				$(this).val("用户号码取值为1~16位数字");
+			}else{
+				$(this).css("color","");
+				$(this).css("font-style","normal");
+				
+			}
+		});
+		$("#usr_number").focus(function(){
+			var usr_number = $.trim($(this).val());
+			var valTest = /^[0-9]*$/;
+			if(!valTest.test(usr_number)){
+				$(this).val("");	
+			}			
+		});
+		
+		//绑定的imsi
+		$("#imsi").blur(function(){
+			var valTest = /^[0-9]*$/;
+			var currentVal = $.trim($(this).val());
+			var basePath = "${base}";
+			if((!valTest.test(currentVal)) || (currentVal.length<4) || (currentVal.length>15)){
+				$(this).val("imsi为4~15位纯数字");
+				$(this).css("color","red");
+				$(this).css("font-style","italic");
+			}else{
+				$(this).css("color","");
+				$(this).css("font-style","normal");
+				
+			}
+		});
+		$("#imsi").focus(function(){
+			var imsi = $.trim($(this).val());
+			var valTest = /^[0-9]*$/;
+			if((!valTest.test(imsi)) || (imsi.length<4) || (imsi.length>15)){
+				$(this).val("");	
+			}
+		});
+		
+		/* //起始时间也结束时间的约束
+		$("#shour").change(function(){
+			var shour = $(this).val();
+			var ehour = $("#ehour").val();
+			if(shour != 24 && ehour < shour){
+				$("#ehour option:eq("+shour+")").attr("selected",true);
+			}
+		});
+		
+		$("#ehour").change(function(){
+			var ehour = $(this).val();
+			var shour = $("#shour").val();
+			if(ehour < shour){
+				$("#shour option:eq("+(ehour-2)+")").attr("selected",true);	
+			}			
+		}); */
+		
+		
+		//切换终端静态ip方式
+		$("#ipaddr_allocate_type").change(function(){
+			var status = parseInt($(this).val());
+			if(status == 0){
+				$(".useStaticIp").hide();
+				$(".useStaticIpPeriod").hide();
+			}else if(status == 1){
+				$(".useStaticIp").show();
+				$(".useStaticIpPeriod").hide();
+			}else{
+				$(".useStaticIp").hide();
+				$(".useStaticIpPeriod").show();
+			}
+		});
+	});
+	function addVscUser(phoneNumber){
+		var a = new Array();
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/addVscUser.do",
+			data:"phoneNumber="+phoneNumber,
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data == null){
+					alert("消息未返回");
+					return ;
+				}
+				var status = data.status;
+				a.push(status);
+				if(status == 1){
+					a.push("开通视频会议失败");
+				}
+				if(status == -1){
+					a.push("开通视频会议失败,原因:"+data.error);
+				}
+			}
+		});
+		return a;
+	}
+	function checkVideoServerState(){
+		var state = 0;
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/querySysPara.do",
+			dataType:"json",
+			async:false,
+			success:function(data){
+				var status = data.status;
+				if(status == 0){
+					if(data.message.videoSwitch == 1){
+						state = 1;
+					}
+				}
+			}
+		});
+		return state;
+	}
+
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>用户信息</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>新增</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input"  style="width:900px;">
+				<div class="title">基本信息</div>
+				<div class="content">
+					<table class="McWillTable">
+						<tr>
+							<td style="width:90px;">用户号码 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" style="width:150px;" id="usr_number" maxlength="16" title="取值为1~16位数字"/></td>
+							<td class="blankTd redColor" style="width:20px;">*</td>
+							<td style="width:90px;">昵称:</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:150px;" maxlength="10" id="usr_neckname"/></td>
+							<td class="redColor">*</td>
+						</tr>
+						<tr>
+							<td>用户号码类型 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select style="width:162px; height:21px;margin:-1px;font-size:13;" id="usr_numbertype"> 
+										<option value="1">终端号码</option>
+										<option value="2">电话会议号码</option>
+										<option value="3">视频监控设备号码</option>
+										<option value="4">调度台</option>
+										<option value="5">PDT号码</option>
+										<option value="6">GTS号码</option>
+										<option value="7">CPE号码</option>
+									</select></div>
+							</td>
+							<td class="blankTd redColor">*</td>
+							<td>密码:</td>
+							<td class="blankTd1"></td>
+							<td><input type="password"  style="width:150px;" maxlength="32" id="usr_password"/></td>
+							<td class="redColor">*</td>
+						</tr>
+						<tr>
+							<td>用户信息:</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:150px;" id="usr_comment" maxlength="128"/></td>
+							<td class="blankTd redColor">*</td>
+							<td>状态:</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+								<select style="width:162px; height:21px;margin:-1px;font-size:13;" id="usr_state"> 
+									<option value="0">停用</option>
+									<option value="1">启用</option>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>
+						
+						<tr>
+							<td>是否绑定IMSI :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+								<select style="width:162px; height:21px;margin:-1px;font-size:13;" id="usr_haveimsi"> 
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+							</td>
+							
+							<td class="blankTd redColor">*</td>
+							<td>参数模板 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+								<select style="width:162px; height:21px;margin:-1px;font-size:13;" id="tmp_id" disabled="disabled"> 
+									<#list userTemplateModelList! as userTemplateMode>
+										<#if userTemplateMode.tmp_default! = '1'>
+											<option value="${userTemplateMode.tmp_id!}" selected="selected">${userTemplateMode.tmp_id!}</option>	
+										<#else>
+											<option value="${userTemplateMode.tmp_id!}">${userTemplateMode.tmp_id!}</option>
+										</#if>
+										
+									</#list>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+						</tr>
+						<tr>
+							<td>绑定的IMSI :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:150px;" id="imsi"  disabled="disabled" maxlength="15" title="取值为4~15位纯数字"/></td>
+							
+							<td class="blankTd"></td>
+							<!-- <td>终端静态IP:</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:150px;" id="usr_staticip"  disabled="disabled"/>
+								<div id="usr_staticipDiv" style="border:1px solid #C6D7E7; width:160px; height:21px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" disabled="disabled" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" disabled="disabled" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" disabled="disabled" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" disabled="disabled" value="0"/>
+								</div>
+							</td> -->
+							<td>用户IP地址分配方式:</td>
+							<td class="blankTd1"></td>
+							<td><select style="width:162px; height:21px;margin:-1px;font-size:13;" id="ipaddr_allocate_type"> 
+									<option value="0">不使用静态IP</option>
+									<option value="1">使用静态IP</option>
+									<option value="2">使用静态IP段</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr class="useStaticIp" style="display:none;">
+							<td>终端静态IP:</td>
+							<td class="blankTd1"></td>
+							<td><div id="usr_staticipDiv" style="border:1px solid #C6D7E7; width:160px; height:21px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>
+								</div>
+							</td>
+							
+							<td class="blankTd"></td>
+							<td></td>
+							<td class="blankTd1"></td>
+							<td></td>
+						</tr>
+						<tr class="useStaticIpPeriod" style="display:none;">
+							<td>起始静态IP:</td>
+							<td class="blankTd1"></td>
+							<td><div id="usr_start_staticipDiv" style="border:1px solid #C6D7E7; width:160px; height:21px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>
+								</div>
+							</td>
+							
+							<td class="blankTd"></td>
+							<td>结束静态IP:</td>
+							<td class="blankTd1"></td>
+							<td><div id="usr_end_staticipDiv" style="border:1px solid #C6D7E7; width:160px; height:21px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:15%;" value="0"/>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+								
+				<div class="title">基本业务</div>
+				<div class="content">
+					<table class="McWillTable">	
+						<tr>
+							<td  style="width:90px;">业务状态：</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="baseBuzRadio" value="1"  checked="checked" id="open_radio"/>&nbsp;<label for="open_radio">开通</label>
+								<input type="radio" name="baseBuzRadio" value="0" id="close_radio"/>&nbsp;<label for="close_radio">关闭</label>
+							</td>
+						</tr>					
+						<tr>
+							<td>单呼业务:</td>
+							<td class="blankTd1"></td>
+							<td id="singleCallBuz"><input type="checkbox" id="voiceCall" checked="checked"/><label for="voiceCall">&nbsp;音频单呼</label>
+								&nbsp;&nbsp;<input type="checkbox" id="videoCall" checked="checked"/><label for="videoCall">&nbsp;视频单呼</label>
+								&nbsp;&nbsp;<input type="checkbox" id="dataBuz" checked="checked"/><label for="dataBuz">&nbsp;数据业务</label>
+								&nbsp;&nbsp;<input type="checkbox" id="missInfoCall" checked="checked"/><label for="missInfoCall">&nbsp;漏呼短信提醒</label>
+								&nbsp;&nbsp;<input type="checkbox" id="nightBuz" checked="checked"/><label for="nightBuz">&nbsp;夜服业务</label>
+								&nbsp;&nbsp;<input type="checkbox" id="linkagePhone" checked="checked"/><label for="linkagePhone">&nbsp;联动话机</label>
+							</td>
+						</tr>
+						<tr>
+							<td>组呼业务:</td>
+							<td class="blankTd1"></td>
+							<td id="groupBuz"><input type="checkbox" id="groupCallBtn" checked="checked"/><label for="groupCallBtn">&nbsp;组呼开关</label>
+								&nbsp;&nbsp;<input type="checkbox" id="broadCall" checked="checked"/><label for="broadCall">&nbsp;广播呼叫</label>
+								&nbsp;&nbsp;<input type="checkbox" id="visualGroupCall" checked="checked"/><label for="visualGroupCall">&nbsp;可视组呼</label>
+								
+							</td>
+						</tr>
+						<tr>
+							<td>录音录像业务:</td>
+							<td class="blankTd1"></td>
+							<td id="audioRecord"><input type="checkbox" id="recordcheck"/><label for="recordcheck">&nbsp;录音业务</label>
+							&nbsp;&nbsp;<input type="checkbox" id="radiocheck" /><label for="radiocheck">&nbsp;录像业务</label>
+							</td>
+						</tr>
+						<tr id="video_tr">
+							<td>视频会议业务:</td>
+							<td class="blankTd1" ></td>
+							<td><input type="checkbox" id="vscVedioCheck" checked="checked"/><label for="vscVedioCheck">&nbsp;视频会议业务</label>
+							</td>
+						</tr>
+						
+						
+						<tr >
+							<td>位置业务:</td>
+							<td class="blankTd1"></td>
+							<td><input type="checkbox" id="srv_locationCheck" /><label for="srv_locationCheck">&nbsp;PGIS业务</label>
+							</td>
+						</tr>
+						<tr>
+							<td>白名单业务:</td>
+							<td class="blankTd1"></td>
+							<td id="churu"><input type="checkbox" id="rucheck"/><label for="rucheck">&nbsp;入局白名单业务</label>
+							&nbsp;&nbsp;<input type="checkbox" id="chucheck" /><label for="chucheck">&nbsp;出局白名单业务</label>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>优先级:</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+								<select  id="srv_usr_pri" style="width:162px;height:21px;margin:-1px;font-size:13;">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+								</select></div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="title forward_buz">前转业务</div>
+				<div class="content forward_buz">
+					<table class="McWillTable" id="forwardBuz">
+						<tr>
+							<td  style="width:90px;">前转条件 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+								<select style="width:162px; height:21px;margin:-1px;font-size:13;" id="fwd_condition"> 
+									<option value="0">无效</option>
+									<option value="1" selected="selected">夜服</option>
+								</select></div>
+							</td>
+							<td class="blankTd" style="width:20px;"></td>
+							<td  style="width:90px;">起始时间点:</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:148px;">
+								<select style="width:150px;margin:-1px;font-size:13;" id="shour" disabled="disabled">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr>
+							<td>夜服类型 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+								<select style="width:162px; height:21px;margin:-1px;font-size:13;" id="fwd_servtype"> 
+									<option value="0">持续</option>
+									<option value="1">分时段</option>
+								</select></div>
+							</td>
+							<td class="blankTd"></td>
+							<td>结束时间点:</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:148px;">
+								<select style="width:150px;margin:-1px;font-size:13;" id="ehour" disabled="disabled">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr>
+							<td>夜服号码 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:150px;" id="fwd_number" maxlength="16"/></td>
+							<td class="blankTd"></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+			<div class="toolBar" style="margin-left:295px;padding:20px;">
+				<ul>
+					<li><label></label><input id="submitBtn" type="button" value="确定" style="padding:3px 25px;"/></li>
+					<li><label></label><input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/></li>	
+				</ul>
+			</div>
+		</form>
+		</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${queryuserInfoModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${queryuserInfoModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${queryuserInfoModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

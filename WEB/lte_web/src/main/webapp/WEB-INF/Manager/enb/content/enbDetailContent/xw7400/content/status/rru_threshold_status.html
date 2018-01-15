@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/status.js"></script>
+<script type="text/javascript">
+function document.onkeydown(){
+	if(event.keyCode == 8){
+		if(document.activeElement.type.toLowerCase() == "textarea" || document.activeElement.type.toLowerCase() == "text"){
+			if(document.activeElement.readOnly == false){
+				return true;
+			}
+		}
+		return false;
+	}
+}
+</script>
+<title>RRU门限查询</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>RRU门限查询</a>
+	</div>
+	
+	<!-- 
+	驻波比门限 单位：0.1
+	主、从板温度门限 取整
+	射频通道温度门限 取整
+		-->
+		
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap" >
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding:10px; width:420px; float:left; margin-left:100px;">
+			
+				<div style="border-bottom:solid 1px #cccccc; height:40px; overflow:hidden;" class="queryForm">
+					<table style="line-height:35px;" width="100%">
+						<tr>
+							<td>选择RRU单板 :</td>
+							<td>
+								<input type="hidden" value="${moId}" id="moId"/>
+								<input type="hidden" value="${enbHexId}" id="enbHexId"/>
+								<input type="hidden" value="${statusFlag}" id="statusFlag"/>
+								<input type="hidden" value="${error}" id="error"/>
+								<select style="margin-left:50px; width:251px;" id="boardFlag" name="boardFlag">
+									<#list boardList! as board>
+										<#if board == boardFlag>
+											<option value="${board}" selected="selected">${board}</option>
+										<#else>
+											<option value="${board}">${board}</option>
+										</#if>
+									</#list>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div style="padding:10px 0px;">
+					<div class="toolBar">
+					
+					</div>
+					<table width="100%" style="line-height:35px;">
+						<tr>
+							<td>驻波比门限 :</td>
+							<td>
+								<#if error != "">
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value="${rruThreshold.vswrThres*0.1}"/>
+								</#if>
+							</td>
+						</tr>
+						<tr>
+							<td>主、从板温度门限(℃) :</td>
+							<td>
+								<#if error != "">
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value="${rruThreshold.boardTempThres}"/>
+								</#if>
+							</td>
+						</tr>
+						<tr>
+							<td>射频通道温度门限(℃):</td>
+							<td>
+								<#if error != "">
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value="${rruThreshold.rfChannelTempThres}"/>
+								</#if>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

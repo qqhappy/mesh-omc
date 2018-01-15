@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/exportStatData.js"></script>
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+
+
+<script type="text/javascript">
+	$(function(){	
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});
+		//全选
+		$("#checkfather1").live("click",function(){
+			$("[name=checkson1]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson1]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson1]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather1").attr("checked",flag);
+		});
+		//时间控件
+		 $(".ui_timepicker").datetimepicker({
+            showSecond: true,
+            timeFormat: 'hh:mm:ss',
+            stepHour: 1,
+            stepMinute: 1,
+            stepSecond: 1
+	      });
+	  	//获取当前时间
+	  	var date = new Date();
+	  	
+		var yy = date.getFullYear();
+		var mm = date.getMonth()+1;
+		var dd = date.getDate();
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		//获取前一天时间
+		var yy1 = "";
+		var mm1 = "";
+		var dd1 = "";
+		if(dd == 1){
+			if(mm == 1){
+				yy1 = yy - 1;
+				mm1 = 12;
+				dd1 = 31;
+			}
+			if(mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11){
+				yy1 = yy;
+				mm1 = mm -1 ;
+				dd1 = 31;
+			}
+			if(mm == 5 || mm == 7 || mm == 10 || mm == 12){
+				yy1 = yy;
+				mm1 = mm -1 ;
+				dd1 = 30;
+			}
+			if(mm == 3){
+				yy1 = yy;
+				mm1 = 2;
+				if((yy % 4 == 0 && yy % 100 != 0) || yy % 400 == 0){	
+					dd1 = 29
+				}else{
+					dd1 = 28;
+				}
+			}
+		}else{
+			yy1 = yy;
+			mm1 = mm;
+			dd1 = dd - 1;
+		}
+		if(mm < 10){
+			mm = "0"+mm;
+		}
+		if(dd < 10){
+			dd = "0"+dd;
+		}
+		if(mm1 < 10){
+			mm1 = "0"+mm1;
+		}
+		if(dd1 < 10){
+			dd1 = "0"+dd1;
+		}
+		if(hour < 10){
+			hour = "0"+hour;
+		}
+		if(minute < 10){
+			minute = "0"+minute;
+		}
+		if(second < 10){
+			second = "0"+second;
+		}
+		//获取时间字符串
+		var nowTime = yy+"-"+mm+"-"+dd+" "+hour+":"+minute+":"+second;
+		var pastTime = yy1+"-"+mm1+"-"+dd1+" "+hour+":"+minute+":"+second;	
+		$("input[name='beginTime']").val(pastTime);
+		$("input[name='endTime']").val(nowTime);
+		
+		
+	});
+</script>
+
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>性能管理 </a>
+			<img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>话务统计</a>
+			<img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>Counter</a>
+			<img src="${base}/Manager/images/tnc/arrow.png" />
+			<#if counterList?size != 0>
+				<#if counterList[0].statObject == "CELL">
+					<a>小区</a>
+				</#if>
+				<#if counterList[0].statObject == "ENB">
+					<a>基站</a>
+				</#if>
+				<img src="${base}/Manager/images/tnc/arrow.png" />
+				<#if counterList[0].reportSystem == "REPORT_SYSTEM_PLATFORM">
+					<a>平台子系统</a>
+				</#if>
+				<#if counterList[0].reportSystem == "REPORT_SYSTEM_L3">
+					<a>L3子系统</a>
+				</#if>
+				<#if counterList[0].reportSystem == "REPORT_SYSTEM_USER">
+					<a>用户面子系统</a>
+				</#if>
+				<#if counterList[0].reportSystem == "REPORT_SYSTEM_RTS">
+					<a>RTS子系统</a>
+				</#if>
+				<img src="${base}/Manager/images/tnc/arrow.png" />
+				<#if counterList[0].measureType == "MEASURE_TYPE_RRC">
+					<a>RRC连接</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_ERAB">
+					<a>ERAB相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_CONTEXT">
+					<a>Context相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_SWITCH">
+					<a>切换相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_USER_COUNT">
+					<a>用户数统计</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_OTHER">
+					<a>其它</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_QCI">
+					<a>QCI相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_PTT">
+					<a>集群相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_MCS">
+					<a>MCS相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_RB">
+					<a>RB相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_RETRANSFER">
+					<a>重传相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_COMMON_DISPATHER">
+					<a>公共调度相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_CCE">
+					<a>CCE相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_TS">
+					<a>TS相关</a>
+				</#if>
+				<#if counterList[0].measureType == "MEASURE_TYPE_HARDWARE">
+					<a>硬件资源</a>
+				</#if>
+			</#if>		
+		</div>
+	<div class="alarmPage" style="padding-bottom:20px;"> 
+		<div id="allAlarmDiv" style="width:1191px;">
+			<div style="border-bottom:solid 1px #cccccc;height:60px;width:1190px;overflow:hidden;">
+			<form action="${base}/lte/exportStatData.do" method="post" id="dataForm">
+				<input type="hidden" id="entityType" name="entityType" value="${entityType}"/>
+				<input type="hidden" id="itemType" name="itemType" value="COUNTER"/>
+				<input type="hidden" id="itemParameters" name="itemParameters" value=""/>
+				<input type="hidden" id="objectParameters" name="objectParameters" value=""/>
+				<input type="hidden" name="browseTime"/>
+				<table style="line-height:40px;">
+					<tr>
+						<td>
+							统计间隔 :
+						</td>
+						<td>
+							<div style="border:1px solid #C6D7E7;overflow:hidden;width:152px;">
+								<select  style="width:152px;border:1px solid #fff;" id="interval" name="interval">
+									<option value="1">15分钟</option>
+									<option value="2" selected="selected">1小时</option>
+									<option value="3">1天</option>
+								</select></div>
+						</td>
+						<td style="width:50px;"></td>
+						<td>
+							开始时间 : <input type="text" name="beginTime" class="ui_timepicker"   readonly="readonly"/>
+						</td>	
+						<td style="width:50px;"></td>
+						<td>
+							结束时间 : <input type="text" name="endTime" class="ui_timepicker"  readonly="readonly"/>
+						</td>	
+						<td style="width:50px;"></td>
+						<td><input type="button" value="数据导出" id="dataExport"></td>		
+					</tr>
+					
+				</table>
+			</form>
+			</div>	
+			<div style="padding-top:40px;padding-bottom:10px;">
+				<table>
+					<tr>
+						<td>统计项目 :</td>
+						<td>
+							<div style="border:solid 1px #ccc;height:350px;width:350px;overflow:auto;">
+								<div>
+								<table>
+									<thead>
+										<tr>
+											<td>
+												<input type="checkbox" id="checkfather">全选</input>
+											</td>
+										</tr>
+									</thead>
+									<tbody id="itemTable">
+									<#if counterList?size != 0>
+										<#list counterList! as counter>
+											<tr>
+												<td style="cursor:default;"><input type="checkbox" name="checkson">(${counter.counterId})${counter.counterName_zh}</input><input type="hidden" value="${counter.counterId}"></td>
+											</tr>
+										</#list>
+									</#if>								
+									</tbody>
+								</table>
+								</div>
+							</div>
+						</td>
+						<td style="width:120px;"></td>
+						<td>统计设备 :</td>
+						<td>
+							<div style="border:solid 1px #ccc;height:350px;width:350px;overflow:auto;">
+								<div>
+								<table>
+									<thead>
+										<tr>
+											<td>
+												<input type="checkbox" id="checkfather1">全选</input>
+											</td>
+										</tr>
+									</thead>
+									<tbody id="entityTable">
+									<#if counterList?size != 0>
+										<#list enbModelList! as enb>
+											<tr>
+												<td style="cursor:default;"><input type="checkbox" name="checkson1">${enb.enbId}(${enb.enb.name})</input><input type="hidden" value="${enb.enb.moId}"></td>
+											</tr>
+										</#list>
+									</#if>
+									</tbody>
+								</table>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

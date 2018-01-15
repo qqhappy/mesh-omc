@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-3-9 16:30:01 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.enb.core.model.EnbAssetHistory" table="enb_asset_history_table">
+		<id name="id" type="long">
+			<column name="id" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="productionSN" type="java.lang.String">
+			<column name="production_sn" not-null="true" />
+		</property>
+		<property name="enbId" type="long">
+			<column name="enbId" not-null="true" />
+		</property>
+		<property name="hardwareVersion" type="java.lang.String">
+			<column name="hardware_version" not-null="true" />
+		</property>
+		<property name="nodeType" type="int">
+			<column name="node_type" not-null="true" />
+		</property>
+		<property name="locationInfo" type="java.lang.String">
+			<column name="location_info" not-null="true" />
+		</property>
+		<property name="providerName" type="java.lang.String">
+			<column name="provider_name" />
+		</property>
+		<property name="manufactureDate" type="long">
+			<column name="manufacture_date" />
+		</property>
+		<property name="startTime" type="long">
+			<column name="start_time" not-null="true" />
+		</property>
+		<property name="stopTime" type="long">
+			<column name="stop_time" />
+		</property>
+		<property name="confirmStopTime" type="long">
+			<column name="confirm_stop_time" not-null="true" />
+		</property>
+		<property name="confirmUser" type="java.lang.String">
+			<column name="confirm_user" not-null="true" />
+		</property>
+		<property name="lastServeTime" type="long">
+			<column name="last_serve_time" />
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="remark" />
+		</property>
+	</class>
+</hibernate-mapping>

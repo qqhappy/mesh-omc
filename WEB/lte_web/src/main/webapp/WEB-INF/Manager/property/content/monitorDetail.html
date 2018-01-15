@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<title>eNB:${enbHexId!} 实时监控</title>
+<link rel="stylesheet" href="${base}/Manager/js/amcharts/style.css" type="text/css">
+<script type="text/javascript" src="${base}/Manager/js/amcharts/amcharts.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/amcharts/serial.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demoMonitor.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript">
+	//全局小区集 
+	var cellList = "";
+	//全局数据集 
+	var chartData = [];
+	//查询小区集定时器 
+	var queryCellsThread = "";
+	//查询数据定时器 
+	var queryDataThread = "";
+
+	var chartMap = {};	 
+	var valueAxisMap = {};
+	var allGraphMap = {};
+	 
+	//设置checkbox 
+	function setCheck() {
+		var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+		var type = { "Y":"", "N":""};
+		zTree.setting.check.chkboxType = type;
+	}
+	//校验对象是否为空
+	 function checkNull(object){
+    	 if(object != null && object != "" && typeof(object) != "undefined"){
+    		 return false;
+    	 }else{
+    		 return true;
+    	 }
+     }
+	//生成表 
+	function generateGraph(cellList){
+		 for(var i = 0;i<cellList.length;i++){ 
+			var chart = chartMap[cellList[i].cellId];
+			if(checkNull(chart)){
+				chart = new AmCharts.AmSerialChart();
+				chartMap[cellList[i].cellId] = chart;				
+			}
+	       	 // SERIAL CHART            
+            chart.pathToImages = "${base}/Manager/js/amcharts/images/";           
+            chart.categoryField = "date";	            
+          
+            // category 
+            var categoryAxis = chart.categoryAxis;
+            categoryAxis.minorGridEnabled = true;
+            categoryAxis.axisColor = "#DADADA";
+            // first value axis (on the left)
+            // AXES 
+            var valueAxis = valueAxisMap[cellList[i].cellId];
+            if(checkNull(valueAxis)){
+            	valueAxis = new AmCharts.ValueAxis();
+            	valueAxisMap[cellList[i].cellId] = valueAxis;
+            }
+             valueAxis.axisColor = "black";
+             valueAxis.axisThickness = 2;
+             valueAxis.gridAlpha = 0;	               
+             chart.addValueAxis(valueAxis);      
+            // CURSOR 
+            var chartCursor = new AmCharts.ChartCursor();
+            chartCursor.cursorAlpha = 0.1;
+            chartCursor.fullWidth = true;
+            chart.addChartCursor(chartCursor);
+            // LEGEND 
+            var legend = new AmCharts.AmLegend();
+            legend.marginLeft = 110;
+            legend.useGraphSettings = true;
+            chart.addLegend(legend);                  
+            // WRITE 
+           chart.write("chartdiv"+cellList[i].cellId); 
+        } 
+	}	
+     //异步查询小区列表 
+     function queryCellList(){
+    	 var para = "";
+    	 $(".celDiv input[type='checkbox']").each(function(){
+    		 para = para + $(this).val()+","+$(this).attr("checked")+";"
+    	 });
+		
+    	 $.ajax({
+    		type:"post",
+    		url:"queryCellList.do",
+    		data:"moId="+${moId!}+
+    			"&cellMap="+para,
+    		dataType:"json",
+    		success:function(data){
+    			cellList = data;
+    			htmlCellDiv(cellList);
+    		}
+    	 });
+     }
+     //根据小区集填充div 
+     function htmlCellDiv(cells){
+    	// 记录选择的导出时间
+    	var timeFlag = $("#timeFlag").val();
+    	if(timeFlag == undefined) {
+    		// 如果是首次，则设置默认导出时间
+    		timeFlag = 15;
+    	}
+    	
+     	document.getElementById("celDiv").innerHTML = '';    	
+    	if(cells.length != 0){
+  			var myInputs = "";
+  			for(var i = 0;i<cells.length;i++){
+  				if(cells[i].checked == "true"){
+  					myInputs += '<input type="checkbox" value="'+cells[i].cellId+'" checked="checked" cellName="'+cells[i].cellName+'">'+cells[i].cellName+'</input>';
+  				}else{
+  					myInputs += '<input type="checkbox" value="'+cells[i].cellId+'" cellName="'+cells[i].cellName+'">'+cells[i].cellName+'</input>';
+  				} 				
+  			}
+  			$(".celDiv").html("选择小区 :"+myInputs);
+  			var select = '<span style="margin-left:20px;">导出时间范围 : </span><select id="timeFlag" style=""><option value="1">近1分钟</option><option value = "5">近5分钟</option><option value = "15" selected="selected">近15分钟</option></select>'
+  			var button = '<input type="button" id="exportRealtimeData" value="导出数据" style="margin-left:5px;" onclick = "exportRealtimeData()">'
+  			$(".celDiv").append(select);
+  			$(".celDiv").append(button);
+  			
+  			$("select[id='timeFlag']").val(timeFlag);
+  			
+  		}else{
+  			$(".celDiv").html("当前基站无小区!");
+  		}
+     }
+     //导出数据
+     function exportRealtimeData(){
+    	//被选中的小区
+        var cellIds = [];
+    	$(".celDiv input[type='checkbox']").each(function(){   
+    		if($(this).attr("checked")){
+    			cellIds.push($(this).attr("value"));
+    		}
+    	});
+    	if(cellIds.length == 0){
+    		alert("请选择小区");
+    		return ;
+    	}
+    	//被选中的统计项 
+    	var itemIds = [];
+ 		$("#leftDiv .chk").each(function(){
+			var classContent = $(this).attr("class");
+			if(classContent.indexOf("true") != -1){
+				var itemId = $(this).parent().children("a").attr("target");
+				itemIds.push(itemId);
+			}
+		});
+ 		if(itemIds.length == 0){
+    		alert("请选择统计项");
+    		return ;
+    	}
+    	var timeFlag = $("#timeFlag").val();
+    	var moId = ${moId!};
+    	
+    	window.location.href = "${base}/lte/exportRealtimeData.do?"+"moId="+moId+"&timeFlag="+timeFlag+"&cellIds="+cellIds+"&itemIds="+itemIds;
+
+     }
+     
+     //添加表格div 
+     function appendChartDiv(itemData){   	 
+    	$("#contentDiv").html("");
+    	for(var i = 0;i<itemData.length;i++){
+    		$("#contentDiv").append( ' <div class="chartdiv" style="float:right; height:15px;padding-top:5px;">'+
+    			 							'<span style="font-size: 12px;color:#0088cc;margin-left:15px;">小区 :'+itemData[i].cellName+'</span>'+ 
+    									' </div> '+
+    			   						' <div class="chartdiv" id="chartdiv'+itemData[i].cellId+'" style="float:right;border-bottom:solid 1px black; height: 300px;"></div>');
+    		
+    	}  
+    	
+    	//设置宽度 
+    	$("#contentDiv").css("width",$(window).width() - 310);
+ 		$(".chartdiv").css("width",$(window).width() - 315);
+  		$(".celDiv").css("width",$(window).width() - 325);	
+ 		window.onresize = function(){
+ 			$("#contentDiv").css("width",$(window).width() - 310);
+ 			$(".chartdiv").css("width",$(window).width() - 315);
+ 	  		$(".celDiv").css("width",$(window).width() - 325);	
+ 		}
+     }
+
+     $(function(){
+    	
+    	//菜单树的setting
+ 		var setting = {
+ 				check: {
+ 					enable: true
+ 				},
+ 				view: {
+ 					dblClickExpand: false,
+ 					showLine: true,
+ 					selectedMulti: false
+ 				},	
+ 				data: {
+ 					simpleData: {
+ 						enable: true
+ 					}
+ 				}
+ 			};
+ 		//菜单树模型 
+ 		var menu = ${menu!};
+ 		//初始化菜单树 
+ 		$.fn.zTree.init($("#treeDemo"), setting, menu);
+ 		//初始化小区集 
+ 		cellList = ${cellList!};
+ 		//填充小区集div  
+ 		htmlCellDiv(cellList);
+ 		//启动查询小区集定时器 
+ 		queryCellsThread = setInterval(queryCellList,5000);
+ 		//设置checkbox 
+ 		setCheck();	
+ 		//添加表格div 		
+ 		appendChartDiv(cellList);
+ 		
+ 		generateGraph(cellList);
+ 		
+ 		function go(){
+ 			 var cellIds = [];
+ 	    	 var itemIds = [];
+ 	    	 //被选中的小区 
+ 	    	 $(".celDiv input[type='checkbox']:checked").each(function(){
+ 	    		 cellIds.push($(this).val());
+ 	    	 });
+ 	    	 //被选中的统计项 
+ 	 		 $("#leftDiv .chk").each(function(){
+ 				 var classContent = $(this).attr("class");
+ 				 if(classContent.indexOf("true") != -1){
+ 					 var itemId = $(this).parent().children("a").attr("target");
+ 					 itemIds.push(itemId);
+ 				 }
+ 			 });
+ 	    	 //小区ID和名称对应关系
+ 	 		 var para = "";
+ 	    	 $(".celDiv input[type='checkbox']").each(function(){
+ 	    		 para = para + $(this).val()+","+$(this).attr("cellName")+";"
+ 	    	 });
+ 	    	 if(itemIds.length > 5){
+ 	    		 alert("目前最多支持5统计项查询,请减少统计项");
+ 	    		 return ;
+ 	    	 }
+ 	    	 $.ajax({
+ 	     		type:"post",
+ 	     		url:"queryStatData.do",
+ 	     		data:"moId="+${moId!}+
+ 	     			"&cellIds="+cellIds+
+ 	     			"&itemIds="+itemIds+
+ 	     			"&cellIDToNames="+para,
+ 	     		dataType:"json",
+ 	     		async:false,
+ 	     		success:function(data){
+ 	     			
+// 	 				var itemData = [{"cellId":1,"cellName":"cell1","items":["12","22"]},{"cellId":2,"cellName":"cell2","items":["12","22"]}];
+// 	 				var jsonData = [{"cellId":1,"data":[{"date":"111\n00:00:00","12":1.0,"22":4.0},{"date":"112\n00:00:01","12":2.0,"22":5.0},{"date":"113\n00:00:02","12":3.0,"22":6.0}]},{"cellId":2,"data":[{"date":"117\n00:00:00","12":7.0,"22":10.0},{"date":"118\n00:00:01","12":8.0,"22":11.0},{"date":"119\n00:00:02","12":9.0,"22":12.0}]}]
+
+ 	      			var itemData = data.itemData;     			
+ 	      			var jsonData = data.jsonData;
+ 	      			
+ 	      			for(var k = 0 ; k<itemData.length;k++){
+ 	      				
+ 	      				var subMap = {};
+ 	 	      		    var addArray = [];
+ 	 	      			
+ 	 	      		    var graphs = allGraphMap[itemData[k].cellId];
+ 	 	      		    if(checkNull(graphs)){
+ 	 	      		    	graphs = {};
+ 	 	      		    	allGraphMap[itemData[k].cellId] = graphs;
+ 	 	      		    }
+ 	 	      		    
+ 	 	      			for(var i in graphs){
+ 	 	      				if($.inArray(i,itemData[k].items) == -1){
+ 	 	      					subMap[i] = graphs[i];
+ 	 	      				}
+ 	 	      			}
+ 	 	      			for(var i = 0;i<itemData[k].items.length;i++){
+ 	 	      				if(!(itemData[k].items[i] in graphs)){	      					
+ 	 	      					addArray.push(itemData[k].items[i]);
+ 	 	      				}
+ 	 	      			}
+ 	 	      			var chart = chartMap[itemData[k].cellId];
+ 	 	      			for(var i in subMap){ 	  
+ 	 	      				delete graphs[i];
+ 	 	      				chart.removeGraph(subMap[i]);
+ 	 	      			}
+ 	 	      			if(addArray.length > 0){
+ 	 	      				for(var i = 0 ;i<addArray.length;i++){
+ 	 	      					var graph = new AmCharts.AmGraph();
+ 			                     graph.valueAxis = valueAxisMap[itemData[k].cellId]; 
+ 			                     graph.bullet = "round";
+ 			                     graph.hideBulletsCount = 30;
+ 			                     graph.lineThickness = 2;
+ 			                     graph.bulletBorderThickness = 1;
+ 		 	                    
+ 			                     graph.title = addArray[i];
+ 			                     graph.valueField = addArray[i];             
+ 			                     chart.addGraph(graph);
+ 			                     graphs[addArray[i]] = graph;
+ 	 	      				}
+ 	 	      			}
+ 	      			}
+ 	      			for(var i = 0;i<jsonData.length;i++){
+ 	      				chartMap[jsonData[i].cellId].dataProvider = jsonData[i].data;
+ 	      				chartMap[jsonData[i].cellId].validateNow();
+ 	      				chartMap[jsonData[i].cellId].validateData();
+ 	      			}
+ 	     		}
+ 	     	 });
+ 		}
+ 		//go();
+ 		queryDataThread = setInterval(go,5000);
+ 		
+ 	});
+  </script>
+</head>
+<body style="overflow:auto;margin:10px;">
+	<div id="wholeDetailDiv" style="border:solid 1px black;overflow:hidden">
+		<div id="leftDiv" style="float:left;height:1006px;width:266px;border:solid 1px black">
+			<ul id="treeDemo" style="height:995px;" class="ztree"></ul>
+		</div>
+		 <div class="celDiv" id="celDiv" style="float:right; height:34px;border-bottom:solid 1px black;padding:5px;">
+		 </div> 
+		<div id="contentDiv" style="float:right;height:960px;">
+			
+		</div>
+	</div>	
+</body>
+</html>

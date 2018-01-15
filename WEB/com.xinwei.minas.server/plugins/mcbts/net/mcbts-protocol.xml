@@ -1,0 +1,3211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocols>
+
+	<!-- ActionType: 0-应答; 1-设置/修改; 2-删除; 3-查询; 65280-通知 -->
+
+	<protocol bizName="mcbts_ut_biz_param" operation="config"
+		desc="配置终端业务参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x000C" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="userClass" type="UnsignedNumber" length="1" desc="用户组别" />
+				<item name="reserve" type="Reserve" length="1" desc="保留字段" />
+				<item name="upMaxBandWidth" type="UnsignedNumber" length="2"
+					desc="上行最大带宽" />
+				<item name="upMinBandWidth" type="UnsignedNumber" length="2"
+					desc="上行最小带宽" />
+				<item name="downMaxBandWidth" type="UnsignedNumber" length="2"
+					desc="下行最大带宽" />
+				<item name="downMinBandWidth" type="UnsignedNumber" length="2"
+					desc="下行最小带宽" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_ut_biz_param" operation="query" desc="查询终端业务参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x000E" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x000F" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="userClass" type="UnsignedNumber" length="1" desc="用户组别" />
+				<item name="reserve" type="Reserve" length="1" desc="保留字段" />
+				<item name="upMaxBandWidth" type="UnsignedNumber" length="2"
+					desc="上行最大带宽" />
+				<item name="upMinBandWidth" type="UnsignedNumber" length="2"
+					desc="上行最小带宽" />
+				<item name="downMaxBandWidth" type="UnsignedNumber" length="2"
+					desc="下行最大带宽" />
+				<item name="downMinBandWidth" type="UnsignedNumber" length="2"
+					desc="下行最小带宽" />
+			</body>
+		</response>
+	</protocol>
+
+
+	<protocol bizName="mcbts_telnet" operation="config" desc="配置Telnet信息">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0704" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="username" type="String" length="40" desc="用户名" />
+				<item name="password" type="String" length="40" desc="密码" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_telnet" operation="query" desc="查询Telnet信息">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x070A" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x070B" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="username" type="TrimString" length="40" desc="用户名" />
+				<item name="password" type="TrimString" length="40" desc="密码" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_l1general" operation="config" desc="L1配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0X0081" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="syncSrc" type="UnsignedNumber" length="2" desc="同步源" />
+				<item name="gpsOffset" type="SignedNumber" length="2" desc="GPS偏差" />
+				<item name="antennaMask" type="UnsignedNumber" length="2" desc="天线掩码" />
+			</body>
+		</request>
+	</protocol>
+	<protocol bizName="mcbts_l1general" operation="query" desc="L1配置查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0X0083" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0X0084" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="syncSrc" type="UnsignedNumber" length="2" desc="同步源" />
+				<item name="gpsOffset" type="SignedNumber" length="2" desc="GPS偏差" />
+				<item name="antennaMask" type="UnsignedNumber" length="2" desc="天线掩码" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_calibrationtype" operation="config"
+		desc="校准类型配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x009A" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="calibPeriod" type="UnsignedNumber" length="2" desc="校准周期" />
+				<item name="calibType" type="UnsignedNumber" length="2" desc="校准类型" />
+			</body>
+		</request>
+	</protocol>
+	<protocol bizName="mcbts_calibrationtype" operation="query"
+		desc="校准类型查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x009E" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x009F" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="calibPeriod" type="UnsignedNumber" length="2" desc="校准周期" />
+				<item name="calibType" type="UnsignedNumber" length="2" desc="校准类型" />
+			</body>
+		</response>
+	</protocol>
+
+
+	<protocol bizName="mcbtsCalibRequest" operation="config" desc="校准请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x009C" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="calibType" type="UnsignedNumber" length="2" desc="校准类型" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_load_balance" operation="config"
+		desc="负载平衡配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0747" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="algorithm_switch" type="UnsignedNumber" length="2"
+					desc="负载平衡算法开关" />
+				<item name="load_high_threshold" type="UnsignedNumber" length="2"
+					desc="基站高负载门限" />
+				<item name="load_msg_send_period" type="UnsignedNumber" length="2"
+					desc="基站间负载平衡消息发送周期" />
+				<item name="load_diff_threshold" type="UnsignedNumber" length="2"
+					desc="基站负载差值门限" />
+				<item name="neighbor_bts_power_over_num" type="UnsignedNumber"
+					length="2" desc="邻基站功率高于切换门限连续累计次" />
+				<item name="load_balance_signal_remains" type="UnsignedNumber"
+					length="2" desc="负载平衡信号强度余量" />
+				<item name="ut_load_balance_period" type="UnsignedNumber"
+					length="2" desc="终端负载平衡周期" />
+				<item name="user_algorithm_param" type="UnsignedNumber" length="2"
+					desc="加权用户算法参数" />
+				<item name="arithmetic_switch" type="UnsignedNumber" length="2"
+					desc="维持带宽负载均衡算法开关" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0748" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_load_balance" operation="query" desc="负载平衡配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0749" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x074a" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="algorithm_switch" type="UnsignedNumber" length="2"
+					desc="负载平衡算法开关" />
+				<item name="load_high_threshold" type="UnsignedNumber" length="2"
+					desc="基站高负载门限" />
+				<item name="load_msg_send_period" type="UnsignedNumber" length="2"
+					desc="基站间负载平衡消息发送周期" />
+				<item name="load_diff_threshold" type="UnsignedNumber" length="2"
+					desc="基站负载差值门限" />
+				<item name="neighbor_bts_power_over_num" type="UnsignedNumber"
+					length="2" desc="邻基站功率高于切换门限连续累计次" />
+				<item name="load_balance_signal_remains" type="UnsignedNumber"
+					length="2" desc="负载平衡信号强度余量" />
+				<item name="ut_load_balance_period" type="UnsignedNumber"
+					length="2" desc="终端负载平衡周期" />
+				<item name="user_algorithm_param" type="UnsignedNumber" length="2"
+					desc="加权用户算法参数" />
+				<item name="arithmetic_switch" type="UnsignedNumber" length="2"
+					desc="维持带宽负载均衡算法开关" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_backupSag" operation="config" desc="备份参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0733" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="sAGID" type="UnsignedNumber" length="4" desc="SAG ID" />
+				<item name="sAGIPforVoice" type="UnsignedNumber" length="4"
+					desc="SAG语音IP地址" />
+				<item name="sAGIPforsignal" type="UnsignedNumber" length="4"
+					desc="SAG信令IP地址" />
+				<item name="sAGRxPortForVoice" type="UnsignedNumber" length="2"
+					desc="语音接收端口号" />
+				<item name="sAGTxPortForVoice" type="UnsignedNumber" length="2"
+					desc="语音发送端口号" />
+				<item name="sAGRxPortForSignal" type="UnsignedNumber" length="2"
+					desc="信令接收端口号" />
+				<item name="sAGTxPortForSignal" type="UnsignedNumber" length="2"
+					desc="信令发送端口号" />
+				<item name="locationAreaID" type="SignedNumber" length="4"
+					desc="本地ID" />
+				<item name="sAGSignalPointCode" type="UnsignedNumber" length="2"
+					desc="SAG信令点编码" />
+				<item name="bTSSignalPointCode" type="UnsignedNumber" length="2"
+					desc="基站信令点编码" />
+				<item name="rsv" type="Reserve" length="8" desc="rsv" />
+				<item name="natAPKey" type="UnsignedNumber" length="1" desc="NatAPKey" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0735" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_jitterbuffer" operation="config"
+		desc="缓存参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0737" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="bSForceUseJitterbuffer" type="UnsignedNumber"
+					length="2" desc="BS是否强制使用缓存" />
+				<item name="zModelUseJitterbuffer" type="UnsignedNumber"
+					length="2" desc="Z模块是否使用缓存" />
+				<item name="jitterbufferSize" type="UnsignedNumber" length="2"
+					desc="缓存大小" />
+				<item name="jitterbufferPackageThreshold" type="UnsignedNumber"
+					length="2" desc="缓存发送数据包门限" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0739" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_sag_tos" operation="config" desc="TOS参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x073b" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="sAGVoiceTOS" type="UnsignedNumber" length="1"
+					desc="SAG语音TOS" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x073c" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_wcpe" operation="config" desc="WCPE配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x073f" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="workMode" type="UnsignedNumber" length="2" desc="WCPE工作模式" />
+				<item name="primaryWCPE" type="HexString" length="4" desc="主WCPE UID" />
+				<item name="standbyWCPE" type="HexString" length="4" desc="备WCPE UID" />
+				<item name="sacMac" type="HexString" length="6" desc="MAC1" />
+				<item name="sacMac2" type="HexString" length="6" desc="MAC3" />
+				<item name="sacMac3" type="HexString" length="6" desc="MAC4" />
+				<item name="sacMac4" type="HexString" length="6" desc="MAC5" />
+				<item name="sacMac5" type="HexString" length="6" desc="MAC6" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0740" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_wcpe" operation="query" desc="WCPE配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0741" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0742" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="workMode" type="UnsignedNumber" length="2" desc="WCPE工作模式" />
+				<item name="primaryWCPE" type="HexString" length="4" desc="主WCPE UID" />
+				<item name="standbyWCPE" type="HexString" length="4" desc="备WCPE UID" />
+				<item name="sacMac" type="HexString" length="6" desc="MAC1" />
+				<item name="sacMac2" type="HexString" length="6" desc="MAC3" />
+				<item name="sacMac3" type="HexString" length="6" desc="MAC4" />
+				<item name="sacMac4" type="HexString" length="6" desc="MAC5" />
+				<item name="sacMac5" type="HexString" length="6" desc="MAC6" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_remote_bts" operation="config" desc="远距离基站配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07bb" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="1" desc="是否支持远距离基站配置" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07bc" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_remote_bts" operation="query" desc="远距离基站查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07bd" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07be" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="1" desc="是否支持远距离基站配置" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_mbms_bts" operation="config" desc="同播基站配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E2" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="2" desc="是否支持同播基站配置" />
+				<item name="rev" type="UnsignedNumber" length="2" desc="保留字段" />
+				<item name="districtId" type="UnsignedNumber" length="4" desc="最小地域ID" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E3" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_mbms_bts" operation="query" desc="同播基站查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E4" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E5" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="2" desc="是否支持同播基站配置" />
+				<item name="rev" type="UnsignedNumber" length="2" desc="保留字段" />
+				<item name="districtId" type="UnsignedNumber" length="4" desc="最小地域ID" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_resmanagement" operation="config"
+		desc="资源管理配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0045" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="bandwidth_requst_interval" type="UnsignedNumber"
+					length="2" desc="带宽请求间隔" />
+				<item name="session_release_threshold" type="UnsignedNumber"
+					length="2" desc="会话释放阀值" />
+				<item name="sustained_min_ul_signal_strength" type="SignedNumber"
+					length="2" desc="最小上行信号强度" />
+				<item name="max_dl_power_per_user" type="UnsignedNumber"
+					length="2" desc="每用户最大下行功率" />
+				<item name="sustained_dl_bandwidth_per_user" type="UnsignedNumber"
+					length="2" desc="每用户最小下行带宽" />
+				<item name="sustained_ul_bandwidth_per_user" type="UnsignedNumber"
+					length="2" desc="每用户最小上行带宽" />
+				<item name="reserved_tch_for_access" type="UnsignedNumber"
+					length="2" desc="预留业务信道" />
+				<item name="reserved_power_for_pc" type="UnsignedNumber"
+					length="2" desc="预留功控功率" />
+				<item name="pc_range" type="UnsignedNumber" length="2" desc="下行功控范围" />
+				<item name="reassignment_step_size" type="UnsignedNumber"
+					length="2" desc="重分配最大步长" />
+				<item name="max_simultaneous_user" type="UnsignedNumber"
+					length="2" desc="最大并发用户数" />
+				<!-- BW distribution of class i -->
+				<item name="bandwidthClass0" type="UnsignedNumber" length="1"
+					desc="类型宽带分布0" />
+				<item name="bandwidthClass1" type="UnsignedNumber" length="1"
+					desc="类型宽带分布1" />
+				<item name="bandwidthClass2" type="UnsignedNumber" length="1"
+					desc="类型宽带分布2" />
+				<item name="bandwidthClass3" type="UnsignedNumber" length="1"
+					desc="类型宽带分布3" />
+				<item name="bandwidthClass4" type="UnsignedNumber" length="1"
+					desc="类型宽带分布4" />
+				<item name="bandwidthClass5" type="UnsignedNumber" length="1"
+					desc="类型宽带分布5" />
+				<item name="bandwidthClass6" type="UnsignedNumber" length="1"
+					desc="类型宽带分布6" />
+				<item name="bandwidthClass7" type="UnsignedNumber" length="1"
+					desc="类型宽带分布7" />
+				<item name="ul_modulation_mask" type="UnsignedNumber" length="1"
+					desc="上行调制掩码" />
+				<item name="dl_modulation_mask" type="UnsignedNumber" length="1"
+					desc="下行调制掩码" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0046" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_resmanagement" operation="query"
+		desc="资源管理查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0047" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0048" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="bandwidth_requst_interval" type="UnsignedNumber"
+					length="2" desc="带宽请求间隔" />
+				<item name="session_release_threshold" type="UnsignedNumber"
+					length="2" desc="会话释放阀值" />
+				<item name="sustained_min_ul_signal_strength" type="SignedNumber"
+					length="2" desc="最小上行信号强度" />
+				<item name="max_dl_power_per_user" type="UnsignedNumber"
+					length="2" desc="每用户最大下行功率" />
+				<item name="sustained_dl_bandwidth_per_user" type="UnsignedNumber"
+					length="2" desc="每用户最小下行带宽" />
+				<item name="sustained_ul_bandwidth_per_user" type="UnsignedNumber"
+					length="2" desc="每用户最小上行带宽" />
+				<item name="reserved_tch_for_access" type="UnsignedNumber"
+					length="2" desc="预留业务信道" />
+				<item name="reserved_power_for_pc" type="UnsignedNumber"
+					length="2" desc="预留功控功率" />
+				<item name="pc_range" type="UnsignedNumber" length="2" desc="下行功控范围" />
+				<item name="reassignment_step_size" type="UnsignedNumber"
+					length="2" desc="重分配最大步长" />
+				<item name="max_simultaneous_user" type="UnsignedNumber"
+					length="2" desc="最大并发用户数" />
+				<!-- BW distribution of class i -->
+				<item name="bandwidthClass0" type="UnsignedNumber" length="1"
+					desc="类型宽带分布0" />
+				<item name="bandwidthClass1" type="UnsignedNumber" length="1"
+					desc="类型宽带分布1" />
+				<item name="bandwidthClass2" type="UnsignedNumber" length="1"
+					desc="类型宽带分布2" />
+				<item name="bandwidthClass3" type="UnsignedNumber" length="1"
+					desc="类型宽带分布3" />
+				<item name="bandwidthClass4" type="UnsignedNumber" length="1"
+					desc="类型宽带分布4" />
+				<item name="bandwidthClass5" type="UnsignedNumber" length="1"
+					desc="类型宽带分布5" />
+				<item name="bandwidthClass6" type="UnsignedNumber" length="1"
+					desc="类型宽带分布6" />
+				<item name="bandwidthClass7" type="UnsignedNumber" length="1"
+					desc="类型宽带分布7" />
+				<item name="ul_modulation_mask" type="UnsignedNumber" length="1"
+					desc="上行调制掩码" />
+				<item name="dl_modulation_mask" type="UnsignedNumber" length="1"
+					desc="下行调制掩码" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_alg_param" operation="config" desc="切换算法参数配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x005d" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="m_ho_pwr_thd" type="UnsignedNumber" length="1"
+					desc="触发异频扫描的当前基站功率门限" />
+				<item name="m_ho_pwr_offset1" type="UnsignedNumber" length="1"
+					desc="切换功率差值门限1" />
+				<item name="m_ho_pwr_offset2" type="UnsignedNumber" length="1"
+					desc="切换功率差值门限2" />
+				<item name="m_ho_pwr_filtercoef_stat" type="UnsignedNumber"
+					length="1" desc="基站功率平滑因子1" />
+				<item name="m_ho_pwr_filtercoef_mobile" type="UnsignedNumber"
+					length="1" desc="基站功率平滑因子2" />
+				<item name="time_to_trigger" type="UnsignedNumber" length="1"
+					desc="触发切换的次数门限值" />
+				<item name="m_cpe_cm_ho_period" type="UnsignedNumber" length="2"
+					desc="切换测量周期" />
+				<item name="strictArea_pwr_thd" type="UnsignedNumber" length="1"
+					desc="限制区信号门限" />
+				<item name="strictArea_time_to_trigger" type="UnsignedNumber"
+					length="1" desc="限制区内触发切换的次数门限" />
+				<item name="strictArea_ho_pwr_offset" type="UnsignedNumber"
+					length="1" desc="限制区内触发切换的功率差值门限" />
+				<item name="strictArea_2_normal_pwr_thres" type="UnsignedNumber"
+					length="1" desc="限制区正常信号门限" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x005e" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_alg_param" operation="query" desc="切换算法参数查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x005f" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0060" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="m_ho_pwr_thd" type="UnsignedNumber" length="1"
+					desc="触发异频扫描的当前基站功率门限" />
+				<item name="m_ho_pwr_offset1" type="UnsignedNumber" length="1"
+					desc="切换功率差值门限1" />
+				<item name="m_ho_pwr_offset2" type="UnsignedNumber" length="1"
+					desc="切换功率差值门限2" />
+				<item name="m_ho_pwr_filtercoef_stat" type="UnsignedNumber"
+					length="1" desc="基站功率平滑因子1" />
+				<item name="m_ho_pwr_filtercoef_mobile" type="UnsignedNumber"
+					length="1" desc="基站功率平滑因子2" />
+				<item name="time_to_trigger" type="UnsignedNumber" length="1"
+					desc="触发切换的次数门限值" />
+				<item name="m_cpe_cm_ho_period" type="UnsignedNumber" length="2"
+					desc="切换测量周期" />
+				<!-- <item name="strictArea_pwr_thd" type="UnsignedNumber" length="1" 
+					desc="限制区信号门限" /> <item name="strictArea_time_to_trigger" type="UnsignedNumber" 
+					length="1" desc="限制区内触发切换的次数门限" /> <item name="strictArea_ho_pwr_offset" 
+					type="UnsignedNumber" length="1" desc="限制区内触发切换的功率差值门限" /> <item name="strictArea_2_normal_pwr_thres" 
+					type="UnsignedNumber" length="1" desc="限制区正常信号门限" /> -->
+			</body>
+		</response>
+	</protocol>
+
+
+	<protocol bizName="t_conf_fault_switch" operation="config"
+		desc="故障弱化开关配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0038" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="2" desc="故障弱化开关" />
+			</body>
+		</request>
+	</protocol>
+	<protocol bizName="t_conf_fault_switch" operation="query"
+		desc="故障弱化开关查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x003a" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x003b" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="4" desc="故障弱化开关" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_gpsData" operation="config" desc="配置GPS管理消息">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0021" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="latitude" type="UnsignedNumber" length="4" desc="纬度" />
+				<item name="longitude" type="UnsignedNumber" length="4" desc="经度" />
+				<item name="height" type="UnsignedNumber" length="4" desc="高度" />
+				<item name="gmtOffset" type="UnsignedNumber" length="4" desc="GMT偏移" />
+				<item name="minimumTrackingsatellite" type="UnsignedNumber"
+					length="1" desc="最小跟踪的卫星个数" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_gpsData" operation="query" desc="查询GPS管理消息">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0023" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0024" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="latitude" type="UnsignedNumber" length="4" desc="纬度" />
+				<item name="longitude" type="UnsignedNumber" length="4" desc="经度" />
+				<item name="height" type="UnsignedNumber" length="4" desc="高度" />
+				<item name="gmtOffset" type="UnsignedNumber" length="4" desc="GMT偏移" />
+				<item name="minimumTrackingsatellite" type="UnsignedNumber"
+					length="1" desc="最小跟踪的卫星个数" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_perfLog" operation="config" desc="配置性能日志">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0014" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="ftpServerIp" type="Ipv4" length="4" desc="服务器IP地址" />
+				<item name="ftpServerPort" type="UnsignedNumber" length="2"
+					desc="服务器端口号" />
+				<item name="userName" type="VarString" length="1" desc="用户名" />
+				<item name="password" type="VarString" length="1" desc="code码" />
+				<item name="reportInterval" type="UnsignedNumber" length="2"
+					desc="上报间隔（单位：秒）" />
+				<item name="collectInterval" type="UnsignedNumber" length="2"
+					desc="收集间隔（单位：秒）" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_perfLog" operation="query" desc="查询性能日志">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0016" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0017" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="ftpServerIp" type="Ipv4" length="4" desc="服务器IP地址" />
+				<item name="ftpServerPort" type="UnsignedNumber" length="2"
+					desc="服务器端口号" />
+				<item name="userName" type="VarString" length="1" desc="用户名" />
+				<item name="password" type="VarString" length="1" desc="code码" />
+				<item name="reportInterval" type="UnsignedNumber" length="2"
+					desc="上报间隔（单位：秒）" />
+				<item name="collectInterval" type="UnsignedNumber" length="2"
+					desc="收集间隔（单位：秒）" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_realtimeperf" operation="query" desc="基站实时性能监控">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="2" />
+				<item name="MOC" value="0x0214" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="perfIndex" type="UnsignedNumber" length="2"
+					desc="Global Info" />
+				<item name="ifPeriod" type="UnsignedNumber" length="2" desc="主动上报周期" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="2" />
+				<item name="MOC" value="0x0215" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_btsRestart" operation="config" desc="配置基站重启">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0025" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="BootUpDataSource" type="UnsignedNumber" length="2"
+					desc="启动源" />
+				<!-- <item name="BootType" type="UnsignedNumber" length="2" desc="类型" 
+					/> -->
+			</body>
+		</request>
+	</protocol>
+	<!-- <protocol bizName="mcbts_gpsData" operation="query" desc="查询基站重启"> 
+		<request> <header> <item name="MsgArea" value="1"/> <item name="MA" value="0"/> 
+		<item name="MOC" value="0x0023"/> <item name="ActionType" value="3"/> </header> 
+		<body> </body> </request> <response> <header> <item name="MsgArea" value="1"/> 
+		<item name="MA" value="0"/> <item name="MOC" value="0x0024"/> <item name="ActionType" 
+		value="3"/> </header> <body> <item name="BootUpDataSource" type="UnsignedNumber" 
+		length="4" desc="启动源"/> <item name="BootType" type="UnsignedNumber" length="4" 
+		desc="类型"/> </body> </response> </protocol> -->
+	<protocol bizName="mcbts_tempWatch" operation="config" desc="配置监控温度">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0018" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="AlarmHighTemperature" type="UnsignedNumber" length="2"
+					desc="高温告警门限" />
+				<item name="AlarmLowTemperature" type="SignedNumber" length="2"
+					desc="低温告警门限" />
+				<item name="ShutdownHighTemperature" type="UnsignedNumber"
+					length="2" desc="高温关机门限" />
+				<item name="ShutdownLowTemperature" type="SignedNumber" length="2"
+					desc="低温关机门限" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_tempWatch" operation="query" desc="查询监控温度">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x001A" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x001B" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="AlarmHighTemperature" type="UnsignedNumber" length="2"
+					desc="高温告警门限" />
+				<item name="AlarmLowTemperature" type="SignedNumber" length="2"
+					desc="低温告警门限" />
+				<item name="ShutdownHighTemperature" type="UnsignedNumber"
+					length="2" desc="高温关机门限" />
+				<item name="ShutdownLowTemperature" type="SignedNumber" length="2"
+					desc="低温关机门限" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_n1config" operation="config" desc="配置N=1参数配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0055" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="NAlgorithmSwitch" type="UnsignedNumber" length="2"
+					desc="同频组网算法开关" />
+				<item name="CiJumpdetection" type="UnsignedNumber" length="2"
+					desc="干扰阶越检测门限" />
+				<item name="UTPowerLockTimerTh" type="UnsignedNumber" length="2"
+					desc="干扰报告锁定时间" />
+				<item name="BTSPowerLockTimerTh" type="UnsignedNumber" length="2"
+					desc="资源重配锁定时间" />
+				<item name="PairListSize" type="UnsignedNumber" length="2"
+					desc="用户最大干扰列表长度" />
+				<item name="ProportionThreshold" type="UnsignedNumber" length="2"
+					desc="干扰子信道数匹配比例门限" />
+				<item name="RAMAXNUM" type="UnsignedNumber" length="2"
+					desc="预留同频用户接入信道数" />
+				<item name="ProfileMsgTimerTh" type="UnsignedNumber" length="2"
+					desc="干扰用户信息有效更新周期" />
+				<item name="RleaseHoldTimerTh" type="UnsignedNumber" length="2"
+					desc="会话释放后干扰列表的存活时间" />
+				<item name="HCAPWindow" type="UnsignedNumber" length="2"
+					desc="干扰匹配的时间窗长度" />
+			</body>
+		</request>
+	</protocol>
+	<!-- 未添加描述名称 -->
+	<protocol bizName="mcbts_n1config" operation="query" desc="查询N=1参数配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0X0057" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0X0058" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="NAlgorithmSwitch" type="UnsignedNumber" length="2"
+					desc="同频组网算法开关" />
+				<item name="CiJumpdetection" type="UnsignedNumber" length="2"
+					desc="干扰阶越检测门限" />
+				<item name="UTPowerLockTimerTh" type="UnsignedNumber" length="2"
+					desc="干扰报告锁定时间" />
+				<item name="BTSPowerLockTimerTh" type="UnsignedNumber" length="2"
+					desc="资源重配锁定时间" />
+				<item name="PairListSize" type="UnsignedNumber" length="2"
+					desc="用户最大干扰列表长度" />
+				<item name="ProportionThreshold" type="UnsignedNumber" length="2"
+					desc="干扰子信道数匹配比例门限" />
+				<item name="RAMAXNUM" type="UnsignedNumber" length="2"
+					desc="预留同频用户接入信道数" />
+				<item name="ProfileMsgTimerTh" type="UnsignedNumber" length="2"
+					desc="干扰用户信息有效更新周期" />
+				<item name="RleaseHoldTimerTh" type="UnsignedNumber" length="2"
+					desc="会话释放后干扰列表的存活时间" />
+				<item name="HCAPWindow" type="UnsignedNumber" length="2"
+					desc="干扰匹配的时间窗长度" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_rangingConfig" operation="config"
+		desc="配置远距离Ranging配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0065" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="RangingSwitch" type="UnsignedNumber" length="1"
+					desc="远距离同频开关" />
+				<item name="EnableShreashold" type="UnsignedNumber" length="1"
+					desc="使能门限" />
+				<item name="DisableShreahold" type="UnsignedNumber" length="1"
+					desc="关闭门限" />
+				<item name="percent" type="UnsignedNumber" length="1" desc="百分比参数" />
+				<item name="SNRShreahold" type="UnsignedNumber" length="1"
+					desc="SNR门限" />
+				<item name="RangingExcurShreahold" type="UnsignedNumber"
+					length="1" desc="ranging 偏移门限" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_rangingConfig" operation="query"
+		desc="查询远距离Ranging配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0067" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0068" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="RangingSwitch" type="UnsignedNumber" length="1"
+					desc="远距离同频开关" />
+				<item name="EnableShreashold" type="UnsignedNumber" length="1"
+					desc="使能门限" />
+				<item name="DisableShreahold" type="UnsignedNumber" length="1"
+					desc="关闭门限" />
+				<item name="percent" type="UnsignedNumber" length="1" desc="百分比参数" />
+				<item name="SNRShreahold" type="UnsignedNumber" length="1"
+					desc="SNR门限" />
+				<item name="RangingExcurShreahold" type="UnsignedNumber"
+					length="1" desc="ranging 偏移门限" />
+			</body>
+		</response>
+	</protocol>
+	<!-- <protocol bizName="mcbts_rangingConfig" operation="config" desc="配置光模块告警门限配置"> 
+		<request> <header> <item name="MsgArea" value="1" /> <item name="MA" value="0" 
+		/> <item name="MOC" value="0x07D4" /> <item name="ActionType" value="1" /> 
+		</header> <body> <item name="LiPresAlarmShreahold" type="UnsignedNumber" 
+		length="4" desc="光模块电压告警门限" /> <item name="LiCurrAlarmShreahold" type="UnsignedNumber" 
+		length="4" desc="光模块电流告警门限" /> <item name="LiEmiPowerAlarmShreahold" type="UnsignedNumber" 
+		length="4" desc="光模块发射功率告警门限" /> <item name="LiInceptPowerAlarmShreahold" 
+		type="UnsignedNumber" length="4" desc="光模块接收功率告警门限" /> </body> </request> 
+		</protocol> <protocol bizName="mcbts_rangingConfig" operation="query" desc="查询光模块告警门限配置"> 
+		<request> <header> <item name="MsgArea" value="1" /> <item name="MA" value="0" 
+		/> <item name="MOC" value="0x07D6" /> <item name="ActionType" value="3" /> 
+		</header> <body> </body> </request> <response> <header> <item name="MsgArea" 
+		value="1" /> <item name="MA" value="0" /> <item name="MOC" value="0x07D7" 
+		/> <item name="EIDAsPPPoE" type="UnsignedNumber" length="4" desc="CB3EIDAsPPPoE000端口" 
+		/> <item name="ActionType" value="3" /> </header> <body> <item name="LiPresAlarmShreahold" 
+		type="UnsignedNumber" length="4" desc="光模块电压告警门限" /> <item name="LiCurrAlarmShreahold" 
+		type="UnsignedNumber" length="4" desc="光模块电流告警门限" /> <item name="LiEmiPowerAlarmShreahold" 
+		type="UnsignedNumber" length="4" desc="光模块发射功率告警门限" /> <item name="LiInceptPowerAlarmShreahold" 
+		type="UnsignedNumber" length="4" desc="光模块接收功率告警门限" /> </body> </response> 
+		</protocol> -->
+	<protocol bizName="mcbts_trunkConfig" operation="config" desc="配置集群配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0034" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="Flag" type="UnsignedNumber" length="2" desc="标志" />
+				<item name="SleepPeriod" type="UnsignedNumber" length="2" desc="睡眠间隔" />
+				<item name="RsvChResourseNum" type="UnsignedNumber" length="2"
+					desc="预留组呼资源" />
+				<item name="VideoChResourseNum" type="UnsignedNumber" length="2"
+					desc="视频克隆预留组资源数" />
+				<item name="rsv2" type="Reserve" length="2" desc="保留字段" />
+				<item name="rsv3" type="Reserve" length="2" desc="保留字段" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_trunkConfig" operation="query" desc="查询集群配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0036" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0037" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="Flag" type="UnsignedNumber" length="2" desc="标志" />
+				<item name="SleepPeriod" type="UnsignedNumber" length="2" desc="睡眠间隔" />
+				<item name="RsvChResourseNum" type="UnsignedNumber" length="2"
+					desc="预留组呼资源" />
+				<item name="VideoChResourseNum" type="UnsignedNumber" length="2"
+					desc="视频克隆预留组资源数" />
+				<item name="rsv2" type="Reserve" length="2" desc="保留字段" />
+				<item name="rsv3" type="Reserve" length="2" desc="保留字段" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_chargeParamConfig" operation="config"
+		desc="配置计费策略">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x003c" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="ChargeSwitch" type="UnsignedNumber" length="1"
+					desc="计费开关" />
+				<item name="CDRPeriod" type="UnsignedNumber" length="1" desc="话单上传间隔" />
+				<item name="ChargeIP" type="Ipv4" length="4" desc="自服务中心IP" />
+				<item name="CDRDataPeriod" type="UnsignedNumber" length="2"
+					desc="数据业务话单时长" />
+				<item name="CB3000IP" type="Ipv4" length="4" desc="CB3000IP" />
+				<item name="Port" type="UnsignedNumber" length="2" desc="CB3000端口" />
+				<item name="RealTimeChargeSwitch" type="UnsignedNumber" length="1"
+					desc="基站实时计费开关" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_chargeParamConfig" operation="query"
+		desc="查询计费策略">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x003e" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x003f" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="ChargeSwitch" type="UnsignedNumber" length="1"
+					desc="计费开关" />
+				<item name="CDRPeriod" type="UnsignedNumber" length="1" desc="话单上传间隔" />
+				<item name="ChargeIP" type="Ipv4" length="4" desc="自服务中心IP" />
+				<item name="CDRDataPeriod" type="UnsignedNumber" length="2"
+					desc="数据业务话单时长" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcBtsVersionDownload" operation="config"
+		desc="基站软件下载配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0401" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="ftpIp" type="Ipv4" length="4" desc="FTP服务器IP地址" />
+				<item name="ftpPort" type="UnsignedNumber" length="2" desc="FTP服务器端口号" />
+				<item name="ftpUserName" type="VarString" length="1" desc="FTP用户名" />
+				<item name="ftpPassword" type="VarString" length="1" desc="FTP密码" />
+				<item name="filePath" type="VarString" length="1" desc="文件路径" />
+				<item name="softwareType" type="UnsignedNumber" length="1"
+					desc="软件类型" />
+				<item name="version" type="String" length="16" desc="如: 1.12.1.1" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcBtsVersionUpgradeBBU" operation="config"
+		desc="基站软件升级配置(切换基站软件BBU,批量升级也会用到)">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0407" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="swType" type="UnsignedNumber" length="1"
+					desc="只有批量升级的时候会用到,指定升级BBU(0)或是RRU(1)或是都升级(2)" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcBtsVersionUpgradeRRU" operation="config"
+		desc="基站软件升级配置(切换基站软件RRU)">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0433" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="ho_type" type="UnsignedNumber" length="2" desc="BBU升级类型" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="terminalVersionDownload" operation="config"
+		desc="终端软件下载配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x042A" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="ftpIp" type="Ipv4" length="4" desc="FTP服务器IP地址" />
+				<item name="ftpPort" type="UnsignedNumber" length="2" desc="FTP服务器端口号" />
+				<item name="ftpUserName" type="VarString" length="1" desc="FTP用户名" />
+				<item name="ftpPassword" type="VarString" length="1" desc="FTP密码" />
+				<item name="filePath" type="VarString" length="1" desc="文件路径" />
+				<item name="fileName" type="VarString" length="1" desc="文件名" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="bootloaderUpgrade" operation="config" desc="Bootloader升级">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x042D" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="eid" type="HexString" length="4" desc="终端EID" />
+				<item name="fileName" type="VarString" length="1" desc="文件名" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="utForceUpdate" operation="config" desc="终端版本升级">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x042B" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="eid" type="HexString" length="4" desc="终端EID" />
+				<item name="fileName" type="VarString" length="1" desc="文件名" />
+				<item name="modelType" type="UnsignedNumber" length="1" desc="MODEL类型" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="utMzForceUpdate" operation="config" desc="终端版本升级(Z模块)">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x042B" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="eid" type="UnsignedNumber" length="4" desc="EID,MZ的PID" />
+				<item name="fileName" type="VarString" length="1" desc="文件名" />
+				<item name="modelType" type="UnsignedNumber" length="1" desc="MODEL类型" />
+				<item name="pid" type="UnsignedNumber" length="4" desc="MZ的PID" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="utRestartRequest" operation="config" desc="重启终端请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0307" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="Eid" type="HexString" length="4" desc="终端ID" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="utQueryRequest" operation="query" desc="查询终端请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0304" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="Eid" type="HexString" length="4" desc="终端ID" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0305" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="Eid" type="HexString" length="4" desc="终端ID" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="utConnectIpRequest" operation="query"
+		desc="终端连接IP信息查询请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0317" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="Eid" type="HexString" length="4" desc="终端ID" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_dataoperation" operation="config"
+		desc="配置数据业务">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0004" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="RoutingareaID" type="UnsignedNumber" length="4"
+					desc="路由ID" />
+				<item name="Mobility" type="UnsignedNumber" length="1" desc="移动性" />
+				<item name="AccessControl" type="UnsignedNumber" length="1"
+					desc="接入控制" />
+				<item name="Learnedbridgetimer" type="UnsignedNumber" length="2"
+					desc="学习桥时长" />
+				<item name="PeertoPeBridging" type="UnsignedNumber" length="1"
+					desc="桥接功能" />
+				<item name="EgressARPProxy" type="UnsignedNumber" length="1"
+					desc="下行ARP代理" />
+				<item name="EgressBroadFiltering" type="UnsignedNumber" length="1"
+					desc="下行广播过滤" />
+				<item name="PPPKeepTimerLength" type="UnsignedNumber" length="2"
+					desc="PPP保持会话时长" />
+				<item name="BTSIDAsDHCP" type="UnsignedNumber" length="1"
+					desc="BTSIDAsDHCP" />
+				<item name="EIDAsDHCP" type="UnsignedNumber" length="1" desc="EIDAsDHCP" />
+				<item name="EIDAsPPPoE" type="UnsignedNumber" length="1"
+					desc="EIDAsPPPoE" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_ethernet2opration" operation="config"
+		desc="网口2配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07f4" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="RoutingareaID2" type="UnsignedNumber" length="4"
+					desc="路由ID" />
+			</body>
+		</request>
+	</protocol>
+
+
+	<protocol bizName="mcbts_ipv6operation" operation="config"
+		desc="IPv6配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07f8" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="learnedBridgeTimer" type="UnsignedNumber" length="2"
+					desc="学习桥时长"></item>
+				<item name="ingressNDProxy" type="UnsignedNumber" length="1"
+					desc="上行ND代理"></item>
+				<item name="egressNDProxy" type="UnsignedNumber" length="1"
+					desc="下行ND代理"></item>
+				<item name="egressBroadCastFilter" type="UnsignedNumber"
+					length="1" desc="下行广播过滤"></item>
+				<item name="ipv6Switch" type="UnsignedNumber" length="1" desc="IPV6控制开关"></item>
+				<!-- <item name="rsv" type="UnsignedNumber" length="4" desc="预留字段"></item> -->
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_dataoperation" operation="query"
+		desc="查询数据业务">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0006" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0009" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="RoutingareaID" type="UnsignedNumber" length="4"
+					desc="路由ID" />
+				<item name="Mobility" type="UnsignedNumber" length="1" desc="移动性" />
+				<item name="AccessControl" type="UnsignedNumber" length="1"
+					desc="接入控制" />
+				<item name="Learnedbridgetimer" type="UnsignedNumber" length="2"
+					desc="学习桥时长" />
+				<item name="PeertoPeBridging" type="UnsignedNumber" length="1"
+					desc="桥接功能" />
+				<item name="EgressARPProxy" type="UnsignedNumber" length="1"
+					desc="下行ARP代理" />
+				<item name="EgressBroadFiltering" type="UnsignedNumber" length="1"
+					desc="下行广播过滤" />
+				<item name="PPPKeepTimerLength" type="UnsignedNumber" length="2"
+					desc="PPP保持会话时长" />
+				<item name="BTSIDAsDHCP" type="UnsignedNumber" length="1"
+					desc="BTSIDAsDHCP" />
+				<item name="EIDAsDHCP" type="UnsignedNumber" length="1" desc="EIDAsDHCP" />
+				<item name="EIDAsPPPoE" type="UnsignedNumber" length="1"
+					desc="EIDAsPPPoE" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_ethernet2opration" operation="query"
+		desc="网口2查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07f6" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07f7" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="RoutingareaID" type="UnsignedNumber" length="4"
+					desc="路由ID" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_ipv6operation" operation="query"
+		desc="ipv6查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07fa" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07fb" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="learnedBridgeTimer" type="UnsignedNumber" length="2"
+					desc="学习桥时长"></item>
+				<item name="ingressNDProxy" type="UnsignedNumber" length="1"
+					desc="上行ND代理"></item>
+				<item name="egressNDProxy" type="UnsignedNumber" length="1"
+					desc="下行ND代理"></item>
+				<item name="egressBroadCastFilter" type="UnsignedNumber"
+					length="1" desc="下行广播过滤"></item>
+				<item name="ipv6Switch" type="UnsignedNumber" length="1" desc="IPV6控制开关"></item>
+				<!-- <item name="rsv" type="UnsignedNumber" length="4" desc="预留字段"></item> -->
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_energySaving" operation="config"
+		desc="配置基站省电参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0743" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="EnergySavingSwitch" type="UnsignedNumber" length="2"
+					desc="基站省电开关" />
+				<item name="keep1Channel" type="UnsignedNumber" length="2"
+					desc="保留1时隙的信道门限" />
+				<item name="keep1Users" type="UnsignedNumber" length="2"
+					desc="保留1时隙的用户数门限" />
+				<item name="keep2Channel" type="UnsignedNumber" length="2"
+					desc="保留2时隙的信道门限" />
+				<item name="keep2Users" type="UnsignedNumber" length="2"
+					desc="保留2时隙的用户数门限" />
+				<item name="open1FanTemp" type="UnsignedNumber" length="2"
+					desc="打开1风扇的温度门限" />
+				<item name="open2FanTemp" type="UnsignedNumber" length="2"
+					desc="打开2风扇的温度门限" />
+				<item name="open3FanTemp" type="UnsignedNumber" length="2"
+					desc="打开3风扇的温度门限" />
+				<item name="open4FanTemp" type="UnsignedNumber" length="2"
+					desc="打开4风扇的温度门限" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_energySaving" operation="query" desc="查询基站省电参数">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0745" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0746" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="EnergySavingSwitch" type="UnsignedNumber" length="2"
+					desc="基站省电开关" />
+				<item name="keep1Channel" type="UnsignedNumber" length="2"
+					desc="保留1时隙的信道门限" />
+				<item name="keep1Users" type="UnsignedNumber" length="2"
+					desc="保留1时隙的用户数门限" />
+				<item name="keep2Channel" type="UnsignedNumber" length="2"
+					desc="保留2时隙的信道门限" />
+				<item name="keep2Users" type="UnsignedNumber" length="2"
+					desc="保留2时隙的用户数门限" />
+				<item name="open1FanTemp" type="UnsignedNumber" length="2"
+					desc="打开1风扇的温度门限" />
+				<item name="open2FanTemp" type="UnsignedNumber" length="2"
+					desc="打开2风扇的温度门限" />
+				<item name="open3FanTemp" type="UnsignedNumber" length="2"
+					desc="打开3风扇的温度门限" />
+				<item name="open4FanTemp" type="UnsignedNumber" length="2"
+					desc="打开4风扇的温度门限" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_DBSServer" operation="config" desc="配置DBS组播服务器">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x076c" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="DBSServerIP" type="Ipv4" length="4" desc="DBS服务器IP" />
+				<item name="DBSServerPort" type="UnsignedNumber" length="2"
+					desc="DBS服务器端口" />
+				<item name="BSDataBroadcastPort" type="UnsignedNumber" length="2"
+					desc="BTS数据组播端口" />
+				<item name="NatApKey" type="UnsignedNumber" length="1" desc="NatApKey" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_GPSClock" operation="config" desc="GPS时钟同步配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07c1" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="GPSServerIP" type="Ipv4" length="4" desc="服务器IP地址" />
+				<item name="GPSServerPort" type="UnsignedNumber" length="2"
+					desc="服务器端口号" />
+				<item name="GPSReportingPeriod" type="UnsignedNumber" length="2"
+					desc="上报周期" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_GPSClock" operation="query" desc="GPS时钟同步配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07c3" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07c4" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="GPSServerIP" type="Ipv4" length="4" desc="服务器IP地址" />
+				<item name="GPSServerPort" type="UnsignedNumber" length="2"
+					desc="服务器端口号" />
+				<item name="GPSReportingPeriod" type="UnsignedNumber" length="2"
+					desc="上报周期" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_DBSServer" operation="query" desc="查询DBS组播服务器">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x076e" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x076f" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="DBSServerIP" type="Ipv4" length="4" desc="DBS服务器IP" />
+				<item name="DBSServerPort" type="UnsignedNumber" length="2"
+					desc="DBS服务器端口" />
+				<item name="BSDataBroadcastPort" type="UnsignedNumber" length="2"
+					desc="BTS数据组播端口" />
+				<item name="NatApKey" type="UnsignedNumber" length="1" desc="NatApKey" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_PoticalFrequ" operation="config"
+		desc="配置业务传输断关射频配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E6" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="ConfigRFFlag" type="UnsignedNumber" length="2"
+					desc="配置FR" />
+				<item name="GTIME1" type="UnsignedNumber" length="2" desc="GTIME1" />
+				<item name="GTIME2" type="UnsignedNumber" length="2" desc="GTIME2" />
+				<item name="DATAGW1" type="Ipv4" length="4" desc="DATAGW1" />
+				<item name="DATAGW2" type="Ipv4" length="4" desc="DATAGW2" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_PoticalFrequ" operation="query"
+		desc="查询业务传输断关射频配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E8" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07E9" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="ConfigRFFlag" type="UnsignedNumber" length="2"
+					desc="配置FR" />
+				<item name="GTIME1" type="UnsignedNumber" length="2" desc="GTIME1" />
+				<item name="GTIME2" type="UnsignedNumber" length="2" desc="GTIME2" />
+				<item name="DATAGW1" type="Ipv4" length="4" desc="DATAGW1" />
+				<item name="DATAGW2" type="Ipv4" length="4" desc="DATAGW2" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_lightAlarmConfig" operation="config"
+		desc="配置光模块告警门限配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07D4" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="LiPresAlarmShreahold" type="UnsignedNumber" length="4"
+					desc="光模块电压告警门限" />
+				<item name="LiCurrAlarmShreahold" type="UnsignedNumber" length="4"
+					desc="光模块电流告警门限" />
+				<item name="LiEmiPowerAlarmShreahold" type="UnsignedNumber"
+					length="4" desc="光模块发射功率告警门限" />
+				<item name="LiInceptPowerAlarmShreahold" type="UnsignedNumber"
+					length="4" desc="光模块接收功率告警门限" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_lightAlarmConfig" operation="query"
+		desc="查询光模块告警门限配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07D6" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07D7" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="LiPresAlarmShreahold" type="UnsignedNumber" length="4"
+					desc="光模块电压告警门限" />
+				<item name="LiCurrAlarmShreahold" type="UnsignedNumber" length="4"
+					desc="光模块电流告警门限" />
+				<item name="LiEmiPowerAlarmShreahold" type="UnsignedNumber"
+					length="4" desc="光模块发射功率告警门限" />
+				<item name="LiInceptPowerAlarmShreahold" type="UnsignedNumber"
+					length="4" desc="光模块接收功率告警门限" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_antijamming_param" operation="config"
+		desc="抗干扰跳频参数配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0791" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="jumpFreqSwitch" type="UnsignedNumber" length="2"
+					desc="跳频开关" />
+				<item name="jumpFreqCIMaxThreshold" type="UnsignedNumber"
+					length="1" desc="CI最大值门限" />
+				<item name="jumpFreqCIAvgThreshold" type="UnsignedNumber"
+					length="1" desc="CI均值门限" />
+				<item name="jumpFreqOverThresholdTime" type="UnsignedNumber"
+					length="2" desc="连续越限时长" />
+				<item name="fallLevelSwitch" type="UnsignedNumber" length="2"
+					desc="降电平开关" />
+				<item name="fallLevelMaxThreshold" type="UnsignedNumber"
+					length="1" desc="CI最大值门限" />
+				<item name="fallLevelCIAvgThreshold" type="UnsignedNumber"
+					length="1" desc="CI均值门限" />
+				<item name="fallLevelOverThresholdTime" type="UnsignedNumber"
+					length="2" desc="降电平连续越限时长" />
+				<item name="lowestLevel" type="UnsignedNumber" length="2" desc="最小电平值" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0792" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_antijamming_param" operation="query"
+		desc="抗干扰跳频参数查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0793" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0794" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="jumpFreqSwitch" type="UnsignedNumber" length="2"
+					desc="跳频开关" />
+				<item name="jumpFreqCIMaxThreshold" type="UnsignedNumber"
+					length="1" desc="CI最大值门限" />
+				<item name="jumpFreqCIAvgThreshold" type="UnsignedNumber"
+					length="1" desc="CI均值门限" />
+				<item name="jumpFreqOverThresholdTime" type="UnsignedNumber"
+					length="2" desc="连续越限时长" />
+				<item name="fallLevelSwitch" type="UnsignedNumber" length="2"
+					desc="降电平开关" />
+				<item name="fallLevelMaxThreshold" type="UnsignedNumber"
+					length="1" desc="CI最大值门限" />
+				<item name="fallLevelCIAvgThreshold" type="UnsignedNumber"
+					length="1" desc="CI均值门限" />
+				<item name="fallLevelOverThresholdTime" type="UnsignedNumber"
+					length="2" desc="降电平连续越限时长" />
+				<item name="lowestLevel" type="UnsignedNumber" length="2" desc="最小电平值" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_freqSet" operation="config" desc="抗干扰频点集配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07D8" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="freqCount" type="UnsignedNumber" length="2" desc="频点个数" />
+				<item name="freqList" type="List" length="2" desc="频点集列表" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_tos" operation="config" desc="服务等级配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0010" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="mcBtsTosList" type="List" length="1" desc="服务等级列表" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="terminal_param" operation="config" desc="终端业务配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x000C" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="userClass" type="UnsignedNumber" length="1" desc="用户组别" />
+				<item name="reserve" type="Reserve" length="1" desc="保留字段" />
+				<item name="upMaxBandWidth" type="UnsignedNumber" length="2"
+					desc="上行最大带宽" />
+				<item name="upMinBandWidth" type="UnsignedNumber" length="2"
+					desc="上行最小带宽" />
+				<item name="downMaxBandWidth" type="UnsignedNumber" length="2"
+					desc="下行最大带宽" />
+				<item name="downMinBandWidth" type="UnsignedNumber" length="2"
+					desc="下行最小带宽" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_acl" operation="config" desc="acl配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0028" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="protocol" type="UnsignedNumber" length="1" desc="协议" />
+				<item name="sourceIP" type="UnsignedNumber" length="4" desc="源ip" />
+				<item name="sourceIPMask" type="UnsignedNumber" length="4"
+					desc="源ip掩码" />
+				<item name="sourcePort" type="UnsignedNumber" length="2" desc="源端口" />
+				<item name="sourceOper" type="UnsignedNumber" length="1" desc="源操作" />
+				<item name="desIp" type="UnsignedNumber" length="4" desc="目标ip" />
+				<item name="desIPMask" type="UnsignedNumber" length="4" desc="目标ip掩码" />
+				<item name="desPort" type="UnsignedNumber" length="2" desc="目标端口" />
+				<item name="desOper" type="UnsignedNumber" length="1" desc="目标操作" />
+				<item name="permission" type="UnsignedNumber" length="1" desc="允许/禁止" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_acl" operation="query" desc="acl查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x002c" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x002d" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="protocol" type="UnsignedNumber" length="1" desc="协议" />
+				<item name="sourceIP" type="UnsignedNumber" length="4" desc="源ip" />
+				<item name="sourceIPMask" type="UnsignedNumber" length="4"
+					desc="源ip掩码" />
+				<item name="sourcePort" type="UnsignedNumber" length="2" desc="源端口" />
+				<item name="sourceOper" type="UnsignedNumber" length="1" desc="源操作" />
+				<item name="desIp" type="UnsignedNumber" length="4" desc="目标ip" />
+				<item name="desIPMask" type="UnsignedNumber" length="4" desc="目标ip掩码" />
+				<item name="desPort" type="UnsignedNumber" length="2" desc="目标端口" />
+				<item name="desOper" type="UnsignedNumber" length="1" desc="目标操作" />
+				<item name="permission" type="UnsignedNumber" length="1" desc="允许/禁止" />
+			</body>
+		</response>
+
+	</protocol>
+
+	<protocol bizName="mcbts_repeater" operation="config" desc="直放站">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x00BC" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="middleFreq" type="UnsignedNumber" length="2" desc="直放站频点" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_repeater" operation="query" desc="直放站">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x00be" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x00bf" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="middleFreq" type="UnsignedNumber" length="2" desc="直放站频点" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_vlan" operation="config" desc="vlan">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0706" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="vlanGroup" type="UnsignedNumber" length="2" desc="vlan 组" />
+				<item name="vlanID" type="UnsignedNumber" length="2" desc="vlan id" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_vlan" operation="query" desc="vlan">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0708" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0709" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="vlanGroup" type="UnsignedNumber" length="2" desc="vlan 组" />
+				<item name="vlanID" type="UnsignedNumber" length="2" desc="vlan id" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_qinq" operation="config" desc="qinq">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x070c" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="vlanGroup" type="UnsignedNumber" length="2" desc="vlan 组" />
+				<item name="qinqTag" type="UnsignedNumber" length="2" desc="qinq tag" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_qinq" operation="query" desc="qinq">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x070e" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x070f" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="vlanGroup" type="UnsignedNumber" length="2" desc="vlan 组" />
+				<item name="qinqTag" type="UnsignedNumber" length="2" desc="qinq tag" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="t_conf_system_freq" operation="config"
+		desc="系统频点配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0780" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<!-- <item name="freqSwitch" type="UnsignedNumber" length="1" desc="是否使用有效频点" 
+					/> <item name="num" type="UnsignedNumber" length="2" desc="有效频点个数" /> -->
+				<item name="freq" type="UnsignedNumber" length="2" desc="频点值" />
+			</body>
+		</request>
+	</protocol>
+	<protocol bizName="t_conf_system_freq" operation="query" desc="系统频点查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0782" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0783" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="freq" type="UnsignedNumber" length="2" desc="频点值" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_forceUTRegister" operation="config"
+		desc="强制终端注册">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="6" />
+				<item name="MOC" value="0x060E" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+			</body>
+		</request>
+	</protocol>
+	<protocol bizName="mcbtsRestartRequest" operation="config"
+		desc="基站重启请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0025" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="bootUpDataSource" type="UnsignedNumber" length="2"
+					desc="启动源" />
+				<!-- <item name="bootType" type="UnsignedNumber" length="2" desc="启动基站类型" 
+					/> -->
+			</body>
+		</request>
+	</protocol>
+	<protocol bizName="mcbts_basic_info" operation="config" desc="基本信息">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0000" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<!-- <item name="idx" type="UnsignedNumber" length="2" desc="记录索引" /> -->
+				<item name="btsIp" type="IPv4" length="4" desc="基站IP地址" />
+				<item name="sagDefaultGateway" type="IPv4" length="4" desc="SAG默认网关" />
+				<item name="sagSubNetMask" type="IPv4" length="4" desc="SAG子网掩码" />
+				<item name="sagDeviceId" type="UnsignedNumber" length="4" desc="Sag ID" />
+				<item name="sagVoiceIp" type="IPv4" length="4" desc="SAG语音IP" />
+				<item name="sagSignalIp" type="IPv4" length="4" desc="SAG信令IP" />
+				<item name="btsMediaPort" type="UnsignedNumber" length="2"
+					desc="基站媒体端口" />
+				<item name="sagMediaPort" type="UnsignedNumber" length="2"
+					desc="SAG媒体端口" />
+				<item name="sagSignalPort" type="UnsignedNumber" length="2"
+					desc="SAG信令端口" />
+				<item name="btsSignalPort" type="UnsignedNumber" length="2"
+					desc="基站信令端口" />
+				<item name="locationAreaId" type="UnsignedNumber" length="4"
+					desc="位置区" />
+				<item name="sagSignalPointCode" type="UnsignedNumber" length="2"
+					desc="SAG信令点编码" />
+				<item name="btsSignalPointCode" type="UnsignedNumber" length="2"
+					desc="基站信令点编码" />
+				<item name="emsIp" type="IPv4" length="4" desc="EMS服务器IP" />
+				<item name="networkId" type="UnsignedNumber" length="2" desc="网络ID" />
+				<item name="bootSource" type="UnsignedNumber" length="2" desc="启动源" />
+				<item name="natAPKey" type="UnsignedNumber" length="1" desc="NAT AP Key" />
+				<item name="sagVlanUsedFlag" type="UnsignedNumber" length="1"
+					desc="SAG VLan 使用标识" />
+				<item name="sagVlanId" type="UnsignedNumber" length="2"
+					desc="SAG VLan ID" />
+				<item name="reserve" type="Reserve" length="1" desc="保留字段" />
+				<item name="reserve2" type="Reserve" length="1" desc="保留字段" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_basic_info" operation="query" desc="基本信息">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0002" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0003" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="btsIp" type="IPv4" length="4" desc="基站IP地址" />
+				<item name="sagDefaultGateway" type="IPv4" length="4" desc="SAG默认网关" />
+				<item name="sagSubNetMask" type="IPv4" length="4" desc="SAG子网掩码" />
+				<item name="sagDeviceId" type="UnsignedNumber" length="4" desc="Sag ID" />
+				<item name="sagVoiceIp" type="IPv4" length="4" desc="SAG语音IP" />
+				<item name="sagSignalIp" type="IPv4" length="4" desc="SAG信令IP" />
+				<item name="btsMediaPort" type="UnsignedNumber" length="2"
+					desc="基站媒体端口" />
+				<item name="sagMediaPort" type="UnsignedNumber" length="2"
+					desc="SAG媒体端口" />
+				<item name="sagSignalPort" type="UnsignedNumber" length="2"
+					desc="SAG信令端口" />
+				<item name="btsSignalPort" type="UnsignedNumber" length="2"
+					desc="基站信令端口" />
+				<item name="locationAreaId" type="UnsignedNumber" length="4"
+					desc="位置区" />
+				<item name="sagSignalPointCode" type="UnsignedNumber" length="2"
+					desc="SAG信令点编码" />
+				<item name="btsSignalPointCode" type="UnsignedNumber" length="2"
+					desc="基站信令点编码" />
+				<item name="emsIp" type="IPv4" length="4" desc="EMS服务器IP" />
+				<item name="networkId" type="UnsignedNumber" length="2" desc="网络ID" />
+				<item name="bootSource" type="UnsignedNumber" length="2" desc="启动源" />
+				<item name="natAPKey" type="UnsignedNumber" length="1" desc="NAT AP Key" />
+				<item name="sagVlanUsedFlag" type="UnsignedNumber" length="1"
+					desc="SAG VLan 使用标识" />
+				<item name="sagVlanId" type="UnsignedNumber" length="2"
+					desc="SAG VLan ID" />
+				<item name="reserve" type="Reserve" length="1" desc="保留字段" />
+				<item name="reserve2" type="Reserve" length="1" desc="保留字段" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_rruEnvParamConfig" operation="config"
+		desc="RRU温度环境参数配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0714" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="tempAlarmUpLimit" type="SignedNumber" length="1"
+					desc="温度告警上限" />
+				<item name="tempAlarmDownLimit" type="SignedNumber" length="1"
+					desc="温度告警下限" />
+				<item name="curAlarmUpLimit" type="UnsignedNumber" length="1"
+					desc="电流告警上限" />
+				<item name="curAlarmDownLimit" type="UnsignedNumber" length="1"
+					desc="电流告警下限" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="rruReset" operation="config" desc="RRU重启">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x072a" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="rruStatus" operation="query" desc="RRU状态查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0784" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0785" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="current" type="UnsignedNumber" length="2" desc="电流" />
+				<item name="temperature" type="UnsignedNumber" length="2" desc="温度" />
+				<item name="timeDelay" type="UnsignedNumber" length="2" desc="时延" />
+				<item name="freqOffset" type="UnsignedNumber" length="2" desc="频偏" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="rru_software_version" operation="query"
+		desc="RRU软件版本查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0768" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0769" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="hardwareVersion" type="UnsignedNumber" length="2"
+					desc="硬件版本" />
+				<item name="mcuSoftwareVersion" type="HexString" length="4"
+					desc="MCU软件版本" />
+				<item name="fpgaSoftwareVersion" type="HexString" length="4"
+					desc="FPGA软件版本" />
+				<item name="Rsv" type="UnsignedNumber" length="1" desc="保留字段" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="rru_ray_module_info" operation="query"
+		desc="RRU光模块上报信息查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07d0" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07d1" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="temp" type="UnsignedNumber" length="4" desc="RRU光模块温度" />
+				<item name="voltage" type="UnsignedNumber" length="4" desc="RRU光模块电压" />
+				<item name="current" type="UnsignedNumber" length="4" desc="RRU光模块电流" />
+				<item name="sendPower" type="UnsignedNumber" length="4"
+					desc="RRU光模块发射功率" />
+				<item name="recievePower" type="UnsignedNumber" length="4"
+					desc="RRU光模块接收功率" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="bbu_ray_module_info" operation="query"
+		desc="BBU光模块上报信息查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07d2" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07d3" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="temp" type="UnsignedNumber" length="4" desc="BBU光模块温度" />
+				<item name="voltage" type="UnsignedNumber" length="4" desc="BBU光模块电压" />
+				<item name="current" type="UnsignedNumber" length="4" desc="BBU光模块电流" />
+				<item name="sendPower" type="UnsignedNumber" length="4"
+					desc="BBU光模块发射功率" />
+				<item name="recievePower" type="UnsignedNumber" length="4"
+					desc="BBU光模块接收功率" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="rru_hardware_info" operation="query" desc="RRU硬件信息查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x076a" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x076b" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="rf1HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf1硬件版本" />
+				<item name="rf1HardwareUserId" type="String" length="20" desc="rf1用户序列号" />
+				<item name="rf2HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf2硬件版本" />
+				<item name="rf2HardwareUserId" type="String" length="20" desc="rf2用户序列号" />
+				<item name="rf3HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf3硬件版本" />
+				<item name="rf3HardwareUserId" type="String" length="20" desc="rf3用户序列号" />
+				<item name="rf4HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf4硬件版本" />
+				<item name="rf4HardwareUserId" type="String" length="20" desc="rf4用户序列号" />
+				<item name="rf5HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf5硬件版本" />
+				<item name="rf5HardwareUserId" type="String" length="20" desc="rf5用户序列号" />
+				<item name="rf6HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf6硬件版本" />
+				<item name="rf6HardwareUserId" type="String" length="20" desc="rf6用户序列号" />
+				<item name="rf7HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf7硬件版本" />
+				<item name="rf7HardwareUserId" type="String" length="20" desc="rf7用户序列号" />
+				<item name="rf8HardwareVersion" type="UnsignedNumber" length="2"
+					desc="rf8硬件版本" />
+				<item name="rf8HardwareUserId" type="String" length="20" desc="rf8用户序列号" />
+				<item name="synHardwareVersion" type="UnsignedNumber" length="2"
+					desc="syn硬件版本" />
+				<item name="synHardwareUserId" type="String" length="20" desc="syn用户序列号" />
+				<item name="dsbHardwareVersion" type="UnsignedNumber" length="2"
+					desc="dsb硬件版本" />
+				<item name="dsbHardwareUserId" type="String" length="20" desc="dsb用户序列号" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcBtsSN" operation="query" desc="基站序列号查询请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0710" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0711" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="bbPanel" type="String" length="20" desc="基带板序列号" />
+				<item name="synPanel" type="String" length="20" desc="频综板序列号" />
+				<item name="rfPanel1" type="String" length="20" desc="射频板1序列号" />
+				<item name="rfPanel2" type="String" length="20" desc="射频板2序列号" />
+				<item name="rfPanel3" type="String" length="20" desc="射频板3序列号" />
+				<item name="rfPanel4" type="String" length="20" desc="射频板4序列号" />
+				<item name="rfPanel5" type="String" length="20" desc="射频板5序列号" />
+				<item name="rfPanel6" type="String" length="20" desc="射频板6序列号" />
+				<item name="rfPanel7" type="String" length="20" desc="射频板7序列号" />
+				<item name="rfPanel8" type="String" length="20" desc="射频板8序列号" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcBtsState" operation="query" desc="Bts状态查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="6" />
+				<item name="MOC" value="0x0620" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="6" />
+				<item name="MOC" value="0x0621" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="satellitesVisible" type="UnsignedNumber" length="1"
+					desc="可见的卫星个数" />
+				<item name="statellitesTrack" type="UnsignedNumber" length="1"
+					desc="跟踪的卫星个数" />
+				<item name="bootsource" type="UnsignedNumber" length="2" desc="启动源" />
+				<item name="rfMask" type="UnsignedNumber" length="2" desc="Bit（使用的射频情况）" />
+				<item name="syncCardTemperature" type="SignedNumber" length="2"
+					desc="当前频踪板温度" />
+				<item name="digitalBoardTemperature" type="SignedNumber"
+					length="2" desc="当前主用板温度" />
+				<item name="timePassedSinceBtsBoot" type="UnsignedNumber"
+					length="4" desc="基站运行时间" />
+				<item name="currentUserNumber" type="UnsignedNumber" length="2"
+					desc="当前用户数" />
+				<item name="averageFreeDLChannel" type="UnsignedNumber" length="2"
+					desc="平均空闲的下行信道数" />
+				<item name="averageFreeULChannel" type="UnsignedNumber" length="2"
+					desc="平均空闲的上行信道数" />
+				<item name="averageFreePowerUsage" type="UnsignedNumber"
+					length="2" desc="平均空闲的功率" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_RfPanelStatus" operation="query"
+		desc="BtsRf板状态">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0702" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0703" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="synhardwareVersion" type="UnsignedNumber" length="2"
+					desc="频综板硬件版本号" />
+				<item name="synsoftwareVersion" type="UnsignedNumber" length="2"
+					desc="频综板软件版本号" />
+				<item name="tcxoOffset" type="UnsignedNumber" length="2" desc="晶振偏差" />
+				<item name="synReceivingErrorCounter" type="UnsignedNumber"
+					length="2" desc="频综板接收出错次数" />
+
+				<item name="hardwareVersion" type="UnsignedNumber" length="2"
+					desc="硬件版本号" />
+				<item name="softwareVersion" type="UnsignedNumber" length="2"
+					desc="软件版本号" />
+				<item name="boardVoltageValue" type="UnsignedNumber" length="2"
+					desc="板电压值" />
+				<item name="boardCurrentValue" type="UnsignedNumber" length="2"
+					desc=" 板电流值" />
+				<item name="ttaVoltageValue" type="UnsignedNumber" length="2"
+					desc=" 塔放电压值" />
+				<item name="ttaCurrentValue" type="UnsignedNumber" length="2"
+					desc=" 塔放电流值" />
+				<item name="transmitPowerValue" type="UnsignedNumber" length="2"
+					desc="发送功率" />
+				<item name="receivingErrorCounter" type="UnsignedNumber"
+					length="2" desc="天线接收出错次数" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcBtsUserCounts" operation="query" desc="Bts用户数查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="2" />
+				<item name="MOC" value="0x0212" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="2" />
+				<item name="MOC" value="0x0213" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<!-- bts user counts -->
+				<item name="registeredUserNum" type="UnsignedNumber" length="4"
+					desc="注册用户数" />
+				<item name="activeUserNum" type="UnsignedNumber" length="4"
+					desc="当前活动用户数" />
+
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcBtsOnlineTerminalList" operation="query"
+		desc="BTS在线终端列表">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="2" />
+				<item name="MOC" value="0x021a" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="2" />
+				<item name="MOC" value="0x021b" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<!-- OnlineTerminalList -->
+				<item name="eid" type="UnsignedNumber" length="4" desc="EID" />
+				<item name="preSS" type="UnsignedNumber" length="2" desc="preSS" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_antenna_lock" operation="config"
+		desc="天线闭锁配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x07a6" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="flag" type="UnsignedNumber" length="2" desc="闭锁开关" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="microbts_signal_send" operation="query"
+		desc="小基站信号发送方式查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0778" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0779" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="sendMode" type="UnsignedNumber" length="1" desc="发送方式" />
+				<item name="antIndex" type="UnsignedNumber" length="1" desc="发送天线" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="microbts_signal_send" operation="config"
+		desc="小基站信号发送方式配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0776" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="sendMode" type="UnsignedNumber" length="1" desc="发送方式" />
+				<item name="antIndex" type="UnsignedNumber" length="1" desc="发送天线" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbtsMode" operation="query" desc="基站模式查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0436" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0437" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="workMode" type="UnsignedNumber" length="1" desc="工作模式" />
+				<item name="bootSource" type="UnsignedNumber" length="1"
+					desc="启动源(启动类型)" />
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_userinfo" operation="query" desc="基站用户数据">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0434" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="operateMode" type="UnsignedNumber" length="1" desc="操作模式" />
+				<item name="fileDir" type="VarString" length="1" desc="文件目录" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0435" />
+				<item name="ActionType" value="0" />
+			</header>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_sdma_config" operation="query" desc="sdma查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C06" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C07" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="sdmaEnableFlag" type="UnsignedNumber" length="1"
+					desc="是否启用SDMA" />
+				<item name="voiceSdmaFlag" type="UnsignedNumber" length="1"
+					desc="语音业务是否禁用SDMA" />
+				<item name="videoSdmaFlag" type="UnsignedNumber" length="1"
+					desc="视频业务是否禁用SDMA" />
+				<item name="sdmaSchType" type="UnsignedNumber" length="1"
+					desc="启用SDMA子信道类型" />
+				<item name="inRadioResIndTh" type="UnsignedNumber" length="1"
+					desc="进入SDMA的无线资源占用门限" />
+				<item name="outRadioResIndTh" type="UnsignedNumber" length="1"
+					desc="退出SDMA的无线资源占用门限" />
+				<item name="wlMatchUserMaxNum" type="UnsignedNumber" length="1"
+					desc="单用户最大无线匹配用户数" />
+				<item name="rsv" type="Reserve" length="1" desc="预留" />
+
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_sdma_config" operation="config" desc="sdma配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C04" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="sdmaEnableFlag" type="UnsignedNumber" length="1"
+					desc="是否启用SDMA" />
+				<item name="voiceSdmaFlag" type="UnsignedNumber" length="1"
+					desc="语音业务是否禁用SDMA" />
+				<item name="videoSdmaFlag" type="UnsignedNumber" length="1"
+					desc="视频业务是否禁用SDMA" />
+				<item name="sdmaSchType" type="UnsignedNumber" length="1"
+					desc="启用SDMA子信道类型" />
+				<item name="inRadioResIndTh" type="UnsignedNumber" length="1"
+					desc="进入SDMA的无线资源占用门限" />
+				<item name="outRadioResIndTh" type="UnsignedNumber" length="1"
+					desc="退出SDMA的无线资源占用门限" />
+				<item name="wlMatchUserMaxNum" type="UnsignedNumber" length="1"
+					desc="单用户最大无线匹配用户数" />
+				<item name="rsv" type="Reserve" length="1" desc="预留" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C05" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_switchoptimize" operation="config"
+		desc="切换优化开关配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C22" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="switchFlag" type="UnsignedNumber" length="1" desc="是否启用" />
+				<item name="reserve" type="Reserve" length="1" desc="预留" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C23" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_switchoptimize" operation="query"
+		desc="切换优化开关查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C24" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C25" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="switchFlag" type="UnsignedNumber" length="1" desc="是否启用" />
+				<item name="reserve" type="Reserve" length="1" desc="预留" />
+			</body>
+		</response>
+	</protocol>
+	
+		<protocol bizName="mcbts_preventbroadcast" operation="config"
+		desc="防广播/组播包攻击">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C3A" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="flowControlSwitch" type="UnsignedNumber" length="1" desc="流控制开关" />
+				<item name="reserve1" type="Reserve" length="1" desc="预留" />
+				<item name="reserve2" type="Reserve" length="2" desc="预留" />
+				<item name="MAXBroadcastPackets" type="UnsignedNumber" length="4" desc="最大组播包" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C3B" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+	
+	<protocol bizName="mcbts_preventbroadcast" operation="query"
+		desc="防广播/组播包攻击">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C3C" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C3D" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="flowControlSwitch" type="UnsignedNumber" length="1" desc="流控制开关" />
+				<item name="reserve1" type="Reserve" length="1" desc="预留" />
+				<item name="reserve2" type="Reserve" length="2" desc="预留" />
+				<item name="MAXBroadcastPackets" type="UnsignedNumber" length="4" desc="最大组播包" />
+			</body>
+		</response>
+	</protocol>
+	
+	<protocol bizName="mcbts_btsreleasevoicetimer" operation="config"
+		desc="基站释放语音定时器">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C3E" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="voicereleasetimer1" type="UnsignedNumber" length="4" desc="语音释放定时器1" />
+				<item name="voicereleasetimer2" type="UnsignedNumber" length="4" desc="语音释放定时器2" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C3F" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+	
+		<protocol bizName="mcbts_btsreleasevoicetimer" operation="query"
+		desc="基站释放语音定时器">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C40" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C41" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="voicereleasetimer1" type="UnsignedNumber" length="4" desc="语音释放定时器1" />
+				<item name="voicereleasetimer2" type="UnsignedNumber" length="4" desc="语音释放定时器2" />
+			</body>
+		</response>
+	</protocol> 
+	
+	<protocol bizName="dataPackageFilter" operation="config" desc="数据包过滤准则配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C12" />
+				<item name="ActionType" value="1" />
+			</header>
+		</request>
+	</protocol>
+
+	<protocol bizName="ut_breakpoint_resume_upgrade_config"
+		operation="config" desc="终端升级断点续传配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="4" />
+				<item name="MOC" value="0x0430" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="eid" type="UnsignedNumber" length="4" desc="终端的eid" />
+				<item name="transId" type="UnsignedNumber" length="2" desc="transId" />
+				<item name="fileName" type="VarString" length="1" desc="文件名长度和文件名" />
+				<item name="seq" type="UnsignedNumber" length="2" desc="seq" />
+				<item name="progress" type="UnsignedNumber" length="1" desc="进度" />
+				<item name="utType" type="UnsignedNumber" length="1" desc="终端类型" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="ut_mem_singal_report_config" operation="config"
+		desc="终端调试信息上报">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0319" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="eid" type="UnsignedNumber" length="4" desc="终端的eid" />
+				<item name="switchFlag" type="UnsignedNumber" length="2" desc="上报开关" />
+				<item name="timeLength" type="UnsignedNumber" length="4"
+					desc="上报信令的时长单位为s" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x031a" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="ut_mem_layer3_param" operation="query"
+		desc="终端三层参数查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0315" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="eid" type="UnsignedNumber" length="4" desc="终端的eid" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="ut_performance_data" operation="query"
+		desc="查询终端性能数据请求">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="3" />
+				<item name="MOC" value="0x0313" />
+				<item name="ActionType" value="3" />
+			</header>
+			<body>
+				<item name="eid" type="UnsignedNumber" length="4" desc="终端的eid" />
+			</body>
+		</request>
+	</protocol>
+
+	<protocol bizName="mcbts_channelcomparablemode" operation="config"
+		desc="基站兼容模式配置">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C2A" />
+				<item name="ActionType" value="1" />
+			</header>
+			<body>
+				<item name="channelMode" type="UnsignedNumber" length="1" desc="兼容模式" />
+				<item name="reserve" type="Reserve" length="3" desc="预留" />
+			</body>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C2B" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+			</body>
+		</response>
+	</protocol>
+
+	<protocol bizName="mcbts_channelcomparablemode" operation="query"
+		desc="基站兼容模式查询">
+		<request>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C2C" />
+				<item name="ActionType" value="3" />
+			</header>
+		</request>
+		<response>
+			<header>
+				<item name="MsgArea" value="1" />
+				<item name="MA" value="0" />
+				<item name="MOC" value="0x0C2D" />
+				<item name="ActionType" value="0" />
+			</header>
+			<body>
+				<item name="channelMode" type="UnsignedNumber" length="1" desc="兼容模式" />
+				<item name="reserve" type="Reserve" length="3" desc="预留" />
+			</body>
+		</response>
+	</protocol>
+</protocols>

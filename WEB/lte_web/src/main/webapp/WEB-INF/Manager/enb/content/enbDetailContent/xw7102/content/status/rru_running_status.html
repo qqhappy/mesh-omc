@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<!-- <script type="text/javascript" src="${base}/Manager/js/enb/enb_config.js"></script> -->
+<!-- <script type="text/javascript" src="${base}/Manager/js/enb/status/status.js"></script> -->
+<!-- <script type="text/javascript" src="${base}/Manager/js/enb/status/runningStatus.js"></script> -->
+<!-- <script type="text/javascript"> -->
+<!-- function document.onkeydown(){ -->
+<!-- 	if(event.keyCode == 8){ -->
+<!-- 		if(document.activeElement.type.toLowerCase() == "textarea" || document.activeElement.type.toLowerCase() == "text"){ -->
+<!-- 			if(document.activeElement.readOnly == false){ -->
+<!-- 				return true; -->
+<!-- 			} -->
+<!-- 		} -->
+<!-- 		return false; -->
+<!-- 	} -->
+<!-- } -->
+<!-- </script> -->
+<script type="text/javascript">
+	$(function(){
+		var error = '${error!}';
+		if(error != '' && error != null){
+			$("#errorInfo").html(error);
+		}
+		function document.onkeydown(){ 
+		 	if(event.keyCode == 8){ 
+		 		if(document.activeElement.type.toLowerCase() == "textarea" || document.activeElement.type.toLowerCase() == "text"){ 
+		 			if(document.activeElement.readOnly == false){ 
+		 				return true; 
+		 			} 
+		 		}
+		 		return false; 
+		 	} 
+		 } 
+	});
+	function fresh(){
+		window.location.href = '{base}/lte/queryEnbDynamicInfo.do?queryFlag=104&moId=${moId}';
+	}
+</script>
+<title>运行状态</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>运行状态</a>
+	</div>
+	
+	<!-- 
+	射频本振频率 单位：10KHz
+	射频本振状态 
+	0：锁定；1：失锁
+	时钟状态 
+	0：同步；1：失步
+	Ir接口工作模式 
+	1：普通模式；2：级连模式
+	RRU运行状态
+	0：未运营；1：测试中；2：运营中；3：版本升级中；4：不正常
+	主板温度 取整
+	从板温度 取整
+	DPD训练结果 0：失败，1：成功
+		-->
+		
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap">
+			<div class="title">&nbsp;</div>
+			<div class="content" style="padding:10px; width:420px; float:left; margin-left:100px;">
+			
+								
+				<div style="padding:10px 0px;">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新" onclick="fresh()" /></li>
+						</ul>
+					</div>
+					<table style="line-height:35px;">
+						<tr>
+							<td>射频本振频率(单位:10KHz) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<#if (runningStatus.rfLocalFreq)??>
+									<input type="text" style="width:240px;" readonly="readonly" value="${runningStatus.rfLocalFreq}"/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								</#if>
+							</td>
+						</tr>
+						<tr>
+							<td>射频本振状态 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<#if (runningStatus.rfLocalStatus)??>
+									<input type="text" style="width:240px;" readonly="readonly" id="rfLocalStatus" value="${runningStatus.rfLocalStatus}"/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								</#if>
+							</td>
+						</tr>
+						
+						
+
+						<tr>
+							<td>主板温度(℃) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<#if (runningStatus.mainBoardTemp)??>
+									<input type="text" style="width:240px;" readonly="readonly" value="${runningStatus.mainBoardTemp}"/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								</#if>
+							</td>
+						</tr>
+						<tr>
+							<td>DPD训练结果</td>
+							<td class="blankTd"></td>
+							<td>
+								<#if (runningStatus.dpdTrainResult)??>
+									<input type="text" style="width:240px;" readonly="readonly" value="${runningStatus.dpdTrainResult}"/>
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly" value=""/>
+								</#if>
+							</td>
+						</tr>
+					</table>
+					<span id="errorInfo"></span>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tables>
+	<table name="应用场景">
+		<field 显示项="默认配置" 子选项ID号="0"/>
+		<field 显示项="市区场景" 子选项ID号="1"/>
+		<field 显示项="郊区场景" 子选项ID号="2"/>
+		<field 显示项="超远覆盖" 子选项ID号="3"/>
+		<field 显示项="上行流量" 子选项ID号="4"/>
+		<field 显示项="下行流量" 子选项ID号="5"/>
+	</table>
+	<table name="频段">
+		<field 显示项="38频段" 子选项ID号="38"/>
+		<field 显示项="39频段" 子选项ID号="39"/>
+		<field 显示项="40频段" 子选项ID号="40"/>
+		<field 显示项="53频段" 子选项ID号="53"/>
+		<field 显示项="58频段" 子选项ID号="58"/>
+		<field 显示项="61频段" 子选项ID号="61"/>
+		<field 显示项="62频段" 子选项ID号="62"/>
+		<field 显示项="63频段" 子选项ID号="63"/>
+	</table>
+	<table name="带宽">
+		<field 显示项="5M" 子选项ID号="2"/>
+		<field 显示项="10M" 子选项ID号="3"/>
+		<field 显示项="15M" 子选项ID号="4"/>
+		<field 显示项="20M" 子选项ID号="5"/>
+	</table>
+	<table name="子帧配比">
+		<field 显示项="0" 子选项ID号="0"/>
+		<field 显示项="1" 子选项ID号="1"/>
+		<field 显示项="2" 子选项ID号="2"/>
+	</table>
+	<table name="RRU类型">
+		<field 显示项="RRU8A10" 子选项ID号="1"/>
+		<field 显示项="RRU8B10" 子选项ID号="2"/>
+		<field 显示项="RRU8C10" 子选项ID号="3"/>
+		<field 显示项="RRU8D10" 子选项ID号="4"/>
+		<field 显示项="RRU8E10" 子选项ID号="5"/>
+		<field 显示项="RRU8F10" 子选项ID号="6"/>
+		<field 显示项="RRU8G10" 子选项ID号="7"/>
+		<field 显示项="RRU8H10" 子选项ID号="8"/>
+		<field 显示项="RRU8I10" 子选项ID号="9"/>
+		<field 显示项="RRU8J10" 子选项ID号="10"/>
+		<field 显示项="RRU8K10" 子选项ID号="11"/>
+		<field 显示项="RRU4B10_FF" 子选项ID号="12"/>
+		<field 显示项="RRU4B30_CF" 子选项ID号="13"/>
+		<field 显示项="RRU4D30_CF" 子选项ID号="14"/>
+		<field 显示项="RRU4E10_FF" 子选项ID号="15"/>
+		<field 显示项="RRU4E30_CF" 子选项ID号="16"/>
+		<field 显示项="RRU2J30_CC" 子选项ID号="17"/>
+		<field 显示项="RRU4K30_CF" 子选项ID号="18"/>
+		<field 显示项="RRU4J30_CF" 子选项ID号="19"/>
+	</table>
+	<table name="最大天线数">
+		<field 显示项="an1" 子选项ID号="0"/>
+		<field 显示项="an2" 子选项ID号="1"/>
+		<field 显示项="an4" 子选项ID号="2"/>
+	</table>
+</tables>

@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/t_enb_ctfreq.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){  
+		//$("body select").selectStyle();
+		for(var i=1;i<3;i++){
+			if($("#radio"+i).val() == ${record.fieldMap["u8InterAntPort1"].value}){
+				$("#radio"+i).attr("checked","checked");
+			}
+		}
+		//u8FreqBandInd
+		$("#u8FreqBandInd option").each(function(index){
+			if($("#u8FreqBandInd option:eq("+index+")").val() == ${record.fieldMap["u8FreqBandInd"].value}){
+				$("#u8FreqBandInd option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8tRslInterEutra
+		$("#u8tRslInterEutra option").each(function(index){
+			if($("#u8tRslInterEutra option:eq("+index+")").val() == ${record.fieldMap["u8tRslInterEutra"].value}){
+				$("#u8tRslInterEutra option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8RslAllowedMeasBW
+		$("#u8RslAllowedMeasBW option").each(function(index){
+			if($("#u8RslAllowedMeasBW option:eq("+index+")").val() == ${record.fieldMap["u8RslAllowedMeasBW"].value}){
+				$("#u8RslAllowedMeasBW option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8InterRslPrior
+		$("#u8InterRslPrior option").each(function(index){
+			if($("#u8InterRslPrior option:eq("+index+")").val() == ${record.fieldMap["u8InterRslPrior"].value}){
+				$("#u8InterRslPrior option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//ucRslQOffsetFreq
+		$("#ucRslQOffsetFreq option").each(function(index){
+			if($("#ucRslQOffsetFreq option:eq("+index+")").val() == ${record.fieldMap["ucRslQOffsetFreq"].value}){
+				$("#ucRslQOffsetFreq option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//ucMeasQOffsetFreq
+		$("#ucMeasQOffsetFreq option").each(function(index){
+			if($("#ucMeasQOffsetFreq option:eq("+index+")").val() == ${record.fieldMap["ucMeasQOffsetFreq"].value}){
+				$("#ucMeasQOffsetFreq option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8MeasAllowedMeasBW
+		$("#u8MeasAllowedMeasBW option").each(function(index){
+			if($("#u8MeasAllowedMeasBW option:eq("+index+")").val() == ${record.fieldMap["u8MeasAllowedMeasBW"].value}){
+				$("#u8MeasAllowedMeasBW option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8NbrCellConfig
+		$("#u8NbrCellConfig option").each(function(index){
+			if($("#u8NbrCellConfig option:eq("+index+")").val() == ${record.fieldMap["u8NbrCellConfig"].value}){
+				$("#u8NbrCellConfig option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8InterFreqHOMeasCfg
+		$("#u8InterFreqHOMeasCfg option").each(function(index){
+			if($("#u8InterFreqHOMeasCfg option:eq("+index+")").val() == ${record.fieldMap["u8InterFreqHOMeasCfg"].value}){
+				$("#u8InterFreqHOMeasCfg option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		var u8FreqBandInd = parseInt(${record.fieldMap["u8FreqBandInd"].value});
+		var low = 0;
+		var offset = 0;
+		if(u8FreqBandInd == 33){
+			low = 1900;
+			offset = 36000;
+			$("#centerFreq1").html("1900");	
+			$("#centerFreq2").html("1920");	
+		}else if(u8FreqBandInd == 34){
+			low = 2010;
+			offset = 36200;
+			$("#centerFreq1").html("2010");
+			$("#centerFreq2").html("2025");
+		}else if(u8FreqBandInd == 35){
+			low = 1850;
+			offset = 36350;
+			$("#centerFreq1").html("1850");	
+			$("#centerFreq2").html("1910");	
+		}else if(u8FreqBandInd == 36){
+			low = 1930;
+			offset = 36950;
+			$("#centerFreq1").html("1930");	
+			$("#centerFreq2").html("1990");	
+		}else if(u8FreqBandInd == 37){
+			low = 1910;
+			offset = 37550;
+			$("#centerFreq1").html("1910");	
+			$("#centerFreq2").html("1930");	
+		}else if(u8FreqBandInd == 38){
+			low = 2570;
+			offset = 37750;
+			$("#centerFreq1").html("2570");	
+			$("#centerFreq2").html("2620");	
+		}else if(u8FreqBandInd == 39){
+			$("#centerFreq1").html("1880");	
+			$("#centerFreq2").html("1920");	
+			low = 1880;
+			offset = 38250;
+		}else if(u8FreqBandInd == 40){
+			$("#centerFreq1").html("2300");	
+			$("#centerFreq2").html("2400");	
+			low = 2300;
+			offset = 38650;
+		}else if(u8FreqBandInd == 53){
+			$("#centerFreq1").html("778");	
+			$("#centerFreq2").html("798");	
+			low = 778;
+			offset = 64000;
+		}else if(u8FreqBandInd == 58){
+			$("#centerFreq1").html("380");	
+			$("#centerFreq2").html("430");	
+			low = 380;
+			offset = 58200;
+		}else if(u8FreqBandInd == 61){
+			$("#centerFreq1").html("1447");	
+			$("#centerFreq2").html("1467");	
+			low = 1447;
+			offset = 65000;
+		}else if(u8FreqBandInd == 62){
+			$("#centerFreq1").html("1785");	
+			$("#centerFreq2").html("1805");	
+			low = 1785;
+			offset = 65200;
+		}else{
+			$("#centerFreq1").html("606");	
+			$("#centerFreq2").html("678");	
+			low = 606;
+			offset = 59060;
+		}
+		var u32CenterFreq = parseInt(${record.fieldMap["u32CenterFreq"].value});
+		var u32CenterFreq1 =accAdd(accDiv(accSub(u32CenterFreq,offset),10),low);
+		$("#u32CenterFreq").val(u32CenterFreq1);
+		//
+		var u8InterQrxLevMin = parseInt(${record.fieldMap["u8InterQrxLevMin"].value});
+		var u8InterQrxLevMin1 = u8InterQrxLevMin * 2 - 140;
+		$("#u8InterQrxLevMin").val(u8InterQrxLevMin1);
+		//
+		var u8InterPmax = parseInt(${record.fieldMap["u8InterPmax"].value});
+		var u8InterPmax1 = u8InterPmax-30;
+		$("#u8InterPmax").val(u8InterPmax1);
+		//
+		var u8ThreshXHigh = parseInt(${record.fieldMap["u8ThreshXHigh"].value});
+		var u8ThreshXHigh1 = u8ThreshXHigh*2;
+		$("#u8ThreshXHigh").val(u8ThreshXHigh1);
+		//
+		var u8ThreshXLow = parseInt(${record.fieldMap["u8ThreshXLow"].value});
+		var u8ThreshXLow1 = u8ThreshXLow*2;
+		$("#u8ThreshXLow").val(u8ThreshXLow1);
+		//
+		var u8InterFreqQqualMin = parseInt(${record.fieldMap["u8InterFreqQqualMin"].value});
+		var u8InterFreqQqualMin1 = u8InterFreqQqualMin-34;
+		$("#u8InterFreqQqualMin").val(u8InterFreqQqualMin1);
+		//
+		function accAdd(arg1,arg2){
+			var r1,r2,m;
+			try{
+				r1 = arg1.toString().split(".")[1].length;	
+			}catch(e){
+				r1 = 0;	
+			}
+			try{
+				r2 = arg2.toString().split(".")[1].length;	
+			}catch(e){
+				r2 = 0;	
+			}
+			m = Math.pow(10,Math.max(r1,r2));
+			return (arg1*m + arg2*m)/m;
+		}
+		function accSub(arg1,arg2){
+			var r1,r2,m,n;
+			try{
+				r1 = arg1.toString().split(".")[1].length;	
+			}catch(e){
+				r1 = 0;	
+			}
+			try{
+				r2 = arg2.toString().split(".")[1].length;	
+			}catch(e){
+				r2 = 0;	
+			}
+			m = Math.pow(10,Math.max(r1,r2));
+			n = (r1>=r2)?r1:r2;
+			return ((arg1*m - arg2*m)/m).toFixed(n);
+		}
+		function accMul(arg1,arg2){
+			var m = 0;
+			var s1 = arg1.toString();
+			var s2 = arg2.toString();
+			try{
+				m += s1.split(".")[1].length	
+			}catch(e){}
+			try{
+				m += s2.split(".")[1].length	
+			}catch(e){}
+			return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
+		}
+		function accDiv(arg1,arg2){
+			var t1 = 0;
+			var t2 = 0;
+			var r1,r2;
+			try{
+				t1 = arg1.toString().split(".")[1].length;
+			}catch(e){}
+			try{
+				t2 = arg2.toString().split(".")[1].length;	
+			}catch(e){}
+			with(Math){
+				r1 = Number(arg1.toString().replace(".",""));
+				r2 = Number(arg2.toString().replace(".",""));
+				return (r1/r2)*pow(10,t2-t1);
+			}
+		}
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>中心频点配置表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_ENB_CTFREQ-2.1.5" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CfgIdx">
+							<td style="width:300px;">中心频点索引(0~254) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;"  value="${record.fieldMap['u8CfgIdx'].value}"  disabled="disabled"/>
+								<input type="hidden"  value="${record.fieldMap['u8CfgIdx'].value}" id="u8CfgIdx"/>
+							</td>
+							<td id="u8CfgIdxError" class="error"></td>
+						</tr>
+						<tr class="u8FreqBandInd">
+							<td>频段指示 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8FreqBandInd">
+									<option value="33">33</option>
+									<option value="34">34</option>
+									<option value="35">35</option>
+									<option value="36">36</option>
+									<option value="37">37</option>
+									<option value="38">38</option>
+									<option value="39">39</option>
+									<option value="40">40</option>
+									<option value="53">53</option>
+									<option value="58">58</option>
+									<option value="61">61</option>
+									<option value="62">62</option>
+									<option value="63">63</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u32CenterFreq">
+							<td>中心频点(<span id="centerFreq1"></span>~<span id="centerFreq2"></span>,步长为0.1)(MHz) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" id="u32CenterFreq"/>
+								<input type="hidden"  id="u32CenterFreq1"/>
+							</td>
+							<td id="u32CenterFreqError" class="error"></td>
+						</tr>
+						<tr class="u8InterQrxLevMin">
+							<td>频间小区重选最小RSRP(-140~-44,步长为2)(dBm) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="u8InterQrxLevMin"/></td>
+							<td id="u8InterQrxLevMinError" class="error"></td>
+						</tr>
+						<tr class="u8InterPmax">
+							<td>频间重选UE最大可用发射功率(-30~33)(dBm) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8InterPmax"/></td>
+							<td id="u8InterPmaxError" class="error"></td>
+						</tr>
+						<tr class="u8tRslInterEutra">
+							<td>频间小区重选判决定时器长度(s) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8tRslInterEutra">
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8ThreshXHigh">
+							<td>重选至高优先级频点的频间Srxlev判决门限(0~62,步长为2)(dB) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8ThreshXHigh"/></td>
+							<td id="u8ThreshXHighError" class="error"></td>
+						</tr>
+						<tr class="u8ThreshXLow">
+							<td>重选至低优先级频点的频间Srxlev判决门限(0~62,步长为2)(dB) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8ThreshXLow"/></td>
+							<td id="u8ThreshXLowError" class="error"></td>
+						</tr>
+						<tr class="u8RslAllowedMeasBW">
+							<td>频间小区重选允许的最大测量带宽 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8RslAllowedMeasBW">
+									<option value="0">1.4M(6RB)</option>
+									<option value="1">3M(15RB)</option>
+									<option value="2">5M(25RB)</option>
+									<option value="3">10M(50RB)</option>
+									<option value="4">15M(75RB)</option>
+									<option value="5">20M(100RB)</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8InterAntPort1">
+							<td>频间邻区是否使用天线端口1的指示 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8InterAntPort1" value="1" id="radio1">是</input>
+								<input type="radio" name="u8InterAntPort1" value="0" style="margin-left:90px;" id="radio2">否</input>
+							</td>
+						</tr>
+						<tr class="u8InterRslPrior">
+							<td>异频频点重选优先级 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8InterRslPrior">
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="ucRslQOffsetFreq">
+							<td>重选时异频频点的个性偏移(dB) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="ucRslQOffsetFreq">
+									<option value="0">-24</option>
+									<option value="1">-22</option>
+									<option value="2">-20</option>
+									<option value="3">-18</option>
+									<option value="4">-16</option>
+									<option value="5">-14</option>
+									<option value="6">-12</option>
+									<option value="7">-10</option>
+									<option value="8">-8</option>
+									<option value="9">-6</option>
+									<option value="10">-5</option>
+									<option value="11">-4</option>
+									<option value="12">-3</option>
+									<option value="13">-2</option>
+									<option value="14">-1</option>
+									<option value="15">0</option>
+									<option value="16">1</option>
+									<option value="17">2</option>
+									<option value="18">3</option>
+									<option value="19">4</option>
+									<option value="20">5</option>
+									<option value="21">6</option>
+									<option value="22">8</option>
+									<option value="23">10</option>
+									<option value="24">12</option>
+									<option value="25">14</option>
+									<option value="26">16</option>
+									<option value="27">18</option>
+									<option value="28">20</option>
+									<option value="29">22</option>
+									<option value="30">24</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8InterFreqQqualMin">
+							<td>频间小区重选最小RSRQ(-34~-3)(dB) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8InterFreqQqualMin"/></td>
+							<td id="u8InterFreqQqualMinError" class="error"></td>
+						</tr>
+						<tr class="u8InterThreshXHighQ">
+							<td>重选至高优先级频点的频间Squal判决门限(0~31)(dB) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  value="${record.fieldMap['u8InterThreshXHighQ'].value}" id="u8InterThreshXHighQ"/></td>
+							<td id="u8InterThreshXHighQError" class="error"></td>
+						</tr>
+						<tr class="u8InterThreshXLowQ">
+							<td>重选至低优先级频点的频间Squal判决门限(0~31)(dB) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  value="${record.fieldMap['u8InterThreshXLowQ'].value}" id="u8InterThreshXLowQ"/></td>
+							<td id="u8InterThreshXLowQError" class="error"></td>
+						</tr>
+						<tr class="ucMeasQOffsetFreq">
+							<td>测量配置中异频频点的个性偏移(dB) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="ucMeasQOffsetFreq">
+									<option value="0">-24</option>
+									<option value="1">-22</option>
+									<option value="2">-20</option>
+									<option value="3">-18</option>
+									<option value="4">-16</option>
+									<option value="5">-14</option>
+									<option value="6">-12</option>
+									<option value="7">-10</option>
+									<option value="8">-8</option>
+									<option value="9">-6</option>
+									<option value="10">-5</option>
+									<option value="11">-4</option>
+									<option value="12">-3</option>
+									<option value="13">-2</option>
+									<option value="14">-1</option>
+									<option value="15">0</option>
+									<option value="16">1</option>
+									<option value="17">2</option>
+									<option value="18">3</option>
+									<option value="19">4</option>
+									<option value="20">5</option>
+									<option value="21">6</option>
+									<option value="22">8</option>
+									<option value="23">10</option>
+									<option value="24">12</option>
+									<option value="25">14</option>
+									<option value="26">16</option>
+									<option value="27">18</option>
+									<option value="28">20</option>
+									<option value="29">22</option>
+									<option value="30">24</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8MeasAllowedMeasBW">
+							<td>连接态频间测量允许的最大测量带宽 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8MeasAllowedMeasBW">
+									<option value="0">1.4M(6RB)</option>
+									<option value="1">3M(15RB)</option>
+									<option value="2">5M(25RB)</option>
+									<option value="3">10M(50RB)</option>
+									<option value="4">15M(75RB)</option>
+									<option value="5">20M(100RB)</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8NbrCellConfig">
+							<td>EUTRAN测量邻区配置 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8NbrCellConfig">
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8InterFreqHOMeasCfg">
+							<td>异频切换测量配置索引(1~128) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8InterFreqHOMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>							
+							</td>
+							<td id="u8InterFreqHOMeasCfgError" class="error"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+</body>
+</html>

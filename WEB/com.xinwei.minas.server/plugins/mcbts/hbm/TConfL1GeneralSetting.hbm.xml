@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer1.L1GeneralSetting"
+		table="mcbts_l1general">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="antennaMask" type="long">
+			<column name="antennaMask" not-null="true"/>
+		</property>
+		<property name="syncSrc" type="long">
+			<column name="syncSrc" not-null="true"/>
+		</property>
+		<property name="gpsOffset" type="long">
+			<column name="gpsOffset" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

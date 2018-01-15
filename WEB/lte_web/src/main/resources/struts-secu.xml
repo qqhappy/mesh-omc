@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 安全管理 -->
+	<package name="secu" extends="struts-base" namespace="/lte">
+		
+		<!-- 登陆拦截器 -->
+		<default-interceptor-ref name="loginInterceptorStack" />
+
+		<!-- 跳转至安全管理左部菜单 -->
+		<action name="turnSecuLeft" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnSecuLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/secu/secuLeft.html</result>
+		</action>
+		
+		<!-- 查询所有用户 -->
+		<action name="queryAllUser" class="com.xinwei.lte.web.enb.action.SecuAction"
+			method="queryAllUser">
+			<result name="success" type="freemarker">/WEB-INF/Manager/secu/content/userList.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/secu/content/error.html</result>
+		</action>
+		
+		<!-- 跳转至新增用户 -->
+		<action name="turnAddUser" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnAddUser">
+			<result name="success" type="freemarker">/WEB-INF/Manager/secu/content/addUser.html</result>
+		</action>
+		
+		<!-- 异步鉴别操作权限 -->
+		<action name="checkPrivilege" class="com.xinwei.lte.web.enb.action.SecuAction"
+			method="checkPrivilege">
+		</action>
+		
+		<!-- 注销用户 -->
+		<action name="kickUser" class="com.xinwei.lte.web.enb.action.SecuAction"
+			method="kickUser">
+		</action>
+		
+		<!-- 查询单个用户 -->
+		<action name="querySingleUser" class="com.xinwei.lte.web.enb.action.SecuAction"
+			method="querySingleUser">
+			<result name="success" type="freemarker">/WEB-INF/Manager/secu/content/modifyUser.html</result>
+		</action>
+		
+		<!-- 跳往查询操作员日志 -->
+		<action name="turnUserLog" class="com.xinwei.lte.web.enb.action.SecuAction"
+			method="turnUserLog">
+			<result name="success" type="freemarker">/WEB-INF/Manager/secu/content/userLog.html</result>
+		</action>
+		
+		<!-- 查询操作员日志 -->
+		<action name="queryUserLog" class="com.xinwei.lte.web.enb.action.SecuAction"
+			method="queryUserLog">
+		</action>
+		
+		<!-- 跳转至修改密码 -->
+		<action name="turnModifyPassWord" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnModifyPassWord">
+			<result name="success" type="freemarker">/WEB-INF/Manager/secu/content/modifyPassWord.html</result>
+		</action>
+		
+		<!-- 握手 -->
+		<action name="handShake" class="com.xinwei.lte.web.enb.action.HandShakeAction"
+			method="handShake">
+		</action>
+
+			<!-- 跳转至主页 -->
+		<action name="turnToLteHome" class="com.xinwei.lte.web.lte.action.LteTurnAction"
+			method="turnToLteHome">
+			<result name="success" type="freemarker">/WEB-INF/Manager/sys/welcome.html</result>
+		</action>
+		
+		<!-- 加载头部 -->
+		<action name="showHead" class="com.xinwei.lte.web.lte.action.LteTurnAction"
+			method="showHead">
+			<result name="success" type="freemarker">/WEB-INF/Manager/sys/head.html</result>
+		</action>
+		
+		<!-- 加载尾部 -->
+		<action name="showFoot" class="com.xinwei.lte.web.lte.action.LteTurnAction"
+			method="showFoot">
+			<result name="success" type="freemarker">/WEB-INF/Manager/sys/foot.html</result>
+		</action>
+		
+		
+		<!-- 查询网管版本 -->
+		<action name="queryEmsVersion" class="com.xinwei.lte.web.QueryEmsVersionAction"
+			method="queryEmsVersion">
+			<result name="success" type="freemarker">/WEB-INF/Manager/sys/emsVersion.html</result>
+		</action>
+		<!-- 跳转至版本管理菜单 -->
+		<action name="turnEmsVersionLeft" class="com.xinwei.lte.web.QueryEmsVersionAction"
+			method="turnEmsVersionLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/sys/emsVersionLeft.html</result>
+		</action>
+		
+	</package>
+</struts>

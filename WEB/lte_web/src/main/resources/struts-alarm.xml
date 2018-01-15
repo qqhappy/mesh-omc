@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 故障管理  -->
+	<package name="alarm" extends="struts-base" namespace="/lte">
+		
+		<!-- 登陆拦截器 -->
+		<default-interceptor-ref name="loginInterceptorStack" />
+
+		<!-- 跳转至故障管理左部菜单 -->
+		<action name="turnAlarmLeft" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnAlarmLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/alarm/alarmLeft.html</result>
+		</action>
+		
+		<!-- 跳转至单基站当前告警页面 -->
+		<action name="turnSingleCurrentAlarm" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnSingleCurrentAlarm">
+			<result name="success" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/singleCurrentAlarm.html</result>
+		</action>		
+		
+		<!-- 跳转至单基站历史告警页面 -->
+		<action name="turnSingleHistoryAlarm" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnSingleHistoryAlarm">
+			<result name="success" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/singleHistoryAlarm.html</result>
+		</action>	
+			
+		<!-- 跳转至当前告警页面 -->
+		<action name="turnCurrentAlarm" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnCurrentAlarm">
+			<result name="success" type="freemarker">/WEB-INF/Manager/alarm/content/enbCurrentAlarm.html</result>
+		</action>
+		
+		<!-- 跳转至历史告警页面 -->
+		<action name="turnHistoryAlarm" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnHistoryAlarm">
+			<result name="success" type="freemarker">/WEB-INF/Manager/alarm/content/enbHistoryAlarm.html</result>
+		</action>
+		
+		<!-- 查询当前告警 -->
+		<action name="queryEnbCurrentAlarm"
+			class="com.xinwei.lte.web.enb.action.QueryEnbAlarmAction" method="queryEnbCurrentAlarm">
+		</action>
+		
+		<!-- 查询历史告警 -->
+		<action name="queryEnbHistoryAlarm"
+			class="com.xinwei.lte.web.enb.action.QueryEnbAlarmAction" method="queryEnbHistoryAlarm">
+		</action>
+		
+		<!-- 告警同步 -->
+		<action name="syncCurrentAlarm"
+			class="com.xinwei.lte.web.enb.action.QueryEnbAlarmAction" method="syncCurrentAlarm">
+		</action>		
+		
+		<!-- 根据moId查询基站类型-->
+		<action name="queryEnbTypeOfMoId"
+			class="com.xinwei.lte.web.enb.action.QueryEnbAlarmAction" method="queryEnbTypeOfMoId">
+		</action>
+		
+		<!--異步黑匣子文件分析-->
+		<action name="getBlackBoxFile" class="com.xinwei.lte.web.enb.action.EnbBlackBoxFileAction" method="getBlackBoxFile">
+			<result name="success" type="freemarker">/WEB-INF/Manager/alarm/content/blackboxfile.html</result>
+		</action>
+		<action name="getPagingDataAction" class="com.xinwei.lte.web.enb.action.EnbBlackBoxFileAction" method="getPagingDataAction">			
+		</action>
+		<action name="downLoadBlackBoxFile" class="com.xinwei.lte.web.enb.action.EnbBlackBoxFileAction" method="downLoadBlackBoxFile">			
+		</action>
+		<action name="batchDownloadBlackBoxFile" class="com.xinwei.lte.web.enb.action.EnbBlackBoxFileAction" method="batchDownloadBlackBoxFile">			
+		</action>
+		<!-- 基站健康检查 -->
+		<action name="getHealthInspectFile" class="com.xinwei.lte.web.enb.action.EnbHealthInspectAction" method="getHealthInspectFile">
+			<result name="success" type="freemarker">/WEB-INF/Manager/alarm/content/enbHealthInspect.html</result>
+		</action>
+		
+		<action name="checkHealth" class="com.xinwei.lte.web.enb.action.EnbHealthInspectAction" method="checkHealth">
+		</action>
+		
+		<action name="queryCheckFile" class="com.xinwei.lte.web.enb.action.EnbHealthInspectAction" method="queryCheckFile">
+		</action>
+		
+		<action name="downLoadHealthFile" class="com.xinwei.lte.web.enb.action.EnbHealthInspectAction" method="downLoadHealthFile">
+		</action>
+		
+		<!-- 导出告警 -->
+		<action name="exportAlarmData" class="com.xinwei.lte.web.enb.action.ExportAlarmAction" method="exportAlarmData">
+		</action>
+		
+	</package>
+</struts>

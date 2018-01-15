@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_cel_resel.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){ 
+			$("#t_cel_resel1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CId">小区标识</th>'
+					+'<th scope="col" class="u8CellBarred">小区禁止接入指示</th>'
+					+'<th scope="col" class="u8IntraFReselInd">同频小区重选指示</th>'
+					+'<th scope="col" class="u8SelQrxLevMin">小区选择最小RSRP(dBm)</th>' 
+					+'<th scope="col" class="u8QrxLevMinOfst">小区选择最小RSRP偏移(dB)</th>'
+					+'<th scope="col" class="u8AcBarEmerCall">紧急呼叫的接入参数</th>'
+					+'<th scope="col" class="u8AcProbFactorSig">信令接入概率因子</th>'
+					+'<th scope="col" class="u8AcBarTimeSig">信令禁止接入时间(s)</th>'
+					+'<th scope="col" class="au8AcBarListSig">信令接入等级的接入参数</th>'
+					+'<th scope="col" class="u8AcProbFactOrig">呼叫接入概率因子</th>'
+					+'<th scope="col" class="u8AcBarTimeOrig">呼叫禁止接入时间(s)</th>'
+					+'<th scope="col" class="au8AcBarListOrig">呼叫接入等级的接入参数</th>'
+					+'<th scope="col" class="u8Qhyst">服务小区重选迟滞(dB)</th>'
+					+'<th scope="col" class="u8SNintraSrchPre">Snonintrasearch参数配置标识</th>'
+					+'<th scope="col" class="u8SNintraSrch">异频同/低优先级Srxlev测量判决门限(dB)</th>'
+					+'<th scope="col" class="u8ThreshSvrLow">重选至低优先级频点的服务小区Srxlev判决门限(dB)</th>'
+					+'<th scope="col" class="u8IntraPmax">频内重选UE最大可用发射功率(dBm)</th>'
+					+'<th scope="col" class="u8IntraReselPrio">频内小区重选优先级</th>'
+					+'<th scope="col" class="u8IntraQrxLevMin">频内小区重选最小RSRP(dBm)</th>'
+					+'<th scope="col" class="u8SIntraSrchPre">Sintrasearch配置标识</th>'
+					+'<th scope="col" class="u8SIntraSrch">同频Srxlev测量判决门限(dB)</th>'
+					+'<th scope="col" class="u8tRslIntraEutra">频内小区重选判决定时器长度(s)</th>'
+					+'<th scope="col" class="u8CellSelQqualMin">小区选择最小RSRQ(dB)</th>'
+					+'<th scope="col" class="u8Qqualminoffset">小区选择最小RSRQ偏移(dB)</th>'
+					+'<th scope="col" class="u8SIntraSrchQ">同频Squal测量判决门限(dB)</th>'
+					+'<th scope="col" class="u8SNintraSrchQ">异频同/低优先级Squal测量判决门限(dB)</th>'
+					+'<th scope="col" class="u8IntraFreqQqualMin">频内小区重选最小RSRQ(dB)</th>'
+					+'<th scope="col" class="u8ThreshSrvLowQ">重选至低优先级频点的服务小区Squal判决门限(dB)</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+// 					+'<th scope="col" class="justForView" width="60px;">删除</th>' 
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th class="justForView" scope="row"></th>'
+					+'<td class="u8CId">暂无相关数据</td>'
+					+'<td class="u8CellBarred"></td>'
+					+'<td class="u8IntraFReselInd"></td>'
+					+'<td class="u8SelQrxLevMin"></td>'
+					+'<td class="u8QrxLevMinOfst"></td>'
+					+'<td class="u8AcBarEmerCall"></td>'
+					+'<td class="u8AcProbFactorSig"></td>'
+					+'<td class="u8AcBarTimeSig"></td>'
+					+'<td class="au8AcBarListSig"></td>'
+					+'<td class="u8AcProbFactOrig"></td>'
+					+'<td class="u8AcBarTimeOrig"></td>'
+					+'<td class="au8AcBarListOrig"></td>'
+					+'<td class="u8Qhyst"></td>'
+					+'<td class="u8SNintraSrchPre"></td>'
+					+'<td class="u8SNintraSrch"></td>'
+					+'<td class="u8ThreshSvrLow"></td>'
+					+'<td class="u8IntraPmax"></td>'
+					+'<td class="u8IntraReselPrio"></td>'
+					+'<td class="u8IntraQrxLevMin"></td>'
+					+'<td class="u8SIntraSrchPre"></td>'
+					+'<td class="u8SIntraSrch"></td>'
+					+'<td class="u8tRslIntraEutra"></td>'
+					+'<td class="u8CellSelQqualMin"></td>'
+					+'<td class="u8Qqualminoffset"></td>'
+					+'<td class="u8SIntraSrchQ"></td>'
+					+'<td class="u8SNintraSrchQ"></td>'
+					+'<td class="u8IntraFreqQqualMin"></td>'
+					+'<td class="u8ThreshSrvLowQ"></td>'		
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+// 					+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_CEL_RESEL-1.1.5&referTable=T_CEL_PARA";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区重选参数配置表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+<!-- 		<li><label></label><input type="button" id="newAdd" value="新增"/></li> -->
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+<!-- 		<li><label></label><input type="button" id="delete" value="批量删除"/></li> -->
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_cel_resel_div">  -->
+			<div style="width:5300px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_cel_resel1"  class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th> 
+					<th scope="col" class="u8CId">小区标识</th>
+					<th scope="col" class="u8CellBarred">小区禁止接入指示</th>
+					<th scope="col" class="u8IntraFReselInd">同频小区重选指示</th>
+					<th scope="col" class="u8SelQrxLevMin">小区选择最小RSRP(dBm)</th> 
+					<th scope="col" class="u8QrxLevMinOfst">小区选择最小RSRP偏移(dB)</th>
+					<th scope="col" class="u8AcBarEmerCall">紧急呼叫的接入参数</th>
+					<th scope="col" class="u8AcProbFactorSig">信令接入概率因子</th>
+					<th scope="col" class="u8AcBarTimeSig">信令禁止接入时间(s)</th>
+					<th scope="col" class="au8AcBarListSig">信令接入等级的接入参数</th>
+					<th scope="col" class="u8AcProbFactOrig">呼叫接入概率因子</th>
+					<th scope="col" class="u8AcBarTimeOrig">呼叫禁止接入时间(s)</th>
+					<th scope="col" class="au8AcBarListOrig">呼叫接入等级的接入参数</th>
+					<th scope="col" class="u8Qhyst">服务小区重选迟滞(dB)</th>
+					<th scope="col" class="u8SNintraSrchPre">Snonintrasearch参数配置标识</th>
+					<th scope="col" class="u8SNintraSrch">异频同/低优先级Srxlev测量判决门限(dB)</th>
+					<th scope="col" class="u8ThreshSvrLow">重选至低优先级频点的服务小区Srxlev判决门限(dB)</th>
+					<th scope="col" class="u8IntraPmax">频内重选UE最大可用发射功率(dBm)</th>
+					<th scope="col" class="u8IntraReselPrio">频内小区重选优先级</th>
+					<th scope="col" class="u8IntraQrxLevMin">频内小区重选最小RSRP(dBm)</th>
+					<th scope="col" class="u8SIntraSrchPre">Sintrasearch配置标识</th>
+					<th scope="col" class="u8SIntraSrch">同频Srxlev测量判决门限(dB)</th>
+					<th scope="col" class="u8tRslIntraEutra">频内小区重选判决定时器长度(s)</th>
+					<th scope="col" class="u8CellSelQqualMin">小区选择最小RSRQ(dB)</th>
+					<th scope="col" class="u8Qqualminoffset">小区选择最小RSRQ偏移(dB)</th>
+					<th scope="col" class="u8SIntraSrchQ">同频Squal测量判决门限(dB)</th>
+					<th scope="col" class="u8SNintraSrchQ">异频同/低优先级Squal测量判决门限(dB)</th>
+					<th scope="col" class="u8IntraFreqQqualMin">频内小区重选最小RSRQ(dB)</th>
+					<th scope="col" class="u8ThreshSrvLowQ">重选至低优先级频点的服务小区Squal判决门限(dB)</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 					<th scope="col" class="justForView" width="60px;">删除</th> -->
+				  </tr>
+				  <#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CId">${record.fieldMap["u8CId"].value!}</td>
+						<td class="u8CellBarred">${record.fieldMap["u8CellBarred"].value!}</td>
+						<td class="u8IntraFReselInd">${record.fieldMap["u8IntraFReselInd"].value!}</td>
+						<td class="u8SelQrxLevMin">${record.fieldMap["u8SelQrxLevMin"].value!}</td>
+						<td class="u8QrxLevMinOfst">${record.fieldMap["u8QrxLevMinOfst"].value!}</td>
+						<td class="u8AcBarEmerCall">${record.fieldMap["u8AcBarEmerCall"].value!}</td>
+						<td class="u8AcProbFactorSig">${record.fieldMap["u8AcProbFactorSig"].value!}</td>
+						<td class="u8AcBarTimeSig">${record.fieldMap["u8AcBarTimeSig"].value!}</td>
+						<td class="au8AcBarListSig">${record.fieldMap["au8AcBarListSig"].value!}</td>
+						<td class="u8AcProbFactOrig">${record.fieldMap["u8AcProbFactOrig"].value!}</td>
+						<td class="u8AcBarTimeOrig">${record.fieldMap["u8AcBarTimeOrig"].value!}</td>
+						<td class="au8AcBarListOrig">${record.fieldMap["au8AcBarListOrig"].value!}</td>
+						<td class="u8Qhyst">${record.fieldMap["u8Qhyst"].value!}</td>
+						<td class="u8SNintraSrchPre">${record.fieldMap["u8SNintraSrchPre"].value!}</td>
+						<td class="u8SNintraSrch">${record.fieldMap["u8SNintraSrch"].value!}</td>
+						<td class="u8ThreshSvrLow">${record.fieldMap["u8ThreshSvrLow"].value!}</td>
+						<td class="u8IntraPmax">${record.fieldMap["u8IntraPmax"].value!}</td>
+						<td class="u8IntraReselPrio">${record.fieldMap["u8IntraReselPrio"].value!}</td>
+						<td class="u8IntraQrxLevMin">${record.fieldMap["u8IntraQrxLevMin"].value!}</td>
+						<td class="u8SIntraSrchPre">${record.fieldMap["u8SIntraSrchPre"].value!}</td>
+						<td class="u8SIntraSrch">${record.fieldMap["u8SIntraSrch"].value!}</td>
+						<td class="u8tRslIntraEutra">${record.fieldMap["u8tRslIntraEutra"].value!}</td>
+						<td class="u8CellSelQqualMin">${record.fieldMap["u8CellSelQqualMin"].value!}</td>
+						<td class="u8Qqualminoffset">${record.fieldMap["u8Qqualminoffset"].value!}</td>
+						<td class="u8SIntraSrchQ">${record.fieldMap["u8SIntraSrchQ"].value!}</td>
+						<td class="u8SNintraSrchQ">${record.fieldMap["u8SNintraSrchQ"].value!}</td>
+						<td class="u8IntraFreqQqualMin">${record.fieldMap["u8IntraFreqQqualMin"].value!}</td>
+						<td class="u8ThreshSrvLowQ">${record.fieldMap["u8ThreshSrvLowQ"].value!}</td>
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+<!-- 			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td> -->
+					</tr>
+					 </#list>
+				</table>
+			</div>
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

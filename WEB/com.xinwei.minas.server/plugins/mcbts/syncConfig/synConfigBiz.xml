@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<SyncConfigBizCollection>
+	<btsMeta type="0">
+		<custom>
+			<!-- configServiceName 填写mcbts-service.xml中定义的service bean -->
+			<configServiceName name="mcBtsBasicService" desc="mcbts_basic_info" remark="基站信息" />
+			<configServiceName name="channelComparableModeService" desc="mcbts_channelcomparablemode" remark="基站兼容模式配置" />
+			<configServiceName name="perfLogConfigService" desc="mcbts_perfLog" remark="性能日志" />
+			<configServiceName name="calibrationDataService" desc="calibrationDataService" remark="校准数据"/>
+			<configServiceName name="aCLService" desc="ACL" remark="ACL配置" />
+			<configServiceName name="resManagementService" desc="res_management" remark="无线资源管理" />
+			<configServiceName name="gpsDataService" desc="mcbts_gpsData" remark="GPS管理消息" />
+			<configServiceName name="l1GeneralSettingService" desc="mcbts_l1general" remark="L1配置" />
+			<configServiceName name="calibrationTypeService" desc="mcbts_calibtype" remark="校准类型" />
+			<configServiceName name="loadBalanceService" desc="mcbts_load_balance" remark="负载均衡" />
+			<configServiceName name="weakFaultService" desc="mcbts_weak_fault" remark="故障弱化" />
+			<configServiceName name="sAGParamService" desc="mcbts_backup_sag" remark="备份SAG" />
+			<configServiceName name="repeaterService" desc="mcbts_repeater" remark="直放站" />
+			<configServiceName name="vlanService" desc="mcbts_vlan" remark="Vlan配置" />
+			<configServiceName name="airlinkService" desc="mcbts_airlink" remark="空中链路" />
+			<configServiceName name="rcpeService" desc="mcbts_rcpe" remark="RCPE配置" />
+			<configServiceName name="wcpeService" desc="mcbts_wcpe" remark="WCPE配置" />
+			<configServiceName name="terminalParamService" desc="mcbts_ut_biz_param" remark="终端业务参数配置" />
+			<configServiceName name="tosConfService" desc="mcbts_service_level" remark="服务等级配置" />
+			<configServiceName name="sysFreqService" desc="t_conf_sysFreqConfig" remark="系统有效频点集配置" />
+			<configServiceName name="dataPackageFilterService" desc="dataPkgFilterConfig" remark="数据包过滤准则配置" />
+			<configServiceName name="sdmaConfigService" desc="sdma" remark="SDMA" />
+			<configServiceName name="neighborService" desc="mcbts_neighbour" remark="邻接表配置" />
+			<configServiceName name="switchOptimizeService" desc="mcbts_switchoptimize_down" remark="切换优化配置下发" />
+			<configServiceName name="preventBroadcastService" desc="mcbts_preventbroadcast" remark="防广播/组播包攻击" />
+			<configServiceName name="btsReleaseVoiceTimerService" desc="mcbts_btsreleasevoicetimer" remark="基站释放语音定时器" />
+		</custom>
+		<universal>
+			<!-- configBizName 填写common-ui.xml中定义的 <biz name= > 字段 -->
+			<configBizName name="mcbts_telnet" desc="mcbts_telnet" remark="telnet配置" />
+			<configBizName name="mcbts_tempWatch" desc="mcbts_tempWatch" remark="温度监控" />
+			<configBizName name="mcbts_n1config" desc="mcbts_n1config" remark="N=1参数配置" />
+			<configBizName name="mcbts_dataoperation" desc="mcbts_dataoperation" remark="数据服务" />
+			<configBizName name="mcbts_ethernet2opration" desc="mcbts_ethernet2opration" remark="网口2配置" />
+			<configBizName name="mcbts_ipv6operation" desc="mcbts_ipv6operation" remark="IPv6配置" />
+			<configBizName name="mcbts_trunkConfig" desc="mcbts_trunkConfig" remark="集群配置" />
+			<configBizName name="mcbts_chargeParamConfig" desc="mcbts_chargeParamConfig" remark="计费策略" />
+			<configBizName name="mcbts_DBSServer" desc="mcbts_DBSServer" remark="DBS组播" />
+			<configBizName name="mcbts_PoticalFrequ" desc="mcbts_PoticalFrequ" remark="关射频配置" />
+			<configBizName name="mcbts_rangingConfig" desc="mcbts_rangingConfig" remark="辅助测距信道启用配置(远距离Ranging配置)" />
+			<configBizName name="t_conf_alg_param" desc="t_conf_alg_param" remark="切换算法参数配置" />
+			
+			<configBizName name="mcbts_GPSClock" desc="mcbts_GPSClock" remark="GPS时钟同步" /> 
+			
+			<!--  <configBizName name="mcbts_energySaving" desc="mcbts_energySaving" remark="省电参数" />  -->
+		</universal>
+	</btsMeta>
+	<btsMeta type="20">
+		<custom>
+			<!-- configServiceName 填写mcbts-service.xml中定义的service bean -->
+			<configServiceName name="mcBtsBasicService" desc="mcbts_basic_info" remark="基站信息" />
+			<configServiceName name="channelComparableModeService" desc="mcbts_channelcomparablemode" remark="基站兼容模式配置" />
+			<configServiceName name="perfLogConfigService" desc="mcbts_perfLog" remark="性能日志" />
+			<configServiceName name="calibrationDataService" desc="calibrationDataService" remark="校准数据"/>
+			<configServiceName name="aCLService" desc="ACL" remark="ACL配置" />
+			<configServiceName name="resManagementService" desc="res_management" remark="无线资源管理" />
+			<configServiceName name="gpsDataService" desc="mcbts_gpsData" remark="GPS管理消息" />
+			<configServiceName name="l1GeneralSettingService" desc="mcbts_l1general" remark="L1配置" />
+			<configServiceName name="calibrationTypeService" desc="mcbts_calibtype" remark="校准类型" />
+			<configServiceName name="loadBalanceService" desc="mcbts_load_balance" remark="负载均衡" />
+			<configServiceName name="weakFaultService" desc="mcbts_weak_fault" remark="故障弱化" />
+			<configServiceName name="sAGParamService" desc="mcbts_backup_sag" remark="备份SAG" />
+			<configServiceName name="repeaterService" desc="mcbts_repeater" remark="直放站" />
+			<configServiceName name="vlanService" desc="mcbts_vlan" remark="Vlan配置" />
+			<configServiceName name="airlinkService" desc="mcbts_airlink" remark="空中链路" />
+			<configServiceName name="rcpeService" desc="mcbts_rcpe" remark="RCPE配置" />
+			<configServiceName name="wcpeService" desc="mcbts_wcpe" remark="WCPE配置" />
+			<configServiceName name="terminalParamService" desc="mcbts_ut_biz_param" remark="终端业务参数配置" />
+			<configServiceName name="tosConfService" desc="mcbts_service_level" remark="服务等级配置" />
+			<configServiceName name="sysFreqService" desc="t_conf_sysFreqConfig" remark="系统有效频点集配置" />
+			<configServiceName name="dataPackageFilterService" desc="dataPkgFilterConfig" remark="数据包过滤准则配置" />
+			<configServiceName name="sdmaConfigService" desc="sdma" remark="SDMA" />
+			<configServiceName name="neighborService" desc="mcbts_neighbour" remark="邻接表配置" />
+			<configServiceName name="switchOptimizeService" desc="mcbts_switchoptimize_down" remark="切换优化配置下发" />
+			<configServiceName name="preventBroadcastService" desc="mcbts_preventbroadcast" remark="防广播/组播包攻击" />
+			<configServiceName name="btsReleaseVoiceTimerService" desc="mcbts_btsreleasevoicetimer" remark="基站释放语音定时器" />
+		</custom>
+		<universal>
+			<!-- configBizName 填写common-ui.xml中定义的 <biz name= > 字段 -->
+			<configBizName name="mcbts_telnet" desc="mcbts_telnet" remark="telnet配置" />
+			<configBizName name="mcbts_tempWatch" desc="mcbts_tempWatch" remark="温度监控" />
+			<configBizName name="mcbts_n1config" desc="mcbts_n1config" remark="N=1参数配置" />
+			<configBizName name="mcbts_dataoperation" desc="mcbts_dataoperation" remark="数据服务" />
+			<configBizName name="mcbts_ethernet2opration" desc="mcbts_ethernet2opration" remark="网口2配置" />
+			<configBizName name="mcbts_ipv6operation" desc="mcbts_ipv6operation" remark="IPv6配置" />
+			<configBizName name="mcbts_antenna_lock" desc="mcbts_antenna_lock" remark="天线闭锁配置" />
+			<configBizName name="microbts_signal_send" desc="microbts_signal_send" remark="信号发送方式配置" />
+			<configBizName name="mcbts_trunkConfig" desc="mcbts_trunkConfig" remark="集群配置" />
+			<configBizName name="mcbts_chargeParamConfig" desc="mcbts_chargeParamConfig" remark="计费策略" />
+			<configBizName name="mcbts_DBSServer" desc="mcbts_DBSServer" remark="DBS组播" />
+			<configBizName name="mcbts_PoticalFrequ" desc="mcbts_PoticalFrequ" remark="关射频配置" />
+			<configBizName name="mcbts_rangingConfig" desc="mcbts_rangingConfig" remark="辅助测距信道启用配置(远距离Ranging配置)" />
+			<configBizName name="t_conf_alg_param" desc="t_conf_alg_param" remark="切换算法参数配置" />
+			
+			<configBizName name="mcbts_GPSClock" desc="mcbts_GPSClock" remark="GPS时钟同步" /> 
+			
+			<!--  <configBizName name="mcbts_energySaving" desc="mcbts_energySaving" remark="省电参数" />  -->
+		</universal>
+	</btsMeta>
+	<btsMeta type="30">
+		<custom>
+			<!-- configServiceName 填写mcbts-service.xml中定义的service bean -->
+			<configServiceName name="mcBtsBasicService" desc="mcbts_basic_info" remark="基站信息" />
+			<configServiceName name="channelComparableModeService" desc="mcbts_channelcomparablemode" remark="基站兼容模式配置" />
+			<configServiceName name="perfLogConfigService" desc="mcbts_perfLog" remark="性能日志" />
+			<configServiceName name="calibrationDataService" desc="calibrationDataService" remark="校准数据"/>
+			<configServiceName name="aCLService" desc="ACL" remark="ACL配置" />
+			<configServiceName name="resManagementService" desc="res_management" remark="无线资源管理" />
+			<configServiceName name="gpsDataService" desc="mcbts_gpsData" remark="GPS管理消息" />
+			<configServiceName name="l1GeneralSettingService" desc="mcbts_l1general" remark="L1配置" />
+			<configServiceName name="calibrationTypeService" desc="mcbts_calibtype" remark="校准类型" />
+			<configServiceName name="loadBalanceService" desc="mcbts_load_balance" remark="负载均衡" />
+			<configServiceName name="weakFaultService" desc="mcbts_weak_fault" remark="故障弱化" />
+			<configServiceName name="sAGParamService" desc="mcbts_backup_sag" remark="备份SAG" />
+			<configServiceName name="repeaterService" desc="mcbts_repeater" remark="直放站" />
+			<configServiceName name="vlanService" desc="mcbts_vlan" remark="Vlan配置" />
+			<configServiceName name="airlinkService" desc="mcbts_airlink" remark="空中链路" />
+			<configServiceName name="rcpeService" desc="mcbts_rcpe" remark="RCPE配置" />
+			<configServiceName name="wcpeService" desc="mcbts_wcpe" remark="WCPE配置" />
+			<configServiceName name="terminalParamService" desc="mcbts_ut_biz_param" remark="终端业务参数配置" />
+			<configServiceName name="tosConfService" desc="mcbts_service_level" remark="服务等级配置" />
+			<configServiceName name="sysFreqService" desc="t_conf_sysFreqConfig" remark="系统有效频点集配置" />
+			<configServiceName name="dataPackageFilterService" desc="dataPkgFilterConfig" remark="数据包过滤准则配置" />
+			<configServiceName name="sdmaConfigService" desc="sdma" remark="SDMA" />
+			<configServiceName name="neighborService" desc="mcbts_neighbour" remark="邻接表配置" />
+			<configServiceName name="switchOptimizeService" desc="mcbts_switchoptimize_down" remark="切换优化配置下发" />
+			<configServiceName name="preventBroadcastService" desc="mcbts_preventbroadcast" remark="防广播/组播包攻击" />
+			<configServiceName name="btsReleaseVoiceTimerService" desc="mcbts_btsreleasevoicetimer" remark="基站释放语音定时器" />
+			<!-- 下边的业务为光纤拉远独有的 -->
+			<configServiceName name="remoteBtsService" desc="remoteBtsService" remark="远距离基站配置" />
+			<configServiceName name="mbmsBtsService" desc="mbmsBtsService" remark="同播基站配置" />
+		</custom>
+		<universal>
+			<!-- configBizName 填写common-ui.xml中定义的 <biz name= > 字段 -->
+			<configBizName name="mcbts_telnet" desc="mcbts_telnet" remark="telnet配置" />
+			<configBizName name="mcbts_tempWatch" desc="mcbts_tempWatch" remark="温度监控" />
+			<configBizName name="mcbts_n1config" desc="mcbts_n1config" remark="N=1参数配置" />
+			<configBizName name="mcbts_dataoperation" desc="mcbts_dataoperation" remark="数据服务" />
+			<configBizName name="mcbts_ethernet2opration" desc="mcbts_ethernet2opration" remark="网口2配置" />
+			<configBizName name="mcbts_ipv6operation" desc="mcbts_ipv6operation" remark="IPv6配置" />
+			<configBizName name="mcbts_trunkConfig" desc="mcbts_trunkConfig" remark="集群配置" />
+			<configBizName name="mcbts_chargeParamConfig" desc="mcbts_chargeParamConfig" remark="计费策略" />
+			<configBizName name="mcbts_DBSServer" desc="mcbts_DBSServer" remark="DBS组播" />
+			<configBizName name="mcbts_PoticalFrequ" desc="mcbts_PoticalFrequ" remark="关射频配置" />
+			<configBizName name="mcbts_rangingConfig" desc="mcbts_rangingConfig" remark="辅助测距信道启用配置(远距离Ranging配置)" />
+			<configBizName name="t_conf_alg_param" desc="t_conf_alg_param" remark="切换算法参数配置" />
+			<configBizName name="mcbts_lightAlarmConfig" desc="mcbts_lightAlarmConfig" remark="光模块告警门限配置" />
+			<configBizName name="mcbts_GPSClock" desc="mcbts_GPSClock" remark="GPS时钟同步" /> 
+
+			<!-- <configBizName name="mcbts_energySaving" desc="mcbts_energySaving" remark="省电参数" /> -->
+		</universal>
+	</btsMeta>
+</SyncConfigBizCollection>

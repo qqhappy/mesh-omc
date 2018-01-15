@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>系统配置 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>系统全局配置</a>
+	</div>
+	<div class="ltePageConf changeRowColor">
+		<table width="100%">
+		  <tr>
+			<th scope="col" class="sys_config_conf_midd">SIP 系统地址ID</th>  
+			<th scope="col" class="sys_config_conf_midd">SIP 端口</th>
+			<th scope="col" class="sys_config_conf_tright">网络标识</th>
+			<th scope="col" class="sys_config_conf_tright">MME组ID</th>
+			<th scope="col" class="sys_config_conf_tright">MME组编码</th>
+			<th scope="col" class="sys_config_conf_midd">MME 系统地址ID</th>
+			<th scope="col" class="sys_config_conf_left">RAN地址ID</th>
+			<th scope="col" class="sys_config_conf_midd">PDN地址ID</th>
+			<th scope="col" class="sys_config_conf_midd2">APN</th>
+			<th scope="col" class="sys_config_conf_midd">S1端口号</th>
+			<th scope="col" class="sys_config_conf_midd">运营商主密钥</th>
+			<th scope="col" class="sys_config_conf_midd">最大通话时长</th>
+			<th scope="col" class="sys_config_conf_left">是否记录音频</th>
+			<th scope="col" class="sys_config_conf_left">是否记录视频</th>
+			<th scope="col" class="sys_config_conf_midd">是否保存IM消息</th>
+			<th scope="col" class="">修改</th>
+		  </tr>
+		  <#list sysAllConfigModelList! as sysAllConfigModel>
+		  	  <tr>
+				<td>${sysAllConfigModel.sysconf_sipip_id!}</td>
+				<td>${sysAllConfigModel.sysconf_sipport!}</td>
+				<td>${sysAllConfigModel.sysconf_plmn!}</td>
+				<td>${sysAllConfigModel.sysconf_groupid!}</td>
+				<td>${sysAllConfigModel.sysconf_mmecode!}</td>
+				<td>${sysAllConfigModel.sysconf_mmeip_id!}</td>
+				<td>${sysAllConfigModel.sysconf_ranip_id!}</td>
+				<td>${sysAllConfigModel.sysconf_pdnip_id!}</td>
+				<td>${sysAllConfigModel.sysconf_apn!}</td>
+				<td>${sysAllConfigModel.sysconf_mmes1_port!}</td>
+				<td>${sysAllConfigModel.sysconf_master_key!}</td>
+				<td>${sysAllConfigModel.sysconf_maxduration!}</td>
+				<#if sysAllConfigModel.sysconf_decordaudio! == 0>
+					<td>NO</td>	
+				<#else>
+				    <td>YES</td>
+				</#if>
+				<#if sysAllConfigModel.sysconf_decordvedio! == 0>
+					<td>NO</td>	
+				<#else>
+				    <td>YES</td>
+				</#if>
+				<#if sysAllConfigModel.sysconf_decordim! == 0>
+					<td>NO</td>	
+				<#else>
+				    <td>YES</td>
+				</#if>
+				<td><input type="button" class="modifyBtn" value="修改" onclick="window.location.href='${base}/lte/toModifyWholeConfig.do?sysAllConfigModel.sysconf_sipip_id=${sysAllConfigModel.sysconf_sipip_id!}'"/></td>
+			  </tr>
+		  </#list>
+		</table>
+		</div>
+	
+</body>
+</html>

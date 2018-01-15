@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		window.setInterval("reload()",5000);
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+				
+		/* //重连
+		$("#reLink").click(function(){
+			var valTest = /^[1-9][0-9]*$/;
+			var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+			var addr = $("#addr").val();
+			var port = $("#port").val();
+
+			if(!ipTest.test(addr)){
+				return false;
+			}
+			if(!valTest.test(port)){
+				return false;
+			}
+			
+			$.ajax({
+				type:"post",
+				url:"lte/relinkWebMaster.do",
+				data:"webMasterModel.addr="+addr+
+					"&webMasterModel.port="+port,
+				dataType:"text",
+				success:function(data){
+					alert(data);
+					var result = $.trim(data);
+					if(result == "success"){
+						alert("重连成功");
+
+						//window.location="lte/turntoSysAddress.do?querysystemAddressModel.ip_id="+queryip_id+"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+					}else{
+						alert("重连失败");
+					}
+				}
+			});
+		});*/
+		
+		//验证端口 
+		$("#port").blur(function(){
+			var valTest = /^[1-9]\d*$/;
+			var ip_id = $.trim($(this).val());
+			if((!valTest.test(ip_id))){
+				$(".portJudge").html("端口取值需为正整数");
+				$(".portJudge").css("color","red");
+				//$(this).val("");
+			}else{
+				$(".portJudge").html("");
+				//$(".judgeImsi").css("color","");
+			}
+			
+		});
+		
+		/* //验证地址
+		$("#addr").blur(function(){
+			var ip_addr = $.trim($(this).val());
+			ipTest(ip_addr,"IP地址格式错误","addrJudge");
+		}); */
+		
+	})
+function reload(){
+	var basePath =  $("#basePath").val();
+	$.ajax({
+		type:'post',
+		url:basePath+'/lte/checkLink.do',
+		dataType:'json',
+		success:function(data){
+			if(data == null){
+				alert("消息未返回");
+				return;
+			}
+			if(!sessionsCheck(data,basePath)){
+				return ;
+			}
+			
+			var status = data.status;
+			
+			switch(status){
+				case 0:
+					$("#statusTd").html('<span style="color:red;">未连接</span>');
+					break;
+				default:
+					$("#statusTd").html('<span style="color:green;">已连接</span>');
+			}
+		}		
+	});
+}
+function ipTest(testVal,content,td){
+	var valTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;	
+	if(!valTest.test(testVal)){
+		$("."+td+"").html(content);
+		$("."+td+"").css("color","red");
+	}else{
+		$("."+td+"").html("");
+		//$(".judgeImsi").css("color","");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>网管配置</a>
+		</div>
+		
+		<div class="enbPage">
+			<div class="toolBar" style="height:24px;">
+			</div>
+			<table width="100%"  class="enbTable changeRowColor">
+				<thead>
+					<tr>
+						<th width="30%">地址</th>
+						<th width="30%">端口</th>
+						<th>状态</th>
+						<th style="width:60px;">配置</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>${webMasterModel.addr!}</td>
+						<td>${webMasterModel.port!}</td>
+						<td id="statusTd"><#if webMasterModel.status == "0">
+								<span style="color:red;">未连接</span>
+							<#else>
+								<span style="color:green;">已连接</span>
+							</#if>
+						</td>
+						<td><a href="${base}/lte/turntoWebMasterModify.do?webMasterModel.addr=${webMasterModel.addr!}&webMasterModel.port=${webMasterModel.port!}&webMasterModel.status=${webMasterModel.status!}">配置</a></td>
+					</tr>
+				</tbody>
+			</table>
+		<!-- <form action="#" >
+			<div class="clearfix wrap ad_Input">
+				<div class="title">MME配置</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>地址 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:200px;" id="addr" value="${webMasterModel.addr!}"/></td>
+							<td class="addrJudge"></td>
+						</tr>
+						<tr>
+							<td>端口 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:200px;" id="port" value="${webMasterModel.port!}"/></td>
+							<td class="portJudge"></td>
+						</tr>
+						<tr>
+							<td>状态 :</td>
+							<td class="blankTd"></td>
+							<td>							
+								<#if webMasterModel.status == "0">
+									<input type="text" style="width:200px;" value="未连接"  readonly="readonly"/>
+								<#else>
+									<input type="text" style="width:200px;" value="已连接" readonly="readonly"/>
+								</#if>	
+							</td>
+							<td class="ip_maskJudge"></td>
+						</tr>
+						
+					</table>
+				</div>
+			</div> 
+			<div class="toolBar" style="margin-left:295px;">
+				<ul>
+					<li><label></label><input id="submitBtn" type="button" class="btn" value="修改" style="padding:3px 25px;"/></li>
+					<li><label></label><input id="reLink" type="button" class="btn cancel" value="重连"  style="padding:3px 25px;"/></li>	
+				</ul>
+			</div>
+		</form> -->
+		</div>
+		<input type="hidden" value="${base}" id="basePath"/>
+</body>
+</html>

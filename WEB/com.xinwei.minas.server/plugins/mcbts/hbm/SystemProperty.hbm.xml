@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.core.model.SystemProperty" table="sys_properties">
+		<id name="idx" type="java.lang.Long">
+			<generator class="assigned" />
+		</id>
+		<property name="category" type="java.lang.String">
+			<column name="category" not-null="true"></column>
+		</property>
+		<property name="sub_category" type="java.lang.String">
+			<column name="sub_category" not-null="false"></column>
+		</property>
+		<property name="property" type="java.lang.String">
+			<column name="property" not-null="true"></column>
+		</property>
+		<property name="value" type="java.lang.String">
+			<column name="value" not-null="true"></column>
+		</property>
+		<property name="description" type="java.lang.String">
+			<column name="description" not-null="true"></column>
+		</property>
+	</class>
+</hibernate-mapping>                                   

@@ -1,0 +1,622 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbList.js"></script>
+<style>
+	.deviceTh { cursor: pointer; }
+</style>
+
+<script type="text/javascript">
+	$(function(){	
+		
+		
+		if(${enbCount!} == 0){
+			$("#enbListTable").html(					
+				  '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" disabled="disabled" value="checkbox" id="checkfather"/></th>  '
+					+'<th scope="col" width="50px;">修改</th>'
+					+'<th scope="col">告警状态</th>'
+					+'<th scope="col">基站标识</th>'
+					+'<th scope="col">基站名称</th>'
+					+'<th scope="col">基站IP</th>'
+					+'<th scope="col">基站端口</th>'
+					+'<th scope="col">协议版本</th>'
+					+'<th scope="col">真实版本</th>'
+					+'<th scope="col">注册状态</th>'
+					+'<th scope="col">管理状态</th>'
+					+'<th scope="col" width="60px;">修改</th>'
+					+'<th scope="col" width="60px;">配置</th>'
+// 					+'<th scope="col">小区新增向导</th>' 
+				  +'</tr>'
+				  +'<tr>'
+				  +'<th scope="row"><input type="checkbox" value="checkbox" disabled="disabled" name="checkson"/></th>'
+				  +'<th scope="row"></th>	'
+					  +'<td>暂无相关数据</td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+					  +'<td></td>'
+// 					  +'<td></td>'
+				  +'</tr>'			
+			);
+		}
+		
+		// 选中上次查询时的条件
+		var searchBy = $("#searchByHidden").val();
+		$("#searchBy option").each(function(){
+			var value = $(this).val();
+			if(value == searchBy) {
+				$(this).attr("selected", "selected");
+			}
+		});
+		// 填入上次查询时的值
+		$("#searchValue").val("${searchValue!}");
+		
+		// 查询条件改变，将输入框置空
+		$("#searchBy").change(function(){
+			$("#searchValue").val("");
+		});
+
+		// 查找
+		$("#search").click(function(){
+			var searchBy = $("#searchBy").val();
+			var searchValue = $("#searchValue").val();
+			// 基站标识
+			if(searchBy == 1) {
+				if(!isEnbIdOk(searchValue)) {
+					alert("请输入合法的基站标识.要求:长度不能超过8,必须是16进制字符串,大小不能超过000FFFFF");
+					return false;
+				}
+			} else if(searchBy == 2) {
+				//按基站名称
+				if(!isEnbNameOk(searchValue)) {
+					alert("请输入合法的基站名称.要求:长度不能超过80，必须是汉字、数字、字母或下划线");
+					return false;
+				}
+			} else if(searchBy == 3) {
+				//按基站IP
+				if(!isEnbIpOrVersionOk(searchValue)) {
+					alert("请输入合法的基站IP");
+					return false;
+				}
+			} else if(searchBy == 4) {
+				//按实际版本
+				if(!isEnbIpOrVersionOk(searchValue)) {
+					alert("请输入合法的基站版本");
+					return false;
+				}
+			}
+			var currentPage = $("#currentPage").html();
+			var sortBy = $("#sortBy").val();
+			queryEnbList(1, sortBy, searchBy, searchValue);
+		});
+		
+		function isEnbIdOk(enbHexId) {
+			var isEnbId=/^[a-fA-F0-9]{1,}$/;
+			var length = enbHexId.length;
+			if(length == 0)
+				return true;
+			// 长度不能超过8，必须是16进制字符串，大小不能超过FFFFF
+			if(length > 8 || !(isEnbId.test(enbHexId)) || parseInt(enbHexId,16) > 1048575){
+				return false;
+			}
+			return true;
+		}
+		
+		function isEnbNameOk(enbName) {
+			var isName=/^[A-Za-z0-9\u4e00-\u9fa5_]+$/;
+			var length = enbName.length;
+			if(length == 0)
+				return true;
+			// 长度不能超过80，必须是字母、数字或下划线
+			if(length > 80 || !(isName.test(enbName))){
+				return false;
+			}
+			return true;
+		}
+		
+		function isEnbIpOrVersionOk(value) {
+			var regex=/^[a-zA-Z0-9.]+$/;
+			var length = value.length;
+			if(length == 0)
+				return true;
+			if(length > 15 || !regex.test(value)) {
+				return false;
+			}
+			return true;
+		}
+		
+		//刷新
+		$("#fresh").click(function(){
+			var currentPage = $("#currentPage").html();
+			var sortBy = $("#sortBy").val();
+			var searchBy = $("#searchByHidden").val();
+			var searchValue = $("#searchValueHidden").val();
+			queryEnbList(currentPage,sortBy,searchBy,searchValue);
+		});
+		
+		//首页		
+		$("#firstPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var searchBy = $("#searchByHidden").val();
+			var searchValue = $("#searchValueHidden").val();
+			queryEnbList(1,sortBy,searchBy,searchValue);
+		});
+		//尾页
+		$("#endPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var totalPage = $("#totalPage").html();
+			var searchBy = $("#searchByHidden").val();
+			var searchValue = $("#searchValueHidden").val();
+			queryEnbList(totalPage,sortBy,searchBy,searchValue);
+		});
+		//上一页
+		
+		$("#previousPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var currentPage = $("#currentPage").html();
+			var searchBy = $("#searchByHidden").val();
+			var searchValue = $("#searchValueHidden").val();
+			if(parseInt(currentPage) == 1){
+				alert("已是首页");
+			}else{
+				var page = (parseInt(currentPage)-1);
+				queryEnbList(page,sortBy,searchBy,searchValue);
+			}
+		});
+		//下一页	
+		$("#nextPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var currentPage = $("#currentPage").html();
+			var totalPage = $("#totalPage").html();
+			var searchBy = $("#searchByHidden").val();
+			var searchValue = $("#searchValueHidden").val();
+			if(parseInt(currentPage) == parseInt(totalPage)){
+				alert("已是尾页");
+			}else{
+				var page = (parseInt(currentPage)+1);
+				queryEnbList(page,sortBy,searchBy,searchValue);
+			}
+		});
+		//目标页	
+		$("#targetPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var isNum = /^\d+$/;
+			var targetPage = $("#targetPageInput").val();
+			var totalPage = $("#totalPage").html();
+			var searchBy = $("#searchByHidden").val();
+			var searchValue = $("#searchValueHidden").val();
+			if(isNum.test(targetPage)){
+				if(targetPage >= 1 && targetPage<= parseInt(totalPage)){
+					queryEnbList(targetPage,sortBy,searchBy,searchValue);
+				}else if(targetPage <= 1){
+					queryEnbList(1,sortBy,searchBy,searchValue);
+				}else{
+					queryEnbList(totalPage,sortBy,searchBy,searchValue);
+				}
+			}else{
+				queryEnbList(1,sortBy,searchBy,searchValue);
+			}
+		});
+		$(".deviceTh").each(function(index){			
+			$(this).bind("click",function(event){	
+				event.preventDefault();
+				var currentPage = $("#currentPage").html();						
+				var sortBy = parseInt($("#sortBy").val()) * (-1);
+				var searchBy = $("#searchByHidden").val();
+				var searchValue = $("#searchValueHidden").val();
+				var sortNum = parseInt($(this).attr("sort"));
+				if(sortBy != sortNum*(-1) &&  sortBy != sortNum){
+					sortBy = sortNum;
+				}
+				queryEnbList(currentPage,sortBy,searchBy,searchValue);
+			})
+		});	
+		//异步刷新 
+		setInterval(makeEnbTableBody,${enbFreshInterval!});
+	});
+	//同步查询enb列表
+	function queryEnbList(page,sortBy,searchBy,searchValue){
+		window.location.href="${base}/lte/queryEnbList.do?operType=select&currentPage="+page+"&sortBy="+sortBy+"&searchBy="+searchBy+"&searchValue="+searchValue+"&browseTime="+getBrowseTime();
+	};
+	//异步构造enb列表
+	function makeEnbTableBody(){
+		var sortBy = $("#sortBy").val();
+		var currentPage = $("#currentPage").html();
+		var searchBy = $("#searchByHidden").val();
+		var searchValue = $("#searchValueHidden").val();
+		//复选框状态
+		var checkStateArray = new Array();
+		$("input[name='checkson']:checked").each(function(){
+			checkStateArray.push($(this).val());
+		});
+		$.ajax({
+			type:"post",
+			url:"queryEnbListAsync.do",
+			data:"sortBy="+sortBy+
+				"&currentPage="+currentPage+
+				"&searchBy="+searchBy+
+				"&searchValue="+searchValue+
+				"&checkStateArray="+checkStateArray+
+				"&browseTime="+getBrowseTime(),
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data != null){
+					var tr = "";
+					var asyncEnbModelList = data.asyncEnbModelList;
+					var length = asyncEnbModelList.length;
+					if(length > 0){
+						for(var i = 0 ;i < length;i++){
+							var enbModel = asyncEnbModelList[i];
+							var myTr = '<tr><th scope="row"><input type="checkbox" value="'+enbModel.moId+'" '+
+											'name="checkson" />'+
+									   '</th>'+ 
+									   '<th scope="row">'+
+											'<img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"   onclick="turnModifyThisEnb('+ "'" +enbModel.enbId+ "'" +')"  style="cursor: pointer;"/>'+
+									   '</th>';
+							if(enbModel.alarmLevel == -1){
+								myTr = myTr + '<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')">'+
+												 '<img src="${base}/Manager/images/tnc/alarm-1.png" /><span>&nbsp;</span><span>断开</span>'+
+												'</td>';
+							}else if(enbModel.alarmLevel == 0){
+								myTr = myTr + '<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')">'+
+												 '<img src="${base}/Manager/images/tnc/alarm0.png"  /><span>&nbsp;</span><span>正常</span>'+
+												'</td>';
+							}else if(enbModel.alarmLevel == 1){
+								myTr = myTr + '<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')">'+
+												 '<img src="${base}/Manager/images/tnc/alarm1.png"  /><span>&nbsp;</span><span>紧急</span>'+
+												'</td>';
+							}else if(enbModel.alarmLevel == 2){
+								myTr = myTr + '<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')">'+
+												 '<img src="${base}/Manager/images/tnc/alarm2.png"  /><span>&nbsp;</span><span>重要</span>'+
+												'</td>';
+							}else if(enbModel.alarmLevel == 3){
+								myTr = myTr + '<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')">'+
+												 '<img src="${base}/Manager/images/tnc/alarm4.png"  /><span>&nbsp;</span><span>次要</span>'+
+												'</td>';
+							}else{
+								myTr = myTr + '<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')">'+
+												 '<img src="${base}/Manager/images/tnc/alarm3.png" /><span>&nbsp;</span><span>提示</span>'+
+												'</td>';
+							}
+							var enbTypeTd = "";
+							if(enbModel.enbType == 0){
+								enbTypeTd = '<td>XW7400</td>';
+							}else{
+								enbTypeTd = '<td>XW7102</td>';
+							}
+							myTr = myTr + '<td>'+enbModel.enbId+'<input type="hidden" value="'+enbModel.moId+'"></td>'+
+										  '<td>'+enbModel.name+'</td>'+
+										  '<td>'+enbModel.publicIp+'</td>'+
+										  '<td>'+enbModel.publicPort+'</td>'+
+										  enbTypeTd+
+										  '<td>'+enbModel.protocolVersion+'</td>'+
+										  '<td>'+enbModel.softwareVersion+'</td>';
+							if(enbModel.isActive == 0){
+								myTr = myTr + '<td>未开站</td>';
+							}else{
+								if(enbModel.registerState == 0 ){
+									myTr = myTr + '<td>未连接</td>';
+								}else if(enbModel.registerState == 10){
+									myTr = myTr + '<td>注册中</td>';
+								}else if(enbModel.registerState == 20){
+									myTr = myTr + '<td>已连接</td>';
+								}else{
+									myTr = myTr + '<td>已删除</td>';
+								}
+							}
+							if(enbModel.manageStateCode == 0){
+								myTr = myTr + '<td>未知</td>';
+							}else if(enbModel.manageStateCode == 1){
+								myTr = myTr + '<td>在线管理</td>';
+							}else{
+								myTr = myTr + '<td>离线管理</td>'; 
+							}
+							var cellStatusTd = "";
+							var cellStatusTdContent = "";
+							var cellStatusMap = enbModel.cellStatus;
+							for(var key in cellStatusMap){
+								if(enbModel.alarmLevel == -1){
+									cellStatusTdContent = cellStatusTdContent + '<img src="${base}/Manager/images/tnc/alarm-1.png"/> ';
+								} else{
+									if(cellStatusMap[key] == 0){
+										cellStatusTdContent = cellStatusTdContent + '<img src="${base}/Manager/images/tnc/alarm0.png"/> ';
+									}else{
+										cellStatusTdContent = cellStatusTdContent + '<img src="${base}/Manager/images/tnc/alarm1.png"/> ';
+									}
+								}
+							}
+							cellStatusTd = '<td>' + cellStatusTdContent + '</td>';
+							myTr = myTr + cellStatusTd;
+							myTr = myTr + '<td><a onclick="turnModifyThisEnb('+ "'" +enbModel.enbId+ "'" +')"  style="cursor: pointer;">修改</a></td>'+
+										  '<td><a onclick="turnConfigThisEnb('+ "'" +enbModel.enbId+ "'" +','+ "'" +enbModel.moId+ "'" +')"  style="cursor: pointer;">配置</a></td>'+
+// 										  '<td><a onclick="turnCellAddGuide('+ "'" +enbModel.moId+ "'" +',${roleId})" style="cursor:pointer;">进入向导</a></td>'+
+										  '</tr>';
+							tr = tr + myTr;
+						}
+						$("#enbListTbody").html(tr);
+// 						$(".changeRowColor tr").each(function(index){
+// 							if(index > 0 && index%2 == 0){
+// 								$(".changeRowColor tr:eq("+index+") td").css("background-color","#F6F6F6");
+// 							}
+// 						}); 
+						var checkStateArray  = data.checkStateArray;
+						var checkStateStr = checkStateArray.split(",");						
+						$("input[name='checkson']").each(function(){
+							if($.inArray($(this).val(),checkStateStr)>-1){
+								$(this).attr("checked","checked");
+							}
+						});
+						var flag=true;
+						$("[name=checkson]:checkbox").each(function(){
+							if(!this.checked){
+								flag=false;
+							}
+						});
+						$("#checkfather").attr("checked",flag);
+						
+					}else{
+						tr =  '<tr>'
+								  +'<th scope="row"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+								  +'<th scope="row"></th>	'
+								  +'<td>暂无相关数据</td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+								  +'<td></td>'
+// 								  +'<td></td>'
+							  +'</tr>';
+						$("#enbListTbody").html(tr);							
+					}
+					
+				}
+			}
+		});
+	}
+	function turnCellAddGuide(moId,roleId){
+		$.ajax({
+			type:"post",
+			url:"checkCurrentCellNum.do",
+			data:"moId="+moId,
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data.status == 0){
+					if(data.message == true){
+						window.location.href = "${base}/lte/turnCellAddGuide.do?moId="+moId+"&roleId="+roleId;
+					}else{
+						alert("当前小区数量已达上限，不可新增");
+					}
+				}else{
+					alert(data.error);
+				}
+			}
+		});
+		
+	}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow: hidden;">
+	<input type="hidden" id="basePath" value="${base}" />
+	<input type="hidden" id="sortBy" value="${sortBy}" />
+	<input type="hidden" id="searchByHidden" value="${searchBy}" />
+	<input type="hidden" id="searchValueHidden" value="${searchValue!}" />
+	<input type="hidden" id="roleId" value="${roleId}" />
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span>
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a>
+	</div>
+	<div class="enbPage">
+		<div class="contentDivObj" style="width:100%">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="newAdd" value="新增" /></li>
+				<li><label></label><input type="button" id="fresh" value="刷新" /></li>
+				<li><label></label><input type="button" id="delete" value="删除" /></li>
+				<li><label></label><input type="button" id="export" value="导出" /></li>
+				<li><label></label><input type="button" id="import" value="导入" /></li>
+			</ul>
+			
+			<!-- 按条件查找eNB -->
+			<div style="float:right;">
+				<label>选择查找条件: </label>
+				<select name="searchBy" id="searchBy">
+					<option value="1">按基站标识</option>
+					<option value="2">按基站名称</option>
+					<option value="3">按基站IP</option>
+					<option value="4">按实际版本</option>
+				</select>
+				<input type="text" id="searchValue" />
+				<input type="button" id="search" value="查找" />
+			</div>
+			
+		</div>
+		<div>
+			<table width="100%" id="enbListTable" class="enbTable changeRowColor">
+				<thead>
+					<tr>
+
+						<th scope="col" class="checkWidth"><input type="checkbox"
+							value="checkbox" id="checkfather" />
+						</th>
+						<th scope="col" width="50px;">修改</th>
+						<th scope="col" class="deviceTh" sort="8" id="sortBy8" >告警状态</th>
+						<th scope="col" class="deviceTh" sort="1" id="sortBy1" >基站标识</th>
+						<th scope="col" class="deviceTh" sort="2" id="sortBy2" >基站名称</th>
+						<th scope="col" class="deviceTh" sort="5" id="sortBy5" >基站IP</th>
+						<th scope="col" class="deviceTh" sort="6" id="sortBy6" >基站端口</th>
+						<th scope="col">基站类型</th>
+						<th scope="col" class="deviceTh" sort="10" id="sortBy10" >协议版本</th>
+						<th scope="col" class="deviceTh" sort="7" id="sortBy7" >实际版本</th>
+						<th scope="col" class="deviceTh" sort="3" id="sortBy3" >基站状态</th>
+						<th scope="col" class="deviceTh" sort="4" id="sortBy4" >管理状态</th>
+						<th scope="col">小区状态&nbsp;</th>
+						<th scope="col" width="50px;">修改</th>
+						<th scope="col" width="50px;">配置</th>
+<!-- 						<th scope="col">小区新增向导</th> -->
+					</tr>
+				</thead>
+				<tbody id="enbListTbody">
+					<#list enbModelList! as enbModel>
+					<tr>
+
+						<th scope="row"><input type="checkbox" value="${enbModel.enb.moId!}"
+							name="checkson" />
+						</th>
+						<th scope="row" >
+							<img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png" style="cursor: pointer;" onclick="turnModifyThisEnb('${enbModel.enbId!}')"/>
+						</th>
+						<#if enbModel.alarmLevel! == -1>
+							<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('${enbModel.enbId!}','${enbModel.enb.moId!}')">
+								<img src="${base}/Manager/images/tnc/alarm-1.png"/><span>&nbsp;</span><span>断开</span>
+							</td>
+						</#if>
+						<#if enbModel.alarmLevel! == 0>
+							<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('${enbModel.enbId!}','${enbModel.enb.moId!}')">
+								<img src="${base}/Manager/images/tnc/alarm0.png"/><span>&nbsp;</span><span>正常</span>
+							</td>
+						</#if>
+						<#if enbModel.alarmLevel! == 1>
+							<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('${enbModel.enbId!}','${enbModel.enb.moId!}')">
+								<img src="${base}/Manager/images/tnc/alarm1.png"/><span>&nbsp;</span><span>紧急</span>
+							</td>
+						</#if>
+						<#if enbModel.alarmLevel! == 2>
+							<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('${enbModel.enbId!}','${enbModel.enb.moId!}')">
+								<img src="${base}/Manager/images/tnc/alarm2.png"/><span>&nbsp;</span><span>重要</span>
+							</td>
+						</#if>
+						<#if enbModel.alarmLevel! == 3>
+							<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('${enbModel.enbId!}','${enbModel.enb.moId!}')">
+								<img src="${base}/Manager/images/tnc/alarm4.png"/><span>&nbsp;</span><span>次要</span>
+							</td>
+						</#if>
+						<#if enbModel.alarmLevel! == 4>
+							<td style="cursor: pointer;" onclick="turnConfigThisEnbFromAlarm('${enbModel.enbId!}','${enbModel.enb.moId!}')">
+								<img src="${base}/Manager/images/tnc/alarm3.png"/><span>&nbsp;</span><span>提示</span>
+							</td>
+						</#if>
+						<td>
+							${enbModel.enbId!}
+							<input type="hidden"  value="${enbModel.enb.moId!}"/>
+						</td>
+						<td>${enbModel.enb.name!}</td>
+						<td>${enbModel.enb.publicIp!}</td>
+						<td>${enbModel.enb.publicPort!}</td>
+						<#if enbModel.enb.enbType! == 0>
+							<td>XW7400</td>
+						<#else>
+							<td>XW7102</td>
+						</#if>					
+						<td>${enbModel.enb.protocolVersion!}</td>	
+						
+											
+						<td>${enbModel.enb.softwareVersion!}</td>
+						<#if enbModel.isActive! == 0>
+							<td>未开站</td>
+						<#else>
+							<#if enbModel.enb.registerState! == 0>
+								<td>未连接</td>
+							</#if>
+							<#if enbModel.enb.registerState! == 10>
+								<td>注册中</td>
+							</#if>
+							<#if enbModel.enb.registerState! == 20>
+								<td>已连接</td>
+							</#if>
+							<#if enbModel.enb.registerState! == 30>
+								<td>已删除</td>
+							</#if>
+						</#if>
+						<#if enbModel.enb.manageStateCode! ==	0>
+							<td>未知</td>
+						</#if>
+						<#if enbModel.enb.manageStateCode! == 1>
+							<td>在线管理</td>
+						</#if> 
+						<#if enbModel.enb.manageStateCode! == 2>
+							<td>离线管理</td>
+						</#if>
+						<#assign cellMap = enbModel.cellStatus>
+						<td>
+							<#list cellMap?keys as key>
+								<#if enbModel.alarmLevel == -1>
+									<img src="${base}/Manager/images/tnc/alarm-1.png"/>
+								<#else>
+									<#if cellMap[key] == 0>
+										<img src="${base}/Manager/images/tnc/alarm0.png"/>
+									<#else>
+										<img src="${base}/Manager/images/tnc/alarm1.png"/>
+									</#if>
+								</#if>
+							</#list>
+						</td>
+						<td><a onclick="turnModifyThisEnb('${enbModel.enbId!}')"  style="cursor: pointer;">修改</a></td>
+						<td><a onclick="turnConfigThisEnb('${enbModel.enbId!}','${enbModel.enb.moId!}')" style="cursor: pointer;">配置</a></td>
+<!-- 						<td><a onclick="turnCellAddGuide('${enbModel.enb.moId!}',${roleId})" style="cursor:pointer;">进入向导</a></td> -->
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+			<div style="float: right;">
+				<div style="padding: 5px;">
+					<table id="pageTable" style="width: 316px;">
+						<tr>
+							<td><span id="currentPage">${currentPage}</span>
+							</td>
+							<td>/</td>
+							<td><span id="totalPage">${totalPages}</span>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/first_page.png" id="firstPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/previous_page.png" id="previousPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/next_page.png" id="nextPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/end_page.png" id="endPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td><input type="text"
+								style="width: 20px; height: 18px; line-height: 18px;"
+								id="targetPageInput" value="${currentPage}" />
+							</td>
+							<td><img src="${base}/Manager/images/change_page_bt.png"
+								id="targetPage" style="cursor: pointer;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var setting = {
+				view: {
+					dblClickExpand: false,
+					showLine: true,
+					selectedMulti: false
+				},	
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			};
+			var zNode =[
+					{ id:1, pId:0, name:"基站告警", open:true, iconSkin:"pIcon01"},
+					{ id:11, pId:1, name:"当前告警",url:"${base}/lte/turnCurrentAlarm.do",target:"mainFrame", iconSkin:"icon06"},
+					{ id:12, pId:1, name:"历史告警",url:"${base}/lte/turnHistoryAlarm.do",target:"mainFrame", iconSkin:"icon07"},
+					{ id:4, pId:0, name:"终端告警", open:true, iconSkin:"pIcon01"},
+					{ id:41, pId:4, name:"当前告警",url:"${base}/uem_web/alarm/turnUECurrentAlarm.do",target:"mainFrame", iconSkin:"icon06"},
+					{ id:42, pId:4, name:"历史告警",url:"${base}/uem_web/alarm/turnUEHistoryAlarm.do",target:"mainFrame", iconSkin:"icon07"},
+					{ id:2, pId:100000, name:"黑匣子文件分析", open:true, iconSkin:"pIcon01"},
+					{ id:21, pId:2, name:"黑匣子文件分析",url:"${base}/lte/getBlackBoxFile.do",target:"mainFrame", iconSkin:"icon10"},
+					{ id:3, pId:100000, name:"基站健康检查", open:true, iconSkin:"pIcon01"},
+					{ id:31, pId:3, name:"基站健康检查",url:"${base}/lte/getHealthInspectFile.do",target:"mainFrame", iconSkin:"icon10"}
+			 		
+		 		];
+			$.fn.zTree.init($("#treeDemo"), setting, zNode);
+			
+			$("#leftDivOne ul li:eq(0) ul li:eq(0) a").addClass("curSelectedNode");
+			
+
+			$("#leftDivOne ul li a").click(function(event){
+				$("#leftDivOne ul li a").removeClass("curSelectedNode");
+				$(this).addClass("curSelectedNode");
+				event.preventDefault();
+				var href = $(this).attr("href");
+				var myHref = "";
+				if(href != "" && href != null && typeof(href) != "undefined"){
+					var myHref = "";
+					if(href.indexOf("?") == -1){
+						myHref = href + "?browseTime="+getBrowseTime();
+					}else{
+						myHref = href + "&browseTime="+getBrowseTime();
+					}
+					window.parent.mainFrame.location.href=myHref;
+				}
+			});
+		
+	});
+</script>
+</head>
+<body style="background:#e9f6fe;">	
+	<div class="left_nav">	
+<!-- 		<div class="title">故障管理</div> -->
+<!-- 		<div id="leftDiv"> -->
+<!-- 		  <dl>	 -->
+<!-- 		  	<dt style="line-height:10px;">&nbsp;</dt> -->
+<!-- 		  	<dt><a>基站告警</a></dt> -->
+<!-- 			<dd><a href="${base}/lte/turnCurrentAlarm.do" target="mainFrame"  class="selector">当前告警</a></dd> -->
+<!-- 			<dd><a href="${base}/lte/turnHistoryAlarm.do" target="mainFrame">历史告警</a></dd> -->
+<!-- 		  </dl> -->
+<!-- 		</div> -->
+		<div class="title" style="font-size:12px;">故障管理</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+	</div>
+</body>
+</html>

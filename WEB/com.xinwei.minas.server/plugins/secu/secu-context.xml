@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+
+	<bean id="secu.startInit"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="logger" />
+		<property name="targetMethod" value="info" />
+		<property name="arguments">
+			<list>
+				<value>Initialize secu module ...</value>
+			</list>
+		</property>
+	</bean>
+
+	<import resource="secu-dao.xml" />
+	<import resource="secu-facade.xml" />	
+	<import resource="secu-service.xml" />	
+
+	<bean id="userPrivilegeCache" class="com.xinwei.minas.server.core.secu.service.UserPrivilegeCache" factory-method="getInstance"/>
+	<bean id="userPrivilegeCache.init" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="targetObject"><ref local="userPrivilegeCache"/></property>
+	    <property name="targetMethod"><value>initialize</value></property>	
+	    <property name="arguments">
+			<list>
+				<ref bean="roleManageDao" />
+				<ref bean="authorityManageDao" />
+			</list>
+		</property>
+	</bean>
+	
+
+	<bean id="keepTask"
+		class="com.xinwei.minas.server.core.secu.connection.KeepTask">
+		<constructor-arg ref="platform.dataSource" />
+		<constructor-arg value="secu_user" />
+	</bean>
+
+	<bean id="mysqlConnectionKeeper"
+		class="com.xinwei.minas.server.core.secu.connection.MysqlConnectionKeeper">
+		<property name="task" ref="keepTask"/>
+		<property name="delay" value="10" />
+		<property name="period" value="10" />
+	</bean>
+	
+	<bean id="mysqlConnectionKeeper.start"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="mysqlConnectionKeeper" />
+		<property name="targetMethod" value="start" />
+	</bean>
+	
+	
+	<bean id="secu.endInit"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="logger" />
+		<property name="targetMethod" value="info" />
+		<property name="arguments">
+			<list>
+				<value>OK.</value>
+			</list>
+		</property>
+	</bean>
+
+	
+</beans>

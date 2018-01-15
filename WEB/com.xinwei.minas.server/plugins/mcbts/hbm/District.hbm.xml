@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-5-21 19:06:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.sysManage.District"
+		table="district">
+		<id name="id" type="java.lang.Long">
+			<column name="id" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="name" not-null="true" />
+		</property>
+		<property name="type" type="java.lang.Integer">
+			<column name="type" not-null="true" />
+		</property>
+		<property name="parentId" type="java.lang.Long">
+			<column name="parentId" not-null="true" />
+		</property>
+		<property name="desc" type="java.lang.String">
+			<column name="description" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

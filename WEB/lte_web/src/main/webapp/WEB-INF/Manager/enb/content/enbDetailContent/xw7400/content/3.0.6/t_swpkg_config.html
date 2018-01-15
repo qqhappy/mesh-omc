@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_swpkg.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/common/jquery-ui-1.8.16.custom.js"></script>
+<link type="text/css" rel="stylesheet" href="${base}/Manager/js/common/jquery-ui.css"/>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		for(var i=1;i<3;i++){
+			if($("#radio"+i).val() == ${record.fieldMap["u8RunStatus"].value}){
+				$("#radio"+i).attr("checked","checked");
+			}
+		}
+		//日期
+		var date = "${record.fieldMap['u32Date'].value}";
+		var date2 = parseInt(date,10).toString(2)
+		var length = date2.length;
+		if(length<32){
+			for(var i = 0 ;i<32-length ;i++){
+				date2 = "0" + date2;	
+			}	
+		}
+		var str1 = "";
+		var str2 = "";
+		var str3 = "";
+		for(var i=0;i<16;i++){
+			str1 = str1+date2[i]	
+		}
+		for(var i=16;i<24;i++){
+			str2 = str2+date2[i]	
+		}
+		for(var i=24;i<32;i++){
+			str3 = str3+date2[i]	
+		}
+		var yy = parseInt(str1,2).toString(10)+"";
+		var mm = parseInt(str2,2).toString(10)+"";
+		if(mm.length<2){
+			mm = "0"+mm;	
+		}
+		var dd = parseInt(str3,2).toString(10)+"";
+		if(dd.length<2){
+			dd = "0"+dd;	
+		}
+		$("#timepicker").val(yy+"-"+mm+"-"+dd);
+		$("#timepicker").datepicker({dateFormat:"yy-mm-dd",timeFormat:"hh:mm:ss",changeMonth:true,changeYear:true,yearRange:"1990:2100",});
+		
+		
+	});
+</script>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>软件包表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_SWPKG-3.0.6" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8SwPkgIndx">
+							<td>规格包序号(0~255) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="${record.fieldMap['u8SwPkgIndx'].value}"  disabled="disabled"/>
+								<input type="hidden"  value="${record.fieldMap['u8SwPkgIndx'].value}"   id="u8SwPkgIndx"/>
+							</td>
+							<td id="u8SwPkgIndxError" class="error"></td>
+						</tr>
+						<tr class="au8PkgVer">
+							<td>规格包版本号 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="au8PkgVer" value="${record.fieldMap['au8PkgVer'].value}"/></td>
+							<td id="au8PkgVerError" class="error"></td>
+						</tr>
+						<tr class="au8InnerPkgVer">
+							<td>规格包补丁版本号 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="au8InnerPkgVer"  value="${record.fieldMap['au8InnerPkgVer'].value}"/></td>
+							<td id="au8InnerPkgVerError" class="error"></td>
+						</tr>
+						<tr class="u8PkgType">
+							<td>规格包类型 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PkgType">
+									<option value="1">软件规格包</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8RunStatus">
+							<td>运行状态 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8RunStatus" value="1" id="radio1">运行</input>
+								<input type="radio" name="u8RunStatus" value="2" style="margin-left:80px;" id="radio2">备用</input>
+							</td>
+							<td id="u8RunStatusError" class="error"></td>
+						</tr>
+						<tr class="timepicker">
+							<td>下载时间 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" readonly="readonly"  style="width:240px;" id="timepicker"/>
+								<input type="hidden" style="width:240px;" id="timepickerq"/>
+							</td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- enb模块  -->
+	<package name="UEAlarm" extends="struts-base" namespace="/uem_web">
+			
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<action name="turnUECurrentAlarm" class="com.xinwei.lte.web.uem.action.QueryAlarm" method="turnUECurrentAlarm">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/Alarm/enbCurrentAlarm.html</result>			
+		</action>	
+		
+		<action name="turnUEHistoryAlarm" class="com.xinwei.lte.web.uem.action.QueryAlarm" method="turnUEHistoryAlarm">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/Alarm/enbHistoryAlarm.html</result>			
+		</action>
+			
+		<action name="queryUECurrentAlarm" class="com.xinwei.lte.web.uem.action.QueryAlarm" method="queryCurrentAlarm">
+		</action>
+		
+		<action name="queryUEHistoryAlarm" class="com.xinwei.lte.web.uem.action.QueryAlarm" method="queryHistoryAlarm">
+		</action>	
+		<action name="exportUEAlarmData" class="com.xinwei.lte.web.uem.action.ExportUEAlarm" method="exportAlarmData">
+		</action>		
+	</package>
+	
+	
+</struts>

@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_puch.js"></script>
+<script type="text/javascript">
+	$(function(){ 
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_cel_puch1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CId">小区标识</th>'
+					+'<th scope="col" class="u8DeltaPucchShift">PUCCH format 1/1a/1b循环偏移量</th>'
+					+'<th scope="col" class="u8N_RB2">PUCCH format 2/2a/2b使用的RB数</th>'
+					+'<th scope="col" class="u8N_cs1">混合PUCCH格式下Format1/1a/1b循环偏移量</th>'
+					+'<th scope="col" class="u16N_SrChn">PUCCH SR信道条数</th>'
+					+'<th scope="col" class="u8SRITransPrd">SRI发送周期(ms)</th>'
+					+'<th scope="col" class="u8GroupHopEnable">组跳使能指示</th>'
+					+'<th scope="col" class="u8SeqHopEnable">序列跳使能指示</th>'
+					+'<th scope="col" class="u8CyclicShift">上行参考信号有效偏移数</th>'
+					+'<th scope="col" class="u8UeTranAntennaSelectEnable">UE发射天线选择开关</th>'
+					+'<th scope="col" class="u8UeTranAntennaSelectMode">UE发射天线选择模式</th>'
+					+'<th scope="col" class="u8DeltaSs">PUSCH分组指派</th>'
+					+'<th scope="col" class="u8SrTransMax">SR最大传输次数</th>'
+					+'<th scope="col" class="u8MaxUserPucchfmt2">每RB内PUCCH format2可复用的最大用户数</th>'
+					+'<th scope="col" class="u8MaxUserPucchfmt1">每RB内PUCCH format1可复用的最大用户数</th>'
+					+'<th scope="col" class="u8PuschCqiFbMethd">PUSCH上UE反馈CQI的方式</th>'
+					+'<th scope="col" class="u8FormatIndicatorPeriodic">PUCCH上UE周期反馈CQI的方式</th>'
+					+'<th scope="col" class="u8RptCqiPrd">PUCCH上报告CQI/PMI的周期</th>'
+					+'<th scope="col" class="u8K">PUCCH上报告SB CQI的周期因子</th>'
+					+'<th scope="col" class="u8SimultaneousAckNackAndCQI">ACK/NACK和CQI同传指示</th>'
+					+'<th scope="col" class="u8AckNackFeedbackMode">TDD ACK/NACK 反馈模式指示</th>'
+					+'<th scope="col" class="u8ACKMCSBetaOffset">上报ACK的MCS偏移</th>'
+					+'<th scope="col" class="u8RIMCSBetaOffset">上报RI的MCS偏移</th>'
+					+'<th scope="col" class="u8CQIMCSBetaOffset">上报CQI的MCS偏移</th>'
+					+'<th scope="col" class="u8PuschNsb">用于跳频的PUSCH子带数目</th>'
+					+'<th scope="col" class="u8PuschHopMode">PUSCH跳频模式指示</th>'
+					+'<th scope="col" class="u8PuschhopOffset">PUSCH跳频偏移</th>'
+					+'<th scope="col" class="U8PuschEnable64QAM">PUSCH 64QAM使能指示</th>'
+					+'<th scope="col" class="u8CellSrsEnable">Sounding开关</th>'
+					+'<th scope="col" class="u8SrsBwCfgIndex">SRS带宽配置</th>'
+					+'<th scope="col" class="u8SrsCellCfgIndex">SRS子帧配置</th>'
+					+'<th scope="col" class="u8SimulANSrsEnable">Ack/Nack与SRS同时发送开关</th>'
+					+'<th scope="col" class="u8SrsMaxUpPts">SRS是在特殊子帧的UpPts上全带宽发送</th>'
+					+'<th scope="col" class="u8SrsMaxCodeDivUserNum">SRS最大码分复用个数</th>'
+					+'<th scope="col" class="u8SrsUeInitBw">SRS初始接入带宽</th>'
+					+'<th scope="col" class="u8SrsUeHoppingBw">SRS跳频带宽</th>'
+					+'<th scope="col" class="u16SrsUePeriod">SRS发送周期(ms)</th>'
+					+'<th scope="col" class="u8SrsDuration">SRS Single和Indefinite发送标识</th>'
+					+'<th scope="col" class="u8PucchBlankRBNum">PUCCH Blank PRB个数</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+// 					+'<th scope="col" class="justForView" width="60px;">删除</th>' 
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th scope="row" class="justForView"></th>'
+					+'<td class="u8CId">暂无相关数据</td>'
+					+'<td class="u8DeltaPucchShift"></td>'
+					+'<td class="u8N_RB2"></td>'
+					+'<td class="u8N_cs1"></td>'
+					+'<td class="u16N_SrChn"></td>'
+					+'<td class="u8SRITransPrd"></td>'
+					+'<td class="u8GroupHopEnable"></td>'
+					+'<td class="u8SeqHopEnable"></td>'
+					+'<td class="u8CyclicShift"></td>'
+					+'<td class="u8UeTranAntennaSelectEnable"></td>'
+					+'<td class="u8UeTranAntennaSelectMode"></td>'
+					+'<td class="u8DeltaSs"></td>'
+					+'<td class="u8SrTransMax"></td>'
+					+'<td class="u8MaxUserPucchfmt2"></td>'
+					+'<td class="u8MaxUserPucchfmt1"></td>'
+					+'<td class="u8PuschCqiFbMethd"></td>'
+					+'<td class="u8FormatIndicatorPeriodic"></td>'
+					+'<td class="u8RptCqiPrd"></td>'
+					+'<td class="u8K"></td>'
+					+'<td class="u8SimultaneousAckNackAndCQI"></td>'
+					+'<td class="u8AckNackFeedbackMode"></td>'
+					+'<td class="u8ACKMCSBetaOffset"></td>'
+					+'<td class="u8RIMCSBetaOffset"></td>'
+					+'<td class="u8CQIMCSBetaOffset"></td>'
+					+'<td class="u8PuschNsb"></td>'
+					+'<td class="u8PuschHopMode"></td>'
+					+'<td class="u8PuschhopOffset"></td>'
+					+'<td class="U8PuschEnable64QAM"></td>'	
+					+'<td class="u8CellSrsEnable"></td>'	
+					+'<td class="u8SrsBwCfgIndex"></td>'	
+					+'<td class="u8SrsCellCfgIndex"></td>'	
+					+'<td class="u8SimulANSrsEnable"></td>'	
+					+'<td class="u8SrsMaxUpPts"></td>'	
+					+'<td class="u8SrsMaxCodeDivUserNum"></td>'	
+					+'<td class="u8SrsUeInitBw"></td>'	
+					+'<td class="u8SrsUeHoppingBw"></td>'	
+					+'<td class="u16SrsUePeriod"></td>'	
+					+'<td class="u8SrsDuration"></td>'	
+					+'<td class="u8PucchBlankRBNum"></td>'	
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+// 					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}		
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_CEL_PUCH-3.0.6&referTable=T_CEL_PARA";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区上行物理信道配置参数表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+<!-- 		<li><label></label><input type="button" id="newAdd" value="新增"/></li> -->
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+<!-- 		<li><label></label><input type="button" id="delete" value="批量删除"/></li> -->
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_cel_puch_div">  -->
+			<div style="width:6000px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_cel_puch1" class="changeRowColor">
+				 <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>  
+					<th scope="col" class="u8CId">小区标识</th>
+					<th scope="col" class="u8DeltaPucchShift">PUCCH format 1/1a/1b循环偏移量</th>
+					<th scope="col" class="u8N_RB2">PUCCH format 2/2a/2b使用的RB数</th>
+					<th scope="col" class="u8N_cs1">混合PUCCH格式下Format1/1a/1b循环偏移量</th>
+					<th scope="col" class="u16N_SrChn">PUCCH SR信道条数</th>
+					<th scope="col" class="u8SRITransPrd">SRI发送周期(ms)</th>
+					<th scope="col" class="u8GroupHopEnable">组跳使能指示</th>
+					<th scope="col" class="u8SeqHopEnable">序列跳使能指示</th>
+					<th scope="col" class="u8CyclicShift">上行参考信号有效偏移数</th>
+					<th scope="col" class="u8UeTranAntennaSelectEnable">UE发射天线选择开关</th>
+					<th scope="col" class="u8UeTranAntennaSelectMode">UE发射天线选择模式</th>
+					<th scope="col" class="u8DeltaSs">PUSCH分组指派</th>
+					<th scope="col" class="u8SrTransMax">SR最大传输次数</th>
+					<th scope="col" class="u8MaxUserPucchfmt2">每RB内PUCCH format2可复用的最大用户数</th>
+					<th scope="col" class="u8MaxUserPucchfmt1">每RB内PUCCH format1可复用的最大用户数</th>
+					<th scope="col" class="u8PuschCqiFbMethd">PUSCH上UE反馈CQI的方式</th>
+					<th scope="col" class="u8FormatIndicatorPeriodic">PUCCH上UE周期反馈CQI的方式</th>
+					<th scope="col" class="u8RptCqiPrd">PUCCH上报告CQI/PMI的周期</th>
+					<th scope="col" class="u8K">PUCCH上报告SB CQI的周期因子</th>
+					<th scope="col" class="u8SimultaneousAckNackAndCQI">ACK/NACK和CQI同传指示</th>
+					<th scope="col" class="u8AckNackFeedbackMode">TDD ACK/NACK 反馈模式指示</th>
+					<th scope="col" class="u8ACKMCSBetaOffset">上报ACK的MCS偏移</th>
+					<th scope="col" class="u8RIMCSBetaOffset">上报RI的MCS偏移</th>
+					<th scope="col" class="u8CQIMCSBetaOffset">上报CQI的MCS偏移</th>
+					<th scope="col" class="u8PuschNsb">用于跳频的PUSCH子带数目</th>
+					<th scope="col" class="u8PuschHopMode">PUSCH跳频模式指示</th>
+					<th scope="col" class="u8PuschhopOffset">PUSCH跳频偏移</th>
+					<th scope="col" class="U8PuschEnable64QAM">PUSCH 64QAM使能指示</th>
+					<th scope="col" class="u8CellSrsEnable">Sounding开关</th>
+					<th scope="col" class="u8SrsBwCfgIndex">SRS带宽配置</th>
+					<th scope="col" class="u8SrsCellCfgIndex">SRS子帧配置</th>
+					<th scope="col" class="u8SimulANSrsEnable">Ack/Nack与SRS同时发送开关</th>
+					<th scope="col" class="u8SrsMaxUpPts">SRS是在特殊子帧的UpPts上全带宽发送</th>
+					<th scope="col" class="u8SrsMaxCodeDivUserNum">SRS最大码分复用个数</th>
+					<th scope="col" class="u8SrsUeInitBw">SRS初始接入带宽</th>
+					<th scope="col" class="u8SrsUeHoppingBw">SRS跳频带宽</th>
+					<th scope="col" class="u16SrsUePeriod">SRS发送周期(ms)</th>
+					<th scope="col" class="u8SrsDuration">SRS Single和Indefinite发送标识</th>
+					<th scope="col" class="u8PucchBlankRBNum">PUCCH Blank PRB个数</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 					<th scope="col" class="justForView" width="60px;">删除</th> -->
+				  </tr>
+				<#list records! as record>
+				 	<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CId">${record.fieldMap["u8CId"].value!}</td>
+						<td class="u8DeltaPucchShift">${record.fieldMap["u8DeltaPucchShift"].value!}</td>
+						<td class="u8N_RB2">${record.fieldMap["u8N_RB2"].value!}</td>
+						<td class="u8N_cs1">${record.fieldMap["u8N_cs1"].value!}</td>
+						<td class="u16N_SrChn">${record.fieldMap["u16N_SrChn"].value!}</td>
+						<td class="u8SRITransPrd">${record.fieldMap["u8SRITransPrd"].value!}</td>
+						<td class="u8GroupHopEnable">${record.fieldMap["u8GroupHopEnable"].value!}</td>
+						<td class="u8SeqHopEnable">${record.fieldMap["u8SeqHopEnable"].value!}</td>
+						<td class="u8CyclicShift">${record.fieldMap["u8CyclicShift"].value!}</td>
+						<td class="u8UeTranAntennaSelectEnable">${record.fieldMap["u8UeTranAntennaSelectEnable"].value!}</td>
+						<td class="u8UeTranAntennaSelectMode">${record.fieldMap["u8UeTranAntennaSelectMode"].value!}</td>
+						<td class="u8DeltaSs">${record.fieldMap["u8DeltaSs"].value!}</td>
+						<td class="u8SrTransMax">${record.fieldMap["u8SrTransMax"].value!}</td>
+						<td class="u8MaxUserPucchfmt2">${record.fieldMap["u8MaxUserPucchfmt2"].value!}</td>
+						<td class="u8MaxUserPucchfmt1">${record.fieldMap["u8MaxUserPucchfmt1"].value!}</td>
+						<td class="u8PuschCqiFbMethd">${record.fieldMap["u8PuschCqiFbMethd"].value!}</td>
+						<td class="u8FormatIndicatorPeriodic">${record.fieldMap["u8FormatIndicatorPeriodic"].value!}</td>
+						<td class="u8RptCqiPrd">${record.fieldMap["u8RptCqiPrd"].value!}</td>
+						<td class="u8K">${record.fieldMap["u8K"].value!}</td>
+						<td class="u8SimultaneousAckNackAndCQI">${record.fieldMap["u8SimultaneousAckNackAndCQI"].value!}</td>
+						<td class="u8AckNackFeedbackMode">${record.fieldMap["u8AckNackFeedbackMode"].value!}</td>
+						<td class="u8ACKMCSBetaOffset">${record.fieldMap["u8ACKMCSBetaOffset"].value!}</td>
+						<td class="u8RIMCSBetaOffset">${record.fieldMap["u8RIMCSBetaOffset"].value!}</td>
+						<td class="u8CQIMCSBetaOffset">${record.fieldMap["u8CQIMCSBetaOffset"].value!}</td>
+						<td class="u8PuschNsb">${record.fieldMap["u8PuschNsb"].value!}</td>
+						<td class="u8PuschHopMode">${record.fieldMap["u8PuschHopMode"].value!}</td>
+						<td class="u8PuschhopOffset">${record.fieldMap["u8PuschhopOffset"].value!}</td>
+						<td class="U8PuschEnable64QAM">${record.fieldMap["U8PuschEnable64QAM"].value!}</td>	
+						<td class="u8CellSrsEnable">${record.fieldMap["u8CellSrsEnable"].value!}</td>	
+						<td class="u8SrsBwCfgIndex">${record.fieldMap["u8SrsBwCfgIndex"].value!}</td>	
+						<td class="u8SrsCellCfgIndex">${record.fieldMap["u8SrsCellCfgIndex"].value!}</td>	
+						<td class="u8SimulANSrsEnable">${record.fieldMap["u8SimulANSrsEnable"].value!}</td>	
+						<td class="u8SrsMaxUpPts">${record.fieldMap["u8SrsMaxUpPts"].value!}</td>	
+						<td class="u8SrsMaxCodeDivUserNum">${record.fieldMap["u8SrsMaxCodeDivUserNum"].value!}</td>	
+						<td class="u8SrsUeInitBw">${record.fieldMap["u8SrsUeInitBw"].value!}</td>	
+						<td class="u8SrsUeHoppingBw">${record.fieldMap["u8SrsUeHoppingBw"].value!}</td>	
+						<td class="u16SrsUePeriod">${record.fieldMap["u16SrsUePeriod"].value!}</td>	
+						<td class="u8SrsDuration">${record.fieldMap["u8SrsDuration"].value!}</td>
+						<td class="u8PucchBlankRBNum">${record.fieldMap["u8PucchBlankRBNum"].value!}</td>
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+<!-- 						<td  class="justForView" style="cursor:pointer;"><a>删除</a></td> -->
+					</tr>
+				</#list>
+				</table>
+			</div>
+		
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

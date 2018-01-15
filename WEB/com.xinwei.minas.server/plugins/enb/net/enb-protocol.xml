@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocols>
+
+	<!-- ActionType: 操作类型（0-查询、1-配置、2-增加、3-修改、4-删除） -->
+	<TAG>
+		
+		<item name="result"		tag="0x0001"	type="UnsignedNumber"	desc="结果"/>
+		<item name="errMsg"		tag="0x0002"	type="String"	desc="错误信息"/>
+		<item name="dbName"		tag="0x0003"	type="String"	desc="库名"/>
+		<item name="tableName"	tag="0x0004"	type="String"	desc="表名"/>
+		<item name="sqlText"	tag="0x0005"	type="String"	desc="SQL脚本"/>		
+	</TAG>
+	
+
+	<protocol operation="config"  desc="通用配置">
+		<header>
+			<item name="MA" value="0" />
+			<item name="MOC" value="0x000C" />
+		</header>
+		<request>
+			<body>
+				<item name="dbName"/>
+				<item name="tableName"/>
+				<item name="sqlText"/>
+			</body>
+		</request>
+		<response>
+			<body>
+				<item name="result"/>
+				<item name="errMsg"/>
+			</body>
+		</response>
+	</protocol>
+
+
+
+
+
+</protocols>

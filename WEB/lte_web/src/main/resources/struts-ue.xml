@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- enb模块  -->
+	<package name="ue" extends="struts-base" namespace="/uem_web/UE">	
+	
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<!-- 显示左侧菜单栏 -->
+		
+		<action name="showImd6000Left" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="TurnToLeftMenu">
+			<result name="success" type="freemarker">/WEB-INF/Manager/enb/configManageLeft.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>
+		</action>
+		
+		<!-- UE查询页面 -->
+		<action name="QueryUE" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="TurnToQueryUEPage">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEManageQuery.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>			
+		</action>
+	
+		<!-- UE新增页面 -->
+		<action name="AddUE" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="TurnToAddUEPage">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEManageAdd.html</result>	
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>		
+		</action>
+		
+		<!-- UE修改页面 -->
+		<action name="ModifyUE" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="TurnToModifyUEPage">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEManageModify.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>			
+		</action>
+		
+		<!-- UE配置 -->
+		<action name="Config" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="ConfigUE">
+			<result name="success" type="chain">QueryUE</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>			
+		</action>
+		
+		<!-- UE性能-->
+		<action name="perform" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="QueryPerformanceUeInfo">			
+		</action>
+		
+		<!-- UE重启-->
+		<action name="reboot" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="RebootUE">
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>			
+		</action>
+		
+		<!-- UE删除-->
+		<action name="Delete" class="com.xinwei.lte.web.uem.action.UEManage"
+			method="DeleteUE">
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/error.html</result>			
+		</action>
+		<!-- 显示UE版本管理餐单栏 -->
+		<action name="ShowUEUpgradeLeft" class="com.xinwei.lte.web.uem.action.UEVersionManage"
+			method="TurnToUEUpgradeLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEUpgradeLeftMenu.html</result>
+		</action>
+		<!-- UE版本查询页面 -->
+		<action name="QueryUEVersion" class="com.xinwei.lte.web.uem.action.UEVersionManage"
+			method="TurnToQueryUEVersionPage">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEVersionManageQuery.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEVersionError.html</result>			
+		</action>
+		<!-- UE版本新增页面 -->	
+		<action name="addUEVersion" class="com.xinwei.lte.web.uem.action.UEVersionManage"
+			method="TurnToAddUEVersionPage">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEVersionAdd.html</result>
+		</action>
+	
+		<!-- 上传UE版本至服务器 -->
+		<action name="uploadUEVersion" class="com.xinwei.lte.web.uem.action.UEVersionManage"
+			method="uploadUEVersion">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEVersionAdd.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEVersionAdd.html</result>
+		</action>
+		<!--UE版本升级 -->
+		<action name="upgrade" class="com.xinwei.lte.web.uem.action.UEVersionManage"
+			method="UpgradeUE">
+			<result name="error" type="freemarker">/WEB-INF/Manager/IMD6000/UE/UEVersionError.html</result>
+		</action>
+		<!--UE版本删除 -->
+		<action name="deleteVersion" class="com.xinwei.lte.web.uem.action.UEVersionManage"
+			method="deleteUEVersion">
+		</action>
+		
+	</package>
+	
+	
+</struts>

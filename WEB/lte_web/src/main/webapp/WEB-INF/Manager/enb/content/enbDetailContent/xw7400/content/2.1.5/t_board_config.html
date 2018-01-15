@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/t_board.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/fieldLevel_modify.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/simplify_board.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/simplify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var u8BDType  = ${record.fieldMap["u8BDType"].value}
+		for(var i=1;i<3;i++){
+			if($("#radio"+i).val() == u8BDType){
+				$("#radio"+i).attr("checked","checked");
+			}
+		}
+		if(u8BDType == 1){
+			addBBU();
+			subU8FiberPort();
+		}else{
+			addRRU();
+			addU8FiberPort();
+		}
+		//u8RackNO
+		$("#u8RackNO").val(${record.fieldMap["u8RackNO"].value})
+		$("#u8RackNO").attr("disabled","disabled");
+		var u8FiberPort = queryU8FiberPortForBoard("${base}",${record.fieldMap["u8RackNO"].value},${moId});
+		$("#u8FiberPort").val(parseInt(u8FiberPort));
+		for(var i=1;i<3;i++){
+			if($("#radioOne"+i).val() == ${record.fieldMap["u8RadioMode"].value}){
+				$("#radioOne"+i).attr("checked","checked");
+			}
+		}
+		for(var i=1;i<3;i++){
+			if($("#radioTwo"+i).val() == ${record.fieldMap["u8ManualOP"].value}){
+				$("#radioTwo"+i).attr("checked","checked");
+			}
+		}		
+		
+		
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>单板表配置</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<#if isActiveEnbTable == 1>
+		<a>开站参数</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<#else>
+		<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		</#if>
+		<a>单板表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+			<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_BOARD-2.1.5" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<input type="hidden" id="isActiveEnbTable" name="isActiveEnbTable" value="${isActiveEnbTable}"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8ShelfNO_hide">
+							<td>机框号 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select   style="width:251px;border:1px solid #fff"  disabled="disabled">
+									<option value="${record.fieldMap['u8ShelfNO'].value}">${record.fieldMap["u8ShelfNO"].value}</option>
+								</select></div>
+								<input type="hidden" value="${record.fieldMap['u8ShelfNO'].value}"  id="u8ShelfNO"/>
+							</td>
+						</tr>
+						<tr class="u8SlotNO_hide">
+							<td>槽位号(0~255) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;"  disabled="disabled"  value="${record.fieldMap['u8SlotNO'].value}"/>
+								<input type="hidden" id="u8SlotNO" value="${record.fieldMap['u8SlotNO'].value}"/>
+							</td>
+							<td id="u8SlotNOError" class="error"></td>
+						</tr>
+						<tr class="u8BDType">
+							<td>单板类型 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8BDType" disabled="disabled" value="1" id="radio1">BBU</input>
+								<input type="radio" name="u8BDType" disabled="disabled" value="2" style="margin-left:80px;" id="radio2">RRU</input>
+							</td>
+							<td id="u8BDTypeError" class="error"></td>
+						</tr>
+						<!-- 机架号  -->
+						<tr class="justForView" id="u8RackNO_tr">
+						</tr>
+						<!-- 光口号  -->
+						<tr class="justForView" id="u8FiberPort_tr">
+						</tr>
+						<tr class="u8RadioMode">
+							<td>无线模式 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8RadioMode" value="1" id="radioOne1">TD-LTE</input>
+								<input type="radio" name="u8RadioMode" value="2" style="margin-left:66px;" id="radioOne2">McWiLL</input>
+							</td>
+						</tr>
+						<tr class="u8ManualOP" >
+							<td>管理状态 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8ManualOP"  value="0" id="radioTwo1">解闭塞</input>
+								<input type="radio" name="u8ManualOP"  value="1" style="margin-left:71px;" id="radioTwo2">闭塞</input>
+							</td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+						</tr>
+					</table>
+					<span id="resultError" style="color:red"></span>
+				</div>
+			</div> 
+			
+		</form>
+		</div>
+</body>
+</html>

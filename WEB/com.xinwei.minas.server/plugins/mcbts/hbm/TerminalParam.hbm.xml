@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                   
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer3.TerminalBizParam" table="terminal_param">
+		<id name="idx" type="java.lang.Long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="name" not-null="true"/>
+		</property>
+		<property name="userClass" type="java.lang.Integer">
+			<column name="userClass" not-null="true"/>
+		</property>
+		<property name="upMaxBandWidth" type="java.lang.Integer">
+			<column name="upMaxBandWidth" not-null="true"/>
+		</property>
+		<property name="upMinBandWidth" type="java.lang.Integer">
+			<column name="upMinBandWidth" not-null="true"/>
+		</property>
+		<property name="downMaxBandWidth" type="java.lang.Integer">
+			<column name="downMaxBandWidth" not-null="true"/>
+		</property>
+		<property name="downMinBandWidth" type="java.lang.Integer">
+			<column name="downMinBandWidth" not-null="true"/>
+		</property>
+		<property name="minMaintainBWSwitch" type="java.lang.Integer">
+			<column name="minMaintainBWSwitch" not-null="true"/>
+		</property>
+		<property name="upMinMaintainBW" type="java.lang.Integer">
+			<column name="upMinMaintainBW" not-null="true"/>
+		</property>
+		<property name="downMinMaintainBW" type="java.lang.Integer">
+			<column name="downMinMaintainBW" not-null="true"/>
+		</property>
+		
+	</class>
+</hibernate-mapping>                                      

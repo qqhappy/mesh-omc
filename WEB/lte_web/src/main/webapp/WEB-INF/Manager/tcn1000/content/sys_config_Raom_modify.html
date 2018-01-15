@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//展示显示值
+		for(var i= 1;i<3;i++){
+			if($("#dataSyncFlag"+i).val() == ${tcnGlobalRoamInfo.dataSyncFlag!}){
+				$("#dataSyncFlag"+i).attr("checked","checked");
+			}
+		}
+		
+		//后退
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		//提交
+		$("#submitBtn").click(function(){
+			//分页信息
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			//页面参数
+			var sdcId = $("#sdcId").val();
+			var peerIp = $("#peerIp").val();
+			var peerSipPort = $("#peerSipPort").val();
+			var dataSyncFlag = $("input[name='dataSyncFlag']:checked").val();
+			var comment = $("#comment").val();
+			//校验
+			var isNum = /^[0-9]+$/;
+			var isChinese = /^[A-Za-z0-9\u4e00-\u9fa5_]+$/;
+			var isIp=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)$/;
+			var index = 0;
+			if(!(isNum.test(sdcId) && sdcId >= 0 && sdcId <=65535)){
+				index++;
+				$("#sdcIdError").text(" 请输入0-65535之间的整数 ");
+			}else{
+				$("#sdcIdError").text("");
+			}
+			if(!isIp.test(peerIp)){
+				index++;
+				$("#peerIpError").text(" 请输入合法的IP地址 ");
+			}else{
+				$("#peerIpError").text("");
+			}
+			if(!(isNum.test(peerSipPort) && peerSipPort >= 0 && peerSipPort <=65535)){
+				index++;
+				$("#peerSipPortError").text(" 请输入0-65535之间的整数 ");
+			}else{
+				$("#peerSipPortError").text("");
+			}
+			if(comment != null && comment != ""){
+				var commentArray = comment.split("");
+				if(!isChinese.test(comment)){
+					index++;
+					$("#commentError").text(" 只能输入字母、数字、下划线和中文 ");
+				}else if(commentArray.length>80){
+					index++;
+					$("#commentError").text(" 长度不可以超过80 ");
+				}else{
+					$("#commentError").text("");
+				}
+			}else{
+				$("#commentError").text("");
+			}
+			//提交
+			if(index == 0){
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/modifyTcnGlobalRoamInfo.do",
+					data:"tcnGlobalRoamInfo.sdcId="+sdcId+
+						"&tcnGlobalRoamInfo.peerIp="+peerIp+
+						"&tcnGlobalRoamInfo.peerSipPort="+peerSipPort+
+						"&tcnGlobalRoamInfo.dataSyncFlag="+dataSyncFlag+
+						"&tcnGlobalRoamInfo.comment="+comment,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								if(currentPageNum == 0){
+									currentPageNum = 1;
+									totalPages = 1;
+								}
+								window.location=basePath+"/lte/queryTcnGlobalRoamInfoList.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("操作失败");
+					}
+				});
+			}			
+		});		
+	})
+
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>全局漫游信息</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>修改</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>对端TCN1000设备标识(0~65535) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" style="width:240px;" id="sdcId" value="${tcnGlobalRoamInfo.sdcId!}" disabled="disabled"/>
+							</td>
+							<td class="redColor">*</td>
+							<td id="sdcIdError" class="error"></td>
+						</tr>
+						<tr>
+							<td>对端IP :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" style="width:240px;" id="peerIp"  value="${tcnGlobalRoamInfo.peerIp!}"/>
+							</td>
+							<td class="redColor">*</td>
+							<td id="peerIpError" class="error"></td>
+						</tr>
+						<tr>
+							<td>对端SIP端口(0~65535) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" style="width:240px;" id="peerSipPort"  value="${tcnGlobalRoamInfo.peerSipPort!}"/>
+							</td>
+							<td class="redColor">*</td>
+							<td id="peerSipPortError" class="error"></td>
+						</tr>
+						<tr>
+							<td>数据同步标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="dataSyncFlag" id="dataSyncFlag1" value="0" >不同步</input>
+								<input type="radio" name="dataSyncFlag" id="dataSyncFlag2" value="1" style="margin-left:80px;">同步</input>
+							</td>
+							<td class="redColor">*</td>
+							<td id="dataSyncFlagError" class="error"></td>
+						</tr>
+						<tr>
+							<td>描述信息 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" style="width:240px;" id="comment"  value="${tcnGlobalRoamInfo.comment!}"/>
+							</td>
+							<td class="redColor"></td>
+							<td id="commentError" class="error"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input id="submitBtn" type="button" value="确定" style="padding:3px 25px;"/>
+								<input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>	
+							</td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+</body>
+</html>

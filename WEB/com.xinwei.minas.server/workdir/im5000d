@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# stbcd	This shell script takes care of starting and stopping
+#		the im5000 server.
+#
+# chkconfig: 2345 98 20
+# description:	im5000 server.
+# processname: im5000
+# Source function library.
+#. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+#. /etc/sysconfig/network
+. /etc/profile
+prog="im5000d"
+
+start()
+{
+	cd /usr/xinwei/wireless/im5000
+
+	echo "Starting im5000 server..."
+      	nohup java -cp ./etc/launcher LauncherBootstrap -launchfile launcher_server.xml -executablename launcher server $@ >/dev/null 2>&1 &
+
+      	echo "Done."
+}
+
+stop()
+{
+     	cd /usr/xinwei/wireless/im5000
+     	echo "Stopping im5000 server..."
+     	pid=`ps -ef | grep product=minas | grep -v grep | awk '{print $2}'`
+     	if [ -n "$pid" ]; then
+  		ps -ef | grep product=minas | grep -v grep | awk '{print $2}'| xargs kill -9
+	fi
+     	echo "Done."
+}
+ 
+restart()
+{
+    stop
+    start
+}
+
+
+status()
+{
+	pid=`ps -ef | grep product=minas | grep -v grep | awk '{print $2}'`
+	if  [ -n "$pid" ]; then
+		echo "iM5000 is running ($pid)."  
+	else 
+		echo "iM5000 is not running."   
+	fi
+}
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  status)
+    status
+    ;;	
+  *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+
+exit $?

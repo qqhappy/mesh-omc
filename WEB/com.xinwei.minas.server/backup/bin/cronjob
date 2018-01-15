@@ -1,0 +1,1 @@
+0 2 * * * /usr/xinwei/wireless/im5000/backup/bin/backup.sh

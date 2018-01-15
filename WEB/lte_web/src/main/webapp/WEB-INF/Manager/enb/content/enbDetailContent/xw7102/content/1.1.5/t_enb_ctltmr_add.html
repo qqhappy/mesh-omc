@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_enb_ctltmr.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>控制面定时器参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_ENB_CTLTMR-1.1.5" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CfgIdx">
+							<td style="width:320px;">配置索引 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="1" id="u8CfgIdx" disabled="disabled"/></td>
+							<td class="error" style="width:260px;" id="u8CfgIdxError"></td>						
+						</tr>
+						<tr  class="u16RrcSetupTimer">
+							<td>RRC建立完成定时器(10~16000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="2000"  id="u16RrcSetupTimer"/></td>
+							<td class="error" style="width:260px;" id="u16RrcSetupTimerError"></td>						
+						</tr>
+						<tr class="u16RrcReCfgTimer">
+							<td>RRC重配完成定时器(10~16000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="8000"  id="u16RrcReCfgTimer"/></td>
+							<td class="error" style="width:260px;" id="u16RrcReCfgTimerError"></td>						
+						</tr>
+						<tr class="u16RrcReEstTimer">
+							<td>RRC重建完成定时器(10~6000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="3000"  id="u16RrcReEstTimer"/></td>
+							<td class="error" style="width:260px;" id="u16RrcReEstTimerError"></td>						
+						</tr>
+						<tr class="u16RrcCnntRlsTimer">
+							<td>RRC连接释放定时器(10~3000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="500"  id="u16RrcCnntRlsTimer"/></td>
+							<td class="error" style="width:260px;" id="u16RrcCnntRlsTimerError"></td>						
+						</tr>
+						<tr class="u16UeCapTimer">
+							<td>UE能力查询等待定时器(10~2000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="1000"  id="u16UeCapTimer"/></td>
+							<td class="error" style="width:260px;" id="u16UeCapTimerError"></td>						
+						</tr>
+						<tr class="u16HoDataGuardTimer">
+							<td>数据反传保证定时器(10~2000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;" value="2000"  id="u16HoDataGuardTimer"/></td>
+							<td class="error" style="width:260px;" id="u16HoDataGuardTimerError"></td>						
+						</tr>
+						<tr class="u16InitialUETimer">
+							<td>发送初始UE后等待定时器(10~16000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="16000"  id="u16InitialUETimer"/></td>
+							<td class="error" style="width:260px;" id="u16InitialUETimerError"></td>						
+						</tr>
+						<tr class="u32S1SetupRspTimer">
+							<td>S1建立响应定时器(10~20000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="10000"  id="u32S1SetupRspTimer"/></td>
+							<td class="error" style="width:260px;" id="u32S1SetupRspTimerError"></td>						
+						</tr>
+						<tr class="u16UeSetupFailTimer">
+							<td>UE上下文建立失败等待MME释放定时器(10~1200,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="600"  id="u16UeSetupFailTimer"/></td>
+							<td class="error" style="width:260px;" id="u16UeSetupFailTimerError"></td>						
+						</tr>
+						<tr class="u16UeCtxRelReqTimer">
+							<td>发送S1连接释放请求后等待定时器(10~10000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;" value="5000"  id="u16UeCtxRelReqTimer"/></td>
+							<td class="error" style="width:260px;" id="u16UeCtxRelReqTimerError"></td>						
+						</tr>
+						<tr class="u16S1HoPrepareTimer">
+							<td>S1切换准备定时器(10~20000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;" value="10000"  id="u16S1HoPrepareTimer"/></td>
+							<td class="error" style="width:260px;" id="u16S1HoPrepareTimerError"></td>						
+						</tr>
+						<tr class="u16S1HoCompleteTimer">
+							<td>S1切换成功后源侧等待MME释放定时器(10~30000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;" value="15000"  id="u16S1HoCompleteTimer"/></td>
+							<td class="error" style="width:260px;" id="u16S1HoCompleteTimerError"></td>						
+						</tr>
+						<tr class="u32CmmCellCfgTimer">
+							<td>CMM小区配置等待定时器(1000~10000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="7000"  id="u32CmmCellCfgTimer"/></td>
+							<td class="error" style="width:260px;" id="u32CmmCellCfgTimerError"></td>						
+						</tr>
+						<tr class="u32S1ResetAckTimer">
+							<td>S1等待Reset Ack定时器(10~20000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="10000"  id="u32S1ResetAckTimer"/></td>
+							<td class="error" style="width:260px;" id="u32S1ResetAckTimerError"></td>						
+						</tr>
+						<tr class="u32S1UptAckTimer">
+							<td>S1等待Update Ack定时器(10~20000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="10000"  id="u32S1UptAckTimer"/></td>
+							<td class="error" style="width:260px;" id="u32S1UptAckTimerError"></td>						
+						</tr>
+						
+						<tr class="u16PingpongHoTimer">
+							<td>乒乓切换定时器(10~20000,步长为10)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="2000"  id="u16PingpongHoTimer"/></td>
+							<td class="error" style="width:260px;" id="u16PingpongHoTimerError"></td>						
+						</tr>
+						<tr class="u16A3RelInactTimer">
+							<td>A3触发的用户不活动释放定时器(0~65535)(s) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="10"  id="u16A3RelInactTimer"/></td>
+							<td class="error" style="width:260px;" id="u16A3RelInactTimerError"></td>						
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+							<td class="error" style="width:260px;"></td>
+						</tr>		
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

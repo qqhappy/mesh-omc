@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: com.xinwei.minas.zk.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: XINWEI
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.xinwei.minas.zk.core.basic,
+ com.xinwei.minas.zk.core.facade,
+ com.xinwei.minas.zk.core.listener,
+ com.xinwei.minas.zk.core.xnode.common,
+ com.xinwei.minas.zk.core.xnode.vo
+Require-Bundle: com.xinwei.omp.core;bundle-version="1.0.0",
+ com.xinwei.minas.core;bundle-version="1.0.0"

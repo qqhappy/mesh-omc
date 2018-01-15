@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                   
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.SDMAConfig" table="mcbts_sdma">
+		<id name="idx" type="java.lang.Long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="java.lang.Long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="sdmaEnableFlag" type="java.lang.Integer">
+			<column name="sdmaSwitch" not-null="true"/>
+		</property>
+		<property name="voiceSdmaFlag" type="java.lang.Integer">
+			<column name="voiceSwitch" not-null="true"/>
+		</property>
+		<property name="videoSdmaFlag" type="java.lang.Integer">
+			<column name="videoSwitch" not-null="true"/>
+		</property>
+		<property name="sdmaSchType" type="java.lang.Integer">
+			<column name="subChType" not-null="true"/>
+		</property>
+		<property name="inRadioResIndTh" type="java.lang.Integer">
+			<column name="inThreshold" not-null="true"/>
+		</property>
+		<property name="outRadioResIndTh" type="java.lang.Integer">
+			<column name="outThreshold" not-null="true"/>
+		</property>
+		<property name="wlMatchUserMaxNum" type="java.lang.Integer">
+			<column name="userMaxMatcher" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>                                      

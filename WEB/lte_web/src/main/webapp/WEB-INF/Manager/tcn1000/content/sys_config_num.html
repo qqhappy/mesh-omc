@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});	
+
+		var na_prefix = $("#na_prefixHidden").val();
+		$("#na_prefix_input").val(na_prefix);
+		
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$("input[type='checkbox']:gt(0):checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录?")){
+				var queryna_prefix = $("#na_prefixHidden").val();
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				var prefixArray = [];
+				var prefixArrayIndex = 0;
+				$("input[type='checkbox']:gt(0):checked").each(function(){
+					prefixArray[prefixArrayIndex]=$(this).val();
+					prefixArrayIndex++;
+				});
+		
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteNumAnalyse.do",
+					data:"numAnalyseModel.na_prefix="+prefixArray,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoNumAnalyse.do?querynumAnalyseModel.na_prefix="+queryna_prefix+"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;		
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}					
+				});
+			}			
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			if(confirm("确定要删除该条记录?")){	
+				var queryna_prefix = $("#na_prefixHidden").val();
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				var na_prefix = $(this).siblings("input").val();
+
+				$.ajax({
+					type:"post",
+					url:"lte/deleteNumAnalyse.do",
+					data:"numAnalyseModel.na_prefix="+na_prefix,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoNumAnalyse.do?querynumAnalyseModel.na_prefix="+queryna_prefix+"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;		
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}						
+				});
+			}		
+			
+		});
+		
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var na_prefix = $.trim($("#na_prefix_input").val());
+			var basePath = $("#basePath").val();
+			//window.location=basePath+"/lte/turntoNumAnalyse.do?querynumAnalyseModel.na_prefix="+na_prefix+"&onlinePage.totalPages="+totalPages;
+			$("#queryform").attr("action",basePath+"/lte/turntoNumAnalyse.do?querynumAnalyseModel.na_prefix="+na_prefix+"&onlinePage.totalPages="+totalPages);
+			$("#queryform").submit();
+		});
+
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoNumAnalyse.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoNumAnalyse.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoNumAnalyse.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoNumAnalyse.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turntoNumAnalyseAdd.do?querynumAnalyseModel.na_prefix=${querynumAnalyseModel.na_prefix!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+	});
+	
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var na_prefix = $("#na_prefixHidden").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+	
+	var myForm = '<form action="'+basePath+'/lte/turntoNumAnalyse.do" id="myForm" method="post">'+
+					'<input name="querynumAnalyseModel.na_prefix" value="'+na_prefix+'">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';
+
+	$("#hiddenDiv").html(myForm);
+	$("#myForm").submit();
+	$("#hiddenDiv").html("");
+
+	//window.location=basePath+'/lte/turntoNumAnalyse.do?querynumAnalyseModel.na_prefix='+na_prefix+'&onlinePage.currentPageNum='+curP+'&onlinePage.totalPages='+totalPages;
+	
+}
+
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>号码分析</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<!-- <li><label></label><a href="${base}/lte/turntoNumAnalyseAdd.do?querynumAnalyseModel.na_prefix=${querynumAnalyseModel.na_prefix!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}" target="mainFrame" class="btn">增加</a></li>
+				<li><label></label><a href="#" target="mainFrame" class="btn" id="batchDelete">批量删除</a></li>	 -->		
+				<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+				<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>
+			</ul>
+			<div class="fright">
+				<form action="" method="post" id="queryform">
+					<label for="na_prefix_input">号码前缀 : </label>
+					<input type="text" id="na_prefix_input" class="system_config_input"/>
+					&nbsp;
+					<input type="button" id="searchBtn" value="查询"/>
+				</form>				
+			</div>
+		</div>
+		<table width="100%" id="table_num" class="enbTable changeRowColor">
+		  <tr>
+			<th scope="col" class="checkWidth"><input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th> 
+			<th scope="col" style="width:60px;">修改</th>
+			<th scope="col"  width="15%">号码前缀</th>
+			<th scope="col"  width="15%">最小号码长度</th>
+			<th scope="col"  width="15%">最大号码长度</th>
+			<th scope="col"  width="15%">号码属性</th>
+			<th scope="col" >SIP通道ID</th>
+			<th scope="col" style="width:60px;">修改</th>
+			<th scope="col" style="width:60px;">删除</th>
+		  </tr>
+		  <#list numAnalyseModelList! as numAnalyseModel>
+		  	<tr>
+				<th scope="row"><input type="checkbox" name="checkson" value="${numAnalyseModel.na_prefix!}" /></th>
+				<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyNumAnalyse.do?numAnalyseModel.na_prefix=${numAnalyseModel.na_prefix!}	&querynumAnalyseModel.na_prefix=${querynumAnalyseModel.na_prefix!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+				<td>${numAnalyseModel.na_prefix!}<input type="hidden" value="1" id="noRecordInput"/></td>
+				<td>${numAnalyseModel.na_minlen!}</td>
+				<td>${numAnalyseModel.na_maxlen!}</td>
+				
+				<#if numAnalyseModel.na_attr! == "0">
+					<td>局内号码</td>
+				<#elseif numAnalyseModel.na_attr! == "1">
+					<td>出局号码</td>
+				<#else>
+					<td>群组号码</td>
+				</#if>
+				<td>${numAnalyseModel.sip_id!}</td>				
+				<td><a href="${base}/lte/toModifyNumAnalyse.do?numAnalyseModel.na_prefix=${numAnalyseModel.na_prefix!}	&querynumAnalyseModel.na_prefix=${querynumAnalyseModel.na_prefix!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}">修改</a></td>
+				<td><a class="deleteOne" style="cursor:pointer;">删除</a><input type="hidden" value="${numAnalyseModel.na_prefix!}"/></td>
+			  </tr>
+		  </#list>
+		  <#if numAnalyseModelList?size < 1>
+	  			<tr>
+	  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+	  				<td></td>
+		  			<td class="hide1">${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  			</tr>
+		  </#if>
+		 
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+<input type="hidden" value="${querynumAnalyseModel.na_prefix!}" id="na_prefixHidden"/>
+</body>
+</html>

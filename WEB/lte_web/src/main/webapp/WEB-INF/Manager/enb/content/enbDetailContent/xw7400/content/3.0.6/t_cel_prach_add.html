@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_prach.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>PRACH参数配置表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_PRACH-3.0.6" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td style="width:260px;">小区标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CId">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="u8CIdError"></td>						
+						</tr>
+						<tr class="u8NumberOfRaPreambles">
+							<td>基于竞争的随机接入前导码个数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8NumberOfRaPreambles">
+									<option value="0">4</option>
+									<option value="1">8</option>
+									<option value="2">12</option>
+									<option value="3">16</option>
+									<option value="4">20</option>
+									<option value="5">24</option>
+									<option value="6">28</option>
+									<option value="7">32</option>
+									<option value="8">36</option>
+									<option value="9">40</option>
+									<option value="10">44</option>
+									<option value="11">48</option>
+									<option value="12" selected="selected">52</option>
+									<option value="13">56</option>
+									<option value="14">60</option>
+									<option value="15">64</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;" id="u8NumberOfRaPreamblesError"></td>
+						</tr>
+						<tr class="u8SizeOfRaPreamblesGroupA">
+							<td>组A中前导码个数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8SizeOfRaPreamblesGroupA">
+									<option value="0">4</option>
+									<option value="1">8</option>
+									<option value="2">12</option>
+									<option value="3">16</option>
+									<option value="4">20</option>
+									<option value="5">24</option>
+									<option value="6">28</option>
+									<option value="7">32</option>
+									<option value="8">36</option>
+									<option value="9">40</option>
+									<option value="10" selected="selected">44</option>
+									<option value="11">48</option>
+									<option value="12">52</option>
+									<option value="13">56</option>
+									<option value="14">60</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8MsgPwrOffsetGrpB">
+							<td>Msg3功率偏移(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8MsgPwrOffsetGrpB">
+									<option value="0">负无穷</option>
+									<option value="1" selected="selected">0</option>
+									<option value="2">5</option>
+									<option value="3">8</option>
+									<option value="4">10</option>
+									<option value="5">12</option>
+									<option value="6">15</option>
+									<option value="7">18</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8MaxPreambleTranCt">
+							<td>随机接入前导最大发送次数:</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8MaxPreambleTranCt">
+									<option value="0">3</option>
+									<option value="1">4</option>
+									<option value="2">5</option>
+									<option value="3">6</option>
+									<option value="4">7</option>
+									<option value="5" selected="selected">8</option>
+									<option value="6">10</option>
+									<option value="7">20</option>
+									<option value="8">50</option>
+									<option value="9">100</option>
+									<option value="10">200</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8RachRspWndSize">
+							<td>随机接入响应接收窗口(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8RachRspWndSize">
+									<option value="0">2</option>
+									<option value="1">3</option>
+									<option value="2">4</option>
+									<option value="3">5</option>
+									<option value="4">6</option>
+									<option value="5">7</option>
+									<option value="6">8</option>
+									<option value="7" selected="selected">10</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8MacConTentionTimer">
+							<td>竞争解决定时器(sf) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8MacConTentionTimer">
+									<option value="0">8</option>
+									<option value="1">16</option>
+									<option value="2">24</option>
+									<option value="3">32</option>
+									<option value="4">40</option>
+									<option value="5" selected="selected">48</option>
+									<option value="6">56</option>
+									<option value="7">64</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8MaxMsg3TranCt">
+							<td>Msg3最大发送次数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8MaxMsg3TranCt">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5" selected="selected">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PrachCfgIndex">
+							<td>随机接入前导发送时刻配置索引(0~57) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="0" id="u8PrachCfgIndex"/></td>
+							<td class="error" style="width:250px;" id="u8PrachCfgIndexError"></td>
+						</tr>
+						<tr class="u8HighSpeedFlag">
+							<td>小区高速移动指示 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8HighSpeedFlag" value="0"  id="radio1" checked="checked">否</input>
+								<input type="radio" name="u8HighSpeedFlag" value="1"  id="radio2" style="margin-left:80px;">是</input>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u16RootSeqIndex">
+							<td>逻辑根序列索引(0~837) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="0" id="u16RootSeqIndex"/></td>
+							<td style="width:250px;">
+<!-- 								<input type="button" value="获取空闲索引" style="width:100px;" onclick="getFreeU16RootSeqIndex()"></input> -->
+								<span class="error" id="u16RootSeqIndexError" ></span>
+							</td>
+						</tr>
+						<tr class="u8NcsCfg">
+							<td>Ncs索引 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8NcsCfg">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10" selected="selected">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PrachFreqOffset">
+							<td>随机接入前导起始RB(0~94) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="4" id="u8PrachFreqOffset"/></td>
+							<td class="error" style="width:250px;" id="u8PrachFreqOffsetError"></td>
+						</tr>
+						<tr class="u8SelPreGrpThresh">
+							<td>Msg3大小判决门限(bits) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8SelPreGrpThresh">
+									<option value="0" selected="selected">56</option>
+									<option value="1">144</option>
+									<option value="2">208</option>
+									<option value="3">256</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PrachPwrStep">
+							<td>PRACH的功率攀升步长(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PrachPwrStep">
+									<option value="0">0</option>
+									<option value="1" selected="selected">2</option>
+									<option value="2">4</option>
+									<option value="3">6</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PreInitPwr">
+							<td>PRACH初始前导发射功率(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PreInitPwr">
+									<option value="0">-120</option>
+									<option value="1">-118</option>
+									<option value="2">-116</option>
+									<option value="3">-114</option>
+									<option value="4">-112</option>
+									<option value="5" selected="selected">-110</option>
+									<option value="6">-108</option>
+									<option value="7">-106</option>
+									<option value="8">-104</option>
+									<option value="9">-102</option>
+									<option value="10">-100</option>
+									<option value="11">-98</option>
+									<option value="12">-96</option>
+									<option value="13">-94</option>
+									<option value="14">-92</option>
+									<option value="15">-90</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u16PreambleLifeTime">
+							<td>专用前导资源占用时间(100~2000)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="2000" id="u16PreambleLifeTime"/></td>
+							<td class="error" style="width:250px;" id="u16PreambleLifeTimeError"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

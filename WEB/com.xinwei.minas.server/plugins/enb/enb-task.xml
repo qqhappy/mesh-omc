@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="enbHeartbeatTaskManager"
+		class="com.xinwei.minas.server.enb.task.EnbHeartbeatTaskManager"
+		factory-method="getInstance" />
+	<bean id="enbHeartbeatTaskManager.init"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="enbHeartbeatTaskManager" />
+		</property>
+		<property name="targetMethod">
+			<value>initialize</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${enb.heartbeat.task.failed_times_threashold}</value>
+				<value>${enb.heartbeat.task.delay}</value>
+				<value>${enb.heartbeat.task.period}</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="enbRegisterTaskManager" class="com.xinwei.minas.server.enb.task.EnbRegisterTaskManager"
+		factory-method="getInstance">
+		<property name="maxRegisterNum" value="${enbRegisterTaskManager.maxRegisterNum}"></property>
+		<property name="retryNum" value="${enbRegisterTaskManager.retryNum}"></property>
+		<property name="retryInterval" value="${enbRegisterTaskManager.retryInterval}"></property>
+	</bean>
+
+	<bean id="enbFullTableTaskManager"
+		class="com.xinwei.minas.server.enb.task.EnbFullTableTaskManager"
+		factory-method="getInstance">
+		<property name="ftpServerIp" value="${platform.ftp.ip}"></property>
+		<property name="ftpPort" value="${platform.ftp.port}"></property>
+		<property name="ftpUsername" value="${enb.ftp.username}"></property>
+		<property name="ftpPassword" value="${enb.ftp.password}"></property>
+		<property name="configFtpdDrectory" value="${enb.fulltable.config.ftp.path}"></property>
+		<property name="configLocalDirectory" value="${enb.fulltable.config.local.path}"></property>
+		<property name="reverseFtpdDrectory" value="${enb.fulltable.reverse.ftp.path}"></property>
+		<property name="reverseLocalDirectory" value="${enb.fulltable.reverse.local.path}"></property>
+		<property name="overTime" value="${enb.fulltable.overtime}"></property>
+	</bean>
+	<bean id="enbBlackBoxFileTask" class="com.xinwei.minas.server.enb.task.EnbBlackBoxFileTask" >
+	    
+	</bean>
+	
+	<bean id="enbBlackBoxFileDeleteTask" class="com.xinwei.minas.server.enb.task.EnbBlackBoxFileDeleteTask" >
+		<property name="persistDay" value="${enb.blackbox.persistDay}"></property>
+		<property name="persistCount" value="${enb.blackbox.persistCount}"></property>
+		<property name="firstFilePath"  value = "${enb.blackbox.firstFilePath}"> </property>
+		<property name="localFirstFilePath"  value = "${enb.blackbox.localFirstFilePath}"> </property>
+	</bean>
+	<bean id="deletejobResignation" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="enbBlackBoxFileDeleteTask"></property>
+		<property name="targetMethod" value="deleteTask"></property>
+		<property name="concurrent"  value="true"></property>
+	</bean>
+	<bean id="deleteTaskTrugger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="deletejobResignation"></property>
+		<property name="cronExpression"  value="${enb.blackfiledelete.cronExpression}"></property>
+	</bean>
+	
+	
+	
+	<bean id="enbBlackBoxFileTaskManager" class="com.xinwei.minas.server.enb.task.EnbBlackBoxFileTaskManager" >
+		<property name="enbBlackBoxFileTask"  ref="enbBlackBoxFileTask"></property>
+		<property name="ftpServerIp"  value="${platform.ftp.ip}"></property>
+		<property name="ftpPort"  value="${platform.ftp.port}"></property>
+		<property name="ftpUsername"  value= "${enb.ftp.username}"></property>
+		<property name="ftpPassword"  value="${enb.ftp.password}"></property>
+		<property name="firstFilePath"  value = "${enb.blackbox.firstFilePath}"> </property>
+		<property name="localFirstFilePath"  value = "${enb.blackbox.localFirstFilePath}"> </property>
+	</bean>
+	
+	<bean id="jobResignation" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="enbBlackBoxFileTaskManager"></property>
+		<property name="targetMethod" value="doTask"></property>
+		<property name="concurrent"  value="true"></property>
+	</bean>
+	<bean id="simpleTriggerResignation" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="jobResignation"></property>
+		<property name="startDelay" value="${enb.blackboxfile.startDelay}"></property>
+		<property name="repeatInterval"  value="${enb.blackfile.repeatInteval}"></property>
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="simpleTriggerResignation" />
+				<ref bean="deleteTaskTrugger" />
+			</list>
+		</property>
+	</bean>
+
+	
+	
+</beans>

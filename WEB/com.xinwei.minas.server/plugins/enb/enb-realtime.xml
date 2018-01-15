@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="enbRealtimeDataSender" class="com.xinwei.minas.server.enb.stat.net.EnbRealtimeDataSenderImpl">
+		<constructor-arg name="serverPort" value="${enb.realtime.serverPort}" />
+		<constructor-arg name="clientPort" value="${enb.realtime.clientPort}" />
+	    <property name="enbRealtimeDataEncoder" ref="enbRealtimeDataEncoder" />
+	</bean>
+	
+	<bean id="enbRealtimeMessageDecoder" class="com.xinwei.minas.server.enb.stat.net.EnbRealtimeMessageDecoderImpl" />
+	
+	<bean id="enbRealtimeDataEncoder" class="com.xinwei.minas.server.enb.stat.net.EnbRealtimeDataEncoderImpl" />
+	
+	<bean id="enbRealtimeItemCache" class="com.xinwei.minas.server.enb.stat.net.EnbRealtimeMsgHandler" factory-method="getInstance">
+	    <property name="enbRealtimeDataSender" ref="enbRealtimeDataSender" />
+		<property name="enbRealtimeMessageDecoder" ref="enbRealtimeMessageDecoder" />
+	</bean>
+	
+</beans>

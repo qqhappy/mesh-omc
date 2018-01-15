@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		
+		$("#submitBtn").click(function(){
+			var numbers = $("#numbers").val();
+			
+			var emgsys_num = $("#emgsys_num").val();
+			var emgsys_category = $("#emgsys_category").val();
+			var emg_redicnum = $("#emg_redicnum").val();
+			var emg_redicpri = $("#emg_redicpri").val();
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();			
+			var basePath = "${base}";
+			
+			var valTest = /^[0-9]*$/;
+			
+			var arr = numbers.split(",");
+			if($.inArray(emgsys_num,arr) != -1 && numbers != ""){
+				alert("紧急呼叫号码已存在");
+				return false;
+			}
+			if(emgsys_num == null || emgsys_num == ''){
+				alert("紧急呼叫号码不可为空");
+				return false;
+			}
+			if((!valTest.test(emgsys_num)) || (emgsys_num.length<1)){
+				alert("紧急呼叫号码格式错误");
+				return false;
+			}
+			
+			if(emg_redicnum == null || emg_redicnum == ''){
+				alert("紧急呼叫重定向号码不可为空");
+				return false;
+			}
+			if((!valTest.test(emg_redicnum)) || (emg_redicnum.length<1)){
+				alert("紧急呼叫重定向号码格式错误");
+				return false;
+			}
+			$.ajax({
+				type:'post',
+				url:basePath+'/lte/sysEmgcfg!addSysEmgcfg.do',
+				data:'sysEmgcfgModel.emgsys_num='+emgsys_num+
+					'&sysEmgcfgModel.emgsys_category='+emgsys_category+
+					'&sysEmgcfgModel.emg_redicnum='+emg_redicnum+
+					'&sysEmgcfgModel.emg_redicpri='+emg_redicpri,
+				dataType:'json',
+				success:function(data){
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0: 
+							window.location=basePath+"/lte/sysEmgcfg!turntoSysEmgcfg.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+							break;
+						default:
+							alert(data.message);
+							break;	
+					}
+				},
+				error:function(data){
+					alert("操作失败");
+				}				
+			})
+		});
+		
+		//验证紧急呼叫号码
+		$("#emgsys_num").blur(function(){
+			var valTest = /^[0-9]*$/;
+			var emgsys_num = $.trim($(this).val());
+			if((!valTest.test(emgsys_num)) || (emgsys_num.length<1)){
+				$(".judgeEmgsys_num").css("color","red");
+				$(".judgeEmgsys_num").css("font-style","italic");
+				$(".judgeEmgsys_num").html("取值范围1-16位纯数字");
+			}else{
+				$(".judgeEmgsys_num").html("");
+			}
+		});
+		
+		$("#emgsys_num").focus(function(){
+			var valTest = /^[0-9]*$/;
+			var emgsys_num = $.trim($(this).val());
+			if((!valTest.test(emgsys_num)) || (emgsys_num.length<1)){
+				$(this).val("");	
+			}
+		});
+		
+		//验证紧急呼叫重定向号码
+		$("#emg_redicnum").blur(function(){
+			var valTest = /^[0-9]*$/;
+			var emgsys_num = $.trim($(this).val());
+			if((!valTest.test(emgsys_num)) || (emgsys_num.length<1)){
+				$(".judgeEmg_redicnum").css("color","red");
+				$(".judgeEmg_redicnum").css("font-style","italic");
+				$(".judgeEmg_redicnum").html("取值范围1-16位纯数字");
+			}else{
+				$(".judgeEmg_redicnum").html("");
+			}
+		});
+		
+		$("#emg_redicnum").focus(function(){
+			var valTest = /^[0-9]*$/;
+			var emgsys_num = $.trim($(this).val());
+			if((!valTest.test(emgsys_num)) || (emgsys_num.length<1)){
+				$(this).val("");	
+			}
+		});
+	})
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>系统紧急呼叫</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+	<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>紧急呼叫号码:</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="emgsys_num" maxlength="16" title="取值范围1-16位纯数字"/></td>
+							<td class="redColor">*</td>
+							<td class="judgeEmgsys_num"></td>
+						</tr>
+						<tr>
+							<td>紧急呼叫号码类别:</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff" id="emgsys_category">
+									<option value="0">内部号码</option>
+									<option value="1">外部号码</option>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>紧急呼叫重定向号码:</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="emg_redicnum" maxlength="16" title="取值范围1-16位纯数字"/></td>
+							<td class="redColor">*</td>
+							<td class="judgeEmg_redicnum"></td>
+						</tr>
+						<tr>
+							<td>紧急呼叫重定向号码优先级:</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff" id="emg_redicpri">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button" id="submitBtn" value="确定" style="padding:3px 25px;"/>
+								<input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${numbers!}" id="numbers"/>
+
+</body>
+</html>

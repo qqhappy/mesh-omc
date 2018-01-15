@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_sps.js"></script>
+<script type="text/javascript">
+	$(function(){
+		if(${listLength}<1){
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		checkLevelLen();
+	});
+</script>
+<title>单板表</title>
+</head>
+<body style="overflow:hidden;">
+<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>SPS配置参数表</a>
+		</div>
+		<div class="ltePage">
+			<div class="toolBar">			
+				<ul> 
+<!-- 					<li><label></label><input type="button" id="newAdd" value="新增" onclick = "turnToAddData('${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','T_CEL_PARA','')"/></li> -->
+					<li><label></label><input type="button" id="fresh" value="刷新" onclick = "refresh_sync('${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','')"/></li>
+<!-- 					<li><label></label><input type="button" id="delete" value="批量删除" onclick="multiDelete_sync('t_cel_sps','u8CellId','${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','')"/></li> -->
+				
+				</ul>
+			</div>
+		<div style="width:3200px;padding-right:20px;" class="dynamicLengthDiv">
+		<table width="100%"  id="t_cel_sps" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>
+			<th scope="col" class="u8CellId">小区标识</th>
+			<th scope="col" class="u8SpsPackNum">SPS稳态判断连续包个数</th>
+			<th scope="col" class="u16SpsPacketStdDev">SPS稳态判断包长变化标准差门限值</th>
+			<th scope="col" class="u8SpsJitter">SPS稳态判断抖动范围</th>
+			<th scope="col" class="u8NumHarqFail">去激活条件HarqFail门限值</th>
+			<th scope="col" class="u8SpsTargetBler">SPS BLER目标值</th>
+			<th scope="col" class="u8StepForSps">SPS外环调整步长</th>
+			<th scope="col" class="u8DeltaToDynamicSch">SPS MCS相对动态调度MCS偏移值</th>
+			<th scope="col" class="u8SpsDownLinkSwicth">下行SPS开关</th>
+			<th scope="col" class="u8SemiPersistSchedIntervalDl">下行SPS调度周期</th>
+			<th scope="col" class="u8NumberOfConfSpsProcesses">为下行SPS预留的进程数</th>
+			<th scope="col" class="u8ReTxTimesDlSPS">下行SPS重传次数</th>
+			<th scope="col" class="u16N_SpsANChn">下行SPS ACK PUCCH可用码道资源个数</th>
+			<th scope="col" class="u8SpsUpLinkSwicth">上行SPS开关</th>
+			<th scope="col" class="u8SemiPersistSchedIntervalUl">上行SPS调度周期</th>
+			<th scope="col" class="u8ImplicitReleaseAfter">上行SPS隐式释放次数</th>
+			<th scope="col" class="u8TwoIntervalsConfig">上行SPS双间隔配置参数</th>
+			<th scope="col" class="u8ReTxTimesUlSps">上行SPS重传次数</th>
+			<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 			<th scope="col" class="justForView" width="60px;">删除</th> -->
+		  </tr>
+		  <#if records?size < 1>
+		  	<tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView"></th>
+			<td class="u8CellId">暂无相关记录</td>
+			<td class="u8SpsPackNum"></td>
+			<td class="u16SpsPacketStdDev"></td>
+			<td class="u8SpsJitter"></td>
+			<td class="u8NumHarqFail"></td>
+			<td class="u8SpsTargetBler"></td>
+			<td class="u8StepForSps"></td>
+			<td class="u8DeltaToDynamicSch"></td>
+			<td class="u8SpsDownLinkSwicth"></td>
+			<td class="u8SemiPersistSchedIntervalDl"></td>
+			<td class="u8NumberOfConfSpsProcesses"></td>
+			<td class="u8ReTxTimesDlSPS"></td>
+			<td class="u16N_SpsANChn"></td>
+			<td class="u8SpsUpLinkSwicth"></td>
+			<td class="u8SemiPersistSchedIntervalUl"></td>
+			<td class="u8ImplicitReleaseAfter"></td>
+			<td class="u8TwoIntervalsConfig"></td>
+			<td class="u8ReTxTimesUlSps"></td>
+			<td class="justForView"></td>
+<!-- 			<td class="justForView"></td> -->
+		  </tr>
+		  </#if>
+		 <#list records! as record>
+		  <tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;" onclick="turnToModifyData_bySinglePK(this,'u8CellId','${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','','')"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+			<td class="u8CellId">${record.fieldMap["u8CellId"].value!}</td>
+			<td class="u8SpsPackNum">${record.fieldMap["u8SpsPackNum"].value!}</td>
+			<td class="u16SpsPacketStdDev">${record.fieldMap["u16SpsPacketStdDev"].value!}</td>
+			<td class="u8SpsJitter">${record.fieldMap["u8SpsJitter"].value!}</td>
+			<td class="u8NumHarqFail">${record.fieldMap["u8NumHarqFail"].value!}</td>
+			<td class="u8SpsTargetBler">${record.fieldMap["u8SpsTargetBler"].value!}</td>
+			<td class="u8StepForSps">${record.fieldMap["u8StepForSps"].value!}</td>
+			<td class="u8DeltaToDynamicSch">${record.fieldMap["u8DeltaToDynamicSch"].value!}</td>
+			<td class="u8SpsDownLinkSwicth">${record.fieldMap["u8SpsDownLinkSwicth"].value!}</td>
+			<td class="u8SemiPersistSchedIntervalDl">${record.fieldMap["u8SemiPersistSchedIntervalDl"].value!}</td>
+			<td class="u8NumberOfConfSpsProcesses">${record.fieldMap["u8NumberOfConfSpsProcesses"].value!}</td>
+			<td class="u8ReTxTimesDlSPS">${record.fieldMap["u8ReTxTimesDlSPS"].value!}</td>
+			<td class="u16N_SpsANChn">${record.fieldMap["u16N_SpsANChn"].value!}</td>
+			<td class="u8SpsUpLinkSwicth">${record.fieldMap["u8SpsUpLinkSwicth"].value!}</td>
+			<td class="u8SemiPersistSchedIntervalUl">${record.fieldMap["u8SemiPersistSchedIntervalUl"].value!}</td>
+			<td class="u8ImplicitReleaseAfter">${record.fieldMap["u8ImplicitReleaseAfter"].value!}</td>
+			<td class="u8TwoIntervalsConfig">${record.fieldMap["u8TwoIntervalsConfig"].value!}</td>
+			<td class="u8ReTxTimesUlSps">${record.fieldMap["u8ReTxTimesUlSps"].value!}</td>
+			<td class="justForView"  style="cursor:pointer;"  onclick="turnToModifyData_bySinglePK(this,'u8CellId','${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','','')"><a>修改</a></td>
+<!-- 			<td class="justForView"  style="cursor:pointer;" onclick="delete_sync(this,'u8CellId','${enbVersion}','${base}','${moId}','T_CEL_SPS-3.0.6','')"><a>删除</a></td> -->
+		  </tr>
+		 </#list>
+		</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

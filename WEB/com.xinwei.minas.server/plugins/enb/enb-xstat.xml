@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+         
+	<bean id="enbStatModule" class="com.xinwei.minas.server.enb.xstat.EnbStatModule"
+		factory-method="getInstance">
+		<property name="enbStatItemConfigDAO" ref="enbStatItemConfigDAO" />
+		<property name="enbStatFileProcessTask" ref="enbStatFileProcessTask" />
+	</bean>
+
+	<bean id="enbStatModule.init"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="enbStatModule" />
+		</property>
+		<property name="targetMethod">
+			<value>initialize</value>
+		</property>
+	</bean>
+
+	<bean id="enbStatBizFacade" class="com.xinwei.minas.server.enb.facade.EnbStatBizFacadeImpl" />
+
+	<bean id="enbStatItemConfigDAO"
+		class="com.xinwei.minas.server.enb.xstat.dao.impl.EnbStatItemConfigDAOImpl">
+		<property name="hibernateTemplate" ref="platform.hibernateTemplate" />
+	</bean>
+
+	<bean id="enbStatBizService"
+		class="com.xinwei.minas.server.enb.xstat.service.impl.EnbStatBizServiceImpl">
+		<property name="originalStatDataDAO" ref="originalStatDataDAO" />
+		<property name="preStatDataDAO" ref="preStatDataDAO" />
+		<property name="enbStatItemConfigDAO" ref="enbStatItemConfigDAO" />
+	</bean>
+
+	<bean id="enbFtpConfig" class="com.xinwei.minas.xstat.core.model.FtpConfig">
+		<property name="remotePath" value="${enb.xstat.ftp.path}" />
+		<property name="localPath" value="${enb.xstat.local.path}" />
+		<property name="ftpServerIp" value="${platform.ftp.ip}" />
+		<property name="ftpPort" value="${platform.ftp.port}" />
+		<property name="username" value="${enb.ftp.username}" />
+		<property name="password" value="${enb.ftp.password}" />
+	</bean>
+
+	<bean id="enbStatFileParser" class="com.xinwei.minas.server.enb.xstat.EnbStatFileParser" />
+
+	<bean id="enbStatEntityProcessor"
+		class="com.xinwei.minas.server.enb.xstat.EnbStatEntityProcessor">
+		<constructor-arg value="${enb.xstat.entityprocessor.poolsize}" />
+		<property name="analyzer" ref="enbStatAnalyzer" />
+	</bean>
+
+	<bean id="enbStatFileProcessTask"
+		class="com.xinwei.minas.server.enb.xstat.EnbStatFileProcessTask">
+		<constructor-arg ref="enbFtpConfig" />
+		<property name="delay" value="${enb.file.task.delay}" />
+		<property name="period" value="${enb.file.task.period}" />
+		<property name="statFileParser" ref="enbStatFileParser" />
+		<property name="statEntityProcessor" ref="enbStatEntityProcessor" />
+	</bean>
+	
+</beans>

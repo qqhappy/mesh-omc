@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+		基本属性:{
+			 name:字段的名称标识，要求唯一
+			 desc:字段的描述，可以用于提示，暂时不用
+			 length:字段所占的字节长度,数据串
+			 tag：字段的标识，数据串
+			 type：字段的编码方式
+		}
+		类型的特有属性{
+			fillChar:填充字符，应用于字符串类型
+			isOrder:字节序，应用于数据类型
+		}
+		支持的类型{
+			Int:Interger类型           编码参数:Long     解码返回:Integer  特有属性:isOrder
+			unsignInt:无符号Int       编码参数:Integer  解码返回: Long    特有属性:isOrder
+			Byte:字节                   编码参数:Integer  解码返回:byte
+			unsignByte:无符号字节      编码参数:byte     解码返回:Integer
+			short:短整数               编码参数:Integer   解码返回:Integer  特有属性:isOrder
+			unsignShort:无符号短整数   编码参数:short    解码返回:Integer   特有属性:isOrder
+			ByteArray：字节流          编码参数:byte[]   解码返回:byte[]
+
+			String:字符串类型          编码参数:String   解码返回:String    特有属性:fillChar
+			BCD(HexCompress):BCD字符串  编码参数:String  解码返回:String
+			TenCompress:十字制压缩串    编码参数:String  解码返回:String  特有属性:fillChar
+			IP:IP字符串                 编码参数:String  解码返回:String
+			TenString:十字制字符串       编码参数:String  解码返回:String  特有属性:fillChar
+		} 
+	 -->
+<items>
+	<item name="Version"                 tag="0101" length="51"  type="String"                      desc="服务器版本号"/>
+	<item name="AccountNum"              tag="1001" length="2"   type="unsignShort"                 desc="开户个数"/>
+	<item name="AcPeriod"                tag="1002" length="2"   type=""                            desc="注册周期"/>
+	<item name="AcState"                 tag="1003" length="1"   type="Byte"                        desc="登记激活状态"/>
+	<item name="AdminStatus"             tag="1004" length="1"   type="Byte"                        desc="宽带终端全业务管理状态"/>
+	<item name="AnchorBtsId"             tag="1005" length="4"   type="IpString"                    desc="锚基站ID"/>
+	<item name="AuthType"                tag="1006" length="1"   type="Byte"                        desc="鉴权类别"/>
+	<item name="B_UT_TYPE"               tag="1007" length="1"   type="Byte"                        desc="宽带终端类型"/>
+	<item name="BatType"                 tag="1008" length="1"   type="Byte"                        desc="开户方式"/>
+	<item name="BearType"                tag="1009" length="2"   type="BaseBusiness"                desc="承载业务"/>
+	<item name="BurnTime"                tag="1010" length="20"  type="String"                      desc="BURNTIME????"/>
+	<item name="CallOptPref"             tag="1011" length="1"   type="Byte"                        desc="群内呼话务员字冠"/>
+	<item name="CallPwd"                 tag="1012" length="5"   type="String"                      desc="呼叫密码"/>
+	<item name="CancelLocVal"            tag="1013" length="1"   type=""                            desc=""/>
+	<item name="Category"                tag="1014" length="1"   type="Byte"                        desc="主叫用户类别"/>
+	<item name="CollectionInterval"      tag="1015" length="2"   type="unsignShort"                 desc="性能数据收集间隔"/>
+	<item name="CreatDate"               tag="1016" length="14"  type="String"                      desc="开户日期"/>
+	<item name="CrsgpPdom"               tag="1017" length="1"   type="Byte"                        desc="同组代答权限"/>
+	<item name="CtxActFlag"              tag="1018" length="1"   type="Byte"                        desc="活动群标识"/>
+	<item name="CtxId"                   tag="1019" length="4"   type="unsignInt"                   desc="群号"/>
+	<!--<item name="CtxList"                 tag="1020" length=""    type=""                            desc="群号列表"/>-->
+	<item name="CtxNoType"               tag="1021" length="1"   type="Byte"                        desc="群用户号码类型"/>
+	<item name="CtxPdom"                 tag="1022" length="1"   type="Byte"                        desc="群权限"/>
+	<item name="CtxPref"                 tag="1023" length="1"   type="Byte"                        desc="出群字冠"/>
+	<!--<item name="CtxUserList"             tag="1024" length=""    type=""                            desc="群用户列表"/>-->
+	<item name="DataType"                tag="1025" length="2"   type="BaseBusiness"                desc="窄带数据业务"/>
+	<item name="Description"             tag="1026" length="33"  type="String"                      desc="描述"/>
+	<item name="DestCode"                tag="1027" length="16"  type="BCD"                         desc="目的码"/>
+	<!--<item name="DCodeList"               tag="1028" length=""    type=""                            desc="目的码列表"/>-->
+	<item name="DhcpRenewSta"            tag="1029" length="1"   type="Byte"                        desc="DHCP续约使能"/>
+	<item name="DoubleRingNum"           tag="1030" length="16"  type="TenCompress"                 desc="双响号码"/>
+	<item name="FieldNum"                tag="1031" length="1"   type="Byte"                        desc="字段数"/>
+	<item name="FileName"                tag="1032" length="33"  type="String"                      desc="文件名"/>
+	<item name="FixedIp"                 tag="1033" length="4"   type="IpString"                    desc="固定IP地址"/>
+	<item name="FixedIpNum"              tag="1034" length="1"   type="Byte"                        desc="固定IP数"/>
+	<item name="Flag"                    tag="1035" length="1"   type="Byte"                        desc="应答标记"/>
+	
+	<item name="IndexType"               tag="1048" length="1"   type="Byte"                        desc=""/>
+	
+	<item name="LastRegDate"             tag="1051" length="14"  type="String"                      desc="上次注册日期"/>
+	
+	<item name="MaxIpNum"                tag="1054" length="1"   type="Byte"                        desc="可接入PC数"/>
+	<item name="MaxCtxNum"               tag="1055" length="2"   type="Short"                       desc="最大群数"/>
+	<item name="MaxGroupNum"             tag="1056" length="2"   type="Short"                       desc="最大组数"/>
+	<!--<item name="MaxOptNum"               tag="1057" length=""    type=""                            desc=""/>-->
+	<item name="MaxUserNum"              tag="1058" length="2"   type="Short"                       desc="最大用户数"/>
+	<item name="Mobility"                tag="1059" length="1"   type="Byte"                        desc="漫游使能"/>
+	<item name="ModifyType"              tag="1060" length="1"   type="Byte"                        desc="修改操作类型"/>
+	<item name="ODB"                     tag="1061" length="2"   type="LockStatus"                  desc="锁状态"/>
+	<item name="PerfLogStatus"           tag="1070" length="1"   type="Byte"                        desc="性能数据收集开启状态"/>
+	<item name="Pid"                     tag="1071" length="4"   type="BCD"                         desc="设备号码"/>
+	<item name="PidSeg"                  tag="1072" length="6"   type=""                            desc="PID号段"/>
+	<item name="PrePayind"               tag="1073" length="1"   type="Byte"                        desc="预付费指示"/>
+	<item name="Prn"                     tag="1074" length="3"   type="BCD"                         desc="用户短号"/>
+	<item name="PrnLen"                  tag="1075" length="1"   type="Byte"                        desc="短号长度"/>
+	<item name="RealNo"                  tag="1076" length="16"  type="TenCompress"                 desc="真实号码"/>
+	<item name="RegDate"                 tag="1077" length="14"  type="String"                      desc="本次注册日期"/>
+	<item name="RID"                     tag="1078" length="1"   type="Byte"                        desc="漫游模板ID"/>
+	<item name="ScrPdom"                 tag="1079" length="1"   type="Byte"                        desc="指定代答权限"/>
+	<item name="SdIndex"                 tag="1080" length="2"   type="unsignShort"                 desc="服务协约标识"/>
+	<item name="ServingBS"               tag="1081" length="2"   type="BCD"                 		desc="服务 BS ID"/>
+	<item name="ServingBSC"              tag="1082" length="4"   type="unsignInt"                   desc="服务 BSC ID"/>
+	<item name="ServingLA"               tag="1083" length="5"   type="BCD"                         desc="LAI服务位置区号"/>
+	<item name="ServingSS"               tag="1084" length="4"   type="unsignInt"                  	desc="服务 SS ID"/>
+	<item name="ShortNo"                 tag="1085" length="1"   type="Byte"                        desc="缩位号码"/>
+	<item name="SID"                     tag="1086" length="16"  type="String"                      desc="用户号码"/>
+	<item name="SmsType"                 tag="1087" length="2"   type="BaseBusiness"                desc="短信业务"/>
+	<item name="SumCount"                tag="1089" length="2"   type="Short"                       desc="查询记录总数"/>
+	<item name="SupplementNo"            tag="1090" length="1"   type="Byte"                        desc="补充业务编号"/>
+	<item name="SupplementType"          tag="1091" length="2"   type="SupplementItem"              desc="补充业务"/>
+	<item name="TeId"                    tag="1092" length="2"   type="Short"                       desc="用户模板"/>
+	<item name="TEL"                     tag="1093" length="16"  type="TenCompress"                 desc="电话号码" fillChar="F"/>
+	<item name="TerminalStaticStatus"    tag="1094" length="1"   type="Byte"                        desc="终端状态"/>
+	<item name="TerminalType"            tag="1095" length="1"   type="Byte"                        desc="终端类型"/>
+	<item name="TwinFlag"                tag="1097" length="1"   type="Byte"                        desc="孖机处理方式"/>
+	<item name="Uid"                     tag="1098" length="4"   type="BCD"                         desc="用户号码"/>
+	<item name="UidSeg"                  tag="1099" length="6"   type=""                            desc="用户ID号段"/>
+	<item name="UserNo"                  tag="1100" length="8"   type="BCD"                         desc="号码"/>
+	<item name="VlanTag"                 tag="1101" length="2"   type="unsignShort"                       desc="VLAN标记"/>
+	<item name="VoiceType"               tag="1102" length="2"   type="BaseBusiness"                desc="语音业务"/>
+	<item name="WacId"                   tag="1103" length="2"   type="Short"                       desc="广域群号"/>
+	<item name="WacPdom"                 tag="1104" length="1"   type="Byte"                        desc="广域群权限"/>
+	<item name="TemplateID"              tag="1105" length="1"   type="unsignByte"                  desc="模板ID"/>
+	<item name="OperatorName"            tag="1106" length="17"  type="String"                      desc="操作员名称"/>
+	<item name="Password"                tag="1107" length="16"  type="String"                      desc="登陆密码"/>
+	<item name="IpGroup"                 tag="1108" length="14"  type="IpGroups"                    desc="IP组"/>
+	<item name="TerminalDynamicStatus"   tag="1109" length="1"   type="Byte"                        desc="用户状态"/>
+	<item name="VoSerOrDataType"         tag="1110" length="1"   type="Byte"                        desc="语音与数据标志位,1语音,2数据,3语音数据"/>
+	<item name="TELNO_Charge"            tag="1111" length="16"  type="TenCompress"                 desc="主叫号码分析" fillChar="F"/>
+	<item name="SupplementExtType"       tag="1114" length="2"   type="SupplementExtType"           desc="补充业务扩展" />
+	<item name="SQLString"               tag="1115" length="0"   type="tlv"                         desc="SQLString" />
+	<item name="UserTag"                 tag="1116" length="1"   type="Byte"                        desc="用户属性" />
+	
+	<item name="CallOutLimit"            tag="1200" length="2"   type="SupplementCallOutLimitType"  desc="呼出限制"/>
+	<item name="FwdBusy"                 tag="1201" length="1"   type="SupplementFwdType"           desc="遇忙前转"/>
+	<item name="Fwd"                     tag="1202" length="1"   type="SupplementFwdType"           desc="无条件前转"/>
+	<item name="FwdNoTouch"              tag="1203" length="1"   type="SupplementFwdType"           desc="不可及前转"/>
+	<item name="FwdNoResponse"           tag="1204" length="1"   type="SupplementFwdType"           desc="无应答前转"/>
+	<item name="WaitCalled"              tag="1205" length="1"   type="SupplementActiveType"        desc="呼叫等待"/>
+	<item name="KeepDistrouble"          tag="1206" length="1"   type="SupplementActiveType"        desc="免打扰业务"/>
+	<item name="ShortNumber"             tag="1207" length="17"  type="SupplementShortNumberType"   desc="缩位拨号"/>
+	<item name="TimeOutHotline"          tag="1208" length="17"  type="SupplementHotlineType"       desc="超时热线"/>
+	<item name="InstanceHotline"         tag="1209" length="17"  type="SupplementHotlineType"       desc="即时热线"/>
+	<item name="GroupUser"               tag="1210" length="31"  type="SupplementGroupUserType"     desc="群组用户"/>
+	<item name="OneCallTwoRing"          tag="1211" length="33"  type="SupplementOneCallTwoRingType" desc="一呼双响"/>
+	<item name="OneNumTwoTerminal"       tag="1212" length="1"   type="Byte"                        desc="一号双机"/>
+	<item name="Tel_Second"              tag="1213" length="8"  type="TenCompress"                 desc="电话号码重号" fillChar="F"/>
+	<item name="AuthSwitch"              tag="1214" length="1"   type="Byte"                        desc="鉴权开关"/>
+	<item name="Alias"                   tag="1215" length="51"  type="String"                      desc="别名"/>
+	<item name="Team"                    tag="1216" length="51"  type="String"                      desc="组名"/>
+	<item name="PeriodReg"               tag="1217" length="2"   type="Period"                      desc="周期注册时间"/>
+	<item name="TeamList"                tag="1218" length="53"  type="TemplateStructs"             desc="组列表"/>	
+	<item name="TemplateList"            tag="1219" length="53"  type="TemplateStructs"             desc="模板列表"/>	
+	<!-- item name="BatchBurningType"        tag="1220" length="1"   type="Byte"                        desc="批量烧录命令类型"/-->
+	<item name="ProgressCommandOrder"    tag="1221" length="2"   type="Short"                       desc="进度查询命令序号"/>
+	<item name="TotalBurningItemsCount"  tag="1222" length="4"   type="unsignInt"                   desc="批量烧录信息文件所包含需烧录的信息总条数"/>
+	<item name="CurrentBurningPer"       tag="1223" length="1"   type="Byte"                        desc="当前的烧录进度"/>
+	<item name="CurrentBurningResult"       tag="1224" length="1"   type="Byte"                        desc="当前的烧录结果(0:正在烧录;1-烧录完成)"/>
+	
+	<item name="CLEC"                    tag="2000" length="1"   type="Byte"                        desc="运营商模板号"/>
+	<item name="Port"                    tag="2001" length="1"   type="Byte"                        desc="端口号"/>
+	<item name="AgenSsIp"                tag="2002" length="4"   type="IpString"                    desc="代理软交换的IP"/>
+	<item name="AgenSsIpPort"            tag="2003" length="2"   type="Short"                       desc="代理软交换的端口"/>
+	<item name="RegSsIp"                 tag="2004" length="4"   type="IpString"                    desc="注册软交换的IP"/>
+	<item name="RegSsIpPort"             tag="2005" length="2"   type="Short"                       desc="注册软交换的端口"/>
+	<item name="WirelessRegCircleValue"  tag="2006" length="1"   type="Byte"                        desc="无线注册周期值"/>
+	<item name="WirelessRegCircleType"   tag="2007" length="1"   type="Byte"                        desc="无线注册周期类型"/>
+	<item name="SipRegCircleValue"       tag="2008" length="1"   type="Byte"                        desc="SIP注册周期值"/>
+	<item name="SipRegCircleType"        tag="2009" length="1"   type="Byte"                        desc="SIP注册周期类型"/>
+	<item name="SipPassword"             tag="2010" length="32"  type="String"                      desc="SIP密码"/>
+	<item name="DnsIp"                   tag="2011" length="4"   type="IpString"                    desc="DNS IP"/>
+	<item name="Ip"                      tag="2012" length="4"   type="IpString"                    desc="IP"/>
+	<item name="SubMask"                 tag="2013" length="4"   type="IpString"                    desc="子网掩码"/>
+	<item name="Gateway"                 tag="2014" length="4"   type="IpString"                    desc="网关"/>
+	<item name="UserType"                tag="2015" length="1"   type="Byte"                        desc="用户类型"/>
+	<item name="MemIpType"               tag="2016" length="1"   type="Byte"                        desc="MEM IP类型"/>
+	<item name="CID"               		 tag="2017" length="6"   type="String"                      desc="CID"/>
+	<item name="RoamTempletName"         tag="2018" length="32"  type="String"                      desc="RoamTempletName"/>
+	<item name="SdTempletName"           tag="2019" length="41"  type="String"                      desc="SdTempletName"/>
+	<item name="WifiHotspot" 			 tag="2020" length="1"   type="Byte" 						desc="Wifi热点" /> 
+	<item name="ChargePepayind"          tag="4000" length="1"   type="Byte"                        desc="付费类型"/>
+	<item name="ChargeFlag"              tag="4001" length="1"   type="Byte"                        desc="三方计费"/>
+	<item name="ChargeType"              tag="4002" length="1"   type="Byte"                        desc="计费类型"/>
+	<item name="ChargeNum"               tag="4003" length="16"  type="TenCompress"                 desc="账号" fillChar="F"/>
+	<item name="MgmtGroupId"             tag="1306" length="8"   type="BCD"                         desc="管理组ID"/>
+	<item name="DbsRight"                tag="1301" length="1"   type="Byte"                        desc="组播权限"/>
+	
+	<item name="BTSID4" 				 tag="1308" length="4" type="unsignInt" desc="" />
+	<item name="PageCount" 				 tag="1309" length="2" type="unsignShort" desc="页数" />
+	<item name="TotalQueryCount" 		 tag="1310" length="4" type="unsignInt" desc="查询总数" />
+	<item name="QueryCount" 			 tag="1302" length="1" type="Byte" desc="QueryCount" />
+	<item name="PageShift" 				 tag="1303" length="2" type="Short" desc="PageShift" />
+	<item name="SortCondition" 			 tag="1304" length="1" type="Byte" desc="SortCondition" />
+	<item name="PIDIndex" 				 tag="1305" length="4" type="BCD" desc="PIDIndex" />
+	<item name="BTSTag" 				 tag="1311" length="0" type="tlv_nested" desc="" />
+	<item name="BTSNum"					 tag="1312" length="2" type="unsignShort" desc="" />
+	<item name="PageIndex"				 tag="1313" length="2" type="unsignShort" desc="" />
+	<item name="PageSize"				 tag="1314" length="2" type="unsignShort" desc="" />
+	<item name="RAID"					 tag="1315" length="4" type="unsignInt" desc="" />
+	<item name="BTSName"				 tag="1316" length="21" type="String" desc="" />
+	<item name="HardwareType"			 tag="1317" length="2" type="unsignShort" desc="" />
+	<item name="SoftwareType"			 tag="1318" length="2" type="unsignShort" desc="" />
+	<item name="ActiveSwVersion"		 tag="1319" length="4" type="unsignInt" desc="" />
+	<item name="StandbySwVersion"		 tag="1320" length="4" type="unsignInt" desc="" />
+	<item name="HardwareVersion"		 tag="1321" length="16" type="String" desc="" />
+	<item name="IDType" tag="1047"		 length="1" type="Byte" desc="IDType" />
+	<item name="TelnoList"				 tag="1322" length="16" type="TenCompress" desc="TelnoList" />
+	<item name="UIDList"				 tag="1323" length="4" type="BCD" desc="UIDList" />
+	<item name="PIDList"				 tag="1324" length="4" type="BCD" desc="PIDList" />
+	<item name="UTNum"					 tag="1325" length="4" type="unsignInt" desc="UTNum" />
+	<item name="TagList"				 tag="1326" length="1" type="Byte" desc="TagList" />
+	<item name="TagTag"					 tag="1328" length="2" type="unsignShort" desc="TagList" />	
+  	
+	<item name="UserMgmtFlag" 			 tag="1329" length="1" type="unsignByte" desc="UserMgmtFlag" />
+  	
+  	  	
+	<item name="userClass" 			 	tag="1337" length="1" type="unsignByte" desc="userClass" />
+	<item name="upMaxBandWidth" 		tag="1330" length="2" type="unsignShort" desc="upMaxBandWidth" />
+	<item name="upMinBandWidth" 		tag="1331" length="2" type="unsignShort" desc="upMinBandWidth" />
+	<item name="downMaxBandWidth" 		tag="1332" length="2" type="unsignShort" desc="downMaxBandWidth" />
+	<item name="downMinBandWidth" 		tag="1333" length="2" type="unsignShort" desc="downMinBandWidth" />
+	<item name="openMinKeepBandWidth" 	tag="1334" length="1" type="unsignByte" desc="openMinKeepBandWidth" />
+	<item name="upMinKeepBandWidth" 	tag="1335" length="2" type="unsignShort" desc="upMinKeepBandWidth" />
+	<item name="downMinKeepBandWidth" 	tag="1336" length="2" type="unsignShort" desc="downMinKeepBandWidth" />
+  	
+	<item name="ActiveFlag"             tag="1338" 		length="1"   		type="Byte"             desc="ActiveFlag"/>
+	<item name="OdbSwitch"              tag="1339" 		length="1"   		type="Byte"             desc="OdbSwitch"/>
+	<item name="USER_RECORD_ATTRI"     	tag="3014" 		length="1"  		type="Byte"     		desc="录音业务"/>
+	<item name="MzPortInfo"     		tag="1441" 		length="0"   		type="tlv_nested"     	desc="MzPortInfo"/>
+	
+  	
+	<item name="tariffId"     			tag="0x2003" length="4"   type="unsignInt"     desc="资费ID"/>
+	<item name="tariffType"     tag="0x2005" length="4"   type="unsignInt"     desc="资费类型"/>
+	<item name="price"     	tag="0x200d" length="4"   type="unsignInt"     desc="费用"/>
+	<item name="accountItemType"     	tag="0x200e" length="4"   type="unsignInt"     desc="账目类型"/>
+	<item name="basicPrice"     	tag="0x200f" length="4"   type="unsignInt"     desc="日租费用值"/>
+	<item name="basicAccountItemType"     	tag="0x2010" length="4"   type="unsignInt"     desc="日租费用值"/>
+	<item name="basicAccountItemType"     	tag="0x2010" length="4"   type="unsignInt"     desc="日租费用账目类型"/>
+	<item name="discountMethod"     	tag="0x2011" length="4"   type="unsignInt"     desc="优惠方法"/>
+	<item name="discountRefValue"     	tag="0x2012" length="4"   type="unsignInt"     desc="优惠规则参考值"/>
+	<item name="discountRefAccountType"     	tag="0x2012" length="4"   type="unsignInt"     desc="优惠规则参考累计量类型"/>
+	<item name="valueDuration"     	tag="0x2013" length="128"   type="String"     desc="时长类型的有效单元数计算公式"/>
+	<item name="valuevolume"     	tag="0x2014" length="128"   type="String"     desc="流量类型的有效单元数计算公式"/>
+	<item name="valueUnit"     	tag="0x2015" length="128"   type="String"     desc="次数类型的有效单元数计算公式"/>
+	<item name="tariffDesc"     	tag="0x2016" length="128"   type="String"     desc="资费说明"/>
+	<item name="result"     	tag="0x2000" length="2"   type="unsignInt"     desc="结果"/>
+
+	
+	<item name="productTime"     	tag="0x2040" length="0"   type="unsignInt"     desc="次数"/>
+	<item name="productId"     	tag="0x3004" length="0"   type="unsignInt"     desc="产品ID"/>
+	<item name="startDate"     	tag="0x5054" length="0"   type="String"     desc="开始时间"/>
+	<item name="endDate"     	tag="0x5032" length="0"   type="String"     desc="失效时间"/>
+	
+
+	
+	<item name="sessionId"     	    tag="0x5100" length="0"   type="String"     desc="业务标识"/>	
+	<item name="reqsubsId"     	    tag="0x5105" length="0"   type="unsignInt"     desc="请求充值的用户标识"/>	
+	<item name="rechargeId"     	tag="0x5106" length="0"   type="unsignInt"     desc="接收充值的用户标识"/>	
+	<item name="cardPwd"     	    tag="0x5102" length="0"   type="String"     desc="卡密码"/>	
+	<item name="chargeOperType"     tag="0x5103" length="0"   type="Short"     desc=""/>	
+	<item name="acctType"     	    tag="0x5107" length="0"   type="unsignInt"     desc="账户类型"/>	
+	<item name="acctBalanceItemId"  tag="0x5001" length="0"   type="unsignInt"     desc="账本科目标识"/>		
+	<item name="chargeResult"     	tag="0x2000" length="0"   type="Short"     desc="结果"/>	
+	<item name="cardAmt"     	    tag="0x5101" length="0"   type="Double"     desc="卡金额"/>	
+	<item name="cardNum"     	    tag="0x5108" length="0"   type="String"     desc="卡号"/>	
+	<item name="addValiDDAY"     	tag="0x5104" length="0"   type="Int"     desc="增加有效期天数"/>	
+	<item name="cardOssMsg"     	tag="0x50ff" length="0"   type="ByteArray"     desc="透传给ABM的消息开始标识"/>	
+	<item name="chargeOperDate"   tag="0x5110" length="0"   type="String"     desc="卡操作执行时间"/>	
+	
+	<item name="rechargeIdType"     tag="0x5109" length="0"   type="Byte"     desc="充值用户ID类型"/>
+	<item name="userRechargeType"   tag="0x510c" length="0"   type="unsignShort"     desc="用户充值类型"/>		
+
+	<item name="acctId"     	    tag="0x5000" length="0"   type="unsignInt"     desc="充值账户标识"/>	
+	<item name="acctitemType"     	tag="0x5205" length="0"   type="Int"     desc="充值账本类型"/>	
+	<item name="acctIdPst"     	    tag="0x5206" length="0"   type="unsignInt"     desc="赠送账户标识"/>	
+	<item name="acctitemTypePst"    tag="0x5207" length="0"   type="Int"     desc="赠送账本类型"/>	
+	<item name="reason"             tag="0x5201" length="0"   type="String"     desc="变更原因"/>	 
+	<item name="source"             tag="0x5202" length="0"   type="String"     desc="来源"/>	 
+	<item name="billItemId"         tag="0x500e" length="0"   type="unsignInt"     desc="账单科目标识"/>	
+	<item name="billCyc"            tag="0x500f" length="0"   type="Int"     desc="生成帐务周期"/>	
+	<item name="baseAmt"     	    tag="0x520c" length="0"   type="Double"     desc="基本金额"/>	
+	<item name="presentAmt"     	tag="0x520d" length="0"   type="Double"     desc="赠送金额"/>	
+	<item name="invalidAmt"     	tag="0x520e" length="0"   type="Double"     desc="未生效金额"/>	  
+	<item name="callNo"     	    tag="0x5203" length="0"   type="unsignInt"     desc="主叫号码"/>	
+	<item name="brandType"     	    tag="0x5204" length="0"   type="Int"     desc="品牌类型"/>	
+    
+    
+	<item name="ctlCredit"         tag="0x520f" length="0"   type="tlv_nested"     desc=""/>
+	<item name="acctIdString"      tag="0x5208" length="0"   type="String"     desc="账户标识串"/>
+	<item name="subsId"            tag="0x5058" length="0"   type="unsignInt"     desc="用户标识"/>	
+	<item name="creditLevel"       tag="0x501c" length="0"   type="Int"     desc="信控等级"/>
+	<item name="reqType"           tag="0x5209" length="0"   type="Int"     desc="请求类型"/>
+	<item name="reqTime"           tag="0x520b" length="0"   type="String"     desc="请求时间"/>
+	<item name="reqSource"         tag="0x520a" length="0"   type="String"     desc="请求来源"/>
+	<item name="moneyType"         tag="0x5040" length="0"   type="Int"     desc="币种"/>
+	<item name="moneyUnit"         tag="0x5041" length="0"   type="Int"     desc="单位"/>
+	<item name="msisDn"            tag="0x5210" length="0"   type="String"     desc="被充值号"/> 
+    
+	<item name="monthwoff"            tag="0x5211" length="0"   type="tlv_nested"     desc="月结查询复合结构体"/> 
+	<item name="woffedAmt"            tag="0x5005" length="0"   type="Double"     desc="已销款"/>
+
+	<item name="reqTelNo"     	    tag="0x510a" length="0"   type="String"     desc="请求充值的电话号码"/>
+	<item name="rechargeTelNo"     	tag="0x510b" length="0"   type="String"     desc="接收充值的用户标识"/>	
+
+	<item name="rechargeAmt"     	    tag="0x510d" length="0"   type="Double"     desc="充值金额"/>	
+	<item name="rechargePresentAmt"     tag="0x510e" length="0"   type="Double"     desc="充值赠送金额"/>	
+
+	<!-- MEM综合管理系统 -->
+	<item name="SupTypeID"         tag="1246" length="1"    type="Byte"     desc="监控点类型标识"/>
+	<item name="LOGINTYPE"         tag="1235" length="1"    type="Byte"     desc="客户端登录类型"/>
+	<item name="DBINFO"            tag="1236" length="67"   type="DBInfo"          desc="数据库信息"/>
+	<item name="SupTypeList1"      tag="1237" length="0"    type="tlv_nested"      desc="监控点类型列表复合TAG"/>
+	<item name="TaskHour"          tag="1241" length="1"    type="Byte"     desc="MEM同步单次任务执行小时数"/>
+	<item name="TaskCircleTimes"   tag="1242" length="1"    type="Byte"     desc="MEM同步任务循环次数"/>
+	<item name="RetransTimes"      tag="1243" length="1"    type="Byte"     desc="MEM同步失败重发次数"/>
+	<item name="SupTypeName"       tag="1244" length="21"   type="String"          desc="监控点类型名称"/>
+	<item name="OperateInd"        tag="1252" length="1"    type="Byte"     desc="MEM综合服务客户端触发的操作类型"/>
+	
+	<item name="APPDataInfo1"      tag="5100" length="0"    type="APPDataInfo1"     desc="MEM做三层设备的配置数据"/>
+	<item name="APPDataInfo2"      tag="5101" length="0"    type="APPDataInfo2"     desc="MEM做二层设备的配置数据"/>
+	<item name="MsgSubContentLen"  tag="5103" length="0"    type="unsignShort"     desc="消息内容长度"/>
+	<item name="MsgSubType" 	   tag="5104" length="0"    type="unsignShort"     desc="消息类型"/>
+	<item name="RestartInd"        tag="5105" length="0"    type="unsignShort"     desc="重启标识"/>
+	<item name="SecurityInfo"      tag="5106" length="0"    type="SecurityInfo"     desc="MEM做二层设备的配置数据"/>
+	<item name="StatusReportSwitch" tag="5107" length="0"    type="unsignShort"     desc="终端状态上报开关"/>
+	<item name="TCPIPInd"          tag="5108" length="0"    type="unsignShort"     desc="TCP/IP协议栈启动开关"/>
+	<item name="TestData"          tag="5109" length="0"     type="String"     desc="还回测试数据"/>
+	<item name="APPDataInfo4"      tag="5110" length="0"    type="APPDataInfo4"     desc=""/>
+	<item name="APPDataInfo1_1"      tag="5111" length="0"    type="APPDataInfo1_1"     desc=""/>
+	<item name="APPDataInfo4_1"      tag="5113" length="0"    type="APPDataInfo4_1"     desc=""/>
+	<item name="APPDataInfo2_1"      tag="5114" length="0"    type="APPDataInfo2_1"     desc=""/>
+	
+	<!-- MEM综合管理系统 -->
+
+	<!--BWT业务-->
+	<item name="GDN"      tag="7014" length="0"    type="String"     desc="组电话号码"/>
+	<item name="GID"      tag="7015" length="0"    type="unsignInt"     desc="组识别码"/>
+	<item name="GID_NAME"      tag="7016" length="0"    type="String"     desc="组名称"/>
+	<item name="GROUP_PRIORITY"      tag="7017" length="0"    type="unsignInt"     desc="组优先级"/>	
+	<item name="GROUP_TYPE"      tag="7018" length="0"    type="unsignInt"     desc="组类型"/>
+	<item name="SUBSCRIBER_STATUS"      tag="7019" length="0"    type="unsignByte"     desc="组业务是否被授权或者barred"/>
+	<item name="PTT_ADDR"      tag="7020" length="0"    type="IpString"     desc="组播下行使用的IP地址"/>
+	<item name="PTT_PORT"      tag="7021" length="0"    type="unsignShort"     desc="组播端口号"/>	
+	<item name="GROUP_SERVICE"      tag="7024" length="0"    type="unsignInt"     desc="组呼基本业务开关属性"/>
+	<item name="GROUP_SAFESERVICE"      tag="7025" length="0"    type="unsignInt"     desc="组安全属性权限"/>	
+	<item name="TIME_MAXCALL"      tag="7026" length="0"    type="unsignShort"     desc="组呼最大时长定时器"/>
+	<item name="TIME_GROUP_IDLE"      tag="7027" length="0"    type="unsignShort"     desc="组呼过程无人讲话最长时间"/>
+	<item name="TIME_PTT_HOLD"      tag="7028" length="0"    type="unsignShort"     desc="单次话语权最大持续时间"/>
+	<item name="TIME_LE_PERIOD_MAX"      tag="7029" length="0"    type="unsignByte"     desc="快周期期间，迟后进入消息的发送间隔"/>	
+	<item name="TIME_LE_PERIOD_MIN"      tag="7030" length="0"    type="unsignByte"     desc="慢周期期间，迟后进入消息的发送间隔"/>
+	<item name="QUEUE_NUMBER_MAX"      tag="7031" length="0"    type="unsignByte"     desc="话语权排队的最大终端数目"/>
+	<item name="SERVICE_TYPE"      tag="7032" length="0"    type="unsignByte"     desc="组播带宽业务类型"/>
+	<item name="SERVICE_MAXIMUM_BITRATE_DL"      tag="7033" length="0"    type="unsignInt"     desc="组播带宽下行最大比特率"/>	
+	<item name="GUARANTEED_BITRATE_DL"      tag="7034" length="0"    type="unsignInt"     desc="组播带宽下行保障比特率"/>	
+	<item name="SERVICE_MAXIMUM_BITRATE_UL"      tag="7035" length="0"    type="unsignInt"     desc="组播带宽上行最大比特率"/>
+	<item name="GUARANTEED_BITRATE_UL"      tag="7036" length="0"    type="unsignInt"     desc="组播带宽上行保障比特率"/>
+	<item name="QOS_CLASS_IDENTIFIE"      tag="7037" length="0"    type="unsignByte"     desc="组播带宽授权的QoS参数"/>
+	<item name="PTT_PROPERTY"      tag="7063" length="0"    type="tlv_nested"     desc="组播业务属性"/>
+	<item name="PRIORITY_LEVEL"      tag="7053" length="0"    type="unsignInt"     desc="优先级"/>
+	<item name="PRE_EMPTION_CAPABILITY"      tag="7054" length="0"    type="unsignByte"     desc=""/>
+	<item name="PRE_EMPTION_VULNERABILITY"      tag="7055" length="0"    type="unsignByte"     desc=""/>	
+	<!--BWT业务-->
+
+	<!-- 黑白名单模板管理 -->
+	<item name="PermitInd"         tag="1251" length="1"    type="Byte"           desc="是否允许登录标识,0-允许,1-不允许"/>
+	<item name="CIDList"           tag="1253" length="0"    type="tlv_nested"     desc="黑白名单模板包含的CID列表TAG"/>
+	<item name="NetSelectTmpId"    tag="1442" length="1"    type="Byte"           desc="黑白名单模板id"/>
+	<item name="NetSelectTplName"  tag="1443" length="32"   type="String"         desc="黑白名单模板名称"/>
+	<item name="NetSelectTmpList"  tag="1444" length="0"    type="tlv_nested"     desc="黑白名单模板列表TAG"/>
+	<!-- 黑白名单模板管理 -->
+
+	<!--帐户余额查询-->
+	<item name="queryAcctInfo"     tag="0x5213" length="0"   type="tlv_nested"     desc="帐户信息查询结构体"/>
+	<item name="queryAcctInfo_effTime"         tag="0x5031" length="0"   type="String"     desc="启用时间"/>	
+	<item name="queryAcctInfo_expTime"         tag="0x5034" length="0"   type="String"     desc="停用时间"/>	
+	<item name="queryAcctInfo_planId"         tag="0x504d" length="0"   type="unsignInt"     desc="营销方案标识"/>
+	<item name="queryAcctInfo_chglogId"         tag="0x5017" length="0"   type="unsignInt"     desc="最新变更日志标识 "/>
+	<item name="queryAcctInfo_initAmt"         tag="0x5036" length="0"   type="Double"     desc="初始金额"/>
+	<item name="queryAcctInfo_initChglogId"         tag="0x5037" length="0"   type="unsignInt"     desc="初始变更日志标识"/>
+	<item name="queryAcctInfo_updateTime"         tag="0x505d" length="0"   type="String"     desc="最新变更时间"/>
+	<item name="queryAcctInfo_EBOXUNITNAME"         tag="0x502d" length="0"   type="String"     desc="帐本科目用途"/>
+	<item name="queryAcctInfo_EBOXUNITTYPE"         tag="0x502f" length="0"   type="unsignInt"     desc="帐本科目类型"/>
+	<item name="queryAcctInfo_EBOXRESTYPE"         tag="0x5030" length="0"   type="unsignInt"     desc="资源类型"/>	
+	<item name="queryAcctInfo_EBOXUNITSTAT"         tag="0x502e" length="0"   type="unsignInt"     desc="帐本科目状态"/>
+	<item name="queryAcctInfo_CANWITHD"         tag="0x5015" length="0"   type="unsignInt"     desc="是否可支取"/>	
+	<item name="queryAcctInfo_CANPRINTINV"         tag="0x5014" length="0"   type="unsignInt"     desc="是否打印发票"/>
+	<item name="queryAcctInfo_ISNEEDPAYWAY"         tag="0x503b" length="0"   type="unsignInt"     desc="是否需要录入支付渠道"/>	
+	<item name="queryAcctInfo_CANJIEZHUAN"         tag="0x5012" length="0"   type="unsignInt"     desc="是否可结转"/>
+	<item name="queryAcctInfo_ISCOMMON"         tag="0x503a" length="0"   type="unsignInt"     desc="帐本科目属性"/>
+	<item name="queryAcctInfo_CANWOFF"         tag="0x5016" length="0"   type="unsignInt"     desc="是否可销帐"/>		
+	<item name="queryAcctInfo_WOFFPRI"         tag="0x5061" length="0"   type="unsignInt"     desc="销账优先级"/>
+	<item name="queryAcctInfo_CANPAYBEHALF"         tag="0x5013" length="0"   type="unsignInt"     desc="是否可代付费"/>
+	<item name="queryAcctInfo_BRAND"         tag="0x5010" length="0"   type="String"      desc="适用品牌"/>	
+	
+	<!--向ABM查询账单-->
+	<item name="QUERYCONSUMEINFO" tag="0x521b" length="0"   type="tlv_nested"     desc="账单查询符合结构体"/>	
+	<!--查询用户对象-->	
+	<item name="QUERYOWEINFO"     tag="0x5214" length="0"   type="tlv_nested"     desc="欠费信息查询结构体"/>
+	
+	<!--充值记录查询-->
+	<item name="rechargeHis_CallNo"         tag="0x5215" length="0"   type="String"     desc="主叫号码"/>
+	<item name="rechargeHis_REALADDVAILDDAY"         tag="0x5216" length="0"   type="unsignInt"     desc="充值后有效期"/>
+	<item name="rechargeHis_BILLDAY"         tag="0x5217" length="0"   type="unsignInt"     desc="用户月结日"/>
+	<item name="rechargeHis_ADDVALIDDAY"         tag="0x5218" length="0"   type="unsignInt"     desc="实际增加有效期天数"/>
+	<item name="rechargeHis_CallNum"         tag="0x5219" length="0"   type="String"     desc="卡号"/>
+	
+	<!--产品过滤表-->
+	<item name="CmproductMatch.DISCOUNT_CODE"         tag="0x5025" length="0"   type="Int"     desc="产品信息"/>
+	<item name="CmproductMatch.CHARGING_TYPE"         tag="0x521a" length="0"   type="Int"     desc="计费类型"/>
+	<item name="CmproductMatch.SUPPORTED_EVENT"         tag="0x505a" length="0"   type="String"     desc="事件码通配符"/>
+
+
+	<!--免费资源赠送规则表-->
+	<item name="FreeResRule.SWITCH_FLAG"     tag="0x505b" length="0"   type="String"     desc="归属局"/>
+	<item name="FreeResRule.COUNTER_TYPE_ID"     tag="0x5018" length="0"   type="unsignInt"     desc="累积量类型标识"/>
+	<item name="FreeResRule.ACCT_BALANCE_RES_ID"     tag="0x5002" length="0"   type="unsignInt"     desc="免费资源账本科目标识"/>
+	<item name="FreeResRule.VALUE"     tag="0x505f" length="0"   type="Double"     desc="赠送免费资源值"/>
+	<item name="FreeResRule.DURATION"     tag="0x502a" length="0"   type="unsignInt"     desc="有效期"/>
+	<item name="FreeResRule.BALANCE_RES_THRESHOLD_TYPE"     tag="0x500b" length="0"   type="unsignInt"     desc="阀值类型"/>
+	<item name="FreeResRule.BALANCE_RES_THRESHOLD"     tag="0x500a" length="0"   type="Double"     desc="阀值"/>	
+	<item name="FreeResRule.BALANCE_RES_THRESHOLD_UNIT"     tag="0x500c" length="0"   type="unsignInt"     desc="阀值单位"/>
+	<item name="FreeResRule.DURA_TYPE"     tag="0x502b" length="0"   type="unsignInt"     desc="有效期类型"/>
+	<item name="FreeResRule.SCOPE_TYPE"     tag="0x5052" length="0"   type="Double"     desc="优惠范围种类"/>
+	<item name="FreeResRule.GEN_TYPE"     tag="0x5035" length="0"   type="Int"     desc="赠送类型"/>	
+	<item name="FreeResRule.CHARGING_TYPE"     tag="0x521a" length="0"   type="Int"     desc="优惠范围种类"/>
+	
+	
+	<!-- 费率管理信息  -->
+	<item name="FEE"     tag="0x2001" length="0"   type="String"     desc="费率记录标识"/>
+	<item name="FEE_ID"     tag="0x2002" length="0"   type="unsignInt"     desc="费率ID"/>
+	<item name="TARIFF_ID"     tag="0x2003" length="0"   type="unsignInt"     desc="资费ID"/>
+	<item name="TARIFF_UNIT_TYPE"     tag="0x2004" length="0"   type="Int"     desc="计费单元类型"/>
+	<item name="FEE_TYPE"     tag="0x2005" length="0"   type="Int"     desc="费用类型"/>
+	<item name="RATE"     tag="0x2006" length="0"   type="Double"     desc="费率"/>
+	<item name="RATE_UNIT"     tag="0x2007" length="0"   type="Int"     desc="计费单元"/>
+	<item name="ACCT_ITEM_TYPE"     tag="0x2008" length="0"   type="Int"     desc="账目类型"/>
+	<item name="FEE_GROUP"     tag="0x2009" length="0"   type="Int"     desc="费用组"/>
+	<item name="TAIL_COUNTER_TYPE_ID"     tag="0x200A" length="0"   type="unsignInt"     desc="尾数累计量类型"/>
+	<item name="TARIFF_DESCRIPTION"     tag="0x200B" length="0"   type="String"     desc="描述"/>
+	<item name="FEE_TEMPLATE_ID"     tag="0x2032" length="0"   type="unsignInt"     desc="费率模板ID"/>
+
+	<!-- 资费管理信息  -->
+	<item name="TARIFF_TYPE"     				tag="0x200C" length="0"   type="Int"     	desc="资费类型"/>
+	<item name="PRICE"     						tag="0x200D" length="0"   type="Int"     	desc="费用"/>
+	<item name="ACCT_ITEM_TYPE_PRICE"     		tag="0x200E" length="0"   type="Int"     	desc="账目类型"/>
+	<item name="BASIC_PRICE"     				tag="0x200F" length="0"   type="Int"     	desc="日租费用值"/>
+	<item name="Acct_Item_Type_Basic"     		tag="0x2010" length="0"   type="Int"    	desc="日租费用账目类型"/>
+	<item name="DISCOUNT_METHOD"    			tag="0x2011" length="0"   type="Int"     	desc="优惠方法"/>
+	<item name="DISCOUNT_VALUE"     			tag="0x2012" length="0"   type="Int"     	desc="优惠规则参考值"/>
+	<item name="DISCOUNT_REF_COUNTER_TYPE"     	tag="0x2013" length="0"   type="Int"     	desc="优惠规则参考累计量类型"/>
+	<item name="DISCOUNT_REF_ACCT_ITEM_TYPE"    tag="0x2014" length="0"   type="Int"     	desc="优惠规则参考账目类型"/>
+	<item name="VU_DURATION"     				tag="0x2015" length="0"   type="String"     	desc="时长类型的有效单元数计算公式"/>
+	<item name="VU_VOLUME"     					tag="0x2016" length="0"   type="String"     	desc="流量类型的有效单元数计算公式"/>
+	<item name="VU_UNIT"     					tag="0x2017" length="0"   type="String"     	desc="次数类型的有效单元数计算公式"/>
+	<item name="TARRIF"     					tag="0x2030" length="0"   type="String"     	desc="资费记录开始的标示"/>
+	<item name="TARIFF_TEMPLATE_ID"     		tag="0x2031" length="0"   type="unsignInt"     	desc="资费模板ID"/>
+	
+	<!-- 判断条件管理信息  -->
+	<item name="JUDGE_CONDITION_ID"     tag="0x201F" length="0"   type="unsignInt"     desc="判断条件ID"/>
+	<item name="PRICING_PLAN_ID"     	tag="0x2020" length="0"   type="unsignInt"     desc="定价计划ID"/>
+	<item name="EVENT_ID"     			tag="0x2021" length="0"   type="String"     desc="计费事件ID"/>
+	<item name="REF_OBJECT_TYPE"     	tag="0x2022" length="0"   type="Short"     desc="左值参考对象大类"/>
+	<item name="REF_OBJECT_SUB_TYPE"    tag="0x2023" length="0"   type="Int"     desc="左值参考对象小类"/>
+	<item name="OPERATOR"     			tag="0x2024" length="0"   type="Short"     desc="比较运算符"/>
+	<item name="RIGHT_VALUE"     		tag="0x2025" length="0"   type="Int"     desc="右值"/>
+	<item name="CONDITION_GROUP"     	tag="0x2026" length="0"   type="Int"     desc="条件组"/>
+	<item name="EFF_DATE"     			tag="0x2027" length="0"   type="Int"     desc="有效期开始时间"/>
+	<item name="EXP_DATE"     			tag="0x2028" length="0"   type="Int"     desc="有效期结束时间"/>
+	<item name="JUDGE_CONDITION" 		tag="0x2029" length="0" type="String"     desc="判断条件记录标示" />
+	
+	<!--卡激活与去激活-->
+	<item name="START_CARD_NO"     		tag="0x5140" length="0"   type="String"     desc="开始卡号"/>
+	<item name="END_CARD_NO"     		tag="0x5141" length="0"   type="String"     desc="结束卡号"/>	
+	
+	<!--累积量登记-->
+	<item name="EXTEND_FLAG"     		tag="0x521c" length="0"   type="int"     desc="扩展标识"/>	
+	
+	<!--账户余额查询客户ID-->
+	<item name="custId"     			tag="0x5020" length="0"   type="unsignInt"     desc="客户ID"/>	
+	
+	<!--终端充值和余额查询透传消息-->
+	<item name="rechargeOssMsg"     	tag="0x510f" length="0"   type="ByteArray"     desc="终端充值和余额查询透传消息"/>	
+	
+	<!--预扣费参数配置-->
+	<item name="PARAM_TYPE"       		tag="0x3011" length="0"    type="Int"     desc="参数类型"/>	
+	<item name="CHARGE_MODE"      		tag="0x3012" length="0"    type="Int"     desc="扣费方式"/>	
+	<item name="PARAM_VOLUME"     		tag="0x3013" length="0"    type="unsignInt"    desc="参数容量"/>	
+	<item name="PARAM_VOLUME_UNIT"     	tag="0x3014" length="0"    type="Short"    desc="参数容量单位"/>	
+	<item name="TIME_END_INTERVAL"     	tag="0x3015" length="0"    type="unsignInt"    desc="时间间隔"/>	
+	<item name="PARAM_EFF_DATE"     	tag="0x3016" length="0"    type="unsignInt"    desc="参数有效开始时间"/>	
+	<item name="PARAM_EXP_DATE"     	tag="0x3017" length="0"    type="unsignInt"    desc="参数有效结束时间"/>	
+	
+	<!-- (CF模块tag定义) -->
+	
+	<item name="CARRY_ID"      			tag="0x3000" length="0"    type="unsignInt"     desc="承载类型事件码"/>	
+	<item name="CARRY_TYPE"             tag="0x3001" length="0"    type="unsignInt"     desc="承载类型"/>	
+	<item name="REPRESENT_NO"  			tag="0x3002" length="0"    type="String"     desc="特征号码"/>	
+	<item name="OPERATOR_CODE" 			tag="0x3003" length="0"    type="unsignInt"     desc="运营商ID"/>	
+	<item name="EFFECTIVE_DATE" 		tag="0x3005" length="0"    type="String"     desc="生效日期"/>	
+	<item name="EXPIRE_DATE"   			tag="0x3006" length="0"    type="String"     desc="失效日期"/>	
+	
+	<item name="TOLL_TYPE"          	tag="0x3007" length="0"    type="Int"     desc="长途类型"/>	
+	<item name="PARSE_STRATEGY"   		tag="0x3008" length="0"    type="Int"     desc="长途类型的分析策略"/>	
+	<item name="CARRY_INFO"             tag="0x3020" length="0"    type="Int"     desc="承载信息"/>	
+	
+	<item name="TOLL_ID"                tag="0x3009" length="0"    type="unsignInt"     desc="长途类型事件码"/>	
+	<item name="PROPERTY_CODE"          tag="0x300a" length="0"    type="String"       desc="特征码信息"/>	
+	
+	<item name="MASK_TYPE"              tag="0x503d" length="0"   type="Int"           desc="红名单标志"/>	
+	
+	<!-- 账户余额查询:币种字符串和货币单位字符串-->
+	<item name="MONEYTYPESTR"           tag="0x521d" length="0"    type="String"     desc="币种字符串"/>	
+	<item name="MONEYUNITSTR"           tag="0x521e" length="0"    type="String"     desc="金额单位字符串"/>	
+	
+	<item name="QUERYRECHARGEINFO"      tag="0x521f" length="0"    type="tlv_nested"     desc="金额单位字符串"/>	
+	
+
+	<!-- 按日登记累积量需求新增tag -->
+	<item name="TID"           				tag="0x2050" 	length="0"    type="unsignInt"   desc="主键ID"/>	
+	<item name="ID"             			tag="0x2051" 	length="0"    type="unsignInt"   desc="免费资源表 ID"/>	
+	<item name="TYPE"           			tag="0x2052" 	length="0"    type="Int"     	 desc="类型"/>	
+	<item name="CAPABILITY"         		tag="0x2053" 	length="0"    type="String"      desc="免费资源容量"/>	
+	<item name="TIMEUNIT"          			tag="0x2054" 	length="0"    type="Int"     	 desc="时间单位"/>	
+	<item name="STARTDAY"          			tag="0x2055" 	length="0"    type="String"      desc="起始日期"/>	
+	<item name="ENDDAY"           			tag="0x2056" 	length="0"    type="String"      desc="结束日期"/>	
+	<item name="REMARK"           			tag="0x2057" 	length="0"    type="String"      desc="备注"/>		
+	<item name="COUNTER_TYPE_SUB_ID" 		tag="0x2058" 	length="0"    type="unsignInt"   desc="累积量类型子标识"/>
+	
+	<!-- 账本变更和账本余额转移 -->
+	<item name="BEGINTIME"           		tag="0x500d" 	length="0"    type="String"   desc="生效时间"/>	
+	<item name="EBOXUNITID"           		tag="0x502c" 	length="0"    type="unsignInt"   desc="账本科目标识"/>	
+	<item name="BALANCE_DEDUCT_AMT_FLAG"	tag="0x5071" 	length="0"    type="Int"   desc="账户扣费金额标示(增or减)"/>	
+	<item name="BALANCE_CHG_STRATEGE"   	tag="0x5072" 	length="0"    type="Int"   desc="账本变更策略"/>	
+	<item name="DEST_EBOXUNITID"        	tag="0x5070" 	length="0"    type="unsignInt"   desc="目的账户的账本科目标识"/>	
+	<item name="DEST_SUBS_ID"           	tag="0x5073" 	length="0"    type="unsignInt"   desc="目的账户的用户标识"/>	
+	<item name="DEST_CYCLENUM"          	tag="0x5074" 	length="0"    type="Int"   desc="目的账户的账期"/>	
+	<item name="DEST_ACCTID"           		tag="0x5075" 	length="0"    type="unsignInt"   desc="目的账户的帐户标识"/>	
+	<item name="DEST_BILLITEMID"        	tag="0x5076" 	length="0"    type="unsignInt"   desc="目的账户的帐单科目标识"/>	
+	<item name="REAL_CHANGE_AMT"        	tag="0x5077" 	length="0"    type="Double"   desc="实际的转账金额"/>	
+	<item name="BALANCE_AMT_SRC"        	tag="0x5078" 	length="0"    type="Double"   desc="源账户的金额"/>	
+	<item name="BALANCE_AMT_DEST"       	tag="0x5079" 	length="0"    type="Double"   desc="目的账户的金额"/>	
+	<item name="GENBILLCYC"           		tag="0x5080" 	length="0"    type="Int"   desc="生成账务周期"/>
+	<item name="REAL_CHANGE_AMT_DEST"   	tag="0x5081" 	length="0"    type="Double"   desc="目的实际转账金额"/>	
+	<item name="CYCLENUM"           		tag="0x5021" 	length="0"    type="Int"   desc="账期"/>	
+	<item name="RE_TYPE"           			tag="0x505c" 	length="0"    type="Int"   desc="优惠策略"/>	
+	
+	<!-- 群ID以及群组ID -->
+	<item name="CentrexID" 				tag="2021" 	length="4"    type="unsignInt"   desc="群ID"/>
+	<item name="CentrexGroupNumber" 	tag="2022" 	length="2"    type="unsignShort"   desc="群组ID"/>
+	
+	<!-- 手机支付 -->
+	<item name="BOSS_PAY_TRANS_MSG" 	tag="0x5220" 	length="0"    type="ByteArray"   desc="手机支付中终端透传信息"/>
+	<item name="OCS_PAY_TRANS_MSG" 		tag="0x5221" 	length="0"    type="ByteArray"   desc="手机支付中OCS透传信息"/>
+	<item name="SAG_ID" 				tag="0x5222" 	length="0"    type="Int"   desc="SAG标示ID"/>
+	
+	<!--有效期-->
+	<item name="ADD_VALIDDAY" 			tag="0x5104" 	length="0"    type="Int"   desc="有效天数"/>
+	<item name="PRESENT_TYPE" 			tag="0x5082" 	length="0"    type="Int"   desc="赠送有效期计算标识"/>
+	<item name="ADD_PRESEN_VALIDDAY" 	tag="0x5083" 	length="0"    type="Int"   desc="赠送有效天数"/>
+	
+	<!-- 空中加密-->
+	<item name="DENInd" 			 	tag="1450" length="1"   type="Byte" 		desc="标识" /> 
+	<item name="KeyLen"          		tag="1451" length="1"   type="Byte"        desc="密钥长度"/>
+	<item name="KeyKillInd"             tag="1452" length="1"   type="Byte"        desc="密钥遥毁标识"/>
+	<item name="KeyUpdatePeriod"        tag="1453" length="2"   type="Period"        desc="密钥更新周期"/>
+	<item name="PARAMFLAG"              tag="1440" length="4"   type="unsignInt"        desc="是否支持空中接口加密，全局网或非全局网"/>
+	
+	<!-- 组织管理 -->
+	<item name="TrueResult"				tag="1462"	length="2"	type="unsignShort"			desc="真实结果"/>
+	<item name="OrgId"					tag="1464"	length="2"	type="unsignShort"			desc="组织ID"/>
+	<item name="OrgName"				tag="1463"	length="0"	type="UTF8String"				desc="组织名称"/>
+	<item name="OrgPriority"			tag="1465"	length="1"	type="Byte"			desc="组织优先级"/>
+	<item name="GroupOrgPriority"		tag="1478"	length="1"	type="Byte"			desc="组织优先级与组优先级的关系"/>
+	<item name="ShortNoLen"				tag="1473"	length="1"	type="Byte"			desc="短号长度"/>
+	<item name="VPNOrganize"			tag="1466"	length="0" type="tlv_nested" desc="" />
+	
+	<!-- 组织管理管理员 -->
+	<item name="OrgMgrUserName"			tag="1457"	length="0"	type="UTF8String"			desc="组织管理员名称"/>
+	<item name="OrgMgrPassWord"			tag="1458"	length="0"	type="String"			desc="组织管理员密码"/>
+	<item name="OldPassword"			tag="1459"	length="0"	type="String"			desc="组织管理员修改密码时的旧密码"/>
+	<item name="NewPassword"			tag="1460"	length="0"	type="String"			desc="组织管理员修改密码时的新密码"/>
+	<item name="VPNManager"				tag="1461"	length="0" type="tlv_nested" desc="" />
+	
+	<!-- 组织号码段-->
+	<item name="OrgTelNoOrganizeId"		tag="1469"	length="4"	type="unsignInt"			desc="组织号码段"/>
+	<item name="OrgTelNoBeginTelNo"		tag="1467"	length="16"	type="TenCompress"          desc="起始电话号码" fillChar="F"/>
+	<item name="OrgTelNoEndTelNo"		tag="1468"	length="16"	type="TenCompress"          desc="终止电话号码" fillChar="F"/>
+	<item name="OrganizeTel"	        tag="1470"  length="0" type="tlv_nested" 			desc="" />
+	
+	<!-- 组织GID -->
+	<item name="OrgGidBeginGid"			tag="1474"	length="2"	type="unsignShort"			desc="开始GID起始集群组身份标识"/>
+	<item name="OrgGidEndGid"			tag="1475"	length="2"	type="unsignShort"			desc="结束GID结束集群组身份标识"/>
+	<item name="OrgGidid"			    tag="1476"	length="4"	type="unsignInt"			desc="集群组身份标识段ID"/>
+	<item name="OrganizeGroup"			tag="1477"	length="0" type="tlv_nested" 			desc="" />
+		
+	<!-- McWill网管相关消息 -->
+	<item name="Tag_sysconfig"			tag="8087" length="0"  type="tlv_nested"     				desc=""/>
+	<item name="IP"					 	tag="8019" length="4"  type="IpString"     				desc="ip"/>
+	<item name="Signalpoint"			tag="8020" length="4"  type="unsignInt"     				desc="signalPoint"/>
+	<item name="Port"					tag="8021" length="2"  type="unsignShort"     				desc="port"/>
+	
+	<item name="Tag_McWiLLbts"			tag="8088" length="0"  type="tlv_nested"     				desc=""/>
+	<item name="UcIndex"				tag="8022" length="1"  type="unsignByte"     				desc=""/>
+	<item name="UsBtsId"				tag="8023" length="2"  type="unsignShort"     				desc=""/>
+	<item name="usDpId"					tag="8024" length="2"  type="unsignShort"     				desc=""/>
+	<item name="LAI"					tag="8025" length="16"  type="String"     					desc=""/>
+	<item name="SPI"					tag="8026" length="1"  type="unsignByte"     				desc=""/>
+	<item name="UlBsSignalIP"			tag="8027" length="4"  type="IpString"     				desc=""/>
+	<item name="UsBsSignalPort"			tag="8028" length="2"  type="unsignShort"     				desc=""/>
+	<item name="ulBsMedIP"				tag="8029" length="4"  type="IpString"     				desc=""/>
+	<item name="usBsMedPort"			tag="8030" length="2"  type="unsignShort"     				desc=""/>
+	<item name="ulSagSignalIP"			tag="8031" length="4"  type="IpString"     				desc=""/>
+	<item name="ulSagSignalPort"		tag="8032" length="2"  type="unsignShort"     				desc=""/>
+	<item name="ulSagMedIP"				tag="8033" length="4"  type="IpString"     				desc=""/>
+	<item name="usSagMedPort"			tag="8034" length="2"  type="unsignShort"     				desc=""/>
+	<item name="ucBtsDVoiceFlag"		tag="8035" length="1"  type="unsignByte"     				desc=""/>
+	<item name="T_EST"					tag="8036" length="2"  type="unsignShort"     				desc=""/>
+	<item name="N_EST"					tag="8037" length="2"  type="unsignShort"     				desc=""/>
+	<item name="T_HS"					tag="8038" length="2"  type="unsignShort"     				desc=""/>
+	<item name="T_HS_ACK"				tag="8039" length="2"  type="unsignShort"     				desc=""/>
+	<item name="N_HS"					tag="8040" length="2"  type="unsignShort"     				desc=""/>
+	<item name="OPCODE"					tag="8041" length="2"  type="unsignShort"     				desc=""/>
+	<item name="CSEQ_CLI"				tag="8042" length="4"  type="unsignInt"     				desc=""/>
+	<item name="CSEQ_SER"				tag="8043" length="4"  type="unsignInt"     				desc=""/>
+	<item name="ucBsName"				tag="8044" length="32"  type="String"     					desc=""/>
+	<item name="ucSignalLinkState"		tag="8045" length="1"  type="unsignByte"     				desc=""/>
+	<item name="ucMedLinkState"			tag="8046" length="1"  type="unsignByte"     				desc=""/>
+	<item name="usBtsType"				tag="8047" length="2"  type="unsignShort"     				desc=""/>
+	
+	<item name="Tag_SIProute"			tag="8089" length="0"  type="tlv_nested"     				desc=""/>
+	<item name="SIPIndex"				tag="8064" length="2"  type="unsignShort"     				desc=""/>
+	<item name="Defaultmark"			tag="8065" length="1"  type="unsignByte"     				desc=""/>
+	<item name="State"					tag="8090" length="1"  type="unsignByte"     				desc=""/>
+	
+	<item name="Tag_NOanalysis"			tag="8091" length="0"  type="tlv_nested"     				desc=""/>
+	<item name="NOanalysisIndex"		tag="8097" length="2"  type="unsignShort"     				desc=""/>
+	<item name="CalledprimeNO"			tag="8066" length="32"  type="String"     					desc=""/>
+	<item name="MinNOlen"				tag="8067" length="1"  type="unsignByte"     				desc=""/>
+	<item name="MaxNOlen"				tag="8068" length="1"  type="unsignByte"     				desc=""/>
+	<item name="Callattitude"			tag="8069" length="1"  type="unsignByte"     				desc=""/>
+	<item name="SIPchannelid"			tag="8070" length="4"  type="unsignInt"     				desc=""/>
+	
+	<item name="Tag_selfdef"			tag="8092" length="0"  type="tlv_nested"     				desc=""/>
+	<item name="HomeVOP_PORT"			tag="8071" length="2"  type="unsignShort"     				desc=""/>
+	<item name="HomeEPC_PORT"			tag="8072" length="2"  type="unsignShort"     				desc=""/>
+	<item name="VOP_IP"					tag="8073" length="4"  type="IpString"     				desc=""/>
+	<item name="VOP_PORT"				tag="8074" length="2"  type="unsignShort"     				desc=""/>
+	<item name="EPC_IP"					tag="8075" length="4"  type="IpString"     				desc=""/>
+	<item name="EPC_PORT"				tag="8076" length="2"  type="unsignShort"     				desc=""/>
+	
+	<item name="Tag_Alarm"			 	tag="8093" length="0"   type="tlv_nested"     				desc=""/>
+	<item name="AlarmID"			 	tag="8077" length="4"   type="unsignInt"     				desc=""/>
+	<item name="Alarmname"			 	tag="8078" length="30"  type="String"     					desc=""/>
+	<item name="Alarmtype"			 	tag="8079" length="1"   type="unsignByte"     				desc=""/>
+	<item name="Alarmfunction"			tag="8080" length="1"   type="unsignByte"     				desc=""/>
+	<item name="Alarmgrade"			 	tag="8081" length="1"   type="unsignByte"     				desc=""/>
+	<item name="Alarmreason"			tag="8082" length="300" type="String"     					desc=""/>
+	<item name="Alarmtime"			 	tag="8083" length="30"  type="String"     					desc=""/>
+	<item name="Recoverytime"			tag="8084" length="30"  type="String"     					desc=""/>
+	<item name="Solvemethod"			tag="8085" length="300" type="String"     					desc=""/>
+	
+	<item name="SDCversion"				tag="8086" length="51"  type="String"     					desc=""/>
+	
+	<item name="NewPSW"					tag="5008" length="10"  type="String"     					desc="新密码"/>
+	<item name="Result"					tag="5010" length="1"   type="Byte"     					desc="密码重置结果"/>
+	<item name="IP"					 	tag="8019" length="4"  	type="IpString"     				desc="ip"/>
+	<item name="MAC"					tag="1053" length="6"  	type="MAC"     						desc="mac"/>
+	<item name="SDnum"                  tag="8096" length="2"  	type="unsignShort"                  desc=""/>	
+	<!-- McWill网管相关消息 -->
+	
+	<!-- LTE网管相关消息 -->
+	<item name="LTE_TotalQueryCount"		tag="28672" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="LTE_PageIndex"				tag="28673" length="0"   	type="unsignShort"     		desc=""/>
+	<item name="LTE_PageSize"			 	tag="28674" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="LTE_FLAG"				 	tag="28678" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="LTE_OPERNAME"				tag="28675" length="0"  	type="String"     			desc=""/>
+	<item name="LTE_OPERPWD"				tag="28676" length="0"   	type="String"     			desc=""/>
+	<item name="LTE_LOGINTYPE"			 	tag="28677" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="LTE_USERSTATE"				tag="28679" length="0"  	type="unsignByte"     		desc=""/>
+	
+	<item name="IMSI_INDEX"					tag="28680" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IMSI"						tag="28681" length="0"   	type="TenString"     		desc=""/>
+	<item name="IMSI_K"			 			tag="28682" length="0"  	type="BCD"   				desc=""/>
+	<item name="IMSI_UEStatus"				tag="28683" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IMSI_INFO"					tag="31744" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="USR_INDEX"					tag="28690" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="USR_NUMBER"					tag="28691" length="0"   	type="TenString"     		desc=""/>
+	<item name="USR_NUMBERTYPE"			 	tag="28692" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="USR_NECKNAME"				tag="28693" length="0"  	type="String"     			desc=""/>
+	<item name="USR_PASSWORD"				tag="28694" length="0"  	type="String"     			desc=""/>
+	<item name="USR_COMMENT"				tag="28695" length="0"   	type="String"     			desc=""/>
+	<item name="USR_STATE"			 		tag="28696" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="USR_HAVEIMSI"				tag="28697" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="USR_STATICIP"				tag="28698" length="0"  	type="IpString"     		desc=""/>
+	<item name="IPADDR_ALLOCATE_TYPE"		tag="28917" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="USR_START_STATICIP"			tag="28918" length="0"  	type="IpString"     		desc=""/>
+	<item name="USR_END_STATICIP"			tag="28919" length="0"  	type="IpString"     		desc=""/>
+	<item name="USR_AUTHFLAG"				tag="28699" length="0"  	type="unsignByte"       	desc=""/>
+	<item name="USR_INFO"					tag="31745" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<!-- 批量开户新增字段 -->
+	<item name="START_USR_NUMBER"			tag="28894" length="0"   	type="TenString"     		desc=""/>
+	<item name="START_IMSI"					tag="28895" length="0"   	type="TenString"     		desc=""/>
+	<item name="USR_COUNT"			 		tag="28896" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="User_Batch_Add_Error_Txt_File"		tag="28897" length="0"  	type="String"     	desc=""/>
+	<item name="openBizFlag" 				tag="28898" length="0" 		type="unsignInt" 			desc="" />
+	<item name="batchOpenAccountPercent" 	tag="28899" length="0" 		type="unsignShort" 			desc="" />
+
+
+	<item name="TMP_INDEX"					tag="28703" length="0"   	type="unsignInt"     		desc=""/>
+	<item name="TMP_ID"			 			tag="28704" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_NAME"					tag="28705" length="0"  	type="String"     			desc=""/>
+	<item name="TMP_UL_BW"					tag="28706" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_DL_BW"					tag="28707" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_PDN_CAT"				tag="28708" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_APN"					tag="28709" length="0"  	type="String"     			desc=""/>
+	<item name="TMP_APN_DLBW"				tag="28710" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_QCI"					tag="28711" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="TMP_DEFAUTL"				tag="28712" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_ARP_PRI"				tag="28713" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="TMP_ARP_REAVE"				tag="28714" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_ARP_REAVED"				tag="28715" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_APN_ULBW"				tag="28716" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="TMP_INFO"					tag="31746" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="SRV_INDEX"					tag="28721" length="0"   	type="unsignInt"     		desc=""/>
+	<item name="SRV_SIGCALLLTE_FLAG"		tag="28722" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="SRV_GRPCALLLTE_FLAG"		tag="28723" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="SRV_USR_PRI"				tag="28724" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="SRV_INFO"					tag="31747" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="FWD_INDEX"					tag="28730" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="FWD_CONDITION"				tag="28731" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="FWD_SERVTYPE"				tag="28732" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="FWD_SHOUR"					tag="28733" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="FWD_EHOUR"					tag="28734" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="FWD_NUMBER"					tag="28735" length="0"  	type="TenString"     		desc=""/>
+	
+	<item name="US_INDEX"					tag="28741" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="US_GUTI"					tag="28742" length="0"  	type="String"     			desc=""/>
+	<item name="US_TAI"						tag="28743" length="0"  	type="String"     			desc=""/>
+	<item name="US_EMMSTATE"				tag="28745" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="US_ROAMSTATE"				tag="28746" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="US_IP"						tag="28747" length="0"  	type="IpString"     		desc=""/>
+	<item name="US_APN_IP"					tag="28748" length="0"  	type="IpString"     		desc=""/>
+	<item name="US_INFO"					tag="31770" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="IP_INDEX"					tag="28750" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IP_ID"						tag="28751" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IP_ADDR"					tag="28752" length="0"  	type="IpString"     		desc=""/>
+	<item name="IP_MASK"					tag="28753" length="0"  	type="IpString"     		desc=""/>
+	<item name="IP_GATEWAY"					tag="28754" length="0"  	type="IpString"     		desc=""/>
+	<item name="IP_COMMENT"					tag="28755" length="0"  	type="String"     			desc=""/>
+	<item name="IP_INFO"					tag="31748" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="SIP_INDEX"					tag="28759" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SIP_ID"						tag="28760" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SIP_ADDR"					tag="28761" length="0"  	type="IpString"     		desc=""/>
+	<item name="SIP_PORT"					tag="28762" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SIP_ISDEFAULT"				tag="28763" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SIP_COMMENT"				tag="28764" length="0"  	type="String"     			desc=""/>
+	<item name="SIP_STATE"  				tag="28765" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SIP_INFO"					tag="31749" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="NA_INDEX"					tag="28768" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="NA_PREFIX"					tag="28769" length="0"  	type="TenString"     		desc=""/>
+	<item name="NA_MINLEN"					tag="28770" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="NA_MAXLEN"					tag="28771" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="NA_ATTR"					tag="28772" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="NA_INFO"					tag="31750" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="SYSCONF_INDEX"				tag="28776" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_SIPIP_ID"			tag="28777" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_SIPPORT"			tag="28778" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_PLMN"				tag="28779" length="0"  	type="String"     			desc=""/>
+	<item name="SYSCONF_MMEIP_ID"			tag="28780" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_DNS_IP"			    tag="28781" length="0"  	type="IpString"     		desc=""/>
+	<item name="SYSCONF_MASTER_KEY"			tag="28782" length="0"  	type="BCD"	     		    desc=""/>
+	<item name="SYSCONF_MAXDURATION"		tag="28783" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_RECORDAUDIO"		tag="28784" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_RECORDVEDIO"		tag="28785" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_RECORDIM"			tag="28786" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_PDNIP_ID"			tag="28787" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_APN"				tag="28788" length="0"  	type="String"     			desc=""/>
+	<item name="SYSCONF_RANIP_ID"			tag="28789" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_MMES1_PORT"			tag="28790" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSCONF_MMECODE"			tag="28791" length="0"  	type="unsignByte"	      	desc=""/>
+	<item name="SYSCONF_GROUPID"			tag="28792" length="0"  	type="unsignShort"     		desc=""/>
+	
+	<item name="SYSINFO_INDEX"				tag="28793" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYSINFO_NAME"				tag="28794" length="0"  	type="String"     			desc=""/>
+	<item name="SYSINFO_VALUE"				tag="28795" length="0"  	type="String"     			desc=""/>
+	<item name="SYSINFO"					tag="31751" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	
+	<item name="MMES1_INDEX"				tag="28799" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MMES1_ID"					tag="28800" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MMES1_PEERIP"				tag="28801" length="0"  	type="IpString"     		desc=""/>
+	<item name="MMES1_PEERPORT"				tag="28802" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="MMES1_STATE"				tag="28803" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MMES1_COMMENT"				tag="28804" length="0"  	type="String"     			desc=""/>
+	<item name="MMES1_ENBID"				tag="28805" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MMES1_INFO"					tag="31752" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="MMETA_INDEX"				tag="28810" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MMETA_ID"					tag="28811" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MMETA_TAI"					tag="28812" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="MMETA_COMMENT"				tag="28813" length="0"  	type="String"     			desc=""/>
+	<item name="MMETA_INFO"					tag="31753" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="QOS_INDEX"					tag="28820" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_ID"						tag="28821" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_TYPE"					tag="28822" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_PRIORITY"				tag="28823" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_UPLINK_MBR"				tag="28824" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_DOWNLINK_MBR"			tag="28825" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_UPLINK_GBR"				tag="28826" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_DOWNLINK_GBR"			tag="28827" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="QOS_INFO"					tag="31754" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="SNET_INDEX"					tag="28831" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SNET_ID"					tag="28832" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SNET_STARTIP"				tag="28833" length="0"  	type="IpString"     		desc=""/>
+	<item name="SNET_ENDIP"					tag="28834" length="0"  	type="IpString"     		desc=""/>
+	<item name="IPPOOL_TYPE"				tag="28835" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="SNET_INFO"					tag="31755" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<!-- yyl添加于3-25 -->
+	<item name="EMGUSR_INDEX"				tag="28838" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="EMGUSR_TYPE"				tag="28839" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="EMGUSR_CALLNUM"				tag="28840" length="0"  	type="TenString"     		desc=""/>
+	
+	<item name="EMGSYS_INDEX"				tag="28844" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="EMGSYS_CATEGORY"			tag="28845" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="EMGSYS_NUM"		    		tag="28846" length="0"  	type="TenString"     		desc=""/>
+	<item name="EMGSYS_REDIRECTNUM"			tag="28847" length="0"  	type="TenString"     		desc=""/>
+	<item name="EMGSYS_REDIRECTPRI"			tag="28848" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="EMGSYS"					    tag="31766" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="IPQOS_IP"				    tag="28852" length="0"  	type="IpString"     		desc=""/>
+	<item name="IPQOS_MAX_PORT"				tag="28853" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="IPQOS_MIN_PORT"				tag="28854" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="IPQOS_QCI"					tag="28855" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="IPQOS_UPLINK_MBR"			tag="28856" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IPQOS_DOWNLINK_MBR"			tag="28857" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IPQOS_UPLINK_GBR"			tag="28858" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IPQOS_DOWNLINK_GBR"			tag="28859" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IPQOS_INDEX"				tag="28860" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="IPQOS"					    tag="31767" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<!-- yyl添加于4-11 -->
+	<item name="CALLQOS_TYPE"				tag="28863" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="CALLQOS_QCI"				tag="28864" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="CALLQOS_UPLINK_MBR"			tag="28865" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="CALLQOS_DOWNLINK_MBR"		tag="28866" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="CALLQOS_UPLINK_GBR"			tag="28867" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="CALLQOS_DOWNLINK_GBR"		tag="28869" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="CALLQOS"					tag="31768" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<item name="SROUTE_INDEX"				tag="28873" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SROUTE_NET"					tag="28874" length="0"  	type="IpString"     		desc=""/>
+	<item name="SROUTE_NETMASK"				tag="28875" length="0"  	type="IpString"     		desc=""/>
+	<item name="SROUTE_GW"					tag="28876" length="0"  	type="IpString"     		desc=""/>
+	<item name="SROUTE_METIRC"				tag="28877" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SROUTE"						tag="31769" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<!-- yyl添加于08-07 -->
+	<item name="MONITOR_INDEX"				tag="28881" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="MONITOR_NAME"				tag="28882" length="0"  	type="String"       		desc=""/>
+	<item name="MONITOR_TYPE"				tag="28883" length="0"  	type="unsignByte"      		desc=""/>
+	<item name="MONITOR_IP"	    			tag="28884" length="0"  	type="IpString"      		desc=""/>
+	<item name="MONITOR_PORT"	   			tag="28885" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="USER_NAME"	    			tag="28886" length="0"  	type="String"       		desc=""/>
+	<item name="USER_PASSWORD"	   			tag="28887" length="0"  	type="String"       		desc=""/>
+	<item name="COMMENT"	    			tag="28888" length="0"  	type="String"       		desc=""/>
+	<item name="CALL_NUMBER_INDEX"	  		tag="28889" length="0"  	type="unsignInt"       		desc=""/>
+	<item name="CALL_NUMBER"	    		tag="28890" length="0"  	type="TenString"       		desc=""/>
+	<item name="AUTH_PASSWORD"	    		tag="28891" length="0"  	type="String"       		desc=""/>
+	<item name="CHANNEL_ID"	    	    	tag="28892" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="VMG_CFG"					tag="31771" length="0"  	type="tlv_nested"     		desc=""/>
+	<item name="VMG_NUM"					tag="31772" length="0"  	type="tlv_nested"     		desc=""/>
+	<!-- LTE网管相关消息 -->
+	
+	<!-- 数据库备份文件 -->
+	<item name="BACKUP_FILE"             	tag="28893" length="0"  	type="String"     			desc="备份文件"/>
+	
+	<!-- 漫游组网数据同步 
+		<item name="MASTER_IP"					tag="28900" length="0"  	type="IpString"     		desc=""/>
+		<item name="MASTER_PORT"				tag="28901" length="0"  	type="unsignShort"     		desc=""/>
+		<item name="SYNC_STATUS"				tag="28902" length="0"  	type="unsignByte"     		desc=""/>
+		-->
+	<item name="GLOBAL_ROAM_INFO"			tag="31773" length="0"  	type="tlv_nested"     		desc=""/>
+	<item name="sdcId"						tag="28900" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="peerIp"						tag="28901" length="0"  	type="IpString"     		desc=""/>
+	<item name="peerSipPort"				tag="28902" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="dataSyncFlag"				tag="28903" length="0"  	type="unsignByte"     		desc=""/>
+	<item name="dataSyncState"				tag="28904" length="0"  	type="unsignByte"     		desc=""/>
+
+	<!--录音服务器-->
+	<item name="vmrIp"						tag="28907" length="0"  	type="IpString"     		desc=""/>
+	<item name="vmrPort"					tag="28908" length="0"  	type="unsignShort"     		desc=""/>
+	<item name="vmrUsername"	    		tag="28905" length="0"  	type="String"       		desc=""/>
+	<item name="vmrPassword"	    		tag="28906" length="0"  	type="String"       		desc=""/>
+	<item name="vmrLinkStatus"	    		tag="28910" length="0"  	type="unsignByte"       	desc="TCN1000与录音服务器的连接状态"/>
+	<item name="audioRecordFlag"    		tag="28909" length="0"  	type="unsignShort"       	desc="用户是否开通录音业务  0 关闭 1开通"/>
+
+	<!-- 批量增加IMSI -->
+	<item name="imsiFile"					tag="28916" length="0"  	type="String"     			desc=""/>
+
+	<!-- HA信息 -->
+	<item name="haTcn1000Type"				tag="28920" length="0"  	type="unsignByte"    		desc=""/>
+	<item name="haEnable"					tag="28921" length="0"  	type="unsignByte"    		desc=""/>
+	<item name="haSdcIp"					tag="28922" length="0"  	type="IpString"   	 		desc=""/>
+	<item name="haSdcPort"					tag="28923" length="0"  	type="unsignShort"    		desc=""/>
+	<item name="haXgwIp"					tag="28924" length="0"  	type="IpString"   	 		desc=""/>
+	<item name="haXgwPort"					tag="28925" length="0"  	type="unsignShort"    		desc=""/>
+	<item name="haRemoteSdcIp"				tag="28926" length="0"  	type="IpString"    			desc=""/>
+	<item name="haRemoteSdcPort"			tag="28927" length="0"  	type="unsignShort"    		desc=""/>
+	<item name="haRemoteXgwIp"				tag="28928" length="0"  	type="IpString"    			desc=""/>
+	<item name="haRemoteXgwPort"			tag="28929" length="0"  	type="unsignShort"    		desc=""/>
+	
+	<!--cpu门限修改-->
+	<item name="cpuUp"	    		tag="28967" length="0"  	type="unsignInt"       		desc="S1Overload Start CPU门限"/>
+	<item name="cupDown"	    		tag="28968" length="0"  	type="unsignInt"       		desc="S1Overload Stop CPU门限"/>
+
+	<!--PDT配置信息-->
+	<item name="pdtId"	    		tag="28911" length="0"  	type="unsignShort"      		desc="PDT标识"/>
+	<item name="pdtRemoteIp"				tag="28912" length="0"  	type="IpString"    			desc="远端PDT ip"/>
+	<item name="pdtRemotePort"	    		tag="28913" length="0"  	type="unsignShort"       		desc="远端PDT port"/>
+	<item name="pdtLinkState"	    		tag="28914" length="0"  	type="Byte"       		desc="0 未连接1 已连接"/>
+	<item name="PDT_PORT"			tag="28915" length="0"  	type="unsignShort"     		desc=""/>
+
+	<!--短信中心查询-->
+	<item name="smscUserName"	    		tag="28958" length="0"  	type="String"       		desc="登录短信中心的用户名"/>
+	<item name="smscPassWord"	    		tag="28959" length="0"  	type="String"       		desc=""/>
+	<item name="smscIp"				tag="28960" length="0"  	type="IpString"    			desc="短信中心ip"/>
+	<item name="smscPort"			tag="28961" length="0"  	type="unsignInt"    		desc="短信中心端口"/>
+	<item name="smscComment"	    		tag="28962" length="0"  	type="String"       		desc="链路状态"/>
+	<item name="smscStatus"	    		tag="28963" length="0"  	type="Int"       		desc="链路状态"/>
+	<item name="TAG_PEER_PDT _INFO"			tag="31774" length="0"  	type="tlv_nested"     		desc=""/>
+	<!--license配置-->
+	<item name="LICENSE_DEVICE_TYPE"	    		tag="28969" length="0"  	type="unsignByte"       		desc="设备类型"/>
+	<item name="LICENSE_HARDWARE_SIGNATURE"	    	tag="28970" length="0"  	type="String"       		desc="设备硬件标识"/>
+	<item name="LICENSE_VERSION_TYPE"	    		tag="28971" length="0"  	type="unsignByte"       		desc="版本类型"/>
+	<item name="LICENSE_CUR_USER_NUM"	    		tag="28972" length="0"  	type="unsignInt"       		desc="当前用户数"/>
+	<item name="LICENSE_MAX_USER_NUM"	    		tag="28973" length="0"  	type="unsignInt"       		desc="最大用户数数"/>
+	<item name="LICENSE_EXPIRE"	    				tag="28974" length="0"  	type="String"       		desc="到期时间"/>
+	<item name="LICENSE_AUTH_CODE"	    			tag="28975" length="0"  	type="String"       		desc="授权码"/>
+	<item name="LICENSE_DESCRIPTION"	    		tag="28976" length="0"  	type="String"       		desc="授权描述信息"/>
+	
+	<!--同播区域配置-->
+	<item name="MMETA_INDEX"			tag="28810" length="0"  	type="unsignInt"    		desc="索引"/>
+	<item name="MMETA_TAI"		tag="28812" length="0"  	type="unsignShort"     		desc="标识"/>
+	<item name="MMETA_COMMENT"				tag="28813" length="0"  	type="String"     			desc="备注"/>
+	<item name="TAG_MBMS_AREA_INFO"			tag="31776" length="0"  	type="tlv_nested"     		desc=""/>
+	
+	<!--数据同播组IP配置-->
+	<item name="TAG_DATA_GROUP_CFG_INFO"			tag="31777" length="0"  	type="tlv_nested"     		desc=""/>
+	<item name="GDN"	tag="28990" length="0" type="String"   desc=""/>
+	
+	<!--企业短信平台信息-->
+	<item name="OA_NAME"			tag="28977" length="0"  	type="String"     		desc="与TCN1000设备对接的企业短信平台的用户名"/>
+	<item name="OA_PASSWORD"		tag="28978" length="0"  	type="String"     		desc="登录企业短信平台数据库的密码"/>
+	<item name="OA_IP"				tag="28979" length="0"  	type="IpString"     		desc="企业短信平台数据库ip"/>
+	<item name="OA_PORT"			tag="28980" length="0"  	type="unsignShort"     		desc="企业短信平台数据库端口"/>
+	<item name="OA_DB_NAME"	    	tag="28981" length="0"  	type="String"       		desc="企业短信平台数据库名称"/>
+	<item name="CYC_TIME"			tag="28982" length="0"  	type="unsignShort"     		desc="访问企业短信平台的周期时长，即每隔多长时间扫描一次数据库"/>
+	<item name="OA_NUM"	    	    tag="28983" length="0"  	type="String"       		desc="企业短信平台号码，发送OA短信时的发送方号码"/>
+	<item name="OA_CONNECTION_STATUS"	tag="28984" length="0"  	type="unsignByte"     		desc="TCN1000与企业短信平台的连接状态"/>
+
+	<!--APP白名单 -->
+	<item name="TAG_WHITEAPP_INFO"			tag="31778" length="0"  	type="tlv_nested"     		desc="APP名称"/>
+	<item name="whiteAppName"	    	    tag="28985" length="0"  	type="String"       		desc="APP描述"/>
+
+	<!--同步周期和同步序列-->
+	<item name="SYNC_SEQ"				 	tag="28991" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SYNC_PERIOD"				 	tag="28992" length="0"  	type="unsignInt"     		desc=""/>
+  	
+  	
+  	<!--PGIS服务器信息-->
+  	<item name="PGIS_AUTH"	    	    tag="28986" length="50"  	type="String"       		desc=""/>
+	<item name="PGIS_IP"				tag="28987" length="0"  	type="IpString"     		desc=""/>
+	<item name="PGIS_PORT"			tag="28988" length="0"  	type="unsignInt"     		desc=""/>
+	<item name="SRV_LOCATION_FLAG"			tag="28989" length="0"  	type="unsignShort"     		desc=""/>
+	
+	<!--白名单-->
+	<item name="TAG_WHITELIST_INFO"			tag="31779" length="0"  	type="tlv_nested"     		desc=" "/>
+	<item name="CALLER_PREFIX"	    	    tag="28993" length="0"  	type="String"       		desc=""/>
+	<item name="CALLED_PREFIX"	    	    tag="28994" length="0"  	type="String"       		desc=""/>
+	<item name="CALL_TYPE"	    			tag="28995" length="0"  	type="unsignByte"       		desc="版本类型"/>
+	<item name="SRV_WHITELIST_FLAG"			tag="28996" length="0"  	type="unsignShort"     		desc=""/>
+	
+	
+</items>
+                                                         

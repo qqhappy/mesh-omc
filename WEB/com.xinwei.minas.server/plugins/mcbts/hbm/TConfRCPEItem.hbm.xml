@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.mcbts.core.model.layer3.TConfRCPEItem" table="t_conf_rcpe_item">
+  <composite-id
+   class="com.xinwei.minas.mcbts.core.model.layer3.TConfRCPEItemPK"
+   mapped="false" name="id" unsaved-value="undefined">
+   <key-property name="parentId" type="long">
+    <column name="parent_id" not-null="true"/>
+   </key-property>
+   <key-property name="rowIndex" type="int">
+    <column name="row_index" not-null="true"/>
+   </key-property>
+  </composite-id>
+  <property generated="never" lazy="false" name="rCPEUid" type="long">
+   <column name="rcpe_uid"/>
+  </property>
+  <property generated="never" lazy="false" name="UIDType" type="int">
+   <column name="uid_type"/>
+  </property>
+ </class>
+</hibernate-mapping>

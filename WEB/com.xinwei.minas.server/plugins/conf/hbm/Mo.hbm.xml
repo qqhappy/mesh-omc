@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.core.model.Mo" table="T_MO">
+		<id name="moId" type="long">
+			<column name="moId" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="typeId" type="int">
+			<column name="typeId" not-null="true"/>
+		</property>
+		<property name="name" type="java.lang.String">
+			<column name="name" not-null="true"/>
+		</property>
+		<property name="description" type="java.lang.String">
+			<column name="description" not-null="false"/>
+		</property>
+		<property name="manageStateCode" type="int">
+			<column name="manageStateCode" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

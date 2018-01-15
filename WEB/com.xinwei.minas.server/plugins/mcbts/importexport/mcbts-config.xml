@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bizs>
+	<biz name="mcbts_basic_info" desc_zh="基本信息" desc_en="Basic Information" generic="false" configurable="false">
+		<service class="com.xinwei.minas.server.mcbts.service.McBtsBasicService">
+			<cell name="btsId" desc_zh="BTS ID" desc_en="BTS ID" wireless="true" />
+			<cell name="name" desc_zh="基站名称" desc_en="NE Name" wireless="false" />
+			<cell name="btsType" desc_zh="基站类型" desc_en="BTS Type" wireless="true" />
+			<cell name="btsIp" desc_zh="基站IP" desc_en="BTS IP" wireless="false" />
+			<cell name="locationAreaId" desc_zh="位置区" desc_en="Location Area" wireless="false" />
+			<cell name="antennaType" desc_zh="天线类型" desc_en="Antenna Type" wireless="true" />
+			<cell name="antennaAngle" desc_zh="天线角度" desc_en="Antenna Angle" wireless="false" />
+			<cell name="voiceDirectConnFlag" desc_zh="语音直通指示" desc_en="Voice Direct Conn Flag" wireless="false" />
+			<cell name="networkId" desc_zh="网络ID" desc_en="Network ID" wireless="false" />
+			<cell name="bootSource" desc_zh="启动源" desc_en="Bootup Source" wireless="false" />
+			<cell name="natAPKey" desc_zh="Nat Key" desc_en="Nat Key" wireless="false" />
+			<cell name="sagVlanUsedFlag" desc_zh="SAG VLan使用" desc_en="SAG VLan Usage" wireless="false" />
+			<cell name="sagVlanId" desc_zh="SAG VLan ID" desc_en="SAG VLan ID" wireless="false" />
+			<cell name="sagBtsIp" desc_zh="SAG BTS IP" desc_en="SAG BTS IP" wireless="false" />
+			<cell name="sagDefaultGateway" desc_zh="SAG默认网关" desc_en="SAG Default Gateway" wireless="false" />
+			<cell name="sagSubNetMask" desc_zh="SAG子网掩码" desc_en="SAG Subnet Mask" wireless="false" />
+			<cell name="sagDeviceId" desc_zh="SAG ID" desc_en="SAG ID" wireless="false" />
+			<cell name="sagVoiceIp" desc_zh="SAG语音IP" desc_en="SAG Voice IP" wireless="false" />
+			<cell name="sagSignalIp" desc_zh="SAG信令IP" desc_en="SAG Signal IP" wireless="false" />
+			<cell name="sagSignalPointCode" desc_zh="SAG信令编码" desc_en="SAG Signal Code" wireless="false" />
+			<cell name="sagMediaPort" desc_zh="SAG媒体端口" desc_en="SAG Media Port" wireless="false" />
+			<cell name="sagSignalPort" desc_zh="SAG信令端口" desc_en="SAG Signal Port" wireless="false" />
+			<cell name="btsMediaPort" desc_zh="BTS媒体端口" desc_en="BTS Media Port" wireless="false" />
+			<cell name="btsSignalPort" desc_zh="BTS信令端口" desc_en="BTS Signal Port" wireless="false" />
+			<cell name="btsSignalPointCode" desc_zh="BTS信令编码" desc_en="BTS Signal Code" wireless="false" />
+			<cell name="districtName" desc_zh="地域名称" desc_en="District Name" wireless="false" />
+			<cell name="templateId" desc_zh="模板ID" desc_en="Template ID" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_rruEnvParamConfig" desc_zh="RRU环境参数配置" desc_en="RRU Environment Parameter Config" generic="true" configurable="true">
+		<bizName value="mcbts_rruEnvParamConfig">
+			<cell name="tempAlarmUpLimit" desc_zh="温度告警上限" desc_en="High Temperature Alarm Threshold(℃)" wireless="false" />
+			<cell name="tempAlarmDownLimit" desc_zh="温度告警下限" desc_en="Low Temperature Alarm Threshold(℃)" wireless="false" />
+			<cell name="curAlarmUpLimit" desc_zh="电流告警上限" desc_en="High Current Alarm Threshold(mA)" wireless="false" />
+			<cell name="curAlarmDownLimit" desc_zh="电流告警下限" desc_en="Low Current Alarm Threshold(mA)" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_lightAlarmConfig" desc_zh="光模块告警门限配置" desc_en="Light Alarm Config" generic="true" configurable="true">
+		<bizName value="mcbts_lightAlarmConfig">
+			<cell name="LiPresAlarmShreahold" desc_zh="光模块电压告警门限" desc_en="Voltuage Alarm Threshold(uV)" wireless="false" />
+			<cell name="LiCurrAlarmShreahold" desc_zh="光模块电流告警门限" desc_en="Current Alarm Threshold(uA)" wireless="false" />
+			<cell name="LiEmiPowerAlarmShreahold" desc_zh="光模块发射功率告警门限" desc_en="Tx_Power Alarm Threshold(uW)" wireless="false" />
+			<cell name="LiInceptPowerAlarmShreahold" desc_zh="光模块接收功率告警门限" desc_en="Rx_Power Alarm Threshold(uW)" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_mbms_bts" desc_zh="同播基站配置" desc_en="MBMS BTS" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.MBMSBtsService">
+			<cell name="flag" desc_zh="是否支持同播" desc_en="Simulcast Supported" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_remote_bts" desc_zh="远距离基站配置" desc_en="Remote BTS" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.RemoteBtsService">
+			<cell name="flag" desc_zh="是否支持远距离" desc_en="Remote Supported" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_rcpe" desc_zh="RCPE" desc_en="RCPE" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.RCPEService">
+			<cell name="workMode" desc_zh="工作模式" desc_en="Work Mode" wireless="false" />
+			<cell name="rcpe" desc_zh="RCPE" desc_en="RCPE" wireless="false" />
+			<cell name="rcpe+" desc_zh="RCPE+" desc_en="RCPE+" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_dataoperation" desc_zh="数据服务" desc_en="Data Operation" generic="true" configurable="true">
+		<bizName value="mcbts_dataoperation">
+			<cell name="RoutingareaID" desc_zh="路由区域ID" desc_en="Routing Area ID" wireless="false" />
+			<cell name="Mobility" desc_zh="移动性" desc_en="Mobility" wireless="false" />
+			<cell name="AccessControl" desc_zh="接入控制" desc_en="Access Control" wireless="false" />
+			<cell name="Learnedbridgetimer" desc_zh="学习桥时长" desc_en="Learned Bridge Timer" wireless="false" />
+			<cell name="PeertoPeBridging" desc_zh="终端间桥接" desc_en="Peer To Peer Bridging" wireless="false" />
+			<cell name="EgressARPProxy" desc_zh="下行ARP代理" desc_en="Egress ARP Proxy" wireless="false" />
+			<cell name="EgressBroadFiltering" desc_zh="下行广播过滤" desc_en="Egress Broad Filtering" wireless="false" />
+			<cell name="PPPKeepTimerLength" desc_zh="PPP保持会话时长" desc_en="PPP Keep Timer Length" wireless="false" />
+			<cell name="BTSIDAsDHCP" desc_zh="BTSIDAsDHCP" desc_en="BTSIDAsDHCP" wireless="false" />
+			<cell name="EIDAsDHCP" desc_zh="EIDAsDHCP" desc_en="EIDAsDHCP" wireless="false" />
+			<cell name="EIDAsPPPoE" desc_zh="EIDAsPPPoE" desc_en="EIDAsPPPoE" wireless="false" />
+		</bizName>
+		<bizName value="mcbts_ethernet2opration">
+			<cell name="RoutingareaID2" desc_zh="路由区域ID2" desc_en="Routing Area ID2" wireless="false" />
+		</bizName>
+		<bizName value="mcbts_ipv6operation">
+			<cell name="ipv6Switch" desc_zh="IPV6控制开关" desc_en="IPV6 Switch" wireless="false" />
+			<cell name="ingressNDProxy" desc_zh="上行ND代理" desc_en="Ingress ND Proxy" wireless="false" />
+			<cell name="egressNDProxy" desc_zh="下行ND代理" desc_en="Egress ND Proxy" wireless="false" />
+			<cell name="egressBroadCastFilter" desc_zh="下行广播过滤" desc_en="Egress Broadcast Filter" wireless="false" />
+			<cell name="learnedBridgeTimer" desc_zh="IPv6网桥学习老化时间" desc_en="Learned Bridge Timer" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_wcpe" desc_zh="WCPE" desc_en="WCPE" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.WCPEService">
+			<cell name="workMode" desc_zh="WCPE工作模式" desc_en="WCPE Work Mode" wireless="false" />
+			<cell name="primaryWCPE" desc_zh="主WCPE UID" desc_en="Primary WCPE ID" wireless="false" />
+			<cell name="standbyWCPE" desc_zh="备WCPE UID" desc_en="Standby WCPE ID" wireless="false" />
+			<cell name="sacMac" desc_zh="SAC MAC 1" desc_en="SAC MAC 1" wireless="false" />
+			<cell name="sacMac2" desc_zh="SAC MAC 2" desc_en="SAC MAC 2" wireless="false" />
+			<cell name="sacMac3" desc_zh="SAC MAC 3" desc_en="SAC MAC 3" wireless="false" />
+			<cell name="sacMac4" desc_zh="SAC MAC 4" desc_en="SAC MAC 4" wireless="false" />
+			<cell name="sacMac5" desc_zh="SAC MAC 5" desc_en="SAC MAC 5" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_backupSag" desc_zh="备份SAG参数" desc_en="Backup SAG Parameter" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.SAGParamService">
+			<cell name="sAGID" desc_zh="SAG ID" desc_en="SAG ID" wireless="false" />
+			<cell name="sAGIPforVoice" desc_zh="SAG语音IP" desc_en="SAG Voice IP" wireless="false" />
+			<cell name="sAGIPforsignal" desc_zh="SAG信令IP" desc_en="SAG Signal IP" wireless="false" />
+			<cell name="bSForceUseJitterbuffer" desc_zh="BTS是否强制使用缓存" desc_en="BTS Forced to Use Jitter Buffer" wireless="false" />
+			<cell name="zModelUseJitterbuffer" desc_zh="Z模块是否使用缓存" desc_en="Z Module to Use Jitter Buffer" wireless="false" />
+			<cell name="jitterbufferSize" desc_zh="缓存大小" desc_en="Buffer Size" wireless="false" />
+			<cell name="jitterbufferPackageThreshold" desc_zh="缓存发送数据包门限" desc_en="Buffer TX Threshold" wireless="false" />
+			<cell name="sAGVoiceTOS" desc_zh="SAG语音TOS" desc_en="SAG Voice TOS" wireless="false" />
+			<cell name="sAGRxPortForVoice" desc_zh="基站媒体端口" desc_en="BTS Signal Code" wireless="false" />
+			<cell name="sAGTxPortForVoice" desc_zh="SAG媒体端口" desc_en="SAG Signal Code" wireless="false" />
+			<cell name="sAGRxPortForSignal" desc_zh="基站信令端口" desc_en="BTS Signal Port" wireless="false" />
+			<cell name="sAGTxPortForSignal" desc_zh="SAG信令端口" desc_en="SAG Signal Port" wireless="false" />
+			<cell name="locationAreaID" desc_zh="位置区" desc_en="Location Area ID" wireless="false" />
+			<cell name="sAGSignalPointCode" desc_zh="SAG信令点编码" desc_en="SAG Signal Code" wireless="false" />
+			<cell name="bTSSignalPointCode" desc_zh="基站信令点编码" desc_en="BTS Signal Code" wireless="false" />
+			<cell name="natAPKey" desc_zh="NAT AP KEY" desc_en="NAT AP KEY" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_PoticalFrequ" desc_zh="关射频配置" desc_en="Close RF Setting" generic="true" configurable="true">
+		<bizName value="mcbts_PoticalFrequ">
+			<cell name="ConfigRFFlag" desc_zh="关射频功能" desc_en="Close RF Function" wireless="false" />
+			<cell name="GTIME1" desc_zh="关闭射频保护时长" desc_en="Close RF Guard Time" wireless="false" />
+			<cell name="GTIME2" desc_zh="恢复射频保护时长" desc_en="Open RF Guard Time" wireless="false" />
+			<cell name="DATAGW1" desc_zh="数据网管1IP地址" desc_en="IP Of Data Gateway1" wireless="false" />
+			<cell name="DATAGW2" desc_zh="数据网管2IP地址" desc_en="IP Of Data Gateway2" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_GPSClock" desc_zh="GPS时钟同步" desc_en="GPS Clock Sync" generic="true" configurable="true">
+		<bizName value="mcbts_GPSClock">
+			<cell name="GPSServerIP" desc_zh="服务器IP地址" desc_en="Server IP Address" wireless="false" />
+			<cell name="GPSServerPort" desc_zh="服务器端口号" desc_en="Server Port" wireless="false" />
+			<cell name="GPSReportingPeriod" desc_zh="上报周期" desc_en="Report Period" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_DBSServer" desc_zh="DBS组播服务器" desc_en="DBS Server" generic="true" configurable="true">
+		<bizName value="mcbts_DBSServer">
+			<cell name="DBSServerIP" desc_zh="DBS服务器IP" desc_en="DBS Server IP" wireless="false" />
+			<cell name="DBSServerPort" desc_zh="DBS服务器端口" desc_en="DBS Server Port" wireless="false" />
+			<cell name="BSDataBroadcastPort" desc_zh="BTS数据组播端口" desc_en="BTS Multicasting Port" wireless="false" />
+			<cell name="NatApKey" desc_zh="NatApKey" desc_en="NatApKey" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_chargeParamConfig" desc_zh="计费参数信息" desc_en="Billing Information" generic="true" configurable="true">
+		<bizName value="mcbts_chargeParamConfig">
+			<cell name="ChargeSwitch" desc_zh="计费开关" desc_en="Charge Switch" wireless="false" />
+			<cell name="CDRPeriod" desc_zh="话单上传间隔" desc_en="CDR Period" wireless="false" />
+			<cell name="ChargeIP" desc_zh="自服务中心IP" desc_en="Charge IP" wireless="false" />
+			<cell name="CDRDataPeriod" desc_zh="数据业务话单时长" desc_en="CDR Data Period" wireless="false" />
+			<cell name="CB3000IP" desc_zh="CB3000IP" desc_en="CB3000 IP" wireless="false" />
+			<cell name="Port" desc_zh="CB3000端口" desc_en="CB3000 Port" wireless="false" />
+			<cell name="RealTimeChargeSwitch" desc_zh="基站实时计费开关" desc_en="RealTime Charge Switch" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_weak_fault" desc_zh="故障弱化开关配置" desc_en="Weak Fault Switch Configuration" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.WeakFaultService">
+			<cell name="switch" desc_zh="故障弱化开关" desc_en="Weak Fault Switch" wireless="true" />
+			<cell name="voiceSwitch" desc_zh="语音故障弱化开关" desc_en="Weak Fault Voice Switch" wireless="true" />
+			<cell name="voice_user_list_file" desc_zh="是否使用用户ACL配置文件" desc_en="Use User ACL Configuration File" wireless="false" />
+			<cell name="voice_user_list_file2" desc_zh="是否使用用户语音列表文件" desc_en="Use Voice User List File" wireless="false" />
+			<cell name="trunk_list_file" desc_zh="是否使用集群数据文件" desc_en="Use Voice Trunk List File" wireless="false" />
+			<cell name="multi_call_idle_time" desc_zh="组呼空闲时长" desc_en="Group Call Idle Time(sec)" wireless="false" />
+			<cell name="voice_max_time" desc_zh="讲话方最大时长" desc_en="Max. Caller Talking Time(sec)" wireless="false" />
+			<cell name="multi_call_max_time" desc_zh="组呼最大时长" desc_en="Group Call Max. Time(sec)" wireless="false" />
+			<cell name="delay_interval" desc_zh="迟后进入周期" desc_en="Delay Entrance Period(sec)" wireless="false" />
+			<cell name="division_code" desc_zh="本地区号" desc_en="Division Code" wireless="false" />
+			<cell name="TConfDnInfos" desc_zh="配置号码分析表" desc_en="DN Code Analysis Table" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_trunkConfig" desc_zh="集群配置" desc_en="Trunk Config" generic="true" configurable="true">
+		<bizName value="mcbts_trunkConfig">
+			<cell name="Flag" desc_zh="集群功能开关" desc_en="Cluster Switch" wireless="true" />
+			<cell name="SleepPeriod" desc_zh="睡眠间隔" desc_en="Sleep Period" wireless="false" />
+			<cell name="RsvChResourseNum" desc_zh="预留组呼资源" desc_en="Reserved Channel Resource" wireless="false" />
+			<cell name="VideoChResourseNum" desc_zh="视频克隆预留组资源数" desc_en="Video Clone Reserved Channel Resource" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_vlan" desc_zh="VLan" desc_en="VLan" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.VlanService">
+			<cell name="mcbts_vlan" desc_zh="VLan" desc_en="VLan" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_repeater" desc_zh="直放站" desc_en="Repeater" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.RepeaterService">
+			<cell name="mcbts_repeater" desc_zh="直放站" desc_en="Repeater" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_acl" desc_zh="ACL配置" desc_en="ACL Configuration" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.ACLService">
+			<cell name="mcbts_acl" desc_zh="ACL配置" desc_en="ACL Configuration" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_neighbour" desc_zh="邻接表信息" desc_en="BTS Neighbour List Information" generic="false" configurable="false">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.NeighborService">
+			<cell name="neighbour" desc_zh="邻接表信息" desc_en="BTS Neighbour List Information" wireless="true" />
+			<cell name="neighbourAppend" desc_zh="附加邻接表信息" desc_en="Append BTS Neighbour List Information" wireless="true" />
+		</service>
+	</biz>
+	<biz name="mcbts_sdma_config" desc_zh="SDMA" desc_en="SDMA" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer2.SDMAConfigService">
+			<cell name="sdmaEnableFlag" desc_zh="是否启用SDMA" desc_en="SDMA Enable Switch" wireless="false" />
+			<cell name="voiceSdmaFlag" desc_zh="语音业务是否禁用SDMA" desc_en="Voice SDMA Available" wireless="false" />
+			<cell name="videoSdmaFlag" desc_zh="视频业务是否禁用SDMA" desc_en="Video SDMA Available" wireless="false" />
+			<cell name="sdmaSchType" desc_zh="启用SDMA子信道类型" desc_en="SDMA Sub-Channel Type" wireless="false" />
+			<cell name="inRadioResIndTh" desc_zh="进入SDMA的无线资源占用门限" desc_en="In Radio Resource Occupy Threshold" wireless="false" />
+			<cell name="outRadioResIndTh" desc_zh="退出SDMA的无线资源占用门限" desc_en="Out Radio Resource Occupy Threshold" wireless="false" />
+			<cell name="wlMatchUserMaxNum" desc_zh="单用户最大无线匹配用户数" desc_en="Wireless Max Match User" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_antenna_lock" desc_zh="天线闭锁" desc_en="Antenna Lock" generic="true" configurable="true">
+		<bizName value="mcbts_antenna_lock">
+			<cell name="flag" desc_zh="闭锁开关" desc_en="Lock Switch" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_load_balance" desc_zh="负载均衡" desc_en="Load Balance" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer3.LoadBalanceService">
+			<cell name="algorithm_switch" desc_zh="基站负载均衡开关" desc_en="Load Balance Switch" wireless="false" />
+			<cell name="load_high_threshold" desc_zh="基站高负载门限" desc_en="Load High Threshold" wireless="false" />
+			<cell name="load_msg_send_period" desc_zh="基站间负载平衡消息发送周期" desc_en="Load Msg Send Period" wireless="false" />
+			<cell name="load_diff_threshold" desc_zh="基站负载差值门限" desc_en="Load Deviation Threshold" wireless="false" />
+			<cell name="neighbor_bts_power_over_num" desc_zh="邻基站功率高于切换门限连续累计次" desc_en="Neighbor BTS Power Over Num" wireless="false" />
+			<cell name="load_balance_signal_remains" desc_zh="负载平衡信号强度余量" desc_en="Load Balance Signal Remains" wireless="false" />
+			<cell name="ut_load_balance_period" desc_zh="终端负载平衡周期" desc_en="Terminal Load Balance Period" wireless="false" />
+			<cell name="user_algorithm_param" desc_zh="加权用户算法参数" desc_en="User Algorithm Param" wireless="false" />
+			<cell name="arithmetic_switch" desc_zh="维持带宽负载均衡算法开关" desc_en="Sustained BW Arithmetic Switch" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_rangingConfig" desc_zh="辅助测距信道启用配置" desc_en="Ranging Config" generic="true" configurable="true">
+		<bizName value="mcbts_rangingConfig">
+			<cell name="RangingSwitch" desc_zh="远距离同频开关" desc_en="Remote Ranging Switch" wireless="false" />
+			<cell name="EnableShreashold" desc_zh="使能门限" desc_en="Enable Threshold" wireless="false" />
+			<cell name="DisableShreahold" desc_zh="关闭门限" desc_en="Disable Threshold" wireless="false" />
+			<cell name="percent" desc_zh="百分比参数" desc_en="Percentage" wireless="false" />
+			<cell name="SNRShreahold" desc_zh="SNR门限" desc_en="SNR Threshold" wireless="false" />
+			<cell name="RangingExcurShreahold" desc_zh="Ranging偏移门限" desc_en="Offset Threshold" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="t_conf_alg_param" desc_zh="切换算法参数配置" desc_en="Handoff Parameters Setting" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer2.ChangeAlgParamService">
+			<cell name="m_ho_pwr_thd" desc_zh="触发异频扫描的当前基站功率门限" desc_en="Handoff Power Threshold" wireless="true" />
+			<cell name="m_ho_pwr_offset1" desc_zh="切换功率差值门限1" desc_en="Handoff Power Offset 1" wireless="true" />
+			<cell name="m_ho_pwr_offset2" desc_zh="切换功率差值门限2" desc_en="Handoff Power Offset 2" wireless="true" />
+			<cell name="m_ho_pwr_filtercoef_stat" desc_zh="基站功率平滑因子1" desc_en="Handoff Power Filter COEF Static" wireless="true" />
+			<cell name="m_ho_pwr_filtercoef_mobile" desc_zh="基站功率平滑因子2" desc_en="Handoff Power Filter COEF Mobile" wireless="true" />
+			<cell name="time_to_trigger" desc_zh="触发切换的次数门限值" desc_en="Time To Trigger" wireless="true" />
+			<cell name="m_cpe_cm_ho_period" desc_zh="切换测量周期" desc_en="CPE CM Handoff Period" wireless="true" />
+			<cell name="strictArea_pwr_thd" desc_zh="限制区信号门限" desc_en="Strict Area Power Threshold" wireless="true" />
+			<cell name="strictArea_time_to_trigger" desc_zh="限制区内触发切换的次数门限" desc_en="Strict Area Time To Trigger" wireless="true" />
+			<cell name="strictArea_ho_pwr_offset" desc_zh="限制区内触发切换的功率差值门限" desc_en="Strict Area Handoff Power Offset" wireless="true" />
+			<cell name="strictArea_2_normal_pwr_thres" desc_zh="限制区正常信号门限" desc_en="Normal Power Threshold" wireless="true" />
+		</service>
+	</biz>
+	<biz name="mcbts_n1config" desc_zh="N=1参数配置" desc_en="N=1 Parameters Setting" generic="true" configurable="true">
+		<bizName value="mcbts_n1config">
+			<cell name="NAlgorithmSwitch" desc_zh="同频组网算法开关" desc_en="N=1 Algorithm Switch" wireless="false" />
+			<cell name="CiJumpdetection" desc_zh="干扰阶越检测门限" desc_en="CI Jump Detection(dB)" wireless="false" />
+			<cell name="UTPowerLockTimerTh" desc_zh="干扰报告锁定时间" desc_en="Terminal Power Lock Timer Threshold(20Frame/step)" wireless="false" />
+			<cell name="BTSPowerLockTimerTh" desc_zh="资源重配锁定时间" desc_en="BTS Power Lock Timer Threshold(20Frame/step)" wireless="false" />
+			<cell name="PairListSize" desc_zh="用户最大干扰列表长度" desc_en="Pair-List Size" wireless="false" />
+			<cell name="ProportionThreshold" desc_zh="干扰子信道数匹配比例门限" desc_en="Proportion Threshold" wireless="false" />
+			<cell name="RAMAXNUM" desc_zh="预留同频用户接入信道数" desc_en="MAX Reserved RA" wireless="false" />
+			<cell name="ProfileMsgTimerTh" desc_zh="干扰用户信息有效更新周期" desc_en="Profile Message Timer Threshold(20Frame/step)" wireless="false" />
+			<cell name="RleaseHoldTimerTh" desc_zh="会话释放后干扰列表的存活时间" desc_en="Rlease Hold Timer Threshold(20Frame/step)" wireless="false" />
+			<cell name="HCAPWindow" desc_zh="干扰匹配的时间窗长度" desc_en="HCAP Window(Frame)" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="t_conf_resmanagement" desc_zh="无线资源管理" desc_en="Wireless Resource Management" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer2.ResManagementService">
+			<cell name="bandwidth_requst_interval" desc_zh="带宽请求间隔" desc_en="Bandwidth Request Interval(5ms)" wireless="false" />
+			<cell name="session_release_threshold" desc_zh="会话释放阀值" desc_en="Session Release Threshold(5ms)" wireless="false" />
+			<cell name="sustained_min_ul_signal_strength" desc_zh="最小上行信号强度" desc_en="Sustained Min UL Signal Strength" wireless="false" />
+			<cell name="max_dl_power_per_user" desc_zh="每用户最大下行功率" desc_en="Max DL Power per User(%)" wireless="false" />
+			<cell name="sustained_dl_bandwidth_per_user" desc_zh="每用户最小下行带宽" desc_en="Sustained DL BW per User(Kbps)" wireless="false" />
+			<cell name="sustained_ul_bandwidth_per_user" desc_zh="每用户最小上行带宽" desc_en="Sustained UL BW per User(Kbps)" wireless="false" />
+			<cell name="reserved_tch_for_access" desc_zh="预留业务信道" desc_en="Reserved TCH for Access" wireless="false" />
+			<cell name="reserved_power_for_pc" desc_zh="预留功控功率" desc_en="Reserved Power for PC(%)" wireless="false" />
+			<cell name="pc_range" desc_zh="下行功控范围" desc_en="PC Range" wireless="false" />
+			<cell name="reassignment_step_size" desc_zh="重分配最大步长" desc_en="Reassignment Step Size(4k)" wireless="false" />
+			<cell name="max_simultaneous_user" desc_zh="最大并发用户数" desc_en="Max Simultaneous User" wireless="false" />
+			<cell name="bandwidthClass0" desc_zh="类型宽带分布0" desc_en="BW Distribution0" wireless="false" />
+			<cell name="bandwidthClass1" desc_zh="类型宽带分布1" desc_en="BW Distribution1" wireless="false" />
+			<cell name="bandwidthClass2" desc_zh="类型宽带分布2" desc_en="BW Distribution2" wireless="false" />
+			<cell name="bandwidthClass3" desc_zh="类型宽带分布3" desc_en="BW Distribution3" wireless="false" />
+			<cell name="bandwidthClass4" desc_zh="类型宽带分布4" desc_en="BW Distribution4" wireless="false" />
+			<cell name="bandwidthClass5" desc_zh="类型宽带分布5" desc_en="BW Distribution5" wireless="false" />
+			<cell name="bandwidthClass6" desc_zh="类型宽带分布6" desc_en="BW Distribution6" wireless="false" />
+			<cell name="bandwidthClass7" desc_zh="类型宽带分布7" desc_en="BW Distribution7" wireless="false" />
+			<cell name="ul_modulation_mask" desc_zh="上行调制掩码" desc_en="UL Modulation Mask" wireless="false" />
+			<cell name="dl_modulation_mask" desc_zh="下行调制掩码" desc_en="DL Modulation Mask" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_telnet" desc_zh="Telnet信息" desc_en="Telnet" generic="true" configurable="true">
+		<bizName value="mcbts_telnet">
+			<cell name="username" desc_zh="用户名" desc_en="User Name" wireless="false" />
+			<cell name="password" desc_zh="密码" desc_en="Password" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_l1general" desc_zh="L1配置" desc_en="L1 Config" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer1.L1GeneralSettingService">
+			<cell name="syncSrc" desc_zh="同步源" desc_en="Sync_SRC" wireless="true" />
+			<cell name="gpsOffset" desc_zh="GPS偏差" desc_en="GPS Offset" wireless="true" />
+			<cell name="antennaMask" desc_zh="天线掩码" desc_en="Antenna Mask" wireless="true" />
+		</service>
+	</biz>
+	<biz name="mcbts_calibrationtype" desc_zh="校准类型配置" desc_en="Calibration Type Config" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.layer1.CalibrationTypeService">
+			<cell name="calibPeriod" desc_zh="校准间隔周期" desc_en="Calibration Interval" wireless="true" />
+			<cell name="calibType" desc_zh="校准类型" desc_en="Calibration Type" wireless="true" />
+		</service>
+	</biz>
+	<biz name="mcbts_calibdata" desc_zh="校准数据" desc_en="Calibration Data" generic="false" configurable="false">
+		<service class="com.xinwei.minas.server.mcbts.service.layer1.CalibrationDataService">
+			<cell name="middleFreq" desc_zh="中间频率" desc_en="Middle Frequency" wireless="true" />
+			<cell name="antennaPower" desc_zh="天线功率" desc_en="Antenna Power" wireless="true" />
+			<cell name="rxSensitivity" desc_zh="接收电平" desc_en="RX Level" wireless="true" />
+			<cell name="cableLoss" desc_zh="线缆损失" desc_en="Cable Loss" wireless="true" />
+			<cell name="psLoss" desc_zh="功率分离器损失" desc_en="PS Loss" wireless="true" />
+			<cell name="psConfig" desc_zh="天线功分器" desc_en="Antenna PS" wireless="true" />
+			<cell name="synRxGain" desc_zh="合成器接收增益" desc_en="Syn Rx Gain" wireless="true" />
+			<cell name="synTxGain" desc_zh="合成器发送增益" desc_en="Syn Tx Gain" wireless="true" />
+			<cell name="gainInfo" desc_zh="增益信息" desc_en="Gain Information" wireless="true" />
+		</service>
+	</biz>
+	<biz name="airlink" desc_zh="空中链路" desc_en="Airlink" generic="false" configurable="false">
+		<service class="com.xinwei.minas.server.mcbts.service.layer2.AirlinkService">
+			<cell name="sequenceId" desc_zh="前导序列号" desc_en="Sequence ID" wireless="true" />
+			<cell name="preambleScale" desc_zh="前导系数" desc_en="Preamble Scale" wireless="true" />
+			<cell name="maxScale" desc_zh="最大系数" desc_en="Max Scale" wireless="true" />
+			<cell name="totalTS" desc_zh="时隙总数" desc_en="Total Time Slot" wireless="true" />
+			<cell name="downlinkTS" desc_zh="下行时隙数" desc_en="Downlink TS Number" wireless="true" />
+			<cell name="scgMask" desc_zh="子载波组掩码" desc_en="Sub-Carrier Group Mask" wireless="true" />
+			<cell name="bch" desc_zh="BCH规划" desc_en="BCH" wireless="true" />
+			<cell name="bchn1" desc_zh="BCH*规划" desc_en="BCH*" wireless="true" />
+			<cell name="rrch" desc_zh="RRCH规划" desc_en="RRCH" wireless="true" />
+			<cell name="rrchn1" desc_zh="RRCH*规划" desc_en="RRCH*" wireless="true" />
+			<cell name="rarch" desc_zh="RARCH规划" desc_en="RARCH" wireless="true" />
+			<cell name="rarchn1" desc_zh="RARCH*规划" desc_en="RARCH*" wireless="true" />
+			<cell name="rach" desc_zh="RACH规划" desc_en="RACH" wireless="true" />
+			<cell name="rachn1" desc_zh="RACH*规划" desc_en="RACH*" wireless="true" />
+			<cell name="fach" desc_zh="FACH规划" desc_en="FACH" wireless="true" />
+			<cell name="fachn1" desc_zh="FACH*规划" desc_en="FACHN1" wireless="true" />
+			<cell name="rpch" desc_zh="RPCH规划" desc_en="RPCH" wireless="true" />
+			<cell name="rpchn1" desc_zh="RPCH*规划" desc_en="RPCHN1" wireless="true" />
+			<cell name="forbidden" desc_zh="禁止" desc_en="FORBIDDEN" wireless="true" />
+			<cell name="defaultScale" desc_zh="TCH/BCH SCALE是否使用默认值" desc_en="TCH/BCH SCALE Use Default" wireless="true" />
+			<cell name="tch_bch" desc_zh="TCH/BCH SCALE" desc_en="TCH/BCH SCALE" wireless="true" />			
+			<cell name="w0" desc_zh="w0信息设置" desc_en="w0 configuration" wireless="true" />
+			<cell name="sendMode" desc_zh="公共信道发送方式" desc_en="Select Signal Send Method" wireless="true" />
+			<cell name="antIndex" desc_zh="公共信道发送天线" desc_en="Select Signal Send Antenna" wireless="true" />
+		</service>
+	</biz>
+	<biz name="mcbts_perfLog" desc_zh="性能日志" desc_en="Performance Log" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.common.PerfLogConfigService">
+			<cell name="ftpServerIp" desc_zh="服务器IP" desc_en="Server IP" wireless="false" />
+			<cell name="ftpServerPort" desc_zh="服务器端口号" desc_en="FTP Server Port" wireless="false" />
+			<cell name="userName" desc_zh="用户名" desc_en="User Name" wireless="false" />
+			<cell name="password" desc_zh="密码" desc_en="Password" wireless="false" />
+			<cell name="reportInterval" desc_zh="实时性能上报周期" desc_en="Realtime Data Report Interval" wireless="false" />
+			<cell name="collectInterval" desc_zh="收集间隔" desc_en="Collect Interval" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_power_monitor" desc_zh="电源监控配置" desc_en="Power Monitor Configuration" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.sysManage.PowerSupplyManagerService" >
+			<cell name="ipAddress" desc_zh="电源IP" desc_en="Power IP" wireless="false" />
+			<cell name="port" desc_zh="电源端口" desc_en="Power Port" wireless="false" />
+		</service>
+	</biz>
+	<biz name="mcbts_tempWatch" desc_zh="监控温度" desc_en="Temperature Watch" generic="true" configurable="true">
+		<bizName value="mcbts_tempWatch">
+			<cell name="AlarmHighTemperature" desc_zh="高温告警门限" desc_en="High Temprature Alarm Threshold" wireless="false" />
+			<cell name="AlarmLowTemperature" desc_zh="低温告警门限" desc_en="Low Temprature Alarm Threshold" wireless="false" />
+			<cell name="ShutdownHighTemperature" desc_zh="高温关机门限" desc_en="High Temprature Shutdown Threshold" wireless="false" />
+			<cell name="ShutdownLowTemperature" desc_zh="低温关机门限" desc_en="Low Temprature Shutdown Threshold" wireless="false" />
+		</bizName>
+	</biz>
+	<biz name="mcbts_gpsData" desc_zh="GPS管理消息" desc_en="GPS Message Manage" generic="false" configurable="true">
+		<service class="com.xinwei.minas.server.mcbts.service.common.GPSDataService" >
+			<cell name="longitude" desc_zh="经度" desc_en="Longitude" wireless="false" />
+			<cell name="latitude" desc_zh="纬度" desc_en="Latitude" wireless="false" />
+			<cell name="height" desc_zh="高度" desc_en="Height" wireless="false" />
+			<cell name="gmtOffset" desc_zh="GMT偏移" desc_en="GPS Offset" wireless="false" />
+			<cell name="minimumTrackingsatellite" desc_zh="最小卫星跟踪数" desc_en="Minimum Satellite Tracking" wireless="false" />
+		</service>
+	</biz>
+</bizs>
+
+
+
+
+

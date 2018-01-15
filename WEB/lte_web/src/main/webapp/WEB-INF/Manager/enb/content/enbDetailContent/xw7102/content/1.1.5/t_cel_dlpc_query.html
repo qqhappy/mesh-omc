@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_cel_dlpc.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="{base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_CEL_DLPC-1.1.5&referTable=T_CEL_PARA";
+		});
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_cel_dlpc1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CId">小区标识</th>'
+					+'<th scope="col" class="u16CellTransPwr">小区最大发射总功率(dBm)</th>' 
+					+'<th scope="col" class="u16CellSpeRefSigPwr">小区参考信号功率(dBm)</th>'
+					+'<th scope="col" class="u16PschPwrOfst">小区主同步信号的功率偏置(dB)</th>'
+					+'<th scope="col" class="u16SschPwrOfst">小区辅同步信号的功率偏置(dB)</th>'
+					+'<th scope="col" class="u16PcfichPwrOfst">PCFICH物理信道的功率偏置(dB)</th>'
+					+'<th scope="col" class="u16PhichPwrOfst">PHICH物理信道的功率偏置(dB)</th>'
+					+'<th scope="col" class="au16PdcchF0PwrOfst">DCI 0功率偏置(dB)</th>'
+					+'<th scope="col" class="au16PdcchF1PwrOfst">DCI 1功率偏置(dB)</th>'
+					+'<th scope="col" class="au16PdcchF1APwrOfst">DCI 1A功率偏置(dB)</th>'
+					+'<th scope="col" class="au16PdcchF2PwrOfst">DCI 2功率偏置(dB)</th>'
+					+'<th scope="col" class="au16PdcchF2APwrOfst">DCI 2A功率偏置(dB)</th>'
+					+'<th scope="col" class="u8PAForBCCH">BCCH与小区RS的功率偏置(dB)</th>'
+					+'<th scope="col" class="u8PAForCCCH">CCCH与小区RS的功率偏置(dB)</th>'
+					+'<th scope="col" class="u8PAForPCCH">PCCH与小区RS的功率偏置(dB)</th>'
+					+'<th scope="col" class="u8PAForMSG2">MSG2与小区RS的功率偏置(dB)</th>'
+					+'<th scope="col" class="u8PB">PB</th>'
+					+'<th scope="col" class="u8PAForDTCH">公共级PDSCH与小区RS的功率偏置(dB)</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+// 					+'<th scope="col" class="justForView" width="60px;">删除</th>' 
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th scope="row" class="justForView"></th>'
+					+'<td class="u8CId">暂无相关数据</td>'
+					+'<td class="u16CellTransPwr"></td>'
+					+'<td class="u16CellSpeRefSigPwr"></td>'
+					+'<td class="u16PschPwrOfst"></td>'
+					+'<td class="u16SschPwrOfst"></td>'
+					+'<td class="u16PcfichPwrOfst"></td>'
+					+'<td class="u16PhichPwrOfst"></td>'
+					+'<td class="au16PdcchF0PwrOfst"></td>'
+					+'<td class="au16PdcchF1PwrOfst"></td>'
+					+'<td class="au16PdcchF1APwrOfst"></td>'
+					+'<td class="au16PdcchF2PwrOfst"></td>'
+					+'<td class="au16PdcchF2APwrOfst"></td>'
+					+'<td class="u8PAForBCCH"></td>'
+					+'<td class="u8PAForCCCH"></td>'
+					+'<td class="u8PAForPCCH"></td>'
+					+'<td class="u8PAForMSG2"></td>'
+					+'<td class="u8PB"></td>'
+					+'<td class="u8PAForDTCH"></td>'		
+					+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+// 					+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区下行功控参数表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+<!-- 		<li><label></label><input type="button" id="newAdd" value="新增"/></li> -->
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+<!-- 		<li><label></label><input type="button" id="delete" value="批量删除"/></li> -->
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_cel_dlpc_div">  -->
+			<div style="width:3300px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_cel_dlpc1" class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>
+					<th scope="col" class="u8CId">小区标识</th>
+					<th scope="col" class="u16CellTransPwr">小区最大发射总功率(dBm)</th>
+					<th scope="col" class="u16CellSpeRefSigPwr">小区参考信号功率(dBm)</th>
+					<th scope="col" class="u16PschPwrOfst">小区主同步信号的功率偏置(dB)</th>
+					<th scope="col" class="u16SschPwrOfst">小区辅同步信号的功率偏置(dB)</th>
+					<th scope="col" class="u16PcfichPwrOfst">PCFICH物理信道的功率偏置(dB)</th>
+					<th scope="col" class="u16PhichPwrOfst">PHICH物理信道的功率偏置(dB)</th>
+					<th scope="col" class="au16PdcchF0PwrOfst">DCI 0功率偏置(dB)</th>
+					<th scope="col" class="au16PdcchF1PwrOfst">DCI 1功率偏置(dB)</th>
+					<th scope="col" class="au16PdcchF1APwrOfst">DCI 1A功率偏置(dB)</th>
+					<th scope="col" class="au16PdcchF2PwrOfst">DCI 2功率偏置(dB)</th>
+					<th scope="col" class="au16PdcchF2APwrOfst">DCI 2A功率偏置(dB)</th>
+					<th scope="col" class="u8PAForBCCH">BCCH与小区RS的功率偏置(dB)</th>
+					<th scope="col" class="u8PAForCCCH">CCCH与小区RS的功率偏置(dB)</th>
+					<th scope="col" class="u8PAForPCCH">PCCH与小区RS的功率偏置(dB)</th>
+					<th scope="col" class="u8PAForMSG2">MSG2与小区RS的功率偏置(dB)</th>
+					<th scope="col" class="u8PB">PB</th>
+					<th scope="col" class="u8PAForDTCH">公共级PDSCH与小区RS的功率偏置(dB)</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 					<th scope="col" class="justForView" width="60px;">删除</th> -->
+				  </tr>
+				  <#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CId">${record.fieldMap["u8CId"].value!}</td>
+						<td class="u16CellTransPwr">${record.fieldMap["u16CellTransPwr"].value!}</td>
+						<td class="u16CellSpeRefSigPwr">${record.fieldMap["u16CellSpeRefSigPwr"].value!}</td>
+						<td class="u16PschPwrOfst">${record.fieldMap["u16PschPwrOfst"].value!}</td>
+						<td class="u16SschPwrOfst">${record.fieldMap["u16SschPwrOfst"].value!}</td>
+						<td class="u16PcfichPwrOfst">${record.fieldMap["u16PcfichPwrOfst"].value!}</td>
+						<td class="u16PhichPwrOfst">${record.fieldMap["u16PhichPwrOfst"].value!}</td>
+						<td class="au16PdcchF0PwrOfst">${record.fieldMap["au16PdcchF0PwrOfst"].value!}</td>
+						<td class="au16PdcchF1PwrOfst">${record.fieldMap["au16PdcchF1PwrOfst"].value!}</td>
+						<td class="au16PdcchF1APwrOfst">${record.fieldMap["au16PdcchF1APwrOfst"].value!}</td>
+						<td class="au16PdcchF2PwrOfst">${record.fieldMap["au16PdcchF2PwrOfst"].value!}</td>
+						<td class="au16PdcchF2APwrOfst">${record.fieldMap["au16PdcchF2APwrOfst"].value!}</td>
+						<td class="u8PAForBCCH">${record.fieldMap["u8PAForBCCH"].value!}</td>
+						<td class="u8PAForCCCH">${record.fieldMap["u8PAForCCCH"].value!}</td>
+						<td class="u8PAForPCCH">${record.fieldMap["u8PAForPCCH"].value!}</td>
+						<td class="u8PAForMSG2">${record.fieldMap["u8PAForMSG2"].value!}</td>
+						<td class="u8PB">${record.fieldMap["u8PB"].value!}</td>
+						<td class="u8PAForDTCH">${record.fieldMap["u8PAForDTCH"].value!}</td>		
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+<!-- 			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td> -->
+					</tr>
+					</#list>
+				</table>
+			</div>
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

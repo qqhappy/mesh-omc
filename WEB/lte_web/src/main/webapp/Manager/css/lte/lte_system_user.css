@@ -1,0 +1,98 @@
+/* CSS Document */
+
+.head .menu1{background:url(../../images/lte/sys_config_click.png)}
+
+/* .system_config_table_left{width:6%;} */
+/* .system_config_table_midd{width:28%;} */
+/* .system_config_table_right{width:5%;} */
+/* .system_config_input{height:20px;} */
+/* .system_config_select{height:21px; width:100px;} */
+
+/*.ad_Input {
+    color: #595757;
+    font-size: 12px;
+    line-height: 25px;
+    margin-left: 90px;
+    margin-top: 30px;
+    padding: 10px 0;
+}
+.ad_Input .title {
+    color: #0099FF;
+    font-size: 12px;
+}*/
+/* input[type="text"] {
+    border-color: #7F9DB9;
+    border-style: solid;
+    border-width: 1px;
+    height: 18px;
+} */
+
+/* .add_select{width:212px; height:20px;} */
+
+/* .toolBar {
+    clear: both;
+    margin-bottom: 10px;
+    overflow: hidden;
+    padding-top: 10px;
+} */
+
+/* .ad_Input .content { */
+/*     margin-left: 40px; */
+/*     padding: 10px 0; */
+/* } */
+
+/* .sys_address_table_left{width:6%;} */
+/* .sys_address_table_midd{width:14%;} */
+/* .sys_address_table_right{width:5%;} */
+
+/* .sys_config_conf_left{width:9.5%;} */
+/* .sys_config_conf_midd{width:6%;} */
+/* .sys_config_conf_midd2{width:3%;} */
+/* .sys_config_conf_tright{width:4%;} */
+
+/* .sys_config_info_tleft{width:10%;} */
+/* .sys_config_info_tright{width:80%;} */
+.ltePageConf{ padding:64px 20px 20px 20px;}
+.ltePageConf table th{border:1px solid #ccc; background:#eee;}
+.ltePageConf table td{border:1px solid #ccc; background:#fff;}
+.ltePageConf table{text-align:center;}
+/* .sys_config_s1_input{height:20px; width:100px;} */
+
+/* .sys_s1_table_left{width:6%;} */
+/* .sys_s1_table_midd{width:14%;} */
+/* .sys_s1_table_right{width:5%;} */
+
+/* .sys_user_info_input{height:20px; width:100px;} */
+/* .sys_user_info_select{height:20px; width:80px;} */
+
+/* .sys_user_info_tleft{width:5%;} */
+/* .sys_user_info_tright{width:7%;} */
+
+/* .sys_user_template_tleft{width:4%;} */
+/* .sys_user_template_midd{width:5%;} */
+/* .sys_user_template_midd4{width:6%;} */
+/* .sys_user_template_midd2{width:8%;} */
+/* .sys_user_template_midd3{width:10%;} */
+/* .sys_user_template_tright{width:4%;} */
+
+/* .sys_config_qos_tleft{width:6%;} */
+/* .sys_config_qos_tmidd{width:12%;} */
+/* .sys_config_qos_tright{width:5%;} */
+
+/* .sys_config_ipResource_tleft{width:6%;} */
+/* .sys_config_ipResource_tmidd{width:26%;} */
+/* .sys_config_ipResource_tright{width:5%;} */
+
+/* .sys_user_status{width:12.5%;} */
+
+.login{width:406px; height:245px; margin-left:auto; margin-right:auto; text-align:center;}
+.login .title{background:url(../../images/login_title2.png) repeat-x; height:57px; border:none;}
+.login .title img{margin-left:18px; margin-top:8px;float:left;}
+.login .title  span{font-size:14px; font-weight:bold; margin-left:20px;margin-top:30px; height:22px;display:inline-block;float:left;}
+.login .content{border:none;}
+.login .content .inner{background:url(../../images/login_inner.png); height:114px; border:none;}
+.login .content  .bt{background:url(../../images/login_down.png) repeat-x;height:44px;}
+.login .content  .bt input{ margin-top:10px; background:url(../../images/login_bt.png); height:30px; width:70px;}
+
+.min_width_body{min-width:1160px;}
+.hide2{display:none;}

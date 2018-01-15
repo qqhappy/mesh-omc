@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_cel_pdch.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		for(var i=1;i<3;i++){
+			if($("#radioTwo"+i).val() == ${record.fieldMap["u8PhichDuration"].value}){
+				$("#radioTwo"+i).attr("checked","checked");
+			}
+		}
+		$("#u8Ng option").each(function(index){
+			if($("#u8Ng option:eq("+index+")").val() ==${record.fieldMap["u8Ng"].value}){
+				$("#u8Ng option:eq("+index+")").attr("selected",true);
+			}
+		});
+		var au8OpLp2AntCdBk = "${record.fieldMap['au8OpLp2AntCdBk'].value}";
+		var au8OpLp2AntCdBk1 = au8OpLp2AntCdBk.split("");
+		var s1 = au8OpLp2AntCdBk1[1];
+		var s2 = au8OpLp2AntCdBk1[3];
+		$("#au8OpLp2AntCdBk1 option").each(function(index){
+			if($("#au8OpLp2AntCdBk1 option:eq("+index+")").val() == s1){
+				$("#au8OpLp2AntCdBk1 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		$("#au8OpLp2AntCdBk2 option").each(function(index){
+			if($("#au8OpLp2AntCdBk2 option:eq("+index+")").val() == s2){
+				$("#au8OpLp2AntCdBk2 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		var au8OpLp4AntCdBk = "${record.fieldMap['au8OpLp4AntCdBk'].value}";
+		var au8OpLp4AntCdBk1 = au8OpLp4AntCdBk.split("");
+		var str1 = au8OpLp4AntCdBk1[1];
+		var str2 = au8OpLp4AntCdBk1[3];
+		var str3 = au8OpLp4AntCdBk1[5];
+		var str4 = au8OpLp4AntCdBk1[7];
+		$("#au8OpLp4AntCdBk1 option").each(function(index){
+			if($("#au8OpLp4AntCdBk1 option:eq("+index+")").val() == str1){
+				$("#au8OpLp4AntCdBk1 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		$("#au8OpLp4AntCdBk2 option").each(function(index){
+			if($("#au8OpLp4AntCdBk2 option:eq("+index+")").val() == str2){
+				$("#au8OpLp4AntCdBk2 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		$("#au8OpLp4AntCdBk3 option").each(function(index){
+			if($("#au8OpLp4AntCdBk3 option:eq("+index+")").val() == str3){
+				$("#au8OpLp4AntCdBk3 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		$("#au8OpLp4AntCdBk4 option").each(function(index){
+			if($("#au8OpLp4AntCdBk4 option:eq("+index+")").val() == str4){
+				$("#au8OpLp4AntCdBk4 option:eq("+index+")").attr("selected",true);
+			}
+		});
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>小区下行物理信道参数配置表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_PDCH-1.1.5" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td>小区标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff"  disabled="disabled" id="u8CId">
+									<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+								</select></div>
+								<input type="hidden" value="${record.fieldMap['u8CId'].value}"/>
+							</td>
+							<td id="u8CIdError" class="error"></td>
+						</tr>
+						<tr class="au8OpLp2AntCdBk">
+							<td>两天线开环码本子集 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="hidden"  style="width:240px;"  id="au8OpLp2AntCdBk" />
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:122px;margin-top:3px;float:left;">
+								<select  style="width:124px;height:21px;margin:-1px;font-size:13px;" id="au8OpLp2AntCdBk1">
+									<option value="0">0</option>
+									<option value="1">1</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:122px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:124px;height:21px;margin:-1px;font-size:13px;" id="au8OpLp2AntCdBk2">
+									<option value="0">0</option>
+									<option value="1">1</option>
+								</select></div>
+							</td>
+							<td id="au8OpLp2AntCdBkError" class="error"></td>
+						</tr>
+						<tr class="au8OpLp4AntCdBk_hide">
+							<td>四天线开环码本子集 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="hidden"  style="width:240px;"  id="au8OpLp4AntCdBk" />
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:58px;margin-top:3px;float:left;">
+								<select  style="width:60px;height:21px;margin:-1px;font-size:13px;" id="au8OpLp4AntCdBk1">
+									<option value="0">0</option>
+									<option value="1">1</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:58px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:60px;height:21px;margin:-1px;font-size:13px;" id="au8OpLp4AntCdBk2">
+									<option value="0">0</option>
+									<option value="1">1</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:58px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:60px;height:21px;margin:-1px;font-size:13px;" id="au8OpLp4AntCdBk3">
+									<option value="0">0</option>
+									<option value="1">1</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:58px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:60px;height:21px;margin:-1px;font-size:13px;" id="au8OpLp4AntCdBk4">
+									<option value="0">0</option>
+									<option value="1">1</option>
+								</select></div>
+							</td>
+							<td id="au8OpLp4AntCdBkError" class="error"></td>
+						</tr>
+						<tr class="u8PhichDuration">
+							<td>PHICH符号长度 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8PhichDuration" value="0" id="radioTwo1" checked="checked">正常</input>
+								<input type="radio" name="u8PhichDuration" value="1" id="radioTwo2" style="margin-left:80px;">延展</input>
+							</td>
+						</tr>
+						<tr class="u8Ng">
+							<td>PHICH组数计算因子 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8Ng">
+									<option value="0">1/6</option>
+									<option value="1">1/2</option>
+									<option value="2">1</option>
+									<option value="3">2</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 
+
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+			
+		</form>
+		</div>
+</body>
+</html>

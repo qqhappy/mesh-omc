@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tags>
+	<!-- length="0" 代表变长 -->
+	<tag name="fileName"		id="0x0000"	type="String"			length="0"		desc="文件名"	/>
+	<tag name="result"			id="0x0001"	type="UnsignedNumber"	length="4"		desc="操作结果"	/>
+	<tag name="errMsg"			id="0x0002"	type="String"			length="0"		desc="错误信息" />
+	<tag name="dbName"			id="0x0003"	type="String"			length="0"		desc="库名"	/>
+	<tag name="tableName"		id="0x0004"	type="String" 			length="0"		desc="表名"	/>
+	<tag name="sqlText"			id="0x0005"	type="String"			length="0"		desc="SQL脚本" />
+	<tag name="rowNum"			id="0x0006"	type="UnsignedNumber"	length="4"		desc="结果集中记录行数" />
+	<tag name="resultSet"		id="0x0007"	type="ByteArray"		length="0"		desc="结果集" /> 
+	<tag name="dataFileDir"		id="0x0008"	type="String"			length="0"		desc="数据文件路径" />
+	<tag name="dataFileName"	id="0x0009"	type="String"			length="0"		desc="数据文件名" /> 
+	<tag name="resetType"		id="0x000a"	type="UnsignedNumber"	length="2"		desc="复位类型" />
+	<tag name="rackNo"			id="0x000b"	type="UnsignedNumber"	length="2"		desc="机架号" /> 
+	<tag name="shelfNo"			id="0x000c"	type="UnsignedNumber"	length="2"		desc="机框号" /> 
+	<tag name="slotNo"			id="0x000d"	type="UnsignedNumber"	length="2"		desc="槽位号" /> 
+	<tag name="dataConfig"		id="0x000e"	type="String"			length="0"		desc="自学习数据配置" /> 
+	<tag name="ftpIp"			id="0x0400"	type="IpAddress"		length="4"		desc="FTP服务器IP" />
+	<tag name="ftpPort"			id="0x0401"	type="UnsignedNumber"	length="2"		desc="FTP服务器端口" /> 
+	<tag name="ftpUsername"		id="0x0402"	type="String"			length="0"		desc="FTP登录用户名" /> 
+	<tag name="ftpPassword"		id="0x0403"	type="String"			length="0"		desc="FTP登录密码" />
+	<tag name="ftpFileDir"		id="0x0404"	type="String"			length="0"		desc="FTP文件目录" />
+	<tag name="downloadSwType"	id="0x0405"	type="UnsignedNumber"	length="1"		desc="下载软件类型" />
+	<tag name="version"			id="0x0406"	type="String"			length="0"		desc="软件版本号" /> 
+	<tag name="progress"		id="0x040a"	type="UnsignedNumber"	length="1"		desc="软件下载进度" />
+	<tag name="downloadResult"	id="0x040b"	type="UnsignedNumber"	length="2"		desc="软件下载结果" />
+	<tag name="switchSwType"	id="0x040c"	type="UnsignedNumber"	length="1"		desc="切换软件类型" />
+	<tag name="rruSwType"		id="0x040d"	type="UnsignedNumber"	length="2"		desc="RRU切换软件类型" />
+	<tag name="alarmCode"		id="0x0500"	type="UnsignedNumber"	length="4"		desc="告警码" /> 
+	<tag name="alarmSubCode"	id="0x0501"	type="UnsignedNumber"	length="1"		desc="告警子码" />
+	<tag name="alarmSign"		id="0x0502"	type="UnsignedNumber"	length="1"		desc="告警标志" />
+	<tag name="alarmLocId"		id="0x0503"	type="ByteArray"		length="0"		desc="告警位置ID" />
+	<tag name="alarmTime"		id="0x0504"	type="UnsignedNumber"	length="8"		desc="告警时间" />
+	<tag name="alarmLocType"	id="0x0505"	type="ByteArray"		length="0"		desc="告警位置类型" />
+	<tag name="alarmTotalNum"	id="0x0506"	type="UnsignedNumber"	length="4"		desc="当前告警总数" />
+	<tag name="dataLoadStatus"	id="0x0801"	type="UnsignedNumber"	length="1"		desc="数据加载状态" /> 
+	
+	
+	<tag name="statusConfigFlag"	id="0x0012"	type="UnsignedNumber"	length="2"		desc="动态项配置" />
+	<tag name="statusQueryFlag"		id="0x0013"	type="UnsignedNumber"	length="2"		desc="动态项查询" />
+	
+	<tag name="rfSwitch"			id="0x0087"	type="UnsignedNumber"	length="2"		desc="功放开关" /> 
+	
+	<tag name="enbFanSpeed"			id="0x0028"	type="ByteArray"	length="0"		desc="eNB风扇转速" /> 
+	<tag name="boardStatus"			id="0x0029"	type="ByteArray"	length="0"		desc="单板状态信息" />
+	<tag name="rruRfStatus"			id="0x002a"	type="ByteArray"	length="0"		desc="RRU射频状态" /> 
+	<tag name="rruFiberOpticStatus"	id="0x002b"	type="ByteArray"	length="0"		desc="RRU光口状态" />
+	<tag name="rruRunningStatus"	id="0x002c"	type="ByteArray"	length="0"		desc="RRU运行状态" /> 
+	<tag name="rruThreshold"		id="0x002d"	type="ByteArray"	length="0"		desc="RRU门限" />
+	
+	<tag name="enbVisibleSatellites"	id="0x0014"	type="UnsignedNumber"	length="1"		desc="可视卫星数量" />
+	<tag name="enbTrackSatellites"	id="0x0015"	type="UnsignedNumber"	length="1"		desc="追踪卫星数量" />
+	<tag name="enbPowerConsumption"	id="0x0016"	type="UnsignedNumber"	length="4"		desc="基站即时功率" />
+	<tag name="enbState"			id="0x0017"	type="UnsignedNumber"	length="1"		desc="基站状态" /> 
+	<tag name="enbRunningTime"		id="0x0018"	type="UnsignedNumber"	length="4"		desc="基站运行时间" />
+	<tag name="enbTime"				id="0x0021"	type="UnsignedNumber"	length="8"		desc="基站系统时间" />
+	<tag name="enbClockType"		id="0x0024"	type="UnsignedNumber"	length="2"		desc="时钟类型" />
+	<tag name="enbClockStatus"		id="0x0025"	type="UnsignedNumber"	length="2"		desc="时钟状态" /> 
+	<tag name="fanNo"				id="0x00eb"	type="UnsignedNumber"	length="1"		desc="风扇编号" />
+	<tag name="fanSpeed"			id="0x00ec"	type="UnsignedNumber"	length="4"		desc="风扇转速" /> 
+	<tag name="enbTemperature"		id="0x0089"	type="SignedNumber"		length="1"		desc="基站温度" />	
+	<tag name="mbdHardWareVersion"	id="0x008A"	type="String"			length="14"		desc="MBD硬件版本" />
+	<tag name="mbdProductionSn"		id="0x008B"	type="String"			length="32"		desc="MBD生产序列号" />
+	<tag name="pauHardWareVersion"	id="0x008C"	type="String"			length="14"		desc="PAU硬件版本" />
+	<tag name="pauProductionSn"		id="0x008D"	type="String"			length="32"		desc="PAU生产序列号" />
+	<tag name="rf_lo_freq_state"	id="0x01c2"	type="UnsignedNumber"			length="1"		desc="射频本振状态" />
+
+	
+	
+	<tag name="portWorkMode"		id="0x0090"	type="SignedNumber"	length="4"		desc="端口工作模式" />
+	<tag name="portRate"			id="0x0091"	type="SignedNumber"	length="4"		desc="速率" />
+	<tag name="portDuplexMode"		id="0x0092"	type="SignedNumber"	length="4"		desc="双工模式" />
+	
+	<tag name="rruBoardNum"			id="0x0020"	type="UnsignedNumber"	length="2"		desc="RRU单板数量" />
+	<tag name="bbuHardwareVersion"	id="0x001c"	type="String"	length="32"		desc="BBU硬件版本" />
+	<tag name="bbuProductionSn"		id="0x001d"	type="String"	length="32"		desc="BBU生产序列号" />
+	<tag name="rruHardwareVersion"	id="0x001e"	type="UnsignedNumber"	length="4"		desc="RRU硬件版本" />
+	<tag name="rruProductionSn"		id="0x001f"	type="String"	length="1"		desc="RRU生产序列号" />
+	
+	<tag name="channelNo"			id="0x0086"	type="UnsignedNumber"	length="1"		desc="通道号"  />
+	<tag name="ulAntState"			id="0x01b1"	type="UnsignedNumber"	length="1"		desc="下行天线状态"  />
+	<tag name="dlAntState"			id="0x01b2"	type="UnsignedNumber"	length="1"		desc="上行天线状态" />
+	<tag name="channelTemperature"	id="0x01b3"	type="SignedNumber"	length="1"		desc="通道温度" />
+	<tag name="channelTxPower"		id="0x01b4"	type="SignedNumber"	length="2"		desc="发射功率" />
+	<tag name="channelTxGain"		id="0x01b5"	type="UnsignedNumber"	length="1"		desc="发射增益" />
+	<tag name="channelRxGain"		id="0x01b6"	type="UnsignedNumber"	length="1"		desc="接收增益" />
+	<tag name="channelRxPower"		id="0x01b7"	type="SignedNumber"	length="2"		desc="接收功率" />
+	<tag name="channelVswr"			id="0x01b8"	type="SignedNumber"	length="2"		desc="通道驻波比" />
+	<tag name="ulPowerResult"		id="0x01b9"	type="UnsignedNumber"	length="1"		desc="下行功率读取结果" />
+	<tag name="dlPowerResult"		id="0x01ba"	type="UnsignedNumber"	length="1"		desc="上行功率读取结果" />
+	<tag name="vswrResult"			id="0x01bb"	type="UnsignedNumber"	length="1"		desc="驻波比计算结果" />
+	<tag name="PowerResult"			id="0x00ed" type="UnsignedNumber"	length="1"		desc="功率校准结果" />
+	<tag name="dpdTrainingResult"	id="0x0019"	type="UnsignedNumber"	length="1"		desc="DPD训练结果" />
+
+
+	<tag name="vswrThreshold"		id="0x01bd"	type="UnsignedNumber"	length="1"		desc="驻波比门限" />
+	<tag name="boardTempThres"		id="0x01be"	type="SignedNumber"	length="1"		desc="主、从板温度门限" />
+	<tag name="channelTempThres"	id="0x01bf"	type="SignedNumber"	length="1"		desc="射频通道温度门限" />
+	
+	<tag name="rfLocalFreq"			id="0x01c1"	type="UnsignedNumber"	length="1"		desc="射频本振频率" />
+	<tag name="rfLocalFreqState"	id="0x01c2"	type="SignedNumber"	length="1"		desc="射频本振状态" />
+	<tag name="clockState"			id="0x01c3"	type="SignedNumber"	length="1"		desc="时钟状态"  />
+	<tag name="irWorkMode"			id="0x01c4"	type="SignedNumber"	length="1"		desc="Ir接口工作模式" />
+	<tag name="rruRunningState"		id="0x01c5"	type="SignedNumber"	length="1"		desc="RRU运行状态" />
+	<tag name="rfmbTemperature"		id="0x01c6"	type="SignedNumber"	length="1"		desc="主板温度" />
+	<tag name="rfabTemperature"		id="0x01c7"	type="SignedNumber"	length="1"		desc="从板温度" />
+
+	<tag name="rxPower"				id="0x01c9"	type="UnsignedNumber"	length="2"		desc="接收功率" />
+	<tag name="txPower"				id="0x01ca"	type="UnsignedNumber"	length="2"		desc="发射功率" />
+	<tag name="insertState"			id="0x01cb"	type="UnsignedNumber"	length="2"		desc="在位信息" />
+	<tag name="moduleManufacture"	id="0x01cc"	type="String"	length="16"		desc="光模块厂商"  />
+	<tag name="moduleManufacture1"	id="0x01d2"	type="String"	length="36"		desc="光模块厂商"  />
+	<tag name="moduleTransRate"		id="0x01cd"	type="UnsignedNumber"	length="2"		desc="光模块传输bit速率" />
+	<tag name="moduleTemperature"	id="0x01ce"	type="UnsignedNumber"	length="1"		desc="光模块温度"  />
+	<tag name="voltage"				id="0x01cf"	type="UnsignedNumber"	length="2"		desc="电压" />
+	<tag name="current"				id="0x01d0"	type="UnsignedNumber"	length="2"		desc="电流" />
+	<tag name="fiberOpticNo"		id="0x01d1"	type="SignedNumber"	length="1"		desc="光模块编号"  />
+	
+	<tag name="localpacketlossrate"	id="0x01DC"	type="UnsignedNumber"	length="4"		desc="本地丢包率"  />
+	<tag name="dstpacketlossrate"	id="0x01DD"	type="UnsignedNumber"	length="4"		desc="远端丢包率"  />
+
+	
+	<tag name="rruChannelNum"		id="0x0088"	type="UnsignedNumber"	length="1"		desc="RRU通道个数" />
+	
+	<tag name="monitorInterval"		id="0x0601"	type="UnsignedNumber"	length="1"		desc="实时性能数据上报时间间隔" />
+	<tag name="reportData"			id="0x0602"	type="ByteArray"	length="0"		desc="实时性能数据" />
+	
+	
+	<tag name="timedelayCount"	  	 	id="0x0037"		type="Composite"	  	length="0" 	desc ="时延测量结果循环" />
+	<tag name="timedelay"	id="0x01DE" 	type="UnsignedNumber"	length="0"		desc="时延测量结果" />
+
+	<tag name="packageCount"	  	 	id="0x0038"		type="Composite"	  	length="0" 	desc ="丢包率测量结果循环" />
+
+	<tag name="xGWAddressCount"	  	 	id="0x0035"		type="Composite"	  	length="0" 	desc ="xGW地址对信息循环" />
+	<tag  name="AddressLocalIP"	 	    id="0x01D3"	 	type="IpAddress"		length="4" 	desc ="本端IP" />
+	<tag name="xGWAddressDstIP"	     	id="0x01D4"	 	type="IpAddress"		length="4" 	desc ="对端IP" />
+	<tag name="xGWAddressVlanIndex"	 	id="0x01D5"	 	type="UnsignedNumber"	length="1" 	desc ="Vlan索引" />
+    
+	<tag name="packetLength"	 	id="0x01DA"	  type="UnsignedNumber"	length="2" 	desc ="IP报文字节长度" />
+	<tag name="flowRate"	 	id="0x01DB"	   type="UnsignedNumber"	length="2" 	desc ="IP报文流量" />
+
+	
+	<tag name="bbuOpticalStatusPayload"	id="0x0034"	type="ByteArray"	length="0"		desc="BBU侧光口状态载荷" />
+	
+	<tag name="ibtsRfStatusComposite"	id="0x002f" 	type="Composite"	length="0"		desc="射频状态循环" />
+	<tag name="ibtsOpticalComposite"	id="0x0032" 	type="Composite"	length="0"		desc="基站光口状态循环" />
+	
+	<tag name="assetInfoComposite"	id="0x0036" 	type="Composite"	length="0"		desc="资产信息循环" />
+	<tag name="assetNodeType"	id="0x01D6" 	type="UnsignedNumber"	length="1"		desc="节点类型" />
+	<tag name="locationInfo"	id="0x01D7" 	type="ByteArray"	length="0"		desc="位置信息" />
+	<tag name="providerName"	id="0x01D8" 	type="String"	length="0"		desc="提供商名称" />
+	<tag name="manufactureDate"	id="0x01D9" 	type="UnsignedNumber"	length="4"		desc="生产日期" />
+</tags>

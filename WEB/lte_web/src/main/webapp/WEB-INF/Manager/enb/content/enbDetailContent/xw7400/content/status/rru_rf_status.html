@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/status.js"></script>
+<script type="text/javascript">
+	$(function(){
+			
+	});
+</script>
+<title>RRU射频状态</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>RRU射频状态</a>
+	</div>
+	
+	<!-- 
+	下行天线状态 
+	0：关闭； 1：开启
+	上行天线状态 
+	0：关闭； 1：开启
+	通道温度 取整
+	发射功率 单位： 0.1dBm
+	发射增益 0.5dB
+	接收增益 0.5dB
+	接收功率 单位： 0.1dBm
+	通道驻波比 单位： 0.1
+	下行功率读取结果 
+	0：succ； 1：fail
+	上行功率读取结果 
+	0：succ； 1：fail
+	驻波比计算结果 
+	0：succ；1：fail
+		-->
+		
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap" >
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding:10px;">
+				<div style=" height:40px;  width:410px; margin-left:100px; overflow:hidden;">
+					<table width="100%" style="line-height:35px;">
+						<tr>
+							<td>选择RRU单板 :</td>
+							<td>
+								<input type="hidden" value="${moId}" id="moId"/>
+								<input type="hidden" value="${enbHexId}" id="enbHexId"/>
+								<input type="hidden" value="${statusFlag}" id="statusFlag"/>
+								<input type="hidden" value="${error}" id="error"/>
+								<select  id="boardFlag" name="boardFlag" style="width:251px;  margin-left:39px;">
+									<#list boardList! as board>
+										<#if board == boardFlag>
+											<option value="${board}" selected="selected">${board}</option>
+										<#else>
+											<option value="${board}">${board}</option>
+										</#if>
+									</#list>
+								</select>
+								
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="tableHeight">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新" /></li>
+						</ul>
+					</div>
+					
+					<div style="padding:5px;">
+						<#if error == "" >
+						<label>该RRU单板通道个数为：${rruChannelNum}</label>
+						</#if>
+					</div>
+					
+					<table width="100%" class="changeRowColor newTabStyle">
+					  <tr>
+						<th scope="col">通道号</th>
+						<th scope="col">通道温度(℃)</th>
+						<th scope="col">下行天线状态</th>
+						<th scope="col">上行天线状态</th>
+						<th scope="col">发射功率(dBm)</th>
+						<th scope="col">发射增益(dB)</th>
+						<th scope="col">接收功率(dBm)</th>
+						<th scope="col">接收增益(dB)</th>
+						<th scope="col">下行功率读取结果</th>
+						<th scope="col">上行功率读取结果</th>
+						<th scope="col">通道驻波比</th>
+						<th scope="col">驻波比计算结果</th>
+					  </tr>
+					  <#list rruRfStatusList! as rruRfStatus>
+						  <tr>
+						  	<td>${rruRfStatus.channelNo+1}</td>
+						  	<td>${rruRfStatus.channelTemperature}</td>
+						  	<td><#if rruRfStatus.dlAntStatus==0>关闭<#else>开启</#if></td>
+						  	<td><#if rruRfStatus.ulAntStatus==0>关闭<#else>开启</#if></td>
+						  	<td>${rruRfStatus.sendPower*0.1}</td>
+						  	<td>${rruRfStatus.sendGain*0.5}</td>
+						  	<td>${rruRfStatus.receivePower*0.1}</td>
+						  	<td>${rruRfStatus.receiveGain*0.5}</td>
+						  	<td><#if rruRfStatus.dlPowerReadResult==0>成功<#else>失败</#if></td>
+						  	<td><#if rruRfStatus.ulPowerReadResult==0>成功<#else>失败</#if></td>
+						  	<td>${rruRfStatus.vswr*0.1}</td>
+						  	<td><#if rruRfStatus.vswrCalResult==0>成功<#else>失败</#if></td>
+						  </tr>
+					  </#list>	
+					</table>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

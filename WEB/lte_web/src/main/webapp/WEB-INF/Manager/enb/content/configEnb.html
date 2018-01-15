@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/common/ipUtil.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		var manageState = ${manageState};
+		// 如果是离线管理模式，同步方向置灰
+		if(manageState == 2) {
+			$("#direction0").attr("disabled","disabled");
+			$("#direction1").attr("disabled","disabled");
+		}
+		
+		// 设置管理状态
+		for(var i=1;i<3;i++){
+			if($("#manageState"+i).val() == manageState){
+				$("#manageState"+i).attr("checked","checked");
+				break;
+			}
+		}
+		
+		// 设置同步方向
+		for(var i=0;i<2;i++){
+			if($("#direction"+i).val() == ${syncDirection}){
+				$("#direction"+i).attr("checked","checked");
+				break;
+			}
+		}
+
+		// 选中在线管理模式，允许选择同步方向
+		$("#manageState1").change(function(){
+			var online = $("#manageState1").attr("checked");
+			if(online == "checked") {
+				$("#direction0").removeAttr("disabled");
+				$("#direction1").removeAttr("disabled");
+			}
+		});
+		// 选中离线管理模式，同步方向置灰
+		$("#manageState2").change(function(){
+			var offline = $("#manageState2").attr("checked");
+			if(offline == "checked") {
+				$("#direction0").attr("disabled","disabled");
+				$("#direction1").attr("disabled","disabled");
+			}
+		});
+		
+		$("#ipAddress1").change(function(){
+			if($("#netMask1").val()=="") {
+				$("#netMask1").val("255.255.255.0");
+			}
+			var ipAddress = $("#ipAddress1").val();
+			$("#gateway1").val(ipAddress);
+		});
+		
+		$("#submit_add").click(function(){
+			//表单校验
+			var isNum=/^\d+$/;
+			var isName=/^[A-Za-z0-9\u4e00-\u9fa5_]+$/;
+			var isIp=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)$/;
+			var isEnbId = /^[A-Fa-f0-9]{1,}$/;
+			
+			var index = 0;
+			var enbHexId = $("#enbHexId").val()+"";
+			var length = enbHexId.length;
+		
+			if(length!=8 || !(isEnbId.test(enbHexId)) || parseInt(enbHexId,16) > 1048575){
+				
+				$("#enbHexIdError").text("/* 8位,00000000~000FFFFF */");
+				index++;
+			}else{
+				$("#enbHexIdError").text("");
+			}
+			var enbName = $("#enbName").val() + "";
+			var length = enbName.length;
+			
+			if(length <1){
+				$("#enbNameError").text("/* 请输入基站名称 */");
+				index++;
+			}else if(length >80){
+				$("#enbNameError").text("/* 名称过长 */");
+				index++;
+			}else if(!isName.test(enbName)){
+				$("#enbNameError").text("/* 只能输入汉字、数字、字母或下划线 */");	
+				index++;
+			}else{
+				$("#enbNameError").text("");
+			}
+
+			var ipAddress = $("#ipAddress1").val();
+			var errorMsg = checkIpAddress(ipAddress);
+			if(errorMsg != "") {
+				$("#ipAddressError").text(errorMsg);
+				index++;
+			} else {
+				$("#ipAddressError").text("");
+			}
+			
+			var netMask = $("#netMask1").val();
+			errorMsg = checkNetMask(netMask);
+			if(errorMsg != "") {
+				$("#netMaskError").text(errorMsg);
+				index++;
+			} else {
+				$("#netMaskError").text("");
+			}
+			
+			var gateway = $("#gateway1").val();
+			errorMsg = checkGateway(gateway);
+			if(errorMsg != "") {
+				$("#gatewayError").text(errorMsg);
+				index++;
+			} else {
+				$("#gatewayError").text("");
+			}
+			
+			$("#syncDirectionInput").val($("input[name='syncDirectionCheckBox']:checked").val());
+			if(index==0){
+				var ipHex = convertIpTo8HexString(ipAddress);
+				var maskHex = convertIpTo8HexString(netMask);
+				var gateHex = convertIpTo8HexString(gateway);
+				
+				if(!isIpAndGatewaySameSegment(ipHex, maskHex, gateHex)) {
+					$("#gatewayError").text("/* 网关地址与IP地址必须在同一网段 */");
+					return;
+				}
+				$("input[name='ipAddress']").val(ipAddress);
+				$("input[name='netMask']").val(netMask);
+				$("input[name='gateway']").val(gateway);
+				
+				$("input[name='browseTime']").val(getBrowseTime());
+				$("#form_add").submit();	
+			}
+			
+		});
+		$("#cancel").click(function(){
+			var sortBy = $("#sortBy").val();
+			var currentPage = $("#currentPage").val();
+			window.location.href="${base}/lte/queryEnbList.do?sortBy="+sortBy+"&currentPage="+currentPage+"&browseTime="+getBrowseTime();
+		});
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+	<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryConfigedEnbList.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+			<input type="hidden" value="config" name="operType"/>
+			<input type="hidden" value="${sortBy!}" name="sortBy" id="sortBy"/>
+			<input type="hidden" value="${currentPage!}" name="currentPage" id="currentPage"/>
+			<input type="hidden"  name="browseTime"/>
+			<div class="content">
+				<table class="McWillTable" style="line-height:35px;">
+					<tr>
+						<td>基站标识( 8位,00000000~000FFFFF ) :</td>
+						<td class="blankTd"></td>
+						<td>
+							<input type="text"  style="width:240px;" disabled="disabled" value="${enbHexId}"/>
+							<input type="hidden"  value="${enbHexId}" name="enbHexId" id="enbHexId"/>
+						</td>
+						<td id="enbHexIdError" class="error"></td>
+					</tr>
+					<tr>
+						<td>基站名称 :</td>
+						<td class="blankTd"></td>
+						<td><input type="text"  style="width:240px;" id="enbName" name="enbName" value="${enbName}"/></td>
+						<td id="enbNameError" class="error"></td>
+					</tr>
+					<tr>
+						<td>协议版本 :</td>
+						<td class="blankTd"></td>
+						<td>
+							<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff" id="enbVersion" disabled="disabled">
+									<option value="${enbVersion}">${enbVersion}</option>
+								</select>
+								<input type="hidden" value="${enbVersion}" name="enbVersion"/>
+							</div>
+						</td>
+						<td id="enbVersionError" class="error"></td>
+					</tr>
+					<tr>
+						<td>IP地址 :</td>
+						<td class="blankTd"></td>
+						<td>
+							<input type="text" style="width:240px;" id="ipAddress1" value="${ipAddress!}"/>
+							<input type="hidden" style="width:240px;" name="ipAddress"/>
+						</td>
+						<td id="ipAddressError" class="error"></td>
+					</tr>
+					<tr>
+						<td>掩码 :</td>
+						<td class="blankTd"></td>
+						<td>
+							<input type="text" style="width:240px;" id="netMask1" value="${netMask!}"/>
+							<input type="hidden" style="width:240px;" name="netMask"/>
+						</td>
+						<td id="netMaskError" class="error"></td>
+					</tr>
+					<tr>
+						<td>网关地址 :</td>
+						<td class="blankTd"></td>
+						<td>
+							<input type="text" style="width:240px;" id="gateway1"  value="${gateway!}"/>
+							<input type="hidden" style="width:240px;" name="gateway"/>
+						</td>
+						<td id="gatewayError" class="error"></td>
+					</tr>
+					<tr>
+						<td>管理状态 :</td>
+						<td class="blankTd"></td>
+						<td>
+							<input type="radio" name="manageState" value="1" id="manageState1">在线管理</input>
+							<input type="radio" name="manageState" value="2" id="manageState2" style="margin-left:80px;">离线管理</input>
+						</td>
+					</tr>
+					<tr>
+						<td>基站注册时数据同步方向 :</td>
+						<td class="blankTd"></td>
+						<td>
+							<input type="hidden" name="syncDirection" id="syncDirectionInput"/>	
+							<input type="radio" name="syncDirectionCheckBox" value="0" id="direction0">网管到基站</input>
+							<input type="radio" name="syncDirectionCheckBox" value="1" id="direction1" style="margin-left:67px;">基站到网管</input>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>
+							 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add"/>
+							
+							 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div> 		
+	</form>
+	</div>
+</body>
+</html>
+

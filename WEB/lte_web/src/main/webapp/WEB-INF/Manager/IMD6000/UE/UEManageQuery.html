@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/IMD6000/UE/UEManageQuery.js"></script>
+<style>
+	.deviceTh { cursor: pointer; }
+</style>
+
+
+<title>电力终端管理</title>
+</head>
+<body style="overflow: hidden;">
+	<input type="hidden" id="basePath" value="${base}" />
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span>
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端管理</a>
+	</div>
+	<div class="enbPage">
+		<div class="contentDivObj" style="width:100%">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="add" value="新增" /></li>
+				<li><label></label><input type="button" id="fresh" value="刷新" /></li>
+				<li><label></label><input type="button" id="delete" value="删除" /></li>
+				<li><label></label><input type="button" id="reboot" value="重启" /></li>
+				<li style="display: none;"><label></label><input type="button" id="upgrade" value="升级" /></li>
+			</ul>
+			
+			<!-- 按条件查找eNB -->
+			<div style="float:right;display: none">
+				<label>选择查找条件: </label>
+				<select name="searchBy" id="searchBy">
+					<option value="1">按基站标识</option>
+					<option value="2">按基站名称</option>
+					<option value="3">按基站IP</option>
+					<option value="4">按实际版本</option>
+				</select>
+				<input type="text" id="searchValue" />
+				<input type="button" id="search" value="查找" />
+			</div>
+		</div>
+		<div>
+			<table width="100%" id="UEListTable" class="enbTable changeRowColor">
+				<thead>
+					<tr>
+						<th scope="col" class="checkWidth"><input type="checkbox" value="checkbox" id="checkfather"></th>
+
+						<th scope="col">IMSI</th>
+						<th scope="col">序列号</th>
+						<th scope="col" style=" width: 90px;">型号</th>
+						<th scope="col">总版本号</th>
+						<th scope="col">IP地址</th>
+						<th scope="col">信号强度</th>
+						<th scope="col" style=" width: 90px;">状态</th>
+						<th scope="col">地理位置</th>
+						<th scope="col">归属小区</th>
+						<th scope="col">上行速率</th>
+						<th scope="col">下行速率</th>
+						<th scope="col">RSRP</th>
+						<th scope="col">SNR</th>
+						<th scope="col">RSSI</th>
+						<th scope="col">正常运行时间</th>
+
+						<th scope="col" width="50px;">修改</th>
+						<th scope="col" width="50px;">重启</th>
+						<th scope="col" width="50px;">升级</th>
+					</tr>
+				</thead>
+				<tbody id="UeListTbody">
+					<#list UEList! as UE>
+					<tr id="${UE['UEID']}">
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			
+						<td id="IMSI">${UE["IMSI"]}</td>
+						<td id="Serial">${UE["Serial"]}</td>
+						<td id="BussinessType" >${UE["BussinessType"]}</td>
+						<td id="Version">${UE["Version"]}</td>						
+						<td id="IP">${UE["IP"]}</td>
+						
+						<td id="SignalStrength">-</td>
+						<td id="UEState">-</td>
+						<td id="Location">${UE["Location"]}</td>
+						<td id="PCI">-</td>
+						<td id="UlRate">-</td>
+						<td id="DlRate">-</td>
+						<td id="RSRP">-</td>
+						<td id="SNR">-</td>
+						<td id="RSSI">-</td>
+						<td id="UpTime">-</td>
+						<td class="justForView"  style="cursor:pointer;"><a opetype="modify">修改</a></td>
+						<td class="justForView"  style="cursor:pointer;"><a opetype="reboot">重启</a></td>
+						<td class="justForView"  style="cursor:pointer;"><a opetype="update">升级</a></td>
+						
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+			<div style="float: right;">
+				<div style="padding: 5px;">
+					<table id="pageTable" style="width: 316px;">
+						<tr>
+							<td><span id="currentPage">${currentPage}</span>
+							</td>
+							<td>/</td>
+							<td><span id="totalPage">${TotalPage}</span>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/first_page.png" id="firstPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/previous_page.png" id="previousPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/next_page.png" id="nextPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td style="width: 58px;"><img
+								src="${base}/Manager/images/end_page.png" id="endPage"
+								style="cursor: pointer;"/>
+							</td>
+							<td><input type="text"
+								style="width: 20px; height: 18px; line-height: 18px;"
+								id="targetPageInput" value="" />
+							</td>
+							<td><img src="${base}/Manager/images/change_page_bt.png"
+								id="targetPage" style="cursor: pointer;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mapper>
+	<biz operId="0xa0" action="0x05" bizName="IMSI批量查询请求--应答">
+		<oss operObject="0xa0" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="imsi" tag="28681" />
+			<item name="imsiUEStatus" tag="28683" />
+			<item name="imsiIndex" tag="28680" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="imsiInfo" tag="31744"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="imsiIndex" tag="28680" />
+				<inner name="imsi" tag="28681" />
+				<inner name="imsiK" tag="28682" />
+				<inner name="imsiUEStatus" tag="28683" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xa0" action="0x01" bizName="IMSI新增请求--应答">
+		<oss operObject="0xa0" operType="0x01" />
+		<request>
+			<item name="imsi" tag="28681" />
+			<item name="imsiK" tag="28682" />
+			<item name="imsiUEStatus" tag="28683" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa0" action="0x02" bizName="IMSI删除请求--应答">
+		<oss operObject="0xa0" operType="0x02" />
+		<request>
+			<item name="imsi" tag="28681" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa0" action="0x03" bizName="IMSI修改请求--应答">
+		<oss operObject="0xa0" operType="0x03" />
+		<request>
+			<item name="imsi" tag="28681" />
+			<item name="imsiK" tag="28682" />
+			<item name="imsiUEStatus" tag="28683" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<biz operId="0xa0" action="0x08" bizName="IMSI批量导入">
+		<oss operObject="0xa0" operType="0x08" />
+		<request>
+			<item name="imsiFile" tag="28916" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+		<biz operId="0xa0" action="0x07" bizName="IMSI批量导入进度查询">
+		<oss operObject="0xa0" operType="0x07" />
+		<request>			
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="batchAddImsiPercent" tag="28899" />
+			<item name="batchAddImsiResultFile" tag="28897" />
+		</response>
+	</biz>
+	
+	<biz operId="0xa1" action="0x05" bizName="用户批量查询">
+		<oss operObject="0xa1" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="usrNumber" tag="28691" />
+			<item name="usrNumberType" tag="28692" />
+			<item name="usrNeckName" tag="28693" />
+			<item name="usrState" tag="28696" />
+			<item name="imsi" tag="28681" />
+			<item name="tmpID" tag="28704" />
+			<item name="srvSingleCallLteFlag" tag="28722" />
+			<item name="srvGroupCallLteFlag" tag="28723" />
+			<item name="srvUsrPriority" tag="28724" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="usrInfo" tag="31745"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="usrIndex" tag="28690" />
+				<inner name="usrNumber" tag="28691" />
+				<inner name="usrNumberType" tag="28692" />
+				<inner name="usrNeckName" tag="28693" />
+				<inner name="usrPassword" tag="28694" />
+				<inner name="usrComment" tag="28695" />
+				<inner name="usrState" tag="28696" />
+				<inner name="usrHaveImsi" tag="28697" />
+				<inner name="imsi" tag="28681" />
+				<inner name="tmpID" tag="28704" />
+				<inner name="usrStaticIP" tag="28698" />
+				<inner name="usrAuthflag" tag="28699" />
+				<inner name="lteUsrState" tag="28679" />
+				<inner name="srvSingleCallLteFlag" tag="28722" />
+				<inner name="srvGroupCallLteFlag" tag="28723" />
+				<inner name="srvUsrPriority" tag="28724" />
+				<inner name="audioRecordFlag" tag="28909" />
+				<inner name="ipaddrAllocateType" tag="28917" />
+				<inner name="usrStartStaticip" tag="28918" />
+				<inner name="usrEndStaticip" tag="28919" />
+				<inner name="usrAuthflag" tag="28699" />
+			</item>
+		</response>
+	</biz>
+
+	<biz operId="0xa1" action="0x01" bizName="用户新增请求--应答">
+		<oss operObject="0xa1" operType="0x01" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+			<item name="usrNumberType" tag="28692" />
+			<item name="usrNeckName" tag="28693" />
+			<item name="usrPassword" tag="28694" />
+			<item name="usrComment" tag="28695" />
+			<item name="usrState" tag="28696" />
+			<item name="usrHaveImsi" tag="28697" />
+			<item name="imsi" tag="28681" />
+			<item name="tmpID" tag="28704" />
+			<item name="ipaddrAllocateType" tag="28917" />
+			<item name="usrStaticIP" tag="28698" />
+			<item name="usrStartStaticip" tag="28918" />
+			<item name="usrEndStaticip" tag="28919" />
+			<item name="usrAuthflag" tag="28699" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa1" action="0x02" bizName="用户删除请求--应答">
+		<oss operObject="0xa1" operType="0x02" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa1" action="0x03" bizName="用户修改请求--应答">
+		<oss operObject="0xa1" operType="0x03" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+			<item name="usrNumberType" tag="28692" />
+			<item name="usrNeckName" tag="28693" />
+			<item name="usrPassword" tag="28694" />
+			<item name="usrComment" tag="28695" />
+			<item name="usrState" tag="28696" />
+			<item name="usrHaveImsi" tag="28697" />
+			<item name="imsi" tag="28681" />
+			<item name="tmpID" tag="28704" />
+			<item name="templateID" tag="28704" />
+			<item name="ipaddrAllocateType" tag="28917" />
+			<item name="usrStaticIP" tag="28698" />
+			<item name="usrStartStaticip" tag="28918" />
+			<item name="usrEndStaticip" tag="28919" />
+			<item name="usrAuthflag" tag="28699" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<biz operId="0xa1" action="0x08" bizName="批量开户">
+		<oss operObject="0xa1" operType="0x08" />
+		<request>
+			<item name="startUserNumber" tag="28894" />
+			<item name="numberType" tag="28692" />
+			<item name="userState" tag="28696" />
+			<item name="haveImsi" tag="28697" />
+			<item name="startImsi" tag="28895" />
+			<item name="userParamTempletId" tag="28704" />
+			<item name="authFlag" tag="28699" />
+			<item name="openBizFlag" tag="28898" />			
+			<item name="batchCount" tag="28896" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<!--<item name="failureFile" tag="28897" />-->
+		</response>
+	</biz>
+	
+	<biz operId="0xa1" action="0x07" bizName="批量开户进度查询">
+		<oss operObject="0xa1" operType="0x07" />
+		<request>
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="batchOpenAccountPercent" tag="28899" />
+			<item name="failureFile" tag="28897" />
+		</response>
+	</biz>
+
+	<biz operId="0xa2" action="0x05" bizName="用户模板批量查询请求--应答">
+		<oss operObject="0xa2" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="tmpID" tag="28704" />
+			<item name="tmpName" tag="28705" />
+			<item name="tmpDefault" tag="28712" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="tmpInfo" tag="31746"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="tmpIndex" tag="28703" />
+				<inner name="tmpID" tag="28704" />
+				<inner name="tmpName" tag="28705" />
+				<inner name="tmpULBW" tag="28706" />
+				<inner name="tmpDLBW" tag="28707" />
+				<inner name="tmpPDNCat" tag="28708" />
+				<inner name="tmpAPNULBW" tag="28716" />
+				<inner name="tmpAPNDLBW" tag="28710" />
+				<inner name="tmpQCI" tag="28711" />
+				<inner name="tmpDefault" tag="28712" />
+				<inner name="tmpARPPri" tag="28713" />
+				<inner name="tmpARPReave" tag="28714" />
+				<inner name="tmpARPReaved" tag="28715" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xa2" action="0x01" bizName="用户模板新增请求--应答">
+		<oss operObject="0xa2" operType="0x01" />
+		<request>
+			<item name="tmpID" tag="28704" />
+			<item name="tmpName" tag="28705" />
+			<item name="tmpULBW" tag="28706" />
+			<item name="tmpDLBW" tag="28707" />
+			<item name="tmpPDNCat" tag="28708" />
+			<item name="tmpAPNULBW" tag="28716" />
+			<item name="tmpAPNDLBW" tag="28710" />
+			<item name="tmpQCI" tag="28711" />
+			<item name="tmpDefault" tag="28712" />
+			<item name="tmpARPPri" tag="28713" />
+			<item name="tmpARPReave" tag="28714" />
+			<item name="tmpARPReaved" tag="28715" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa2" action="0x02" bizName="用户模板删除请求--应答">
+		<oss operObject="0xa2" operType="0x02" />
+		<request>
+			<item name="tmpID" tag="28704" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa2" action="0x03" bizName="用户模板修改请求--应答">
+		<oss operObject="0xa2" operType="0x03" />
+		<request>
+			<item name="tmpID" tag="28704" />
+			<item name="tmpName" tag="28705" />
+			<item name="tmpULBW" tag="28706" />
+			<item name="tmpDLBW" tag="28707" />
+			<item name="tmpPDNCat" tag="28708" />
+			<item name="tmpAPNULBW" tag="28716" />
+			<item name="tmpAPNDLBW" tag="28710" />
+			<item name="tmpQCI" tag="28711" />
+			<item name="tmpDefault" tag="28712" />
+			<item name="tmpARPPri" tag="28713" />
+			<item name="tmpARPReave" tag="28714" />
+			<item name="tmpARPReaved" tag="28715" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+
+
+	<biz operId="0xa3" action="0x04" bizName="用户基本业务查询请求--应答">
+		<oss operObject="0xa3" operType="0x04" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="srvInfo" tag="31747"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="usrNumber" tag="28691" />
+				<inner name="srvSingleCallLteFlag" tag="28722" />
+				<inner name="srvGroupCallLteFlag" tag="28723" />
+				<inner name="audioRecordFlag" tag="28909" />
+				<inner name="srvUsrPriority" tag="28724" />
+				<inner name="srv_location_flag" tag="28989" />
+				<inner name="srv_bai_flag" tag="28996" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xa3" action="0x02" bizName="用户基本业务删除请求--应答">
+		<oss operObject="0xa3" operType="0x02" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa3" action="0x03" bizName="用户基本业务配置请求--应答">
+		<oss operObject="0xa3" operType="0x03" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+			<item name="srvSingleCallLteFlag" tag="28722" />
+			<item name="srvGroupCallLteFlag" tag="28723" />
+			<item name="audioRecordFlag" tag="28909" />
+			<item name="srvUsrPriority" tag="28724" />
+			<item name="srv_location_flag" tag="28989" />
+			<item name="srv_bai_flag" tag="28996" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+
+
+	<biz operId="0xa4" action="0x04" bizName="用户前转业务查询请求--应答">
+		<oss operObject="0xa4" operType="0x04" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="usrNumber" tag="28691" />
+			<item name="fwdCondition" tag="28731" />
+			<item name="fwdNumber" tag="28735" />
+			<item name="fwdServeType" tag="28732" />
+			<item name="fwdSHour" tag="28733" />
+			<item name="fwdEHour" tag="28734" />
+		</response>
+	</biz>
+	<biz operId="0xa4" action="0x02" bizName="用户前转业务删除请求--应答">
+		<oss operObject="0xa4" operType="0x02" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xa4" action="0x03" bizName="用户前转业务配置请求--应答">
+		<oss operObject="0xa4" operType="0x03" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+			<item name="fwdCondition" tag="28731" />
+			<item name="fwdNumber" tag="28735" />
+			<item name="fwdServeType" tag="28732" />
+			<item name="fwdSHour" tag="28733" />
+			<item name="fwdEHour" tag="28734" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+
+
+	<biz operId="0xa5" action="0x04" bizName="用户状态查询请求-应答">
+		<oss operObject="0xa5" operType="0x04" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="usrNumber" tag="28691" />
+			<item name="usIp" tag="28747" />
+			<item name="imsi" tag="28681" />
+			<item name="usEmmState" tag="28745" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			
+			<item name="usInfo" tag="31770"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="usrNumber" tag="28691" />
+				<inner name="imsi" tag="28681" />				
+				<inner name="usGuti" tag="28742" />
+				<inner name="usTai" tag="28743" />				
+				<inner name="usEmmState" tag="28745" />				
+				<inner name="usRoamState" tag="28746" />				
+				<inner name="usIp" tag="28747" />
+				<inner name="usAPNIP" tag="28748" />
+			</item>
+		</response>
+	</biz>
+	
+	<biz operId="0xad" action="0x05" bizName="QOS批量查询请求--应答">
+		<oss operObject="0xad" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="qosInfo" tag="31754"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="qosIndex" tag="28820" />
+				<inner name="qosID" tag="28821" />
+				<inner name="qosType" tag="28822" />
+				<inner name="qosPriority" tag="28823" />
+				<inner name="qosUplinkMBR" tag="28824" />
+				<inner name="qosDownlinkMBR" tag="28825" />
+				<inner name="qosUplinkGBR" tag="28826" />
+				<inner name="qosDownlinkGBR" tag="28827" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xad" action="0x01" bizName="QOS新增请求--应答">
+		<oss operObject="0xad" operType="0x01" />
+		<request>
+			<item name="qosID" tag="28821" />
+			<item name="qosType" tag="28822" />
+			<item name="qosPriority" tag="28823" />
+			<item name="qosUplinkMBR" tag="28824" />
+			<item name="qosDownlinkMBR" tag="28825" />
+			<item name="qosUplinkGBR" tag="28826" />
+			<item name="qosDownlinkGBR" tag="28827" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xad" action="0x02" bizName="QOS删除请求--应答">
+		<oss operObject="0xad" operType="0x02" />
+		<request>
+			<item name="qosID" tag="28821" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xad" action="0x03" bizName="QOS修改请求--应答">
+		<oss operObject="0xad" operType="0x03" />
+		<request>
+			<item name="qosID" tag="28821" />
+			<item name="qosType" tag="28822" />
+			<item name="qosPriority" tag="28823" />
+			<item name="qosUplinkMBR" tag="28824" />
+			<item name="qosDownlinkMBR" tag="28825" />
+			<item name="qosUplinkGBR" tag="28826" />
+			<item name="qosDownlinkGBR" tag="28827" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+
+
+	<biz operId="0xae" action="0x05" bizName="用户IP资源批量查询请求--应答">
+		<oss operObject="0xae" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="snetInfo" tag="31755"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="snetIndex" tag="28831" />
+				<inner name="snetID" tag="28832" />
+				<inner name="snetStartIP" tag="28833" />
+				<inner name="snetEndIP" tag="28834" />
+				<inner name="ippoolType" tag="28835" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xae" action="0x01" bizName="用户IP资源新增请求--应答">
+		<oss operObject="0xae" operType="0x01" />
+		<request>
+			<item name="snetID" tag="28832" />
+			<item name="snetStartIP" tag="28833" />
+			<item name="snetEndIP" tag="28834" />
+			<item name="ippoolType" tag="28835" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xae" action="0x02" bizName="用户IP资源删除请求--应答">
+		<oss operObject="0xae" operType="0x02" />
+		<request>
+			<item name="snetID" tag="28832" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xae" action="0x03" bizName="用户IP资源修改请求--应答">
+		<oss operObject="0xae" operType="0x03" />
+		<request>
+			<item name="snetID" tag="28832" />
+			<item name="snetStartIP" tag="28833" />
+			<item name="snetEndIP" tag="28834" />
+			<item name="ippoolType" tag="28835" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<!-- yyl�?-25添加 -->
+	<biz operId="0xaf" action="0x02" bizName="用户紧急号码删除请求-应答">
+		<oss operObject="0xaf" operType="0x02" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<biz operId="0xaf" action="0x03" bizName="用户紧急号码配置请求-应答">
+		<oss operObject="0xaf" operType="0x03" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+			<item name="emgusrType" tag="28839"/>
+			<item name="emgusrCallNum" tag="28840"/>
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<biz operId="0xaf" action="0x04" bizName="用户紧急号码查询请求-应答">
+		<oss operObject="0xaf" operType="0x04" />
+		<request>
+			<item name="usrNumber" tag="28691" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="usrNumber" tag="28691"/>
+			<item name="emgusrType" tag="28839"/>
+			<item name="emgusrCallNum" tag="28840"/>
+		</response>
+	</biz>
+	
+	<!-- yyl�?-11添加 -->
+	<biz operId="0xb1" action="0x05" bizName="呼叫QOS批量查询请求--应答">
+		<oss operObject="0xb1" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="callqosInfo" tag="31768"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="callqosType" tag="28863" />
+				<inner name="callqosQci" tag="28864" />
+				<inner name="callqosUplinkMbr" tag="28865" />
+				<inner name="callqosDownlinkMbr" tag="28866" />
+				<inner name="callqosUplinkGbr" tag="28867" />
+				<inner name="callqosDownlinkGbr" tag="28869" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xb1" action="0x01" bizName="呼叫QOS新增请求--应答">
+		<oss operObject="0xb1" operType="0x01" />
+		<request>
+			<item name="callqosType" tag="28863" />
+			<item name="callqosQci" tag="28864" />
+			<item name="callqosUplinkMbr" tag="28865" />
+			<item name="callqosDownlinkMbr" tag="28866" />
+			<item name="callqosUplinkGbr" tag="28867" />
+			<item name="callqosDownlinkGbr" tag="28869" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb1" action="0x02" bizName="呼叫QOS删除请求--应答">
+		<oss operObject="0xb1" operType="0x02" />
+		<request>
+			<item name="callqosType" tag="28863" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb1" action="0x03" bizName="呼叫QOS修改请求--应答">
+		<oss operObject="0xb1" operType="0x03" />
+		<request>
+			<item name="callqosType" tag="28863" />
+			<item name="callqosQci" tag="28864" />
+			<item name="callqosUplinkMbr" tag="28865" />
+			<item name="callqosDownlinkMbr" tag="28866" />
+			<item name="callqosUplinkGbr" tag="28867" />
+			<item name="callqosDownlinkGbr" tag="28869" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<biz operId="0xb2" action="0x05" bizName="业务IP QOS批量查询请求--应答">
+		<oss operObject="0xb2" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="ipqosInfo" tag="31767"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="ipqosIndex" tag="28860" />
+				<inner name="ipqosIp" tag="28852" />
+				<inner name="ipqosMaxPort" tag="28853" />
+				<inner name="ipqosMinPort" tag="28854" />
+				<inner name="ipqosQci" tag="28855" />
+				<inner name="ipqosUplinkMbr" tag="28856" />
+				<inner name="ipqosDownlinkMbr" tag="28857" />
+				<inner name="ipqosUplinkGbr" tag="28858" />
+				<inner name="ipqosDownlinkGbr" tag="28859" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xb2" action="0x01" bizName="业务IP QOS新增请求--应答">
+		<oss operObject="0xb2" operType="0x01" />
+		<request>
+			<item name="ipqosIp" tag="28852" />
+			<item name="ipqosMaxPort" tag="28853" />
+			<item name="ipqosMinPort" tag="28854" />
+			<item name="ipqosQci" tag="28855" />
+			<item name="ipqosUplinkMbr" tag="28856" />
+			<item name="ipqosDownlinkMbr" tag="28857" />
+			<item name="ipqosUplinkGbr" tag="28858" />
+			<item name="ipqosDownlinkGbr" tag="28859" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb2" action="0x02" bizName="业务IP QOS删除请求--应答">
+		<oss operObject="0xb2" operType="0x02" />
+		<request>
+			<item name="ipqosIndex" tag="28860" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb2" action="0x03" bizName="业务IP QOS修改请求--应答">
+		<oss operObject="0xbb2" operType="0x03" />
+		<request>
+			<item name="ipqosIndex" tag="28860" />
+			<item name="ipqosIp" tag="28852" />
+			<item name="ipqosMaxPort" tag="28853" />
+			<item name="ipqosMinPort" tag="28854" />
+			<item name="ipqosQci" tag="28855" />
+			<item name="ipqosUplinkMbr" tag="28856" />
+			<item name="ipqosDownlinkMbr" tag="28857" />
+			<item name="ipqosUplinkGbr" tag="28858" />
+			<item name="ipqosDownlinkGbr" tag="28859" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	
+	<biz operId="0xb6" action="0x09" bizName="数据库备份">
+		<oss operObject="0xb6" operType="0x09" />
+		<request>
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	
+	<biz operId="0xb6" action="0x0a" bizName="数据库恢复">
+		<oss operObject="0xb6" operType="0x0a" />
+		<request>
+			<item name="backupFile" tag="28893" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+</mapper>

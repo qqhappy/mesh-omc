@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="GB2312"?>
+
+<project name="minas" basedir="." default="all">
+
+	<!--===================property definations==================== -->
+	<property file="build.properties"/>
+
+	<!--===================compilation classpath==================== -->
+
+	<path id="compile.classpath">
+		<fileset dir="${omp.home}/" includes="**/*.jar,**/*.zip"/>
+		<fileset dir="${server.home}/" includes="**/*.jar,**/*.zip"/>
+		<fileset dir="${lib.home}/" includes="**/*.jar,**/*.zip"/>
+	</path>
+
+	<!--===================Build targets below here==================== -->
+
+
+	<target name="help">
+		<echo message="Please specified a target![usage: ant &lt;targetname&gt;]"/>
+	</target>
+
+	<target name="clear" description="clear up">
+		<delete dir="${server.dist}"/>
+		<delete dir="${build.home}"/>
+		<delete dir="${dist.home}"/>
+		<delete dir="${server.home}/plugins"/>
+	</target>
+
+	<target name="prepare" description="prepare">
+		<echo message="eshop server home=${server.home}"/>
+		<mkdir dir="${server.home}"/>
+		<mkdir dir="${omp.home}"/>
+		<mkdir dir="${build.home}"/>
+		<mkdir dir="${build.classes}"/>
+		<mkdir dir="${dist.plugins}"/>
+	</target>
+
+	<target name="version">
+		<tstamp>
+			<format property="buildtime" pattern="yyyy-MM-dd HH:mm:ss"/>
+		</tstamp>
+		<copy file="${app.home}/etc/version.template" tofile="${app.home}/etc/version" overwrite="true">
+			<filterset>
+				<filter token="buildtime" value="${buildtime}"/>
+				<filter token="version" value="${app.version}"/>
+			</filterset>
+		</copy>
+	</target>
+
+	<target name="build" depends="prepare" description="builds the jar file for the application">
+		<ant antfile="../../com.xinwei.omp.core/ant/build.xml" inheritAll="false"/>
+		<ant antfile="../../com.xinwei.minas.core/ant/build.xml" inheritAll="false"/>
+		<ant antfile="../../com.xinwei.minas.mcbts.core/ant/build.xml" inheritAll="false"/>
+		<ant antfile="../../com.xinwei.minas.zk.core/ant/build.xml" inheritAll="false"/>
+		<ant antfile="../../com.xinwei.minas.xstat.core/ant/build.xml" inheritAll="false"/>
+		<ant antfile="../../com.xinwei.minas.enb.core/ant/build.xml" inheritAll="false"/>
+		<ant antfile="../../com.xinwei.minas.micro.core/ant/build.xml" inheritAll="false"/>
+
+		<javac classpathref="compile.classpath" destdir="${build.classes}" includes="com/xinwei/**,org/IOItec/zkclient/**" debug="yes">
+			<src path="${src.home}"/>
+		</javac>
+		<copy todir="${build.classes}">
+			<fileset dir="${src.home}" includes="**/*.properties,**/*.prop"/>
+		</copy>
+		<jar destfile="${build.home}/${app.name}.jar" >
+			<fileset dir="${build.classes}"  excludes="com/xinwei/minas/server/enb/**" />
+		</jar>
+		<jar destfile="${lib.home}/enb/enb.jar" >
+			<fileset dir="${build.classes}" includes="com/xinwei/minas/server/enb/**" />
+		</jar>
+		<jar destfile="${lib.home}/micro/micro.jar">
+			<fileset dir="${build.classes}" includes="com/xinwei/minas/server/micro/**" />
+		</jar>
+	</target>
+
+	<target name="dist" depends="build" description="dist the application to application server">
+		<copy todir="${dist.plugins}" file="${build.home}/${app.name}.jar"/>
+	</target>
+
+	<target name="deploy" depends="dist" description="dist the application to application server">
+		<copy todir="${server.home}/plugins/">
+			<fileset dir="${dist.plugins}"/>
+			<fileset dir="${app.home}/plugins"/>
+			<fileset dir="${omp.home}/plugins"/>
+		</copy>
+		<copy todir="${server.home}/etc/">
+			<fileset dir="${app.home}/etc"/>
+		</copy>
+		<copy todir="${server.home}/conf/">
+			<fileset dir="${app.home}/conf"/>
+		</copy>
+		<copy todir="${server.home}/">
+			<fileset dir="${app.home}/workdir" excludes="im5000d"/>
+		</copy>
+		<copy todir="${server.home}/lib">
+			<fileset dir="${lib.home}"/>
+		</copy>
+		<copy todir="${server.home}/backup/">
+			<fileset dir="${app.home}/backup"/>
+		</copy>
+		<copy todir="${server.home}/db/">
+			<fileset dir="${app.home}/db"/>
+		</copy>
+		<mkdir dir="${server.home}/log"/>
+	</target>
+
+	<target name="zip"  description="dist the application to application server">
+		<zip destfile="${server.home}/../${app.name}-server-${app.version}.zip">
+			<fileset dir="${server.home}/.." includes="${app.name}/"  excludes="${app.name}/**/*.bak,${app.name}/**/*.scc,${app.name}/**/*.keep*,${app.name}/**/*.contrib*"/>
+		</zip>
+	</target>
+
+	<target name="echo">
+		<echo message="jdk version=${ant.java.version}"/>
+		<echo message="build version=${app.version}"/>
+	</target>
+
+	<target name="all" depends="clear, version, build, dist, deploy, zip, echo" description="all"/>
+
+</project>

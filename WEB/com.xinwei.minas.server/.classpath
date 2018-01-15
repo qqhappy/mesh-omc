@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="plugins"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-dbcp-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-io-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-math-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-net-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-pool-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/dnss-common.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/dnss-framework.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/hlr-net.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/oss-entity.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/oss-res.jar"/>
+	<classpathentry kind="lib" path="lib/launcher/ant.jar"/>
+	<classpathentry kind="lib" path="lib/log/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/quartz/quartz-all-1.8.5.jar"/>
+	<classpathentry kind="lib" path="lib/launcher/ant-launcher.jar"/>
+	<classpathentry kind="lib" path="lib/launcher/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/launcher/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/log/slf4j-api-1.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j/dtdparser-1.21.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j/jox-1.16.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate/jta.jar"/>
+	<classpathentry kind="lib" path="lib/spring/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-aop-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-asm-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-beans-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-context-3.1.0.RELEASE.jar" sourcepath="F:/Study/J2EE/Spring/spring-framework-3.1.0.RELEASE/src/org.springframework.context-sources-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-context-support-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-core-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-expression-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-instrument-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-jdbc-3.1.0.RELEASE.jar" sourcepath="F:/documents/jars&amp;src/spring-framework-3.1.0.RELEASE/src/org.springframework.jdbc-sources-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-jms-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-orm-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-oxm-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-transaction-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring/spring-web-3.1.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/test/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc/mysql/mysql-5.1.18.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc/oracle/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc/sqlitejdbc-v056.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc/oracle/rowset.jar"/>
+	<classpathentry kind="lib" path="lib/test/org.easymock_2.4.0.v20080924-1600.jar"/>
+	<classpathentry kind="lib" path="lib/spring/org.springframework.aspects.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/com.xinwei.inms.commons_1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/misc/concurrent1.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop/zookeeper-3.4.5.jar"/>
+	<classpathentry kind="lib" path="lib/misc/simpleftp.jar"/>
+	<classpathentry kind="lib" path="lib/misc/poi-3.9-20121203.jar"/>
+	<classpathentry kind="lib" path="lib/misc/jackson-databind-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/misc/jackson-annotations-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/misc/fastjson-1.1.33.jar"/>
+	<classpathentry kind="lib" path="lib/enb/enb.jar"/>
+	<classpathentry kind="lib" path="lib/micro/micro.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.minas.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.minas.mcbts.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.omp.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.minas.zk.core"/>
+	<classpathentry kind="lib" path="lib/dnss/ems.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/mcwill_cpe_corba.jar"/>
+	<classpathentry kind="lib" path="lib/commons/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/dnss-idl-server-jacorb-02.02.01.jar"/>
+	<classpathentry kind="lib" path="lib/dnss/jacorb.jar"/>
+	<classpathentry kind="lib" path="lib/misc/ezmorph-1.0.6.jar"/>
+	<classpathentry kind="lib" path="lib/misc/hamcrest-core-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/misc/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="lib/misc/mybatis-3.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/misc/mybatis-spring-1.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/misc/shardbatis-2.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/misc/slf4j-api-1.6.6.jar"/>
+	<classpathentry kind="lib" path="lib/misc/cglib-nodep-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/misc/jsqlparser-0.7.2.jar"/>
+	<classpathentry kind="lib" path="lib/misc/system_order_mysql.jar"/>
+	<classpathentry kind="lib" path="lib/misc/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/mina/mina-core-2.0.7.jar" sourcepath="E:/java/mina/apache-mina-2.0.7-src.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.minas.enb.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.minas.xstat.core"/>
+	<classpathentry kind="lib" path="lib/misc/Lite-20111106.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.xinwei.minas.micro.core"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

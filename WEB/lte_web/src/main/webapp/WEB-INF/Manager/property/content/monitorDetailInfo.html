@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<title>eNB:${enbId!} 实时监控</title>
+<link rel="stylesheet" href="${base}/Manager/js/amcharts/style.css" type="text/css">
+<script type="text/javascript" src="${base}/Manager/js/amcharts/amcharts.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/amcharts/serial.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demoMonitor.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript">
+//全局数据集 
+	var chartData = [];	
+     $(function(){	
+ 			//生成div 
+	  		appendChartDiv(${itemData!});		
+	  		//生成数据		
+	  		generateChartData(${jsonData!});   				
+	  		//生成表格 
+	  		generateGraph(${itemData!}); 
+ 	});
+     //添加表格div 
+     function appendChartDiv(itemData){   	 
+    	document.getElementById("body").innerHTML = "";
+    	for(var i = 0;i<itemData.length;i++){
+    		$("body").append( ' <div class="chartdiv" style="width:100%; height:15px;padding-top:5px;">'+
+    			 							'<span style="font-size: 12px;color:#0088cc;margin-left:15px;">小区 :'+itemData[i].cellName+'</span>'+ 
+    									' </div> '+
+    			   						' <div class="chartdiv" id="chartdiv'+itemData[i].cellId+'" style="width:100%;border-bottom:solid 1px black; height: 300px;"></div>');
+    		
+    	}  
+     }
+  // 查询小区数据 
+     function generateChartData(jsonData) {
+    	//遍历小区数量(待实现)
+    	 chartData=[];
+    	 for(var j = 0;j<jsonData.length;j++){
+			//一个小区中的统计项集合 
+			var newData = [];
+    		//60个点    		
+	        for (var i = 0; i < jsonData[j].data.length; i++) {	   
+		        newData.push(jsonData[j].data[i]);           
+	        } 
+	        chartData.push(newData);
+    	 } 
+     }
+     function generateGraph(itemData){
+		 for(var i = 0;i<itemData.length;i++){
+	       	 // SERIAL CHART 
+            var chart = new AmCharts.AmSerialChart();
+            chart.pathToImages = "${base}/Manager/js/amcharts/images/";
+            chart.dataProvider = chartData[i];
+            chart.categoryField = "date";	            
+            // AXES 
+            // category 
+            var categoryAxis = chart.categoryAxis;
+            categoryAxis.minorGridEnabled = true;
+            categoryAxis.axisColor = "#DADADA";
+            // first value axis (on the left)
+            var valueAxis = new AmCharts.ValueAxis();
+            valueAxis.axisColor = "black";
+            valueAxis.axisThickness = 2;
+            valueAxis.gridAlpha = 0;
+            chart.addValueAxis(valueAxis);          
+            // CURSOR 
+            var chartCursor = new AmCharts.ChartCursor();
+            chartCursor.cursorAlpha = 0.1;
+            chartCursor.fullWidth = true;
+            chart.addChartCursor(chartCursor);
+            // LEGEND 
+            var legend = new AmCharts.AmLegend();
+            legend.marginLeft = 110;
+            legend.useGraphSettings = true;
+            chart.addLegend(legend);           
+            // GRAPHS 
+           for(var j = 0;j<itemData[i].items.length;j++){
+            	var graph = new AmCharts.AmGraph();
+                graph.valueAxis = valueAxis; 
+                graph.bullet = "round";
+                graph.hideBulletsCount = 30;
+                graph.lineThickness = 2;
+                graph.bulletBorderThickness = 1;
+                //设置统计项名称 
+                graph.title = itemData[i].items[j];
+                graph.valueField = itemData[i].items[j];             
+                chart.addGraph(graph);
+            }           
+            // WRITE           
+            chart.write("chartdiv"+itemData[i].cellId);      
+        } 
+		
+	}	
+  </script>
+</head>
+<body style="overflow:hidden;" id="body">
+</body>
+</html>

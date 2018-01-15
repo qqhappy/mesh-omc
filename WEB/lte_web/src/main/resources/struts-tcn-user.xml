@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- tcn终端用户 管理 -->
+	<package name="tcn-user" extends="struts-base" namespace="/lte">
+		
+		<!-- 登陆拦截器 -->
+		<default-interceptor-ref name="loginInterceptorStack" />
+		
+		<!-- 加载左侧用户信息栏 -->
+		<action name="showUserInfoLeft" class="com.xinwei.lte.web.lte.action.LteTurnAction"
+			method="showUserInfoLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/lte_user_info_left.html</result>
+		</action>
+		
+		<!-- 跳转至用户信息页面 -->
+		<action name="turntoUserInfo" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="turntoUserInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info.html</result>
+		</action>
+		
+		<!-- 跳转至用户信息配置页面 -->
+		<action name="turntoUserInfoAdd" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="turntoUserInfoAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info_add.html</result>
+		</action>
+		
+		<!-- 跳转至用户信息批量配置页面(批量开户) -->
+		<action name="turntoUserInfoBatchAdd" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="turntoUserInfoAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info_batch_add.html</result>
+		</action>
+		
+		<!-- 批量增加用户信息(批量开户) -->
+		<action name="batchAddUserInfo" class="com.xinwei.lte.web.lte.action.BatchOpenAccountAction"
+			method="batchAddUserInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info.html</result>
+		</action>
+		
+		<!-- 批量开户进度查询 -->
+		<action name="queryBatchOpenAccountResult" class="com.xinwei.lte.web.lte.action.BatchOpenAccountAction"
+			method="queryBatchOpenAccountResult">			
+		</action>
+		
+		<!-- 获取批量开户失败结果文件-->
+		<action name="getBatchOpenAccountFailureResult" class="com.xinwei.lte.web.lte.action.BatchOpenAccountAction"
+			method="getBatchOpenAccountFailureResult">			
+		</action>
+
+		<!-- 增加用户信息 -->
+		<action name="addUserInfo" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="addUserInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info_add.html</result>
+		</action>
+		
+		<!-- 跳转至修改用户信息 -->
+		<action name="toModifyUserInfo" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="toModifyUserInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info_modify.html</result>
+		</action>
+
+		<!-- 修改用户信息 -->
+		<action name="modifyUserInfo" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="modifyUserInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info_modify.html</result>
+		</action>
+
+		<!-- 删除用户信息 -->
+		<action name="deleteUserInfo" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="deleteUserInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_info_modify.html</result>
+		</action>
+
+		<!-- 用户是否存在 -->
+		<action name="userExist" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="userExist">
+		</action>
+
+		<!-- IMSI是否存在 -->
+		<action name="imsiExist" class="com.xinwei.lte.web.lte.action.UserInfoAction"
+			method="imsiExist">
+		</action>
+		
+		<!-- 跳转至用户参数模板页面 -->
+		<action name="turntoUserTemplate" class="com.xinwei.lte.web.lte.action.UserTemplateAction"
+			method="turntoUserTemplate">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_template.html</result>
+		</action>
+
+		<!-- 跳转至用户参数模板配置页面 -->
+		<action name="turntoUserTemplateAdd" class="com.xinwei.lte.web.lte.action.UserTemplateAction"
+			method="turntoUserTemplateAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_template_add.html</result>
+		</action>
+
+		<!-- 增加用户参数模板 -->
+		<action name="addUserTemplate" class="com.xinwei.lte.web.lte.action.UserTemplateAction"
+			method="addUserTemplate">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_template_add.html</result>
+		</action>
+
+		<!-- 跳转至修改用户参数模板 -->
+		<action name="toModifyUserTemplate" class="com.xinwei.lte.web.lte.action.UserTemplateAction"
+			method="toModifyUserTemplate">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_template_modify.html</result>
+		</action>
+
+		<!-- 修改用户参数模板 -->
+		<action name="modifyUserTemplate" class="com.xinwei.lte.web.lte.action.UserTemplateAction"
+			method="modifyUserTemplate">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_template_modify.html</result>
+		</action>
+
+		<!-- 删除用户参数模板 -->
+		<action name="deleteUserTemplate" class="com.xinwei.lte.web.lte.action.UserTemplateAction"
+			method="deleteUserTemplate">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_template_modify.html</result>
+		</action>
+		
+		<!-- 跳转至用户状态页面 -->
+		<action name="turntoUserStatus" class="com.xinwei.lte.web.lte.action.UserStatusAction"
+			method="turntoUserStatus">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_status.html</result>
+		</action>
+		
+		<!-- 加载无线IMSI -->
+		<action name="turntoImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="turntoImsi">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_imsi.html</result>
+		</action>
+		
+		<!-- 查询无线IMSI -->
+		<action name="searchImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="searchImsi">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_imsi.html</result>
+		</action>
+		
+		<!-- 跳转至无线IMSI配置页面 -->
+		<action name="turntoImsiAdd" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="turntoImsiAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_imsi_add.html</result>
+		</action>
+		
+		<!-- 增加无线IMSI配置 -->
+		<action name="addImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="addImsi">
+		</action>
+		
+		<!-- 跳转到修改无线IMSI配置 -->
+		<action name="toModifyImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="toModifyImsi">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_imsi_modify.html</result>
+		</action>
+		
+		<!-- 跳转到imsi批量导入 -->
+		<action name="turntoImsiBatchImport" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="turntoImsiBatchImport">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_imsi_batchImport.html</result>
+		</action>
+		
+		<!-- imsi批量导入 -->
+		<action name="batchAddImsi" class="com.xinwei.lte.web.lte.action.UserImsiBatchAction"
+			method="batchAddImsi">
+		</action>
+		
+		<!-- imsi批量导入进度查询 -->
+		<action name="queryBatchAddImsiResult" class="com.xinwei.lte.web.lte.action.UserImsiBatchAction"
+			method="queryBatchAddImsiResult">
+		</action>
+		
+		<!-- 获取imsi日志文件 -->
+		<action name="obtainResultFile" class="com.xinwei.lte.web.lte.action.UserImsiBatchAction"
+			method="obtainResultFile">
+		</action>
+		
+		<!-- 修改无线IMSI配置 -->
+		<action name="modifyImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="modifyImsi">
+		</action>
+		
+		<!-- 删除无线IMSI配置 -->
+		<action name="deleteImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="deleteImsi">
+		</action>
+		
+		<!-- 查询无线IMSI配置 -->
+		<action name="searchImsi" class="com.xinwei.lte.web.lte.action.UserImsiAction"
+			method="searchImsi">
+		</action>
+		
+		<!-- 跳转至用户IP资源页面 -->
+		<action name="turntoIpResource"
+			class="com.xinwei.lte.web.lte.action.UserIpResourceAction" method="turntoIpResource">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipResource.html</result>
+		</action>
+
+		<!-- 跳转至用户IP资源页面 -->
+		<action name="turntoIpResourceAdd"
+			class="com.xinwei.lte.web.lte.action.UserIpResourceAction" method="turntoIpResourceAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipResource_add.html</result>
+		</action>
+
+		<!-- 增加用户IP资源页 -->
+		<action name="addIpResource"
+			class="com.xinwei.lte.web.lte.action.UserIpResourceAction" method="addIpResource">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipResource_add.html</result>
+		</action>
+
+		<!-- 跳转至修改用户IP资源页 -->
+		<action name="toModifyIpResource"
+			class="com.xinwei.lte.web.lte.action.UserIpResourceAction" method="toModifyIpResource">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipResource_modify.html</result>
+		</action>
+
+		<!-- 修改用户IP资源页 -->
+		<action name="modifyIpResource"
+			class="com.xinwei.lte.web.lte.action.UserIpResourceAction" method="modifyIpResource">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipResource_modify.html</result>
+		</action>
+
+		<!-- 删除用户IP资源页 -->
+		<action name="deleteIpResource"
+			class="com.xinwei.lte.web.lte.action.UserIpResourceAction" method="deleteIpResource">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipResource_modify.html</result>
+		</action>
+
+		<!-- 跳转至QOS页面 -->
+		<action name="turntoQos" class="com.xinwei.lte.web.lte.action.UserQosAction"
+			method="turntoQos">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_qos.html</result>
+		</action>
+
+		<!-- 跳转至QOS配置页面 -->
+		<action name="turntoQosAdd" class="com.xinwei.lte.web.lte.action.UserQosAction"
+			method="turntoQosAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_qos_add.html</result>
+		</action>
+
+		<!-- 增加QOS -->
+		<action name="addQos" class="com.xinwei.lte.web.lte.action.UserQosAction"
+			method="addQos">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_qos_add.html</result>
+		</action>
+
+		<!-- 跳转到修改QOS -->
+		<action name="toModifyQos" class="com.xinwei.lte.web.lte.action.UserQosAction"
+			method="toModifyQos">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_qos_modify.html</result>
+		</action>
+
+		<!-- 修改QOS -->
+		<action name="modifyQos" class="com.xinwei.lte.web.lte.action.UserQosAction"
+			method="modifyQos">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_qos_modify.html</result>
+		</action>
+
+		<!-- 删除QOS -->
+		<action name="deleteQos" class="com.xinwei.lte.web.lte.action.UserQosAction"
+			method="deleteQos">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_qos_modify.html</result>
+		</action>
+		
+		<!-- 呼叫QOS -->
+		<action name="callQos" class="com.xinwei.lte.web.lte.action.UserCallQosAction">
+			<result name="toCallQos" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_callqos.html</result>
+			<result name="toCallQosAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_callqos_add.html</result>
+			<result name="toModifyCallQos" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_callqos_modify.html</result>
+		</action>
+		
+		<!-- 业务IP QOS -->
+		<action name="ipQos" class="com.xinwei.lte.web.lte.action.UserIpQosAction">
+			<result name="toIpQos" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipqos.html</result>
+			<result name="toIpQosAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipqos_add.html</result>
+			<result name="toModifyQos" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_ipqos_modify.html</result>
+		</action>
+		
+		<!-- 视频监控设备配置 -->
+		<action name="vmgCfg" class="com.xinwei.lte.web.lte.action.VmgCfgAction">
+			<result name="turntoVmgCfg" type="freemarker">/WEB-INF/Manager/tcn1000/content/vmg_cfg.html</result>
+			<result name="turntoVmgCfgAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/vmg_cfg_add.html</result>
+			<result name="toModifyVmgCfg" type="freemarker">/WEB-INF/Manager/tcn1000/content/vmg_cfg_modify.html</result>
+		</action>
+		
+		<!-- 视频监控号码 -->
+		<action name="vmgNum" class="com.xinwei.lte.web.lte.action.VmgNumAction">
+			<result name="turntoVmgNum" type="freemarker">/WEB-INF/Manager/tcn1000/content/vmg_num.html</result>
+			<result name="turntoVmgNumAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/vmg_num_add.html</result>
+			<result name="toModifyVmgNum" type="freemarker">/WEB-INF/Manager/tcn1000/content/vmg_num_modify.html</result>
+		</action>
+		
+		<action name="queryMonitorName" class="com.xinwei.lte.web.lte.action.VmgCfgAction" method="queryMonitorName">
+		</action>
+		
+		<!-- 用户紧急呼叫 -->
+		<action name="userEmgcfg" class="com.xinwei.lte.web.lte.action.UserEmgcfgAction">
+			<result name="toUserEmgcfg" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_emgcfg.html</result>
+			<result name="toUserEmgcfgAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_emgcfg_add.html</result>
+			<result name="toUserEmgcfgModify" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_user_emgcfg_modify.html</result>
+		</action>
+		
+		
+		
+	</package>
+</struts>

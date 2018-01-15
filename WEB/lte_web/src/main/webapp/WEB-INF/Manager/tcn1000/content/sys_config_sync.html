@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		//提交
+		$("#submitBtn").click(function(){
+			//页面参数
+			var syncSeq = $.trim($("#syncSeq").val());
+			var syncPeriod = $.trim($("#syncPeriod").val());
+			//校验
+			var index = 0;
+			if(syncSeq != null && syncSeq != ""){
+				var syncSeqArr =["20","40","80","100","160","400"];
+				if($.inArray(syncSeq,syncSeqArr) == -1){
+					index++;
+					$("#syncSeqError").text("取值范围为20、40、80、100、160、400的数字");
+				}else {
+					$("#syncSeqError").text("");
+				}
+			}else{
+				index++;
+				$("#syncSeqError").text("请输入同步序列,取值范围为20、40、80、100、160、400");
+			}
+			
+			if(syncPeriod != null && syncPeriod != ""){
+				var syncPeriodArr =["20","60","100","320","400","600"];
+				if($.inArray(syncPeriod,syncPeriodArr) == -1){
+					index++;
+					$("#syncPeriodError").text("取值范围为20、60、100、320、400、600的数字");
+				}else {
+					$("#syncPeriodError").text("");
+				}
+			}else{
+				index++;
+				$("#syncPeriodError").text("请输入同步周期,取值范围为20、60、100、320、400、600");
+			}
+		
+		
+			//提交
+			if(index == 0){
+					$("#syncForm").submit();
+			}			
+		});
+	})
+
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>同步周期和同步序列</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/configSync.do" id="syncForm" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>同步序列 (ms):</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" style="width:240px;" id="syncSeq" name="sysSyncModel.syncSeq" value="${sysSyncModel.syncSeq!}"/>
+							</td>
+							<td class="redColor">*</td>
+							<td id="syncSeqError" class="error"></td>
+						</tr>
+						<tr>
+							<td>同步周期（s） :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" style="width:240px;" id="syncPeriod" name="sysSyncModel.syncPeriod" value="${sysSyncModel.syncPeriod!}"/>
+							</td>
+							<td class="redColor">*</td>
+							<td id="syncPeriodError" class="error"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input id="submitBtn" type="button" value="修改" style="padding:3px 25px;"/>	
+							</td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+		<input type="hidden" value="${base!}" id="basePath"/>
+		<input type="hidden" value="${failedReason!}" id="failedReason"/>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/IMD6000/Server/commonOperation.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/jquery_validate.js"></script>
+<title>Ftp服务器配置</title>
+</head>
+<body style="overflow:auto;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>电力终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>Ftp服务器配置</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/uem_web/CfgServer.do" method="get" id="form_cfg">
+			<div class="clearfix wrap ad_Input" style="width:900px;"><div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;" id="FtpServer">
+						<tr id="FtpIPAddress">
+							<td>IP地址:</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" name="FtpIPAddress" value="${FtpServer['FtpIPAddress']}"/>
+							</td>
+							<td id="FtpIPAddressError" class="error"></td>
+						</tr>
+						<tr id="FtpPort">
+							<td>端口号（1~65535） :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" name="FtpPort" value="${FtpServer['FtpPort']}"/>
+							</td>
+							<td class="error" style="width:250px;" id="FtpPortError"></td>
+						</tr>
+						<tr id="UserName">
+							<td>用户名 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" name="UserName" value="${FtpServer['UserName']}"/>
+							</td>
+							<td class="error" style="width:250px;" id="UserNameError"></td>
+						</tr>
+						<tr id="Password">
+							<td>密码 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" name="Password" value="${FtpServer['Password']}"/>
+							</td>
+							<td class="error" style="width:250px;" id="PasswordError"></td>
+						</tr>
+						<tr id="FilePathName">
+							<td>文件夹路径 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" name="FilePathName" value="${FtpServer['FilePathName']}" readOnly="readOnly"/>
+							</td>
+							<td class="error" style="width:250px;" id="FilePathNameError"></td>
+						</tr>
+						<tr id="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="submit"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+		</form>
+		</div>
+</body>
+</html>

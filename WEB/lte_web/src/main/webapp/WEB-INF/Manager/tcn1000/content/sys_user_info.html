@@ -1,0 +1,847 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<style type="text/css">
+	.hide2{display:none;}
+</style>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});	
+
+		//设置查询条件初始值
+		checkUsrNumber();
+		
+		var first = $("#firstHidden").val();
+		if(first != 0){
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+			
+			$("#queryType option").each(function(){
+				if($(this).val() == queryType){
+					$(this).attr("selected",true);
+				}
+			});
+			
+			if(queryType == '1'){
+				checkUsrNumber();
+				$("#userNum").show();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+				$("#userNum").val(queryValue);
+			}else if(queryType == '2'){
+				 checkImsi();
+				$("#userNum").hide();
+				$("#bondImsi").show();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+				$("#bondImsi").val(queryValue);
+			}else if(queryType == '3'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").show();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+				$("#alias").val(queryValue);
+			}else if(queryType == '4'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").show();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+				$("#tmp_idInput option").each(function(){
+					if($(this).val() == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+			}else if(queryType == '5'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").show();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+				$("#usr_numbertypeInput option").each(function(){
+					if($(this).val() == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+			}else if(queryType == '6'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").show();
+				$("#srv_usr_priInput").hide();
+				$("#usr_stateInput option").each(function(){
+					if($(this).val() == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+			}else{
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").show();
+				$("#srv_usr_priInput option").each(function(){
+					if($(this).val() == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+			}					
+			
+		}
+
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();	
+			
+			var queryType = $("#queryType").val();
+			var queryValue = "";
+			if(queryType == '1'){
+				var valTest = /^\d{1,16}$/;
+				queryValue = $("#userNum").val();
+				if(!valTest.test(queryValue)){
+					return false;
+				}
+			}else if(queryType == '2'){
+				var valTest = /^\d{4,15}$/;
+				queryValue = $("#bondImsi").val();
+				if(!valTest.test(queryValue)){
+					return false;
+				}
+			}else if(queryType == '3'){
+				queryValue = $("#alias").val();
+			}else if(queryType == '4'){
+				queryValue = $("#tmp_idInput").val();
+			}else if(queryType == '5'){
+				queryValue = $("#usr_numbertypeInput").val();
+			}else if(queryType == '6'){
+				queryValue = $("#usr_stateInput").val();
+			}else{
+				queryValue = $("#srv_usr_priInput").val();
+			}
+
+			$("#queryform").attr("action",basePath+"/lte/turntoUserInfo.do?queryuserInfoModel.first=1"+				
+					"&queryuserInfoModel.queryType="+queryType+
+					"&queryuserInfoModel.queryValue="+queryValue+
+					"&onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages);
+			$("#queryform").submit();
+			
+		});
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$(".tbody_info input[type='checkbox']:checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+			
+			var errorCount = 0;
+			$(".tbody_info input[type='checkbox']:checked").each(function(){
+				var lte_usestate = $(this).siblings("input").val();
+				if(lte_usestate == "1"){
+					errorCount++;
+					return false;
+				}			
+			});
+			if(errorCount != 0){
+				alert("请先取消用户业务");
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录？")){	
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath =$("#basePath").val();
+				
+				var queryfirst = parseInt($("#firstHidden").val());
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+
+				var usr_numberArray = [];
+				var usr_numberArrayIndex = 0;
+				
+				$(".tbody_info input[type='checkbox']:checked").each(function(){
+					var lte_usestate = $(this).val();
+					if(lte_usestate == "0"){
+						errorCount++;
+						return false;
+					}
+					usr_numberArray[usr_numberArrayIndex]=$(this).val();
+					usr_numberArrayIndex++;
+				});
+				
+				//删除视频会议用户 
+				if(1 == checkVideoServerState()){
+					var a = deleteVscUser(usr_numberArray);
+					if(a.length > 0){
+						if(a[0] != 0){
+							alert(a[1]);
+							return;
+						}
+					}
+				}
+
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteUserInfo.do",
+					data:"userInfoModel.usr_number="+usr_numberArray,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0:						
+								window.location=basePath+"/lte/turntoUserInfo.do?queryuserInfoModel.first="+queryfirst+				
+								"&queryuserInfoModel.queryType="+queryType+
+								"&queryuserInfoModel.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;	
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}
+				});	
+			}
+						
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			var lte_usestate = $(this).siblings(".lte_usestateClass").val();
+			if(lte_usestate == "1"){
+				alert("请先取消用户业务");
+				return false;
+			}
+			if(confirm("确定要删除该条记录？")){				
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath =$("#basePath").val();
+				
+				var queryfirst = parseInt($("#firstHidden").val());
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				
+				var usr_number = $(this).siblings(".usr_numberClass").val();
+				
+				//删除视频会议用户 
+				if(1 == checkVideoServerState()){
+					var a = deleteVscUser(usr_number);
+					if(a.length > 0){
+						if(a[0] != 0){
+							alert(a[1]);
+							return;
+						}
+					}
+				}
+				
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteUserInfo.do",
+					data:"userInfoModel.usr_number="+usr_number,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0:							
+								window.location=basePath+"/lte/turntoUserInfo.do?queryuserInfoModel.first="+queryfirst+				
+								"&queryuserInfoModel.queryType="+queryType+
+								"&queryuserInfoModel.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;	
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}
+				});
+			}
+		});
+
+		
+
+
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoUserInfo.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoUserInfo.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoUserInfo.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoUserInfo.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		
+		
+		//向右跳转按钮
+		$("#turnRightPage").live("click",function(){
+				$(".hide1").hide();
+				$(".hide2").show();
+			//});
+		});
+		//向左跳转按钮
+		$("#turnLeftPage").live("click",function(){			
+				$(".hide2").hide();
+				$(".hide1").show();
+			//});
+		});
+		
+		//
+		$("#queryType").change(function(){
+			var queryType = $(this).val();
+			if(queryType == '1'){
+				checkUsrNumber();
+				$("#userNum").show();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+			}else if(queryType == '2'){
+				 checkImsi();
+				$("#userNum").hide();
+				$("#bondImsi").show();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+			}else if(queryType == '3'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").show();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+			}else if(queryType == '4'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").show();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+			}else if(queryType == '5'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").show();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").hide();
+			}else if(queryType == '6'){
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").show();
+				$("#srv_usr_priInput").hide();
+			}else{
+				$("#userNum").hide();
+				$("#bondImsi").hide();
+				$("#alias").hide();
+				$("#tmp_idInput").hide();
+				$("#usr_numbertypeInput").hide();
+				$("#usr_stateInput").hide();
+				$("#srv_usr_priInput").show();
+			}
+			
+		});	
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turntoUserInfoAdd.do?queryuserInfoModel.first=${queryuserInfoModel.first!}&queryuserInfoModel.queryType=${queryuserInfoModel.queryType!}&queryuserInfoModel.queryValue=${queryuserInfoModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		$("#batchAdd").click(function(){
+			window.location.href="${base}/lte/turntoUserInfoBatchAdd.do?queryuserInfoModel.first=${queryuserInfoModel.first!}&queryuserInfoModel.queryType=${queryuserInfoModel.queryType!}&queryuserInfoModel.queryValue=${queryuserInfoModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+	});
+	
+function checkUsrNumber(){
+	$("#userNum").blur(function(){
+		var valTest = /^\d{1,16}$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("1~16位纯数字");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#userNum").focus(function(){
+		var valTest = /^\d{1,16}$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+function checkImsi(){
+	$("#bondImsi").blur(function(){
+		var valTest = /^\d{4,15}$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("4~15位纯数字");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#bondImsi").focus(function(){
+		var valTest = /^\d{4,15}$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var first = $("#firstHidden").val();
+	var queryType = $("#queryTypeHidden").val();
+	var queryValue = $("#queryValueHidden").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+	
+	var myForm = '<form action="'+basePath+'/lte/turntoUserInfo.do" id="myForm" method="post">'+
+					'<input name="queryuserInfoModel.first" value="'+first+'">'+
+					'<input name="queryuserInfoModel.queryType" value="'+queryType+'">'+
+					'<input name="queryuserInfoModel.queryValue" value="'+queryValue+'">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';		
+	
+	$("#hiddenDiv").html(myForm);
+	$("#myForm").submit();
+	$("#hiddenDiv").html("");
+}
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+function deleteVscUser(phoneNumber){
+	var a = new Array();
+	$.ajax({
+		type:"post",
+		url:"${base}/lte/deleteVscUser.do",
+		data:"phoneNumber="+phoneNumber,
+		dataType:"json",
+		async:false,
+		success:function(data){
+			if(data == null){
+				alert("消息未返回");
+				return ;
+			}
+			var status = data.status;
+			a.push(status);
+			if(status == 1){
+				a.push("删除视频会议失败");
+			}
+			if(status == -1){
+				a.push("删除视频会议失败,原因:"+data.error);
+			}
+		}
+	});
+	return a;
+}
+function checkVideoServerState(){
+	var state = 0;
+	$.ajax({
+		type:"post",
+		url:"${base}/lte/querySysPara.do",
+		dataType:"json",
+		async:false,
+		success:function(data){
+			var status = data.status;
+			if(status == 0){
+				if(data.message.videoSwitch == 1){
+					state = 1;
+				}
+			}
+		}
+	});
+	return state;
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>用户信息</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar" style="height:24px;">
+			<div>
+				<ul>
+<!-- 					<li><label></label><a href="${base}/lte/turntoUserInfoAdd.do?queryuserInfoModel.first=${queryuserInfoModel.first!} -->
+<!-- 					&queryuserInfoModel.queryType=${queryuserInfoModel.queryType!} -->
+<!-- 					&queryuserInfoModel.queryValue=${queryuserInfoModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}" target="mainFrame" class="btn">增加</a></li> -->
+<!-- 					<li><label></label><a href="#" id="batchDelete" target="mainFrame" class="btn">批量删除</a></li>			 -->
+					<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+
+					<li><label></label><input type="button" id="batchAdd" value="批量新增"/></li>
+
+					<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>
+				</ul>
+			</div>
+			<!-- <div>
+				<ul>
+					<li>单呼业务:</li>
+					<li>&nbsp;<input type="checkbox" id="voiceCall"/><label for="voiceCall">音频单呼</label></li>
+					<li>&nbsp;&nbsp;<input type="checkbox" id="videoCall"/><label for="videoCall">视频单呼</label></li>
+					<li>&nbsp;&nbsp;<input type="checkbox" id="dataBuz"/><label for="dataBuz">数据业务</label></li>
+					<li>&nbsp;&nbsp;<input type="checkbox" id="missInfoCall"/><label for="missInfoCall">漏呼短信提醒</label></li>
+					<li>&nbsp;&nbsp;<input type="checkbox" id="nightBuz"/><label for="nightBuz">夜服业务</label></li>
+					<li>&nbsp;&nbsp;<input type="checkbox" id="linkagePhone"/><label for="linkagePhone">联动话机</label></li>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li>组呼业务:</li>
+					<li>&nbsp;<input type="checkbox" id="groupCallBtn"/><label for="groupCallBtn">组呼开关</label></li>					
+					<li>&nbsp;&nbsp;<input type="checkbox" id="broadCall"/><label for="broadCall">广播呼叫</label></li>
+					<li>&nbsp;&nbsp;<input type="checkbox" id="visualGroupCall"/><label for="visualGroupCall">可视组呼</label></li>
+				</ul>
+			</div> -->
+			<div class="fright">
+				<form action="" method="post" id="queryform">
+							<select id="queryType" style="width:100px;height:21px;font-size:13px;margin-top:1px;">
+								<option value="1">用户号码</option>
+								<option value="2">绑定的IMSI</option>
+								<option value="3">昵称</option>
+								<option value="4">参数模板</option>
+								<option value="5">号码类型</option>
+								<option value="6">状态</option>
+								<option value="7">优先级</option>
+							</select>
+							<!-- 用户号码 -->
+							<input type="text" id="userNum" class="sys_user_info_input" style="margin-top:1px;" title="1~16位数字"/>
+							<!-- 绑定的IMSI -->
+							<input type="text" id="bondImsi" class="sys_user_info_input" style="display:none;margin-top:1px;" title="4~15位纯数字"/>
+							<!-- 昵称 -->
+							<input type="text" id="alias" class="sys_user_info_input" style="display:none;margin-top:1px;"/>
+							<!-- 参数模板 -->
+							<select id="tmp_idInput" style="display:none;width:162px;height:21px;font-size:13px;margin-top:1px;">
+								<#list userTemplateModelList! as userTemplateMode>
+									<option value="${userTemplateMode.tmp_id!}">${userTemplateMode.tmp_id!}</option>
+								</#list>
+							</select>
+							<!-- 号码类型 -->
+							<select id="usr_numbertypeInput" style="display:none;width:162px;height:21px;font-size:13px;margin-top:1px;">
+								<option value="1">终端号码</option>
+								<option value="2">电话会议号码</option>
+								<option value="3">视频监控设备号码</option>
+								<option value="4">调度台</option>
+								<option value="5">PDT号码</option>
+								<option value="6">GTS号码</option>
+								<option value="7">CPE号码</option>
+							</select>
+							<!-- 状态 -->
+							<select id="usr_stateInput" style="display:none;width:162px;height:21px;font-size:13px;margin-top:1px;">
+								<option value="0">停用</option>
+								<option value="1">启用</option>
+							</select>
+							<!-- 优先级 -->
+							<select id="srv_usr_priInput" style="display:none;width:162px;height:21px;font-size:13px;margin-top:1px;">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+							</select>
+					<input type="button" id="searchBtn" value="查询"/>
+				</form>				
+			</div>
+			
+		</div>
+		<table width="100%" id="userInfoTab" class="enbTable changeRowColor">
+		  <thead>
+			<tr>
+				<th scope="col" class="checkWidth"><input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th>
+				<th scope="col" style="width:50px;">修改</th>  
+				<th scope="col" width="10%"><!--<img src="${base}/Manager/images/little_pic.jpg" class="fleft" id="turnLeftPage"/>-->用户号码</th>
+				<th scope="col" class="hide1" width="13%">号码类型</th>
+				<th scope="col" class="hide1" width="13%">昵称</th>
+				<!-- <th scope="col" class="sys_user_info_tleft">密码</th>
+				<th scope="col" class="sys_user_info_tright">用户信息</th> -->
+				<th scope="col" class="hide1" width="13%">状态</th>
+				<th scope="col" class="hide1">是否绑定IMSI<img src="${base}/Manager/images/lte/arrow_right.gif" class="fright" id="turnRightPage" style="cursor:pointer;background-color:grey;"/></th>
+
+				<!-- <th scope="col" class="hide2" width="8%">密码</th> -->
+				<th scope="col" class="hide2" width="8%">用户信息</th>
+				<th scope="col" class="hide2" width="8%">绑定的IMSI</th>
+				<th scope="col" class="hide2" width="8%">参数模板</th>
+				<th scope="col" class="hide2" width="10%">用户IP地址分配方式</th>				
+				
+				<th scope="col" class="hide2" width="8%">单呼业务</th>
+				<th scope="col" class="hide2" width="8%">组呼业务</th>
+				<th scope="col" class="hide2" width="8%">录音录像业务</th>
+				<th scope="col" class="hide2">用户优先级<img src='${base}/Manager/images/lte/arrow_left.gif' class='fright' id='turnLeftPage' style="cursor:pointer;background-color:grey;"/></th>
+				<th scope="col" style="width:50px;">修改</th>
+				<th scope="col" style="width:50px;">删除</th>
+			  </tr>
+		  </thead>
+		  
+		  <tbody class="tbody_info">
+		  	<#list userInfoModelList! as userInfoModel>
+			  	<tr>
+					<th scope="row"><input type="checkbox" name="checkson" value="${userInfoModel.usr_number!}" /><input type="hidden" class="lte_usestateClass" value="${userInfoModel.lte_usestate!}"/></th>
+					<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyUserInfo.do?userInfoModel.usr_number=${userInfoModel.usr_number!}	&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}&queryuserInfoModel.first=${queryuserInfoModel.first!}&queryuserInfoModel.queryType=${queryuserInfoModel.queryType!}&queryuserInfoModel.queryValue=${queryuserInfoModel.queryValue!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+					<td>${userInfoModel.usr_number!}<input type="hidden" value="1" id="noRecordInput"/></td>
+			<#if userInfoModel.usr_numbertype! == "1">
+						<td class="hide1">终端号码</td>
+					<#elseif userInfoModel.usr_numbertype! == "2">
+						<td class="hide1">电话会议号码</td>
+					<#elseif userInfoModel.usr_numbertype! == "3">
+						<td class="hide1">视频监控设备号码</td>
+					<#elseif userInfoModel.usr_numbertype! == "5">
+						<td class="hide1">PDT号码</td>
+					<#elseif userInfoModel.usr_numbertype! == "6">
+						<td class="hide1">GTS号码</td>
+					<#elseif userInfoModel.usr_numbertype! == "4">
+						<td class="hide1">调度台</td>
+					<#else>
+						<td class="hide1">CPE号码</td>
+					</#if>
+					<td class="hide1">${userInfoModel.usr_neckname!}</td>
+					<!-- <td>${userInfoModel.usr_password!}</td>
+					<td>${userInfoModel.usr_comment!}</td> -->
+					<#if userInfoModel.usr_state! == 0>
+						<td class="hide1" style="color:red;">停用</td>
+					<#else>
+						<td class="hide1" style="color:green;">启用</td>
+					</#if>
+					<#if userInfoModel.usr_haveimsi! == "0">
+						<td class="hide1">否</td>
+					<#else>
+						<td class="hide1">${userInfoModel.imsi!}</td>
+					</#if>
+					<!-- <td class="hide2">${userInfoModel.usr_password!}</td> -->
+					<td class="hide2">${userInfoModel.usr_comment!}</td>
+					<#if userInfoModel.usr_haveimsi! == "0">						
+						<td class="hide2"></td>
+						<td class="hide2"></td>
+					<#else>						
+						<td class="hide2">${userInfoModel.imsi!}</td>
+						<td class="hide2">${userInfoModel.tmp_id!}</td>
+					</#if>						
+					
+					<#if userInfoModel.ipaddr_allocate_type! == 0>
+						<td class="hide2">不使用静态IP</td>
+					<#elseif userInfoModel.ipaddr_allocate_type! == 1>
+						<td class="hide2">使用静态IP</td>
+					<#else>
+						<td class="hide2">使用静态IP段</td>
+					</#if>
+					
+					<#if userInfoModel.srv_sigcalllte_flag! != "">
+						<td title="${userInfoModel.srv_sigcalllte_flag!}"  class="hide2">${userInfoModel.srv_sigcalllte_flag?substring(0,4)}..</td>
+					<#else>
+						<td class="hide2"></td>
+					</#if>
+					<#if userInfoModel.srv_grpcalllte_flag! != "">
+						<td title="${userInfoModel.srv_grpcalllte_flag!}" class="hide2">${userInfoModel.srv_grpcalllte_flag?substring(0,4)}..</td>
+					<#else>
+						<td class="hide2"></td>
+					</#if>
+					<#if userInfoModel.audioRecordFlag! != "">
+						<td title="${userInfoModel.audioRecordFlag!}" class="hide2">${userInfoModel.audioRecordFlag?substring(0,4)}..</td>
+					<#else>
+						<td class="hide2"></td>
+					</#if>
+					<td class="hide2">${userInfoModel.srv_usr_pri!}</td> 
+
+					<td><a href="${base}/lte/toModifyUserInfo.do?userInfoModel.usr_number=${userInfoModel.usr_number!}	&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}&queryuserInfoModel.first=${queryuserInfoModel.first!}&queryuserInfoModel.queryType=${queryuserInfoModel.queryType!}&queryuserInfoModel.queryValue=${queryuserInfoModel.queryValue!}">修改</a></td>
+					<td><a class="deleteOne" style="cursor:pointer;">删除</a>
+						<input type="hidden" class="usr_numberClass" value="${userInfoModel.usr_number!}"/>
+						<input type="hidden" class="lte_usestateClass" value="${userInfoModel.lte_usestate!}"/>
+					</td>
+				 </tr>
+			  </#list>
+			  <#if userInfoModelList?size < 1>
+
+			  			<tr>
+			  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+			  				<td class="hide1"></td>
+			  				<td class="hide1">${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+			  				<td class="hide1"></td>
+			  				<td class="hide1"></td>
+			  				<td class="hide1"></td>
+			  				<td class="hide1"></td>
+			  				<td class="hide1"></td>
+			  				<td class="hide1"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2">${showMessage!}</td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td>
+			  				<td class="hide2"></td> 
+			  			</tr>
+			  </#if>
+		  </tbody>	  	   
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+<!-- 	<div class="fright" style="margin-right:20px;"> -->
+<!-- 		<span class="fleft"><span style="color:red;">${onlinePage.currentPageNum!}</span>/${onlinePage.totalPages!}</span>&nbsp; -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/first_page.png" onclick="turnPageFunction('1')"/></a></span> -->
+<!-- 		<span class="fleft"> -->
+<!-- 			<#if onlinePage.currentPageNum! != 1> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/previous_page.png" onclick="turnPageFunction('pre')"/></a> -->
+<!-- 			<#else> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/previous_page.png"/></a> -->
+<!-- 			</#if> -->
+<!-- 		</span> -->
+		
+<!-- 		<span class="fleft"> -->
+<!-- 			<#if onlinePage.currentPageNum! != onlinePage.totalPages!> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/next_page.png" onclick="turnPageFunction('next')"/></a> -->
+<!-- 			<#else> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/next_page.png"/></a> -->
+<!-- 			</#if>		 -->
+<!-- 		</span> -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/end_page.png" onclick="turnPageFunction('max')"/></a></span>		 -->
+<!-- 		<span class="fleft"><input type="text" style="width:20px;" id="turnPageInput"/></span> -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg"/></a></span> -->
+<!-- 	</div> -->
+	<div id="hiddenDiv" style="display:none;">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${queryuserInfoModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${queryuserInfoModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${queryuserInfoModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

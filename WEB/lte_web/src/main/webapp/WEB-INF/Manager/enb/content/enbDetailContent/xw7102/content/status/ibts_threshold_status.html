@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var error = '${error!}';
+		if(error != '' && error != null){
+			$("#errorInfo").html(error);
+		}
+		function document.onkeydown(){ 
+		 	if(event.keyCode == 8){ 
+		 		if(document.activeElement.type.toLowerCase() == "textarea" || document.activeElement.type.toLowerCase() == "text"){ 
+		 			if(document.activeElement.readOnly == false){ 
+		 				return true; 
+		 			} 
+		 		}
+		 		return false; 
+		 	} 
+		 }
+	});
+	
+	function fresh(){
+		window.location.href = '{base}/lte/queryEnbDynamicInfo.do?queryFlag=103&moId=${moId}';
+	}
+</script>
+<title></title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>门限信息</a>
+	</div>
+	
+	<!-- 
+	驻波比门限 单位：0.1
+	主、从板温度门限 取整
+	射频通道温度门限 取整
+		-->
+		
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap" >
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding:10px; width:420px; float:left; margin-left:100px;">			
+				<div style="padding:10px 0px;">
+					<div class="toolBar">
+						<ul>
+							<li></li>
+						</ul>
+					</div>
+					<table width="100%" style="line-height:35px;">
+						<tr>
+							<td>驻波比门限 :</td>
+							<td>						
+								<#if (threshold.vswrThres)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${threshold.vswrThres*0.1}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>					
+							</td>
+						</tr>
+						<tr>
+							<td>PAU板温度门限(℃) :</td>
+							<td>								
+								<#if (threshold.boardTempThres)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${threshold.boardTempThres}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>						
+							</td>
+						</tr>
+						<tr>
+							<td>MBD板温度门限(℃):</td>
+							<td>						
+								<#if (threshold.rfChannelTempThres)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${threshold.rfChannelTempThres}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>							
+							</td>
+						</tr>
+					</table>
+					<span id="errorInfo"></span>
+				</div>				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

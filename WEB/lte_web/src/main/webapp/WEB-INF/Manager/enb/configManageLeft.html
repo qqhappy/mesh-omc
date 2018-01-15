@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: true,
+				selectedMulti: false
+			},	
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+		var zNode = "";
+		if("${coreNetType}" != "1000"){
+			zNode =[
+					{ id:1, pId:0, name:"基站设备",url:"${base}/lte/queryEnbList.do?operType=select",target:"mainFrame", iconSkin:"icon05"},
+					{ id:3, pId:0, name:"系统参数配置",url:"${base}/lte/htmlDispactcher.do?htmlFileName=sysParaConfig",target:"mainFrame", iconSkin:"icon01"}
+		 		];
+		}else{
+			zNode =[
+					{ id:1, pId:0, name:"终端设备",open:true,iconSkin:"pIcon05"},		
+					{ id:11, pId:1, name:"终端管理",url:"${base}/uem_web/UE/QueryUE.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:12, pId:1, name:"服务器配置",url:"${base}/uem_web/QueryServer.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:13, pId:1, name:"终端用户注册",open:true,iconSkin:"pIcon05"},
+					{ id:131, pId:13, name:"用户信息",url:"${base}/lte/turntoUserInfo.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:132, pId:13, name:"用户参数模板",url:"${base}/lte/turntoUserTemplate.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:133, pId:13, name:"用户状态",url:"${base}/lte/turntoUserStatus.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:134, pId:13, name:"无线终端IMSI",url:"${base}/lte/turntoImsi.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:135, pId:13, name:"用户IP资源",url:"${base}/lte/turntoIpResource.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:136, pId:13, name:"QoS",url:"${base}/lte/turntoQos.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:137, pId:13, name:"呼叫QoS",url:"${base}/lte/callQos!turntoCallQos.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:138, pId:13, name:"业务IP QoS",url:"${base}/lte/ipQos!turntoIpQos.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:139, pId:13, name:"视频监控设备",url:"${base}/lte/vmgCfg!turntoVmgCfg.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:139, pId:13, name:"视频监控号码",url:"${base}/lte/vmgNum!turntoVmgNum.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:2, pId:0, name:"基站设备",url:"${base}/lte/queryEnbList.do?operType=select",target:"mainFrame", iconSkin:"icon05"},	
+					{ id:3, pId:0, name:"TCN1000设备",url:"${base}/lte/turnTcnDevice.do",target:"mainFrame", iconSkin:"icon05"}	,		
+					{ id:4, pId:0, name:"系统参数配置",url:"${base}/lte/htmlDispactcher.do?htmlFileName=sysParaConfig",target:"mainFrame", iconSkin:"icon01"},
+					{ id:5, pId:0, name:"资产管理",open:true,iconSkin:"pIcon05"},
+					{ id:51, pId:5, name:"当前资产",url:"${base}/lte/htmlDispactcher.do?htmlFileName=currentAsset",target:"mainFrame", iconSkin:"icon01"},
+					{ id:52, pId:5, name:"历史资产",url:"${base}/lte/htmlDispactcher.do?htmlFileName=historyAsset",target:"mainFrame", iconSkin:"icon01"}
+		 		];
+		}
+		 
+		$.fn.zTree.init($("#treeDemo"), setting, zNode);
+			
+		$("#leftDivOne ul li:eq(0) ul li:eq(0) a").addClass("curSelectedNode");
+
+		$("#leftDivOne  a").click(function(event){
+			$("#leftDivOne a").removeClass("curSelectedNode");
+			$(this).addClass("curSelectedNode");
+			event.preventDefault();
+			var href = $(this).attr("href");
+			if(href != "" && href != null && typeof(href) != "undefined"){
+				var myHref = "";
+				if(href.indexOf("?") == -1){
+					myHref = href + "?browseTime="+getBrowseTime();
+				}else{
+					myHref = href + "&browseTime="+getBrowseTime();
+				}
+				if(href.indexOf("turnTcnDevice") != -1){
+					window.parent.leftFrame.location.href="${base}/lte/showSysConfigLeft.do";	
+					window.parent.mainFrame.location.href="${base}/lte/turntoSysAddress.do";	
+				}else{
+					window.parent.mainFrame.location.href=myHref;				
+				}
+			}				
+		});
+		
+	});
+</script>
+</head>
+<body style="background:#e9f6fe;">
+<div class="left_nav">
+		<div class="title" style="font-size:12px;">配置管理</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+</div>
+</body>
+</html>

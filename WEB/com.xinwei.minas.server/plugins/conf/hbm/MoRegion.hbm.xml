@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.core.model.MoRegion" table="T_MO_REGION">
+		<composite-id>
+			<key-property name="moId" type="long">
+				<column name="MO_ID" not-null="true" />
+			</key-property>
+			<key-property name="regionId" type="long">
+				<column name="REGION_ID" not-null="true"/>
+			</key-property>
+		</composite-id>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,708 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_cel_para2.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_cel_para.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_cel_para1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/fieldLevel_modify.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/simplify.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/simplify_celPara.js"></script>
+<script type="text/javascript">
+	$(function(){ 
+		//u8IntraFreqHOMeasCfg
+		$("#u8IntraFreqHOMeasCfg option").each(function(index){
+			if($("#u8IntraFreqHOMeasCfg option:eq("+index+")").val() == ${record.fieldMap["u8IntraFreqHOMeasCfg"].value}){
+				$("#u8IntraFreqHOMeasCfg option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8A2ForInterFreqMeasCfg
+		$("#u8A2ForInterFreqMeasCfg option").each(function(index){
+			if($("#u8A2ForInterFreqMeasCfg option:eq("+index+")").val() == ${record.fieldMap["u8A2ForInterFreqMeasCfg"].value}){
+				$("#u8A2ForInterFreqMeasCfg option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8A1ForInterFreqMeasCfg
+		$("#u8A1ForInterFreqMeasCfg option").each(function(index){
+			if($("#u8A1ForInterFreqMeasCfg option:eq("+index+")").val() == ${record.fieldMap["u8A1ForInterFreqMeasCfg"].value}){
+				$("#u8A1ForInterFreqMeasCfg option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8A2ForRedirectMeasCfg
+		$("#u8A2ForRedirectMeasCfg option").each(function(index){
+			if($("#u8A2ForRedirectMeasCfg option:eq("+index+")").val() == ${record.fieldMap["u8A2ForRedirectMeasCfg"].value}){
+				$("#u8A2ForRedirectMeasCfg option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8TopoNO
+		$("#u8TopoNO option").each(function(index){
+			if($("#u8TopoNO option:eq("+index+")").val() == ${record.fieldMap["u8TopoNO"].value}){
+				$("#u8TopoNO option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8RedSrvCellRsrp
+		$("#u8RedSrvCellRsrp").val(accSub('${record.fieldMap["u8RedSrvCellRsrp"].value}',141));
+		//u8ManualOP
+		for(var i=1;i<3;i++){
+			if($("#radioManual"+i).val() == ${record.fieldMap["u8ManualOP"].value}){
+				$("#radioManual"+i).attr("checked","checked");
+			}
+		}
+		//为小区参数表查询跟踪区码列表，并填入dom
+		queryTaForCel();
+		$("#u16TAC").val("${record.fieldMap['u16TAC'].value}");
+		// 拓扑号转为对应RRU
+		turnTopoIdToRRU();
+		
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>小区参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto;" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_PARA-3.0.7" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<input type="hidden" value="${record.fieldMap['u8NbrCellAntennaPort1'].value}" id="u8NbrCellAntennaPort1AAA"/>
+					<input type="hidden" value="${record.fieldMap['u8UlAntUsdNum'].value}" id="u8UlAntUsdNumAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8DlAntNum'].value}" id="u8DlAntNumAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8DlAntUsdNum'].value}" id="u8DlAntUsdNumAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8IntraFreqMeasBW'].value}" id="u8IntraFreqMeasBWAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8FilterCoeffRsrp'].value}" id="u8FilterCoeffRsrpAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8FilterCoeffRsrq'].value}" id="u8FilterCoeffRsrqAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8FreqBandInd'].value}" id="u8FreqBandIndAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8DlAntPortNum'].value}" id="u8DlAntPortNumAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8NbrCellConfig'].value}" id="u8NbrCellConfigAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8SysBandWidth'].value}" id="u8SysBandWidthAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8BcchModPrdPara'].value}" id="u8BcchModPrdParaAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8UlDlSlotAlloc'].value}" id="u8UlDlSlotAllocAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8SIWindowLength'].value}" id="u8SIWindowLengthAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8SpecSubFramePat'].value}" id="u8SpecSubFramePatAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8UeTransMode'].value}" id="u8UeTransModeAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8AdmitUeMaxErabNum'].value}" id="u8AdmitUeMaxErabNumAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8nB'].value}" id="u8nBAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8Ocs'].value}" id="u8OcsAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8TimeAlignTimer'].value}" id="u8TimeAlignTimerAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8UlAntNum'].value}" id="u8UlAntNumAAA"/>					
+					<input type="hidden" value="${record.fieldMap['u8sMeasure'].value}" id="u8sMeasureAAA"/>
+					<input type="hidden" value="${record.fieldMap['u32CenterFreq'].value}" id="u32CenterFreqAAA"/>
+					<#if (record.fieldMap["u16IntraFreqPrdMeasCfg"])??>
+						<input type="hidden" value="${record.fieldMap['u16IntraFreqPrdMeasCfg'].value}" id="u16IntraFreqPrdMeasCfgAAA"/>
+					</#if>
+					<#if (record.fieldMap["u8IntraFreqPrdMeasCfg"])??>
+						<input type="hidden" value="${record.fieldMap['u8IntraFreqPrdMeasCfg'].value}" id="u8IntraFreqPrdMeasCfgAAA"/>
+					</#if>
+					<input type="hidden" value="${record.fieldMap['u8IntraFreqPrdMeasCfg'].value}" id="u8IntraFreqPrdMeasCfgAAA"/>
+					<input type="hidden" value="${record.fieldMap['u8IcicA3MeasCfg'].value}" id="u8IcicA3MeasCfgAAA"/>
+					<input type="hidden" value="${record.fieldMap['au8UlAntUsdIdx'].value}" id="au8UlAntUsdIdxAAA"/>
+					<input type="hidden" value="${record.fieldMap['au8DlAntUsdIdx'].value}" id="au8DlAntUsdIdxAAA"/>
+					<input type="hidden" value="${record.fieldMap['au8DlAntPortMap'].value}" id="au8DlAntPortMapAAA"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td style="width:250px;">小区标识(0~254) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;"  disabled="disabled" value="${record.fieldMap['u8CId'].value}"/>
+								<input type="hidden" id="u8CId" value="${record.fieldMap['u8CId'].value}"/>
+							</td>
+							<td class="error" style="width:230px;" id="u8CIdError"></td>						
+						</tr>
+						<tr class="u16TAC">
+							<td>跟踪区码 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u16TAC">
+									
+								</select></div>
+							</td>
+							<td class="error" id="u16TACError"></td>						
+						</tr>
+						<tr class="au8MCC_hide">
+							<td>移动国家码 :</td>
+							<td></td>
+							<td>
+								<input type="hidden"  style="width:240px;" id="au8MCC" value="${record.fieldMap['au8MCC'].value}"/>
+							</td>				
+						</tr>
+						<tr class="au8MNC_hide">
+							<td>移动网络码 :</td>
+							<td></td>
+							<td>
+								<input type="hidden"  style="width:240px;" id="au8MNC" value="${record.fieldMap['au8MNC'].value}"/>
+							</td>					
+						</tr>
+						<tr class="au8CellLable">
+							<td>小区名称 :</td>
+							<td></td>
+							<td><input type="text"  style="width:240px;" id="au8CellLable" value="${record.fieldMap['au8CellLable'].value}"/></td>
+							<td class="error" style="width:230px;" id="au8CellLableError"></td>						
+						</tr>
+						<tr class="u8FreqBandInd">
+							<td>频段指示 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8FreqBandInd">
+<!-- 									<option value="33">33</option> -->
+<!-- 									<option value="34">34</option> -->
+<!-- 									<option value="35">35</option> -->
+<!-- 									<option value="36">36</option> -->
+<!-- 									<option value="37">37</option> -->
+									<option value="38">38</option>
+									<option value="39">39</option>
+									<option value="40">40</option>
+									<option value="53">53</option>
+									<option value="58">58</option>
+									<option value="61">61</option>
+									<option value="62">62</option>
+									<option value="63">63</option>
+								</select></div>
+							</td>						
+						</tr>
+						<tr class="u32CenterFreq">
+							<td>中心频点(<span id="centerFreq1"></span>~<span id="centerFreq2"></span>,步长为0.1)(MHz) :</td>
+							<td></td>
+							<td>
+								<input type="text"  style="width:240px;" id="u32CenterFreq"/>
+								<input type="hidden"  id="u32CenterFreq1"/>
+							</td>
+							<td class="error" style="width:230px;" id="u32CenterFreqError"></td>						
+						</tr>
+						<tr class="u8SysBandWidth">
+							<td>系统带宽 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8SysBandWidth">
+<!-- 									<option value="0">1.4M(6RB)</option> -->
+<!-- 									<option value="1">3M(15RB)</option> -->
+									<option value="2">5M(25RB)</option>
+									<option value="3">10M(50RB)</option>
+									<option value="4">15M(75RB)</option>
+									<option value="5">20M(100RB)</option>
+								 </select></div>
+							</td>	
+							<td class="error"  id="u8SysBandWidthError" style="width:230px;"></td>				
+						</tr>
+						<tr class="u8UlDlSlotAlloc">
+							<td>子帧配比 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8UlDlSlotAlloc">
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+<!-- 									<option value="3">3</option> -->
+<!-- 									<option value="4">4</option> -->
+<!-- 									<option value="5">5</option> -->
+<!-- 									<option value="6">6</option> -->
+								 </select></div>
+							</td>
+							<td id="u8UlDlSlotAllocError" class="error" style="width:230px;"></td>	
+						</tr>
+						<tr class="u8SpecSubFramePat">
+							<td>特殊子帧配置 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8SpecSubFramePat"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+								 </select></div>
+							</td>					
+						</tr>
+						<tr class="u16PhyCellId">
+							<td>物理小区标识(0~503) :</td>
+							<td></td>
+							<td><input type="text"  style="width:240px;" id="u16PhyCellId" value="${record.fieldMap['u16PhyCellId'].value}"/></td>
+							<td style="width:230px;">
+<!-- 								<input type="button" value="获取空闲标识" style="width:100px;" onclick="getFreeU16PhyCellId()"></input> -->
+								<span class="error" id="u16PhyCellIdError" ></span>
+							</td>							
+						</tr>
+						<tr class="u8nB">
+							<td>寻呼分组个数 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8nB"><option value="0">4T</option><option value="1">2T</option><option value="2">T</option><option value="3">1/2T</option><option value="4">1/4T</option><option value="5">1/8T</option><option value="6">1/16T</option><option value="7">1/32T</option>
+								 </select></div>
+							</td>						
+						</tr>
+						<tr class="u8UlAntNum">
+							<td>上行天线数 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8UlAntNum"><option value="0">an1</option><option value="1">an2</option><option value="2">an4</option><option value="3">an8</option>
+								 </select></div>
+							</td>	
+							<td class="error" style="width:230px;" id="u8UlAntNumError"></td>				
+						</tr>
+						<tr class="au8UlAntUsdIdx">
+							<td>上行使能天线索引:</td>
+							<td class="blankTd"></td>
+							<td>
+								<table style="line-height: 10px;">
+									<tr class="justForView">
+<!-- 										<td style="width:38px;"></td> -->
+										<td style="width:30px;">&nbsp;1</td>
+										<td style="width:30px;">&nbsp;2</td>
+										<td style="width:30px;">&nbsp;3</td>
+										<td style="width:30px;">&nbsp;4</td>
+										<td style="width:30px;">&nbsp;5</td>
+										<td style="width:30px;">&nbsp;6</td>
+										<td style="width:30px;">&nbsp;7</td>
+										<td style="width:30px;">&nbsp;8</td>
+									</tr>
+									<tr class="justForView">
+<!-- 										<td></td> -->
+										<td ><input type="checkbox" id="au8UlAntUsdIdx1" value="1" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx2" value="2" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx3" value="3" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx4" value="4" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx5" value="5" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx6" value="6" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx7" value="7" class="ulAntCheckBox"></input></td>
+										<td ><input type="checkbox" id="au8UlAntUsdIdx8" value="8" class="ulAntCheckBox"></input></td>
+									</tr>
+								</table>								
+							</td>
+							<td class="error" style="width:230px;" id="au8UlAntUsdIdxError"></td>						
+						</tr>
+						<tr class="u8DlAntNum">
+							<td>下行天线数 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8DlAntNum"><option value="0">an1</option><option value="1">an2</option><option value="2">an4</option><option value="3">an8</option>
+								 </select></div>
+							</td>	
+							<td class="error" style="width:230px;" id="u8DlAntNumError"></td>				
+						</tr>
+						<tr class="au8DlAntUsdIdx">
+							<td>下行使能天线索引:</td>
+							<td class="blankTd"></td>
+							<td>
+								<table style="line-height: 10px;">
+									<tr class="justForView">
+<!-- 										<td style="width:38px;"></td> -->
+										<td style="width:30px;">&nbsp;1</td>
+										<td style="width:30px;">&nbsp;2</td>
+										<td style="width:30px;">&nbsp;3</td>
+										<td style="width:30px;">&nbsp;4</td>
+										<td style="width:30px;">&nbsp;5</td>
+										<td style="width:30px;">&nbsp;6</td>
+										<td style="width:30px;">&nbsp;7</td>
+										<td style="width:30px;">&nbsp;8</td>
+									</tr>
+									<tr class="justForView">
+<!-- 										<td></td> -->
+										<td><input type="checkbox" id="au8DlAntUsdIdx1" value="1" class="dlAntCheckBox"></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx2" value="2" class="dlAntCheckBox"></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx3" value="3" class="dlAntCheckBox" ></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx4" value="4" class="dlAntCheckBox" ></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx5" value="5" class="dlAntCheckBox" ></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx6" value="6" class="dlAntCheckBox" ></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx7" value="7" class="dlAntCheckBox" ></input></td>
+										<td><input type="checkbox" id="au8DlAntUsdIdx8" value="8" class="dlAntCheckBox" ></input></td>
+									</tr>
+								</table>								
+							</td>
+							<td class="error" style="width:230px;" id="au8DlAntUsdIdxError"></td>						
+						</tr>
+						<tr class="u8DlAntPortNum">
+							<td>下行天线端口数 :</td>
+							<td></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8DlAntPortNum">
+									<option value="0">port1</option><option value="1">port2</option><option value="2">port4</option>
+								</select></div>								
+							</td>	
+							<td class="error" style="width:230px;" id="u8DlAntPortNumError"/>			
+						</tr>
+						<tr class="au8DlAntPortMap">
+							<td>下行天线与端口映射关系 :</td>
+							<td></td>
+							<td>
+								<table style="line-height: 10px;" id="dlAntPortMapTable">
+									<tr class="justForView">
+										<td style="width:38px;"></td>
+										<td style="width:24px;">&nbsp;1</td>
+										<td style="width:24px;">&nbsp;2</td>
+										<td style="width:24px;">&nbsp;3</td>
+										<td style="width:24px;">&nbsp;4</td>
+										<td style="width:24px;">&nbsp;5</td>
+										<td style="width:24px;">&nbsp;6</td>
+										<td style="width:24px;">&nbsp;7</td>
+										<td style="width:24px;">&nbsp;8</td>
+									</tr>
+									<tr class="justForView">
+										<td >端口1:</td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+									</tr>
+									<tr class="justForView">
+										<td >端口2:</td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+									</tr>
+									<tr class="justForView">
+										<td >端口3:</td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+									</tr>
+									<tr class="justForView">
+										<td >端口4:</td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+										<td ><input type="checkbox"></input></td>
+									</tr>
+									
+								</table>	
+							</td>
+							<td class="error" style="width:230px;" id="au8DlAntPortMapError"></td>						
+						</tr>
+						<tr class="au16AntCchWgtAmpltd">
+							<td style="width:200px;">下行天线控制信道广播权值幅度<br/>(0~1,步长为0.001) :</td>
+							<td></td>
+							<td style="width:260px;">
+								<input type="hidden"  id="au16AntCchWgtAmpltd" value="${record.fieldMap['au16AntCchWgtAmpltd'].value}"/>
+								<input type="text" style="width:48px;"  id="au16AntCchWgtAmpltd1" />
+								<input type="text" style="width:48px;"  id="au16AntCchWgtAmpltd2"/>
+								<input type="text" style="width:48px;"  id="au16AntCchWgtAmpltd3" />
+								<input type="text" style="width:48px;"  id="au16AntCchWgtAmpltd4"/>
+								<br/>
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtAmpltd5" />
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtAmpltd6"/>
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtAmpltd7" />
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtAmpltd8"/>
+							</td>
+							<td class="error" style="width:230px;" id="au16AntCchWgtAmpltdError"></td>						
+						</tr>
+						<tr class="au16AntCchWgtPhase">
+							<td style="width:200px;">下行天线控制信道广播权值相位<br/>(0~359) :</td>
+							<td></td>
+							<td style="width:260px;">
+								<input type="hidden"  id="au16AntCchWgtPhase" value="${record.fieldMap['au16AntCchWgtPhase'].value}"/>
+								<input type="text" style="width:48px;"  id="au16AntCchWgtPhase1" />
+								<input type="text" style="width:48px;"  id="au16AntCchWgtPhase2"/>
+								<input type="text" style="width:48px;"  id="au16AntCchWgtPhase3" />
+								<input type="text" style="width:48px;"  id="au16AntCchWgtPhase4"/>
+								<br/>
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtPhase5" />
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtPhase6"/>
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtPhase7" />
+								<input type="text"  style="width:48px;"  id="au16AntCchWgtPhase8"/>
+							</td>
+							<td class="error" style="width:230px;" id="au16AntCchWgtPhaseError"></td>						
+						</tr>
+						<tr class="au16AntSynWgtAmpltd">
+							<td style="width:200px;">下行天线同步信道广播权值幅度<br/>(0~1,步长为0.001) :</td>
+							<td></td>
+							<td style="width:260px;">
+								<input type="hidden"  id="au16AntSynWgtAmpltd" value="${record.fieldMap['au16AntSynWgtAmpltd'].value}"/>
+								<input type="text" style="width:48px;"  id="au16AntSynWgtAmpltd1" />
+								<input type="text" style="width:48px;"  id="au16AntSynWgtAmpltd2"/>
+								<input type="text" style="width:48px;"  id="au16AntSynWgtAmpltd3" />
+								<input type="text" style="width:48px;"  id="au16AntSynWgtAmpltd4"/>
+								<br/>
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtAmpltd5" />
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtAmpltd6"/>
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtAmpltd7" />
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtAmpltd8"/>
+							</td>
+							<td class="error" style="width:230px;" id="au16AntSynWgtAmpltdError"></td>						
+						</tr>
+						<tr class="au16AntSynWgtPhase">
+							<td style="width:200px;">下行天线同步信道广播权值相位<br/>(0~359) :</td>
+							<td></td>
+							<td style="width:260px;">
+								<input type="hidden"  id="au16AntSynWgtPhase" value="${record.fieldMap['au16AntSynWgtPhase'].value}"/>
+								<input type="text" style="width:48px;"  id="au16AntSynWgtPhase1" />
+								<input type="text" style="width:48px;"  id="au16AntSynWgtPhase2"/>
+								<input type="text" style="width:48px;"  id="au16AntSynWgtPhase3" />
+								<input type="text" style="width:48px;"  id="au16AntSynWgtPhase4"/>
+								<br/>
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtPhase5" />
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtPhase6"/>
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtPhase7" />
+								<input type="text"  style="width:48px;"  id="au16AntSynWgtPhase8"/>
+							</td>
+							<td class="error" style="width:230px;" id="au16AntSynWgtPhaseError"></td>						
+						</tr>
+						<tr class="u8BcchModPrdPara">
+							<td>系统消息更新周期因子 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8BcchModPrdPara"><option value="0">2</option><option value="1">4</option><option value="2">8</option><option value="3">16</option>
+								 </select></div>
+							</td>					
+						</tr>
+						<tr class="u8SIWindowLength">
+							<td>系统信息窗长(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8SIWindowLength"><option value="0">1</option><option value="1">2</option><option value="2">5</option><option value="3">10</option><option value="4">15</option><option value="5">20</option><option value="6">40</option>
+								 </select></div>
+							</td>	
+						</tr>
+						<tr class="u8UeTransMode">
+							<td>传输模式 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8UeTransMode"><option value="0">tm1</option><option value="1">tm2</option><option value="2">tm3</option>
+								 </select></div>
+							</td>		
+						</tr>
+						<tr class="u8Ocs">
+							<td>服务小区个性偏移(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8Ocs"><option value="0">-24</option><option value="1">-22</option><option value="2">-20</option><option value="3">-18</option><option value="4">-16</option><option value="5">-14</option><option value="6">-12</option><option value="7">-10</option><option value="8">-8</option><option value="9">-6</option><option value="10">-5</option><option value="11">-4</option><option value="12">-3</option><option value="13">-2</option><option value="14">-1</option><option value="15">0</option><option value="16">1</option><option value="17">2</option><option value="18">3</option><option value="19">4</option><option value="20">5</option><option value="21">6</option><option value="22">8</option><option value="23">10</option><option value="24">12</option><option value="25">14</option><option value="26">16</option><option value="27">18</option><option value="28">20</option><option value="29">22</option><option value="30">24</option>
+								 </select></div>
+							</td>						
+						</tr>
+						<tr class="u8TimeAlignTimer">
+							<td>TA定时器(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8TimeAlignTimer"><option value="0">500</option><option value="1">750</option><option value="2">1280</option><option value="3">1920</option><option value="4">2560</option><option value="5">5120</option><option value="6">10240</option><option value="7">正无穷</option>
+								 </select></div>
+							</td>
+						</tr>
+						<tr class="u8IntraFreqHOMeasCfg">
+							<td>同频切换测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8IntraFreqHOMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>							
+							</td>
+							<td class="error" style="width:230px;" id="u8IntraFreqHOMeasCfgError"></td>						
+						</tr>
+						<tr class="u8A2ForInterFreqMeasCfg">
+							<td>A2测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8A2ForInterFreqMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>
+							</td><td class="error" style="width:230px;" id="u8A2ForInterFreqMeasCfgError"></td>						
+						</tr>
+						<tr class="u8A1ForInterFreqMeasCfg">
+							<td>A1测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8A1ForInterFreqMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:230px;" id="u8A1ForInterFreqMeasCfgError"></td>							
+						</tr>
+						<tr class="u8A2ForRedirectMeasCfg">
+							<td>重定向A2测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8A2ForRedirectMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:230px;" id="u8A2ForRedirectMeasCfgError"></td>						
+						</tr>
+						<tr class="u8IntraFreqMeasBW">
+							<td>同频测量带宽 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8IntraFreqMeasBW"><option value="0">1.4M(6RB)</option><option value="1">3M(15RB)</option><option value="2">5M(25RB)</option><option value="3">10M(50RB)</option><option value="4">15M(75RB)</option><option value="5">20M(100RB)</option>
+								 </select></div>
+							</td>					
+						</tr>
+						<tr class="u8FilterCoeffRsrp">
+							<td>RSRP滤波系数:</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8FilterCoeffRsrp"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">11</option><option value="11">13</option><option value="12">15</option><option value="13">17</option><option value="14">19</option>
+								</select></div>
+							</td>			
+						</tr>
+						<tr class="u8FilterCoeffRsrq">
+							<td>RSRQ滤波系数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8FilterCoeffRsrq"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">11</option><option value="11">13</option><option value="12">15</option><option value="13">17</option><option value="14">19</option>
+								</select></div>
+							</td>				
+						</tr>
+						<tr class="u8sMeasure">
+							<td>测量绝对门限(-141~-44)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  id="u8sMeasure"/></td>
+							<td class="error" style="width:230px;" id="u8sMeasureError"></td>						
+						</tr>
+						<tr class="u8NbrCellAntennaPort1">
+							<td>邻区天线端口1使用指示 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8NbrCellAntennaPort1" value="0"  id="radioFour1">否</input>
+								<input type="radio" name="u8NbrCellAntennaPort1" value="1"  id="radioFour2" style="margin-left:80px;">是</input>
+							</td>
+							<td class="error" style="width:230px;" id="u8NbrCellAntennaPort1Error"></td>						
+						</tr>
+						<tr class="u8NbrCellConfig">
+							<td>EUTRAN测量邻区配置 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8NbrCellConfig"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+								</select></div>
+							</td>					
+						</tr>
+						<tr  class="u16IntraFreqPrdMeasCfg">
+							<td>同频周期测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u16IntraFreqPrdMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:230px;" id="u16IntraFreqPrdMeasCfgError"></td>						
+						</tr>
+						<tr class="u8IntraFreqPrdMeasCfg">
+							<td>同频周期测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8IntraFreqPrdMeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:230px;" id="u8IntraFreqPrdMeasCfgError"></td>						
+						</tr>
+						<tr class="u8IcicA3MeasCfg">
+							<td>ICIC的A3测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8IcicA3MeasCfg">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8MeasCfgIdx'].value}">${record.fieldMap["u8MeasCfgIdx"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:230px;" id="u8IcicA3MeasCfgError"></td>						
+						</tr>
+						<tr class="u8TopoNO">
+							<td>小区单板号 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8TopoNO">																
+									 <#list referTopoRecords! as record>									 								 
+										<option value="${record.fieldMap['u8TopoNO'].value}"></option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:230px;" id="u8TopoNOError"></td>						
+						</tr>
+						<tr class="u8RedSrvCellRsrp">
+							<td>重定向服务小区门限(-141~-44) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"    id="u8RedSrvCellRsrp"/></td>
+							<td class="error" style="width:230px;" id="u8RedSrvCellRsrpError"></td>					
+						</tr>
+						<tr class="u8ManualOP">
+							<td>管理状态 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8ManualOP" id="radioManual1" value="0">解闭塞</input>
+								<input type="radio" name="u8ManualOP" id="radioManual2" value="1" style="margin-left:71px;">闭塞</input>
+							</td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>	
+							<td class="error" style="width:230px;" id="allError"></td>								
+						</tr>
+					</table>
+				</div>
+			</div> 			
+		</form>
+		</div>
+</body>
+</html>

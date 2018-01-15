@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var error = '${error!}';
+		if(error != '' && error != null){
+			$("#errorInfo").html(error);
+		}
+	});
+	function fresh(){
+		window.location.href = '{base}/lte/queryEnbDynamicInfo.do?queryFlag=102&moId=${moId}';
+	}
+</script>
+<title>射频状态</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>射频状态</a>
+	</div>
+	
+	<!-- 
+	下行天线状态 
+	0：关闭； 1：开启
+	上行天线状态 
+	0：关闭； 1：开启
+	通道温度 取整
+	发射功率 单位： 0.1dBm
+	发射增益 0.5dB
+	接收增益 0.5dB
+	接收功率 单位： 0.1dBm
+	通道驻波比 单位： 0.1
+	下行功率读取结果 
+	0：succ； 1：fail
+	上行功率读取结果 
+	0：succ； 1：fail
+	驻波比计算结果 
+	0：succ；1：fail
+		-->
+		
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap" >
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding:10px;">
+				<div class="tableHeight">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新" onclick="fresh()" /></li>
+						</ul>
+					</div>
+					
+	
+					<table width="100%" class="changeRowColor newTabStyle">
+					  <tr>
+						<th scope="col">通道号</th>
+						<th scope="col">通道温度(℃)</th>
+						<th scope="col">下行天线状态</th>
+						<th scope="col">上行天线状态</th>
+						<th scope="col">发射功率(dBm)</th>
+						<th scope="col">发射增益(dB)</th>
+						<th scope="col">接收功率(dBm)</th>
+						<th scope="col">接收增益(dB)</th>
+						<th scope="col">功率校准结果</th>
+						<th scope="col">DPD训练结果</th>
+						<th scope="col">通道驻波比</th>
+						<th scope="col">驻波比是否超门限</th>
+					  </tr>
+					  <#list (rfStatus.rfChannelStatusList)! as rruIbtsRfChannelStatus>
+						  <tr>
+						  	<td>${rruIbtsRfChannelStatus.channelNo+1}</td>
+						  	<td>${rruIbtsRfChannelStatus.channelTemperature}</td>
+						  	<td><#if rruIbtsRfChannelStatus.dlAntStatus==0>关闭<#else>开启</#if></td>
+						  	<td><#if rruIbtsRfChannelStatus.ulAntStatus==0>关闭<#else>开启</#if></td>
+						  	<td>${rruIbtsRfChannelStatus.sendPower*0.1}</td>
+						  	<td>${rruIbtsRfChannelStatus.sendGain*0.5}</td>
+						  	<td>${rruIbtsRfChannelStatus.receivePower*0.1}</td>
+						  	<td>${rruIbtsRfChannelStatus.receiveGain*0.5}</td>
+						  	<td><#if rruIbtsRfChannelStatus.powerResult==0>成功<#else>失败</#if></td>
+						  	<td><#if rruIbtsRfChannelStatus.dpdTrainingResult==0>成功<#else>失败</#if></td>
+						  	<td>${rruIbtsRfChannelStatus.vswr*0.1}</td>
+						  	<td><#if rruIbtsRfChannelStatus.vswrCalResult==0>否<#else>是</#if></td>
+						  </tr>
+					  </#list>	
+					</table>
+					<span id="errorInfo"></span>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- enb模块  -->
+	<package name="gis_common" extends="struts-base" namespace="/uem_web/gis">	
+	
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<!-- Gis统计信息 -->
+		
+		<action name="Statistics" class="com.xinwei.lte.web.uem.action.GisCommonManage" method="QueryStat">
+			
+		</action>
+		
+		<action name="init" class="com.xinwei.lte.web.uem.action.GisCommonManage" method="Init">
+			
+		</action>
+		
+		<action name="turnToGisHome" class="com.xinwei.lte.web.uem.action.TurnToGisPage" method="turnToGisHome">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/Gis/gisHome.html</result>
+		</action>
+		
+		<action name="turnToGisInitCfg" class="com.xinwei.lte.web.uem.action.GisCommonManage" method="turnToGisInitCfg">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/Server/GisInitCfg.html</result>
+		</action>
+	</package>
+	
+	<package name="gis_enb" extends="struts-base" namespace="/uem_web/gis/enb">	
+	
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<!-- Gis Enb信息查询-->
+		
+		<action name="list" class="com.xinwei.lte.web.uem.action.GisEnbManage" method="QueryEnbInfo">
+			
+		</action>
+		
+	</package>
+	
+	<package name="gis_ue" extends="struts-base" namespace="/uem_web/gis/ue">	
+	
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<!-- Gis UE信息查询-->
+		
+		<action name="list" class="com.xinwei.lte.web.uem.action.GisUEManage" method="QueryUEInfo">
+			
+		</action>
+		
+	</package>
+	
+	<package name="gis_dev" extends="struts-base" namespace="/uem_web/gis/device">	
+	
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<!-- Gis设备信息查询-->
+		
+		<action name="list" class="com.xinwei.lte.web.uem.action.GisDevManage" method="QueryDevInfo">
+			
+		</action>
+		
+	</package>
+</struts>

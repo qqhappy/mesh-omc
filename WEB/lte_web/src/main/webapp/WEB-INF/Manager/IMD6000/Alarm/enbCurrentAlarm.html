@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+
+<script type="text/javascript" src="${base}/Manager/js/IMD6000/Alarm/enbCurrentAlarm.js?date=201609201"></script>
+ 
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+<style>
+.deviceTh{cursor:pointer;}
+</style>
+
+<script type="text/javascript">
+	$(function(){
+		//时间控件
+		 $(".ui_timepicker").datetimepicker({
+            showSecond: true,
+            timeFormat: 'hh:mm:ss',
+            stepHour: 1,
+            stepMinute: 1,
+            stepSecond: 1
+	      });
+	  	//获取当前时间
+	  	var date = new Date();
+	  	
+		var yy = date.getFullYear();
+		var mm = date.getMonth()+1;
+		var dd = date.getDate();
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		//获取前一天时间
+		var yy1 = "";
+		var mm1 = "";
+		var dd1 = "";
+		if(dd == 1){
+			if(mm == 1){
+				yy1 = yy - 1;
+				mm1 = 12;
+				dd1 = 31;
+			}
+			if(mm == 2 || mm == 4 || mm == 6 || mm == 8 || mm == 9 || mm == 11){
+				yy1 = yy;
+				mm1 = mm -1 ;
+				dd1 = 31;
+			}
+			if(mm == 5 || mm == 7 || mm == 10 || mm == 12){
+				yy1 = yy;
+				mm1 = mm -1 ;
+				dd1 = 30;
+			}
+			if(mm == 3){
+				yy1 = yy;
+				mm1 = 2;
+				if((yy % 4 == 0 && yy % 100 != 0) || yy % 400 == 0){	
+					dd1 = 29
+				}else{
+					dd1 = 28;
+				}
+			}
+		}else{
+			yy1 = yy;
+			mm1 = mm;
+			dd1 = dd - 1;
+		}
+		if(mm < 10){
+			mm = "0"+mm;
+		}
+		if(dd < 10){
+			dd = "0"+dd;
+		}
+		if(mm1 < 10){
+			mm1 = "0"+mm1;
+		}
+		if(dd1 < 10){
+			dd1 = "0"+dd1;
+		}
+		if(hour < 10){
+			hour = "0"+hour;
+		}
+		if(minute < 10){
+			minute = "0"+minute;
+		}
+		if(second < 10){
+			second = "0"+second;
+		}
+		//获取时间字符串
+		var nowTime = yy+"-"+mm+"-"+dd+" "+hour+":"+minute+":"+second;
+		var pastTime = yy1+"-"+mm1+"-"+dd1+" "+hour+":"+minute+":"+second;	
+		$("input[name='beginTime']").val(pastTime);
+		$("input[name='endTime']").val(nowTime);
+		
+		
+		
+		//页面初次加载
+		function  queryAlarm(){
+			var sortColumn = $("#sortColumn").val();
+			var sortDirection = $("#sortDirection").val();	
+			queryUECurrentAlarm(1,3,"",sortColumn,sortDirection);
+		}		
+		queryAlarm();
+		
+		
+		function  queryIntervalAlarm(){
+			var targetPage = $("#targetPageInput").val();
+			if(targetPage == "" || targetPage == null || targetPage == "undefined"){
+				targetPage = 1;
+			}
+			var sortColumn = $("#sortColumn").val();
+			var sortDirection = $("#sortDirection").val();	
+			queryUECurrentAlarm(targetPage,3,"",sortColumn,sortDirection);
+		}	
+		
+		//自动刷新
+		setInterval(queryIntervalAlarm,5000);
+		//
+		$("#exportAlarm").click(function(){
+			var timeCheck = $("#timeCheck").is(":checked");
+			var beginTime = "";
+			var endTime = "";
+			var submitObj = {};
+		 	var filter = {};
+
+			if(timeCheck == true){
+				//起始时间
+				beginTime = $("input[name='beginTime']").val();
+				//结束时间
+				endTime = $("input[name='endTime']").val();
+				var str1 = beginTime.split("");
+				var str2 = endTime.split("");
+				var str3 = "";
+				var str4 = "";
+				var isNum = /^[0-9]+$/;
+				for(var i = 0;i<str1.length;i++){
+					if(isNum.test(str1[i])){
+						str3+=(str1[i]);
+					}
+				}
+				for(var j = 0;j<str2.length;j++){
+					if(isNum.test(str2[j])){
+						str4+=(str2[j]);
+					}
+				}
+				if(parseInt($.trim(str4)) - parseInt($.trim(str3)) < 0){
+					alert("结束时间需要大于开始时间");
+					return;
+				}
+				filter.AlarmFirstTime = beginTime;
+				filter.AlarmLastTime = endTime;
+			}
+
+			//IMSI
+			var IMSI = $("#IMSI").val();
+			if (IMSI != ""){
+				var isNum = /^[0-9]+$/;
+				if ($.trim(IMSI).length != 15 || !(isNum.test(IMSI))){
+					alert("请输入正确的IMSI(15位数字)");
+					$("#IMSI").focus();
+					return;
+				}
+				
+				filter.IMSI = IMSI;
+			}
+
+			//级别
+			var level = $("#alarmLevel").is(":checked");
+			var levelArray = null;
+			if(level==true){
+				levelArray = [];
+				var level1 = $("#alarmLevel1").is(":checked");
+				var level2 = $("#alarmLevel2").is(":checked");
+				var level3 = $("#alarmLevel3").is(":checked");
+				var level4 = $("#alarmLevel4").is(":checked");
+				if(level1==true){
+					levelArray.push(1);
+				}
+				if(level2==true){
+					levelArray.push(2);
+				}
+				if(level3==true){
+					levelArray.push(3);
+				}
+				if(level4==true){
+					levelArray.push(4);
+				}
+				if(levelArray.length >0){
+					filter.AlarmLevel = levelArray;
+				}
+				
+			}
+			//状太
+			var state = $("#alarmState").is(":checked");
+			var stateArray = null;
+			if(state==true){
+				stateArray = [];
+				var state1 = $("#alarmState1").is(":checked");
+				var state2 = $("#alarmState2").is(":checked");
+				var state3 = $("#alarmState3").is(":checked");
+//				var state4 = $("#alarmState4").is(":checked");
+				if(state1==true){
+					stateArray.push("01");
+				}
+				if(state2==true){
+					stateArray.push("11");
+				}
+				if(state3==true){
+					stateArray.push("00");
+				}
+//				if(state4==true){
+//					stateArray.push("10");
+//				}
+				if(stateArray.length >0){
+					filter.AlarmState = stateArray;
+				}
+				
+			}
+			//复选框状态
+			var checkStateArray = new Array();
+			$("input[name='checkson']:checked").each(function(){
+				checkStateArray.push($(this).val());
+			});
+
+			//告警内容
+			var alarmContent = $("#alarmContent").val();
+			if($.trim(alarmContent).length !==0){
+				filter.AlarmContent = alarmContent;
+			}
+			
+			if(!$.isEmptyObject(filter)){
+				var filterKeys = Object.getOwnPropertyNames(filter);		
+				
+				if(filterKeys.length>1 && !(filterKeys.length ==2 && filterKeys.indexOf("AlarmFirstTime") !== -1)){
+					alert("目前不支持多条件查询");
+					return;
+				}				
+				
+				submitObj.alarmfilter = filter;
+			}			
+			
+			window.location.href=encodeURI("exportUEAlarmData.do?checkStateArray="+
+					JSON.stringify(checkStateArray) + "&submitObj="+encodeURI(JSON.stringify(submitObj), "utf-8")+ "&timeFlag=0");
+		});
+		
+		
+	});
+</script>
+
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+	<input type="hidden" id="sortColumn" name="sortColumn" value="firstAlarmTime"/>
+	<input type="hidden" id="sortDirection" name="sortDirection" value="-1"/>
+	
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>故障管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端告警</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>当前告警</a>
+		</div>
+	<div class="alarmPage"> 
+		<div id="allAlarmDiv" style="width:1191px;">
+		<div style="border-bottom:solid 1px #cccccc;height:105px;width:1190px;overflow:hidden;">
+			<table style="line-height:40px;">
+				<tr>
+					<td>
+						<input type="checkbox" id="alarmLevel"> 级别</input>
+						<input class="alarmLevel" style="margin-left:10px;" type="checkbox" id="alarmLevel1" disabled="disabled"> 紧急</input>
+						<input class="alarmLevel" style="margin-left:37px;" type="checkbox" id="alarmLevel2" disabled="disabled"> 重要</input>
+						<input class="alarmLevel" style="margin-left:37px;" type="checkbox" id="alarmLevel3" disabled="disabled"> 次要</input>
+						<input class="alarmLevel" style="margin-left:37px;" type="checkbox" id="alarmLevel4" disabled="disabled"> 提示</input>
+					</td>
+					<td style="width:90px;"><input type="checkbox"  style="margin-left:30px;" id="timeCheck"> 时间</input></td>
+					<td>
+						开始时间 : <input type="text" name="beginTime" class="ui_timepicker timeCheck"  readonly="readonly" disabled="disabled"/>
+					</td>
+					<td style="width:20px;"></td>
+					<td>
+						结束时间 : <input type="text" name="endTime" class="ui_timepicker timeCheck"  readonly="readonly" disabled="disabled"/>
+					</td>	
+					<td style="width:50px;"></td>
+					<td><input type="button"  value="查询" id="queryEnbCurrentAlarm"/></td>			
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" id="alarmState"> 状态</input>
+						<input class="alarmState" style="margin-left:10px;" type="checkbox" id="alarmState1" disabled="disabled"> 未确认未恢复</input>
+						<input class="alarmState" style="margin-left:5px;" type="checkbox" id="alarmState2" disabled="disabled"> 已确认未恢复</input>
+						<input class="alarmState" style="margin-left:5px;" type="checkbox" id="alarmState3" disabled="disabled"> 未确认已恢复</input>
+					</td>
+					<td></td>
+					<td>告警描述 : <input type="text" id="alarmContent" class="oInput"/></td>
+					<td></td>
+					<td>IMSI : <input type="text" style="margin-left:8px;" id="IMSI" maxlength="15"  class="oInput"/></td>
+					<td style="width:50px;"></td>
+					<td><input type="button"  value="告警导出" id="exportAlarm"/></td>	
+				</tr>
+			</table>
+			<div>
+				<span id="submit_check_error" style="margin-left:5px;diplay:inline-block;color:red"></span>
+			</div>
+		</div>
+		
+		<div style="padding-top:5px;padding-bottom:10px;" id="alarmFatherDiv">
+			<div style="float:left;">			
+			<input type="button"  value="恢复" style="margin-bottom:5px;" id="multiRestore"/>
+			<input type="button"  value="确认" style="margin-bottom:5px;" id="multiConfirm"/>
+			</div>
+			<div style="float:right;">
+				<div style="padding:5px;">
+					<table id="pageTable" style="width:316px;">
+						<tr>
+							<td><span id="currentPage">0</span></td>
+							<td>/</td>
+							<td><span id="totalPage">0</span></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" id = "firstPage" style="cursor:pointer;"></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png" id="previousPage" style="cursor:pointer;"></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/next_page.png" id="nextPage" style="cursor:pointer;"></td>
+							<td style="width:58px;"><img src="${base}/Manager/images/end_page.png" id = "endPage" style="cursor:pointer;"></td>
+							<td><input type="text" style="width:20px;height:18px;line-height:18px;" id="targetPageInput" /></td>
+							<td><img src="${base}/Manager/images/change_page_bt.png" id="targetPage" style="cursor:pointer;"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+					<table class="conditionTable changeRowColor" width=100% id="enbCurrentAlarmTable">
+						 <tr>
+							<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+							<th scope="col" class="deviceTh" id="sortBy1" style="display:none;">流水号</th>
+							<th scope="col" class="deviceTh" id="sortBy2" style="width:50px;">级别</th>
+							<th scope="col" class="deviceTh" id="sortBy3" style="width:220px;">告警内容</th>
+							<th scope="col" class="deviceTh" id="sortBy4" >UEID</th>
+							<th scope="col" class="deviceTh" id="sortBy5"  style="width:210px;">IMSI</th>
+							<th scope="col" class="deviceTh" id="sortBy6" style="width:80px;">状态</th>
+							<th scope="col" class="deviceTh" id="sortBy7" >发生时间</th>
+							<th scope="col" class="deviceTh" id="sortBy8" >恢复时间</th>
+							<th scope="col" class="deviceTh" id="sortBy9" style="width:60px;">恢复用户</th>
+							<th scope="col" class="deviceTh" id="sortBy10">确认时间</th>
+							<th scope="col" class="deviceTh" id="sortBy11" style="width:60px;">确认用户</th>				
+						  </tr>
+						 <tbody id="alarmListBody">  	
+						 </tbody>	 	  
+					</table>
+					<span id="sysError" style="color:red"></span>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

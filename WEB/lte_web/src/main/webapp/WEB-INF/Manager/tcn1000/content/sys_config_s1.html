@@ -1,0 +1,536 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});
+		
+		$(".showEndId").each(function(){
+			var temp = $(this).html();
+			var val = parseInt(temp).toString(16);
+			var length = val.length;
+			if(length<8){
+				for(var i=0;i<8-length;i++){
+					val="0"+val;
+				}
+			}
+			$(this).html(val);
+		});
+		
+		checkMmes1IdQuery();
+
+		var first = $("#firstHidden").val();
+		if(first != 0){
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+			$("#queryType option").each(function(){
+				var val = $(this).val();
+				if(val == queryType){
+					$(this).attr("selected",true);
+				}
+			});
+			if(queryType == '1'){
+				$("#mmes1_idQuery").val(queryValue);	
+				checkMmes1IdQuery();
+				$("#mmes1_idQuery").show();
+				$("#mmes1_peeripQuery").hide();
+				$("#mmes1_peerportQuery").hide();
+				$("#terminalStatusInput").hide();
+			}else if(queryType == '2'){
+				$("#mmes1_peeripQuery").val(queryValue);
+				checkMmes1PeerIpQuery();
+				$("#mmes1_idQuery").hide();
+				$("#mmes1_peeripQuery").show();
+				$("#mmes1_peerportQuery").hide();
+				$("#terminalStatusInput").hide();		
+			}else if(queryType == '3'){
+				$("#mmes1_peerportQuery").val(queryValue);
+				checkMmes1PeerPortQuery();
+				$("#mmes1_idQuery").hide();
+				$("#mmes1_peeripQuery").hide();
+				$("#mmes1_peerportQuery").show();
+				$("#terminalStatusInput").hide();		
+			}else{
+				$("#terminalStatusInput option").each(function(){
+					var val = $(this).val();
+					if(val == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+				$("#mmes1_idQuery").hide();
+				$("#mmes1_peeripQuery").hide();
+				$("#mmes1_peerportQuery").hide();
+				$("#terminalStatusInput").show();
+			}
+		
+		}
+		
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$("input[type='checkbox']:gt(0):checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录？")){
+				var queryfirst = $("#firstHidden").val();
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				var mmes1_idArray = [];
+				var enbIdArray = [];
+				var mmes1_idArrayIndex = 0;
+				$("input[type='checkbox']:gt(0):checked").each(function(){
+					mmes1_idArray[mmes1_idArrayIndex]=$(this).val();
+					mmes1_idArrayIndex++;
+					enbIdArray.push($(this).attr("enbId"));
+				});
+		
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteS1.do",
+					data:"mmeS1Model.mmes1_id="+mmes1_idArray+
+						"&mmeS1Model.mmes1_enbid="+enbIdArray,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoS1.do?querymmeS1Model.first="+queryfirst+
+								"&querymmeS1Model.queryType="+queryType+
+								"&querymmeS1Model.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}			
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			if(confirm("确定要删除该条记录？")){
+				var queryfirst = $("#firstHidden").val();
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				
+				var mmes1_id = $(this).siblings("input").val();
+				var enbId = $(this).attr("enbId");
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteS1.do",
+					data:"mmeS1Model.mmes1_id="+mmes1_id+
+					"&mmeS1Model.mmes1_enbid="+enbId,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoS1.do?querymmeS1Model.first="+queryfirst+
+								"&querymmeS1Model.queryType="+queryType+
+								"&querymmeS1Model.queryValue="+queryValue+
+								"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}
+						
+		});
+		
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var queryType = $("#queryType").val();
+			var queryValue = "";
+			if(queryType == '1'){
+				var valTest = /^[1-9]\d*$/;
+				queryValue = $("#mmes1_idQuery").val();
+				if(!valTest.test(queryValue) || queryValue > 100){
+					return false;
+				}
+			}else if(queryType == '2'){
+				var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+				queryValue = $("#mmes1_peeripQuery").val();
+				if(!ipTest.test(queryValue)){
+					return false;
+				}
+			}else if(queryType == '3'){
+				var valTest = /^[1-9]\d*$/;
+				queryValue = $("#mmes1_peerportQuery").val();
+				if(!valTest.test(queryValue)){
+					return false;
+				}
+			}else{
+				queryValue = $("#terminalStatusInput").val();
+			}
+
+			$("#queryform").attr("action",basePath+"/lte/turntoS1.do?querymmeS1Model.first=1"+
+					"&querymmeS1Model.queryType="+queryType+
+					"&querymmeS1Model.queryValue="+queryValue+
+					"&onlinePage.totalPages="+totalPages);
+			$("#queryform").submit();
+		});
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoS1.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoS1.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoS1.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoS1.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		
+		$("#queryType").change(function(){
+			var val = $(this).val();
+			$("#query_value").val("");
+			
+			if(val == '1'){
+				checkMmes1IdQuery();
+				$("#mmes1_idQuery").show();
+				$("#mmes1_peeripQuery").hide();
+				$("#mmes1_peerportQuery").hide();
+				$("#terminalStatusInput").hide();				
+			}else if(val == '2'){
+				checkMmes1PeerIpQuery();
+				$("#mmes1_idQuery").hide();
+				$("#mmes1_peeripQuery").show();
+				$("#mmes1_peerportQuery").hide();
+				$("#terminalStatusInput").hide();	
+			}else if (val == '3'){		
+				checkMmes1PeerPortQuery();
+				$("#mmes1_idQuery").hide();
+				$("#mmes1_peeripQuery").hide();
+				$("#mmes1_peerportQuery").show();
+				$("#terminalStatusInput").hide();	
+			}else{
+				$("#mmes1_idQuery").hide();
+				$("#mmes1_peeripQuery").hide();
+				$("#mmes1_peerportQuery").hide();
+				$("#terminalStatusInput").show();	
+			}
+		});
+		
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turntoS1Add.do?querymmeS1Model.first=${querymmeS1Model.first!}&"+
+				"querymmeS1Model.queryType=${querymmeS1Model.queryType!}&"+
+				"querymmeS1Model.queryValue=${querymmeS1Model.queryValue!}"+
+				"&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+	});
+	
+//验证查询时链路标识
+function checkMmes1IdQuery(){
+	$("#mmes1_idQuery").blur(function(){
+		var valTest = /^[1-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id) || mmes1_id > 100){
+			$(this).val("查询条件为1~100");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#mmes1_idQuery").focus(function(){
+		var valTest = /^[1-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id) || mmes1_id > 100){
+			$(this).val("");
+		}			
+	});
+}
+//验证查询时基站IP
+function checkMmes1PeerIpQuery(){
+	$("#mmes1_peeripQuery").blur(function(){
+		var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+		var mmes1_id = $(this).val();
+		if(!ipTest.test(mmes1_id)){
+			$(this).val("格式错误");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#mmes1_peeripQuery").focus(function(){
+		var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+		var mmes1_id = $(this).val();
+		if(!ipTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+//验证查询时基站端口
+function checkMmes1PeerPortQuery(){
+	$("#mmes1_peerportQuery").blur(function(){
+		var valTest = /^[1-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("查询条件为正整数");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#mmes1_peerportQuery").focus(function(){
+		var valTest = /^[1-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var first = $("#firstHidden").val();
+	var queryType = $("#queryTypeHidden").val();
+	var queryValue = $("#queryValueHidden").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+
+	var myForm = '<form action="'+basePath+'/lte/turntoS1.do" id="myForm" method="post">'+
+					'<input name="querymmeS1Model.first" value="'+first+'">'+
+					'<input name="querymmeS1Model.queryType" value="'+queryType+'">'+
+					'<input name="querymmeS1Model.queryValue" value="'+queryValue+'">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';
+
+	$("#hiddenDiv").html(myForm);
+	$("#myForm").submit();
+	$("#hiddenDiv").html("");
+	
+	/* window.location=basePath+'/lte/turntoS1.do?querymmeS1Model.first='+first+
+			'&querymmeS1Model.mmes1_id='+mmes1_id+
+			'&querymmeS1Model.mmes1_peerip='+mmes1_peerip+
+			'&querymmeS1Model.mmes1_peerport='+mmes1_peerport+
+			'&onlinePage.currentPageNum='+curP+'&onlinePage.totalPages='+totalPages; */
+	
+}
+
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>MME S1链路</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<!-- <li><label></label><a href="${base}/lte/turntoS1Add.do?querymmeS1Model.first=${querymmeS1Model.first!}&
+												querymmeS1Model.queryType=${querymmeS1Model.queryType!}&
+												querymmeS1Model.queryValue=${querymmeS1Model.queryValue!}
+												&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}" target="mainFrame" class="btn">增加</a></li>
+				<li><label></label><a id="batchDelete" href="#" target="mainFrame" class="btn">批量删除</a></li>	 -->		
+				<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+				<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>
+			</ul>
+			<div class="fright">
+				<form action="" method="post" id="queryform">
+					<select style="width:100px;height:21px;font-size:13px;margin-top:1px;" id="queryType">
+						<option value="1">链路标识</option>
+						<option value="2">远端IP</option>
+						<option value="3">远端端口</option>
+						<option value="4">状态</option>
+					</select>
+
+					<input type="text" class="sys_config_s1_input" id="mmes1_idQuery" title="取值范围1~100"/>
+		
+					<input type="text" class="sys_config_s1_input" style="display:none;margin-top:1px;" id="mmes1_peeripQuery" title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字"/>
+				
+					<input type="text" class="sys_config_s1_input" style="display:none;margin-top:1px;" id="mmes1_peerportQuery" title="取值范围为正数"/>
+				
+					<select id="terminalStatusInput" style="display:none;width:162px;height:21px;font-size:13px;margin-top:1px;">
+						<option value="0">断开</option>
+						<option value="1">连接</option>		
+					</select>
+					<input type="button" id="searchBtn" value="查询"/>
+				</form>				
+			</div>
+		</div>
+		<table width="100%" id="table_s1" class="enbTable changeRowColor">
+		  <tr>
+			<th scope="col" class="checkWidth"><input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th>
+			<th scope="col" style="width:50px;">修改</th> 
+			<th scope="col"  width="14%">链路标识</th>
+			<th scope="col"  width="14%">基站ID</th>
+			<th scope="col"  width="14%">远端IP</th>
+			<th scope="col"  width="14%">远端端口</th>
+			<th scope="col"  width="12%">状态</th>
+			<th scope="col" >链路描述</th>			
+			<th scope="col" style="width:50px;">修改</th>
+			<th scope="col" style="width:50px;">删除</th>
+		  </tr>
+		  <#list mmeS1ModelList! as mmeS1Model>
+		  	 <tr>
+				<th scope="row"><input type="checkbox"  name="checkson" value="${mmeS1Model.mmes1_id!}" enbId="${mmeS1Model.mmes1_enbid!}"  /></th>
+				<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyS1.do?mmeS1Model.mmes1_id=${mmeS1Model.mmes1_id!}&querymmeS1Model.first=${querymmeS1Model.first!}&querymmeS1Model.queryType=${querymmeS1Model.queryType!}&querymmeS1Model.queryValue=${querymmeS1Model.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+				<td>${mmeS1Model.mmes1_id!}<input type="hidden" value="1" id="noRecordInput"/></td>
+				<td class="showEndId">${mmeS1Model.mmes1_enbid?string}</td>
+				<td>${mmeS1Model.mmes1_peerip!}</td>
+				<td>${mmeS1Model.mmes1_peerport!}</td>
+				<#if mmeS1Model! != "">
+					<#if mmeS1Model.mmes1_state! == "1">
+						<td style="color:green;">连接</td>
+					<#else>
+						<td style="color:red;">断开</td>
+					</#if>
+				</#if>
+				<td>${mmeS1Model.mmes1_comment!}</td>				
+				<td><a href="${base}/lte/toModifyS1.do?mmeS1Model.mmes1_id=${mmeS1Model.mmes1_id!}&querymmeS1Model.first=${querymmeS1Model.first!}&querymmeS1Model.queryType=${querymmeS1Model.queryType!}&querymmeS1Model.queryValue=${querymmeS1Model.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}">修改</a></td>
+				<td><a class="deleteOne" style="cursor:pointer;" enbId = "${mmeS1Model.mmes1_enbid!}">删除</a><input type="hidden" value="${mmeS1Model.mmes1_id!}"/></td>
+			  </tr>
+		  </#list>
+		  <#if mmeS1ModelList?size < 1>
+	  			<tr>
+	  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+	  				<td></td>
+		  			<td class="hide1">${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  			</tr>
+		  </#if>
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+		
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${querymmeS1Model.first!}" id="firstHidden"/>
+<input type="hidden" value="${querymmeS1Model.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${querymmeS1Model.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

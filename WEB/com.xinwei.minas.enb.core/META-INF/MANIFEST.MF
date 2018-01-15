@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: com.xinwei.minas.enb.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: XINWEI
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: com.xinwei.omp.core;bundle-version="1.0.0",
+ com.xinwei.minas.core;bundle-version="1.0.0",
+ com.xinwei.minas.xstat.core;bundle-version="1.0.0"
+Export-Package: com.xinwei.minas.enb.core.facade,
+ com.xinwei.minas.enb.core.model,
+ com.xinwei.minas.enb.core.utils
+Import-Package: org.apache.tools.zip

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-5-21 19:06:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.common.GPSData"
+		table="mcbts_gpsdata">
+		<id name="idx" type="java.lang.Long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="java.lang.Long">
+			<column name="moId" not-null="true" />
+		</property>
+		<property name="latitude" type="java.lang.Long">
+			<column name="Latitude" not-null="true" />
+		</property>
+		<property name="longitude" type="java.lang.Long">
+			<column name="Longitude" not-null="true" />
+		</property>
+		<property name="height" type="java.lang.Long">
+			<column name="Height" not-null="true" />
+		</property>
+		<property name="gmtOffset" type="java.lang.Long">
+			<column name="GMTOffset" not-null="true" />
+		</property>
+		<property name="minimumTrackingsatellite" type="java.lang.Integer">
+			<column name="MinimumTrackingsatellite" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

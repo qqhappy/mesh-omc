@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#return").click(function(){
+			$("#mainFrame",parent.document).attr("src","${base}/lte/queryAllVersion.do?moId=${moId}&enbHexId=${enbHexId}"+"&browseTime="+getBrowseTime());
+		});
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body  style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>错误</a>
+	</div>
+	<div class="ltePage">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><span>软件版本</span><span>&nbsp;</span><span>增量操作失败</span></li>				
+			</ul>
+			<ul>
+					<li><label></label><span>原因： ${error!}</span>	</li>	
+			</ul>
+			<ul>
+				<li><label></label><input type="button" style="cursor:pointer;" value="返回" id="return"></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

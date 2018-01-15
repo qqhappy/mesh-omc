@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core Plug-in
+Bundle-SymbolicName: com.xinwei.minas.core
+Bundle-Version: 1.0.0
+Bundle-Vendor: XINWEI
+Bundle-Localization: plugin
+Export-Package: com.xinwei.minas.core.annotation,
+ com.xinwei.minas.core.exception,
+ com.xinwei.minas.core.facade,
+ com.xinwei.minas.core.facade.alarm,
+ com.xinwei.minas.core.facade.conf,
+ com.xinwei.minas.core.facade.secu,
+ com.xinwei.minas.core.model,
+ com.xinwei.minas.core.model.alarm,
+ com.xinwei.minas.core.model.conf,
+ com.xinwei.minas.core.model.secu,
+ com.xinwei.minas.core.model.secu.syslog
+Require-Bundle: com.xinwei.omp.core;bundle-version="1.0.0"

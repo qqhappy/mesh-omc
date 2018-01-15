@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.mcbts.core.model.layer3.TConfBackupSag" table="t_conf_backup_sag">
+  <id name="idx" type="long">
+   <column name="idx" not-null="true"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="moId" type="long">
+   <column name="moId" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="sAGIPforVoice" type="long">
+   <column name="sAGIPforVoice"/>
+  </property>
+  <property generated="never" lazy="false" name="sAGIPforsignal" type="long">
+   <column name="sAGIPforsignal"/>
+  </property>
+  <property generated="never" lazy="false" name="bSForceUseJitterbuffer" type="int">
+   <column name="bSForceUseJitterbuffer"/>
+  </property>
+  <property generated="never" lazy="false" name="zModelUseJitterbuffer" type="int">
+   <column name="zModelUseJitterbuffer"/>
+  </property>
+  <property generated="never" lazy="false" name="jitterbufferSize" type="int">
+   <column name="jitterbufferSize"/>
+  </property>
+  <property generated="never" lazy="false"
+   name="jitterbufferPackageThreshold" type="int">
+   <column name="jitterbufferPackageThreshold"/>
+  </property>
+  <property generated="never" lazy="false" name="sAGVoiceTOS" type="int">
+   <column name="sAGVoiceTOS"/>
+  </property>
+  <property generated="never" lazy="false" name="SAGID" type="long">
+   <column name="SAGID"/>
+  </property>
+  <property generated="never" lazy="false" name="SAGRxPortForVoice" type="int">
+   <column name="SAGRxPortForVoice"/>
+  </property>
+  <property generated="never" lazy="false" name="SAGTxPortForVoice" type="int">
+   <column name="SAGTxPortForVoice"/>
+  </property>
+  <property generated="never" lazy="false" name="SAGRxPortForSignal" type="int">
+   <column name="SAGRxPortForSignal"/>
+  </property>
+  <property generated="never" lazy="false" name="SAGTxPortForSignal" type="int">
+   <column name="SAGTxPortForSignal"/>
+  </property>
+  <property generated="never" lazy="false" name="LocationAreaID" type="long">
+   <column name="LocationAreaID"/>
+  </property>
+  <property generated="never" lazy="false" name="SAGSignalPointCode" type="int">
+   <column name="SAGSignalPointCode"/>
+  </property>
+  <property generated="never" lazy="false" name="BTSSignalPointCode" type="int">
+   <column name="BTSSignalPointCode"/>
+  </property>
+  <property generated="never" lazy="false" name="NatAPKey" type="int">
+   <column name="NatAPKey"/>
+  </property>
+ </class>
+</hibernate-mapping>

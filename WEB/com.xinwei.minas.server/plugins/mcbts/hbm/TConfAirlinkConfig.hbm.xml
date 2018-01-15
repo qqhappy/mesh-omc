@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.AirlinkConfig"
+		table="mcbts_airlink">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="sequenceId" type="int">
+			<column name="sequenceId" not-null="true"/>
+		</property>
+		<property name="preambleScale" type="int">
+			<column name="preambleScale" not-null="true"/>
+		</property>
+		<property name="maxScale" type="int">
+			<column name="maxScale" not-null="true"/>
+		</property>
+		<property name="totalTS" type="int">
+			<column name="totalTS" not-null="true"/>
+		</property>
+		<property name="downlinkTS" type="int">
+			<column name="downlinkTS" not-null="true"/>
+		</property>
+		<property name="scgMask" type="int">
+			<column name="scgMask" not-null="true"/>
+		</property>
+		<property name="tchForbidden" type="java.lang.String">
+			<column name="tchForbidden" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

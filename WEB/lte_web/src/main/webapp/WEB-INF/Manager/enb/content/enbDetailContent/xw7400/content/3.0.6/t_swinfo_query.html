@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_swinfo.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_swinfo").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="u8PkgIndx">规格包序号</th>'
+					+'<th scope="col" class="u8SWID">软件标识</th>'
+					+'<th scope="col" class="au8SwVer">软件版本</th>'
+					+'<th scope="col" class="au8FileName">文件名</th>'
+					+'<th scope="col" class="u32Date">下载时间</th>'
+
+				  +'</tr>'
+				+'<tr>'	
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+					+'<td class="u8PkgIndx">暂无相关数据</td>'
+					+'<td class="u8SWID"></td>'
+					+'<td class="au8SwVer"></td>'
+					+'<td class="au8FileName"></td>'
+					+'<td class="u32Date"></td>'
+
+				+'</tr>'				
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_SWINFO-3.0.6&referTable=T_SWPKG";
+		});
+		checkLevel();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>软件版本信息表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+	
+		
+		</ul>
+		</div>
+		<div class="tableHeight">
+		<table width="100%" id="t_swinfo" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="u8PkgIndx">规格包序号</th>
+			<th scope="col" class="u8SWID">软件标识</th>
+			<th scope="col" class="au8SwVer">软件版本</th>
+			<th scope="col" class="au8FileName">文件名</th>
+			<th scope="col" class="u32Date">下载时间</th>
+
+		  </tr>
+		  <#list records! as record>
+			<tr>
+				<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+				<td class="u8PkgIndx">${record.fieldMap["u8PkgIndx"].value!}</td>
+				<td class="u8SWID">${record.fieldMap["u8SWID"].value!}</td>
+				<td class="au8SwVer">${record.fieldMap["au8SwVer"].value!}</td>
+				<td class="au8FileName">${record.fieldMap["au8FileName"].value!}</td>
+				<td class="u32Date">${record.fieldMap["u32Date"].value!}</td>
+
+			</tr>
+			</#list>
+		</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

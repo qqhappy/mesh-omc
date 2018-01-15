@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                   
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.sysManage.McBtsVersion" table="mcbts_version">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="versionName" type="java.lang.String">
+			<column name="versionName" not-null="true"/>
+		</property>
+		<property name="btsType" type="java.lang.Integer">
+			<column name="btsType" not-null="true"/>
+		</property>
+		<property name="fileName" type="java.lang.String">
+			<column name="fileName" not-null="true"/>
+		</property>
+		<property name="fileType" type="java.lang.Integer">
+			<column name="fileType" not-null="false"/>
+		</property>
+	</class>
+</hibernate-mapping>
+                                   

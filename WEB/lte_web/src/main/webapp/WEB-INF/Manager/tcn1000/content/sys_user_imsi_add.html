@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		
+		$("#submitBtn").click(function(){
+			var valTest = /^[0-9]*$/;
+			
+			var queryfirst = $("#firstHidden").val();
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+			
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var imsi = $.trim($("#imsi").val());
+			var imsi_k = $.trim($("#imsi_k").val());
+			var imsi_uestatus = $("#imsi_uestatus").val();
+			
+			if(imsi == null || imsi == ''){
+				alert("IMSI不可为空");
+				return false;
+			}
+			if((!valTest.test(imsi)) || imsi.length < 4  || imsi < 1000){
+				alert("IMSI格式或取值范围错误");
+				return false;
+			}
+			var hexTest = /^[0-9a-fA-F]*$/;
+			
+			if(imsi_k == null || imsi_k == ''){
+				alert("根密钥不可为空");
+				return false;
+			}
+			if((!hexTest.test(imsi_k)) || imsi_k.length != 32){
+				alert("根密钥格式或取值范围错误");
+				return false;
+			}
+			
+			imsi_k = imsi_k.replace(/[ ]/g,"");
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/addImsi.do",
+				data:"wirelessImsiModel.imsi="+imsi+
+					"&wirelessImsiModel.imsi_k="+imsi_k+
+					"&wirelessImsiModel.imsi_uestatus="+imsi_uestatus,
+				dataType:"json",
+				success:function(data){
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0: 
+							if(currentPageNum == 0){
+								currentPageNum = 1;
+								totalPages = 1;
+							}
+							window.location="lte/turntoImsi.do?querywirelessImsiModel.first="+queryfirst+
+							"&querywirelessImsiModel.queryType="+queryType+
+							"&querywirelessImsiModel.queryValue="+queryValue+
+							"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+							break;
+						default:
+							alert(data.message);
+							break;
+					}
+				},
+				error:function(data){
+					alert("操作失败");
+				} 
+				//ajax
+			});
+		//click
+		});	
+		
+		//验证IMSI
+		$("#imsi").blur(function(){
+			var valTest = /^[0-9]*$/;
+			var imsi = $.trim($(this).val());
+			if((!valTest.test(imsi)) || imsi.length < 4 || imsi < 1000 ){
+				$(".judgeImsi").html("IMSI取值为4~15位纯数字");
+				$(".judgeImsi").css("color","red");
+			}else{
+				$(".judgeImsi").html("");
+			}			
+		});
+		//验证根密钥
+		$("#imsi_k").blur(function(){
+			var valTest = /^[0-9a-fA-F]*$/;
+			var imsi_k = $.trim($(this).val());
+			if((!valTest.test(imsi_k))){
+				$(".judgeImsiK").html("根密钥取值为32位十六进制");
+				$(".judgeImsiK").css("color","red");
+				return false;
+			}else{
+				$(".judgeImsiK").html("");
+			}		
+			
+			if(imsi_k.length != 32){
+				var kLength = 32-imsi_k.length;
+				var endVal = "";
+				for(var i = 0; i < kLength; i ++){
+					endVal+="0";
+				}
+				$(this).val(imsi_k+endVal);
+				//$(".judgeImsiK").html("根密钥取值必须为32位");
+				$(".judgeImsiK").css("color","red");
+			}else{
+				
+				$(".judgeImsiK").html("");
+			}
+		});
+	})
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>无线终端IMSI</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>新增</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>IMSI :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="imsi" maxlength="15" title="取值为4~15位数字"/></td>
+							<td class="redColor">*</td>
+							<td class="judgeImsi"></td>
+						</tr>
+						<tr>
+							<td>根密钥 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="imsi_k" maxlength="32" title="取值为32位16进制数"/></td>
+							<td class="redColor">*</td>
+							<td class="judgeImsiK"></td>
+						</tr>
+						<tr>
+							<td>终端状态 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff"  id="imsi_uestatus" disabled="disabled">
+									<option value="0">未开户</option>
+									<option value="1">已开户</option>
+								</select></div>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button" id="submitBtn"  value="确定" style="padding:3px 25px;"/>
+								 <input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${querywirelessImsiModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${querywirelessImsiModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${querywirelessImsiModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+	http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd"
+	default-lazy-init="false">
+	<!-- enable component scanning (beware that this does not enable mapper 
+		scanning!) -->
+	<context:component-scan base-package="com.xinwei" />	
+	
+	<bean id="RabbitConnectFactory" class="com.rabbitmq.client.ConnectionFactory">
+		<property name="host" value="172.31.2.31"/>
+		<property name="username" value="xinwei"/>
+		<property name="password" value="123456"/>
+		<property name="automaticRecoveryEnabled" value="true"/>
+		<property name="virtualHost" value="/"/>
+	</bean>
+
+	<bean id="RabbitConnect" factory-bean="RabbitConnectFactory" factory-method="newConnection"/>
+
+	<bean id="RabbitChannel" factory-bean="RabbitConnect" factory-method="createChannel"/>
+
+	
+	
+	<bean id="RPCClient" class=" com.xinwei.lte.web.uem.utils.RPCClient">
+		<constructor-arg name="channel" ref="RabbitChannel"/>		
+	</bean>
+	
+	<bean id="RPCClientProxy" class="com.xinwei.lte.web.uem.utils.RPCClientProxy" factory-method="getInstance">	
+	
+	</bean>	
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="RPCClientProxy" />
+		<property name="targetMethod" value="setClient" />
+		<property name="arguments">
+			<list>				
+				<ref bean="RPCClient" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- UE 部分-->	
+	<bean class="com.xinwei.lte.web.uem.action.UEManage" scope="prototype">
+		<property name="Client" ref="RPCClient"/>
+	</bean>
+	<!-- UE 版本升级部分-->	
+	<bean class="com.xinwei.lte.web.uem.action.UEVersionManage" scope="prototype">
+		<property name="Client" ref="RPCClient"/>
+	</bean>
+	
+	<!-- Gis 部分-->
+	<bean class="com.xinwei.lte.web.uem.action.GisUEManage"  scope="prototype">
+		<property name="Client" ref="RPCClient"/>
+	</bean>
+	<bean class="com.xinwei.lte.web.uem.action.GisCommonManage"  scope="prototype">
+		<property name="Client" ref="RPCClient"/>
+	</bean>
+	
+	<bean class="com.xinwei.lte.web.uem.action.GisDevManage"  scope="prototype">
+		<property name="Client" ref="RPCClient"/>
+	</bean>
+	
+	<bean class="com.xinwei.lte.web.uem.action.GisEnbManage"  scope="prototype">
+		<property name="Client" ref="RPCClient"/>
+	</bean>
+	
+	<!-- 服务器配置部分-->
+	<bean class="com.xinwei.lte.web.uem.action.QueryServer"  scope="prototype">
+		<property name="Client" ref="RPCClientProxy"/>
+	</bean>
+	<bean class="com.xinwei.lte.web.uem.action.ConfigServer"  scope="prototype">
+		<property name="Client" ref="RPCClientProxy"/>
+	</bean>
+	
+	<!-- 告警配置部分-->
+	<bean class="com.xinwei.lte.web.uem.action.QueryAlarm"  scope="prototype">
+		<property name="Client" ref="RPCClientProxy"/>
+	</bean>
+	<!-- 告警导出部分-->
+	<bean class="com.xinwei.lte.web.uem.action.ExportUEAlarm"  scope="prototype">
+		<property name="Client" ref="RPCClientProxy"/>
+	</bean>
+	
+</beans>

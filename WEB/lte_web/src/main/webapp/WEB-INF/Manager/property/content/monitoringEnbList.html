@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbList.js"></script>
+
+<style>
+.deviceTh { cursor: pointer; }
+</style>
+<script type="text/javascript">
+	var freshInterval = 0;
+	$(function(){
+		//首次进入页面查询数据
+		queryMonitoringEnbList(1,1);
+		//启动定时查询
+		freshInterval = setInterval(fresh,5000);		
+		//刷新
+		$("#fresh").click(function(){
+			var currentPage = $("#currentPage").html();
+			var sortBy = $("#sortBy").val();
+			queryMonitoringEnbList(currentPage,sortBy);
+		});		
+		//首页		
+		$("#firstPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			queryMonitoringEnbList(1,sortBy);
+		});
+		//尾页
+		$("#endPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var totalPage = $("#totalPage").html();
+			queryMonitoringEnbList(totalPage,sortBy);
+		});
+		//上一页		
+		$("#previousPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var currentPage = $("#currentPage").html();
+			if(parseInt(currentPage) == 1){
+				alert("已是首页");
+			}else{
+				var page = (parseInt(currentPage)-1);
+				queryMonitoringEnbList(page,sortBy);
+			}
+		});
+		//下一页	
+		$("#nextPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var currentPage = $("#currentPage").html();
+			var totalPage = $("#totalPage").html();			
+			if(parseInt(currentPage) == parseInt(totalPage)){
+				alert("已是尾页");
+			}else{
+				var page = (parseInt(currentPage)+1);
+				queryMonitoringEnbList(page,sortBy);
+			}
+		});
+		//目标页	
+		$("#targetPage").click(function(){
+			var sortBy = $("#sortBy").val();
+			var isNum = /^\d+$/;
+			var targetPage = $("#targetPageInput").val();
+			var totalPage = $("#totalPage").html();
+			if(isNum.test(targetPage)){
+				if(targetPage >= 1 && targetPage<= parseInt(totalPage)){
+					queryMonitoringEnbList(targetPage,sortBy);
+				}else if(targetPage <= 1){
+					queryMonitoringEnbList(1,sortBy);
+				}else{
+					queryMonitoringEnbList(totalPage,sortBy);
+				}
+			}else{
+				queryMonitoringEnbList(1,sortBy);
+			}
+		});
+		//排序
+		$(".deviceTh").each(function(index){			
+			$(this).bind("click",function(){
+				
+				var currentPage = $("#currentPage").html();						
+				var sortBy = parseInt($("#sortBy").val()) * (-1);
+				var sortNum = parseInt($(this).attr("sort"));
+				if(sortBy != sortNum*(-1) &&  sortBy != sortNum){
+					sortBy = sortNum;
+				}			
+				queryMonitoringEnbList(currentPage,sortBy);
+			})
+		});
+		
+		//停止监控
+		$(".stopMonitor").live("click",function(event){
+			event.preventDefault();
+			var moId = $(this).attr("moId");
+			$.ajax({
+				type:"post",
+				url:"stopMonitor.do",
+				data:"moId="+moId+
+					"&browseTime="+getBrowseTime(),
+				dataType:"json",
+				async:false,
+				success:function(data){
+					var error = data.error;
+					if(error == "" || error == null){
+						var currentPage = $("#currentPage").html();
+						var sortBy = $("#sortBy").val();
+						queryMonitoringEnbList(currentPage,sortBy);
+					}else{
+						alert(error);
+					}
+				}
+			});
+		});
+		//开始监控
+		$(".beginMonitor").live("click",function(event){
+			event.preventDefault();
+			var moId = $(this).attr("moId");
+			$.ajax({
+				type:"post",
+				url:"beginMonitor.do",
+				data:"moId="+moId+
+					"&browseTime="+getBrowseTime(),
+				dataType:"json",
+				async:false,
+				success:function(data){
+					var error = data.error;
+					if(error == "" || error == null){
+						var currentPage = $("#currentPage").html();
+						var sortBy = $("#sortBy").val();
+						queryMonitoringEnbList(currentPage,sortBy);
+					}else{
+						alert(error);
+					}
+				}
+			});
+		})
+	});
+	//查询监控列表 
+	function queryMonitoringEnbList(page,sortBy){
+		var basePath =  $("#basePath").val();
+		$.ajax({
+			type:"post",
+			url:"queryMonitoringEnbList.do",
+			data:"currentPage="+page+
+				"&sortBy="+sortBy+
+				"&browseTime="+getBrowseTime(),
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(!sessionsCheck(data,basePath)){
+					return ;
+				}
+				if(data.status == 0){
+					var length = data.message.results.length;
+					if(length == 0){
+						$("#targetPageInput").val(1);
+						$("#currentPage").html(1);
+						$("#totalPage").html(1);
+						var tbody = '<td>暂无数据</td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td></td>';
+						$("#monitoringEnbListTbody").html(tbody);
+					}else{
+						$("#targetPageInput").val(data.message.currentPage);
+						$("#currentPage").html(data.message.currentPage);
+						$("#totalPage").html(data.message.totalPages);
+						$("#sortBy").val(data.sortBy);
+						var tbody = "";
+						for(var i = 0;i<length;i++){
+							var stateTd = "";
+							var manageTd = ""
+							var detailTd = ""
+							if(data.message.results[i].monitorState == 1){
+								stateTd = '<td style="color:green">监控中</td>';
+								manageTd = '<td><a  style="cursor:pointer" class="stopMonitor" moId="'+data.message.results[i].moId+'">停止</a></td>';
+								detailTd = '<td><a  style="cursor:pointer" href="${base}/lte/toMonitorDetailhtml.do?moId='+data.message.results[i].moId+'&enbHexId='+data.message.results[i].hexEnbId+'" target="_blank">监控详情</a></td>';
+							}else{
+								stateTd = '<td style="color:red">未监控</td>';
+								manageTd = '<td><a style="cursor:pointer" class="beginMonitor" moId="'+data.message.results[i].moId+'">开始</a></td>';
+								detailTd = '<td style="color:#595757">监控详情</td>';
+							}								
+							var tr = '<tr>'+
+									'<td>'+data.message.results[i].hexEnbId+'</td>'+
+									'<td>'+data.message.results[i].name+'</td>'+
+									stateTd+
+									manageTd+
+									detailTd+
+									'</tr>';
+							tbody = tbody + tr;
+						}
+						$("#monitoringEnbListTbody").html(tbody);											
+					}
+				}else{
+					alert(data.error);
+					clearInterval(freshInterval);
+				}
+			}
+		})
+	}
+	function fresh(){
+		var currentPage = $("#currentPage").html();
+		var sortBy = $("#sortBy").val();
+		queryMonitoringEnbList(currentPage,sortBy);
+	}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow: hidden;">
+	<input type="hidden" id="basePath" value="${base}" />
+	<input type="hidden" id="sortBy" value="1"/>
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>性能管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>性能监控</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>实时性能监控</a>
+	</div>
+	<div class="enbPage">
+		<div class="contentDivObj" style="width:100%">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="fresh" value="刷新" />
+				</li>
+<!-- 				<li><label></label><a href="${base}/lte/toMonitorDetailhtml.do?moId=3000004000" target="_blank">详情</a> -->
+				</li>
+			</ul>
+		</div>
+		<div>
+			<table width="100%" id="monitoringEnbListTable" class="enbTable changeRowColor">
+				<thead>
+					<tr>
+						<th scope="col" class="deviceTh" sort="1"  width="20%">基站标识</th>
+						<th scope="col" class="deviceTh" sort="2"  width="20%">基站名称</th>
+						<th scope="col" class="deviceTh" sort="11"  width="20%">监控状态</th>
+						<th scope="col" width="18%">操作</th>
+						<th scope="col" width="">查看详情</th>
+					</tr>
+				</thead>
+				<tbody id="monitoringEnbListTbody">
+					
+				</tbody>
+			</table>
+			<div style="float: right;">
+				<div style="padding: 5px;">
+					<table id="pageTable" style="width: 316px;">
+						<tr>
+							<td><span id="currentPage"></span></td>
+							<td>/</td>
+							<td><span id="totalPage"></span></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/first_page.png" id="firstPage" style="cursor: pointer;"></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/previous_page.png" id="previousPage" style="cursor: pointer;"></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/next_page.png" id="nextPage" style="cursor: pointer;"></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/end_page.png" id="endPage" style="cursor: pointer;"></td>
+							<td><input type="text" style="width: 20px; height: 18px; line-height: 18px;" id="targetPageInput" value="" /></td>
+							<td><img src="${base}/Manager/images/change_page_bt.png" id="targetPage" style="cursor: pointer;"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

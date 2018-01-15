@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+         
+	
+	<bean id="alarmTask" class="com.xinwei.minas.server.core.alarm.task.AlarmTask">
+		<property name="alarmReservedDay" value="${alarm.history_alarm_reserved_day}" />
+		<property name="alarmDAO" ref="alarmDAO" />
+	</bean>
+	
+	<bean id="alarmTaskJobDetailBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="alarmTask"/>
+		<property name="targetMethod" value="doWork"/>
+	</bean>
+	
+	<bean id="alarmTaskCronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="alarmTaskJobDetailBean"></property>
+		<property name="cronExpression" value="${alarm.task.cronExpression}"></property>
+	</bean>
+	<bean id="alarmTaskSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="alarmTaskCronTriggerBean" />
+			</list>
+		</property>
+	</bean>
+</beans>

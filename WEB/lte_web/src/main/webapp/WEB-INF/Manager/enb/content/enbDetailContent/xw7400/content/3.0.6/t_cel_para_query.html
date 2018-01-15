@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_para.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_cel_para1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CId">小区标识</th>'
+					+'<th scope="col" class="u16TAC">跟踪区码</th>'
+					+'<th scope="col" class="au8MCC_hide">移动国家码</th>'
+					+'<th scope="col" class="au8MNC_hide">移动网络码</th>'
+					+'<th scope="col" class="au8CellLable">小区名称</th>'
+					+'<th scope="col" class="u8FreqBandInd">频段指示</th>'
+					+'<th scope="col" class="u32CenterFreq">中心频点(MHz)</th>'
+					+'<th scope="col" class="u8SysBandWidth">系统带宽(M)</th>'
+					+'<th scope="col" class="u8UlDlSlotAlloc">子帧配比</th>'
+					+'<th scope="col" class="u8SpecSubFramePat">特殊子帧配置</th>'
+					+'<th scope="col" class="u16PhyCellId">物理小区标识</th>'
+					+'<th scope="col" class="u8nB">寻呼分组个数</th>'
+					+'<th scope="col" class="u8UlAntNum">上行天线数</th>'
+					+'<th scope="col" class="u8UlAntUsdNum_hide">上行使能天线数</th>'
+					+'<th scope="col" class="au8UlAntUsdIdx">上行使能天线索引</th>'
+					+'<th scope="col" class="u8DlAntNum">下行天线数</th>'
+					+'<th scope="col" class="u8DlAntUsdNum_hide">下行使能天线数</th>'
+					+'<th scope="col" class="au8DlAntUsdIdx">下行使能天线索引</th>'
+					+'<th scope="col" class="u8DlAntPortNum">下行天线端口数</th>'
+					+'<th scope="col" class="au8DlAntPortMap">下行天线与端口映射关系</th>'
+					+'<th scope="col" class="au16AntCchWgtAmpltd">下行天线控制信道广播权值幅度</th>'
+					+'<th scope="col" class="au16AntCchWgtPhase">下行天线控制信道广播权值相位</th>'
+					+'<th scope="col" class="au16AntSynWgtAmpltd">下行天线同步信道广播权值幅度</th>'
+					+'<th scope="col" class="au16AntSynWgtPhase">下行天线同步信道广播权值相位</th>'
+					+'<th scope="col" class="u8BcchModPrdPara">系统消息更新周期因子</th>'
+					+'<th scope="col" class="u8SIWindowLength">系统信息窗长(ms)</th>'
+					+'<th scope="col" class="u8UeTransMode">传输模式</th>'
+					+'<th scope="col" class="u8Ocs">服务小区个性偏移</th>'
+					+'<th scope="col" class="u8TimeAlignTimer">TA定时器</th>'
+					+'<th scope="col" class="u8IntraFreqHOMeasCfg">同频切换测量配置索引</th>'
+					+'<th scope="col" class="u8A2ForInterFreqMeasCfg">A2测量配置索引</th>'
+					+'<th scope="col" class="u8A1ForInterFreqMeasCfg">A1测量配置索引</th>'
+					+'<th scope="col" class="u8A2ForRedirectMeasCfg">重定向A2测量配置索引</th>'					
+					+'<th scope="col" class="u8IntraFreqMeasBW">同频测量带宽</th>'
+					+'<th scope="col" class="u8FilterCoeffRsrp">RSRP滤波系数</th>'
+					+'<th scope="col" class="u8FilterCoeffRsrq">RSRQ滤波系数</th>'
+					+'<th scope="col" class="u8sMeasure">测量绝对门限</th>'
+					+'<th scope="col" class="u8NbrCellAntennaPort1">邻区天线端口1使用指示</th>'
+					+'<th scope="col" class="u8NbrCellConfig">EUTRAN测量邻区配置</th>'
+					+'<th scope="col" class="u16IntraFreqPrdMeasCfg">同频周期测量配置索引</th>'
+					+'<th scope="col" class="u8IntraFreqPrdMeasCfg">同频周期测量配置索引</th>'
+					+'<th scope="col" class="u8IcicA3MeasCfg">ICIC的A3测量配置索引</th>'
+// 					+'<th scope="col" class="u16AdmitMaxUeNum">小区支持最大UE数</th>'
+// 					+'<th scope="col" class="u8AdmitUeMaxErabNum">UE支持最大ERAB数</th>'
+// 					+'<th scope="col" class="u16AdmitMaxErabNum">小区支持最大ERAB数</th>'
+					+'<th scope="col" class="u8TopoNO">小区单板号</th>'
+					+'<th scope="col" class="u8RedSrvCellRsrp">重定向服务小区门限</th>'
+					+'<th scope="col" class="u8ManualOP">管理状态</th>'
+					+'<th scope="col" class="u32Status">小区状态</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView">小区配置向导</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>' 
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+				+'<th class="justForView" scope="row"></th>'
+				 +'<td class="u8CId">暂无相关数据</td>'
+				+'<td class="u16TAC"></td>'
+				+'<td class="au8MCC_hide"></td>'
+				+'<td class="au8MNC_hide"></td>'
+				+'<td class="au8CellLable"></td>'
+				+'<td class="u8FreqBandInd"></td>'
+				+'<td class="u32CenterFreq"></td>'
+				+'<td class="u8SysBandWidth"></td>'
+				+'<td class="u8UlDlSlotAlloc"></td>'
+				+'<td class="u8SpecSubFramePat"></td>'
+				+'<td class="u16PhyCellId"></td>'
+				+'<td class="u8nB"></td>'
+				+'<td class="u8UlAntNum"></td>'
+				+'<td class="u8UlAntUsdNum_hide"></td>'
+				+'<td class="au8UlAntUsdIdx"></td>'
+				+'<td class="u8DlAntNum"></td>'
+				+'<td class="u8DlAntUsdNum_hide"></td>'
+				+'<td class="au8DlAntUsdIdx"></td>'
+				+'<td class="u8DlAntPortNum"></td>'
+				+'<td class="au8DlAntPortMap"></td>'
+				+'<td class="au16AntCchWgtAmpltd"></td>'
+				+'<td class="au16AntCchWgtPhase"></td>'
+				+'<td class="au16AntSynWgtAmpltd"></td>'
+				+'<td class="au16AntSynWgtPhase"></td>'
+				+'<td class="u8BcchModPrdPara"></td>'
+				+'<td class="u8SIWindowLength"></td>'
+				+'<td class="u8UeTransMode"></td>'
+				+'<td class="u8Ocs"></td>'
+				+'<td class="u8TimeAlignTimer"></td>'
+				+'<td class="u8IntraFreqHOMeasCfg"></td>'
+				+'<td class="u8A2ForInterFreqMeasCfg"></td>'
+				+'<td class="u8A1ForInterFreqMeasCfg"></td>'
+				+'<td class="u8A2ForRedirectMeasCfg"></td>'					
+				+'<td class="u8IntraFreqMeasBW"></td>'
+				+'<td class="u8FilterCoeffRsrp"></td>'
+				+'<td class="u8FilterCoeffRsrq"></td>'
+				+'<td class="u8sMeasure"></td>'
+				+'<td class="u8NbrCellAntennaPort1"></td>'
+				+'<td class="u8NbrCellConfig"></td>'
+				+'<td class="u16IntraFreqPrdMeasCfg"></td>'
+				+'<td class="u8IntraFreqPrdMeasCfg"></td>'
+				+'<td class="u8IcicA3MeasCfg"></td>'
+// 				+'<td class="u16AdmitMaxUeNum"></td>'
+// 				+'<td class="u8AdmitUeMaxErabNum"></td>'
+// 				+'<td class="u16AdmitMaxErabNum"></td>'
+				+'<td class="u8TopoNO"></td>'
+				+'<td class="u8RedSrvCellRsrp"></td>'
+				+'<td class="u8ManualOP"></td>'
+				+'<td class="u32Status"></td>'
+				+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+				+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+				+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_CEL_PARA-3.0.6&referTable=T_ENB_MEASCFG&referTableTopo=T_TOPO";
+		});
+		
+		checkLevelLen();
+	});
+	function turnModifyCellGuide(moId,cid){
+		window.location.href = "${base}/lte/turnCellModifyGuide.do?moId="+moId+"&cid="+cid;
+	}
+	function turnCellAddGuide(moId){
+		$.ajax({
+			type:"post",
+			url:"checkCurrentCellNum.do",
+			data:"moId="+moId,
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data.status == 0){
+					if(data.message == true){
+						window.location.href = "${base}/lte/turnCellAddGuide.do?moId="+moId;
+					}else{
+						alert("当前小区数量已达上限，不可新增");
+					}
+				}else{
+					alert(data.error);
+				}
+			}
+		});		
+	}
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow: hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区参数表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		
+		<ul>
+<!-- 		<li><label></label><input type="button" id="newAdd" value="新增"/></li> -->
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button"  style="width:90px;" onclick="turnCellAddGuide(${moId})" value="小区新增向导"/></li>
+<!-- 		<li><label></label><input type="button" id="delete" value="批量删除"/></li> -->
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_cel_para_div"> -->
+			<div style="width:7300px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_cel_para1" class="changeRowColor">
+				 <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>  
+					<th scope="col" class="u8CId">小区标识</th>
+					<th scope="col" class="u16TAC">跟踪区码</th>
+					<th scope="col" class="au8MCC_hide">移动国家码</th>
+					<th scope="col" class="au8MNC_hide">移动网络码</th>
+					<th scope="col" class="au8CellLable">小区名称</th>
+					<th scope="col" class="u8FreqBandInd">频段指示</th>
+					<th scope="col" class="u32CenterFreq">中心频点(MHz)</th>
+					<th scope="col" class="u8SysBandWidth">系统带宽(M)</th>
+					<th scope="col" class="u8UlDlSlotAlloc">子帧配比</th> 
+					<th scope="col" class="u8SpecSubFramePat">特殊子帧配置</th>
+					<th scope="col" class="u16PhyCellId">物理小区标识</th>
+					<th scope="col" class="u8nB">寻呼分组个数</th>
+					<th scope="col" class="u8UlAntNum">上行天线数</th>
+					<th scope="col" class="u8UlAntUsdNum_hide">上行使能天线数</th>
+					<th scope="col" class="au8UlAntUsdIdx">上行使能天线索引</th>
+					<th scope="col" class="u8DlAntNum">下行天线数</th>
+					<th scope="col" class="u8DlAntUsdNum_hide">下行使能天线数</th>
+					<th scope="col" class="au8DlAntUsdIdx">下行使能天线索引</th>
+					<th scope="col" class="u8DlAntPortNum">下行天线端口数</th>
+					<th scope="col" class="au8DlAntPortMap">下行天线与端口映射关系</th>
+					<th scope="col" class="au16AntCchWgtAmpltd">下行天线控制信道广播权值幅度</th>
+					<th scope="col" class="au16AntCchWgtPhase">下行天线控制信道广播权值相位</th>
+					<th scope="col" class="au16AntSynWgtAmpltd">下行天线同步信道广播权值幅度</th>
+					<th scope="col" class="au16AntSynWgtPhase">下行天线同步信道广播权值相位</th>
+					<th scope="col" class="u8BcchModPrdPara">系统消息更新周期因子</th>
+					<th scope="col" class="u8SIWindowLength">系统信息窗长(ms)</th>
+					<th scope="col" class="u8UeTransMode">传输模式</th>
+					<th scope="col" class="u8Ocs">服务小区个性偏移</th>
+					<th scope="col" class="u8TimeAlignTimer">TA定时器</th>
+					<th scope="col" class="u8IntraFreqHOMeasCfg">同频切换测量配置索引</th>
+					<th scope="col" class="u8A2ForInterFreqMeasCfg">A2测量配置索引</th>
+					<th scope="col" class="u8A1ForInterFreqMeasCfg">A1测量配置索引</th>
+					<th scope="col" class="u8A2ForRedirectMeasCfg">重定向A2测量配置索引</th>
+					<th scope="col" class="u8IntraFreqMeasBW">同频测量带宽</th>
+					<th scope="col" class="u8FilterCoeffRsrp">RSRP滤波系数</th>
+					<th scope="col" class="u8FilterCoeffRsrq">RSRQ滤波系数</th>
+					<th scope="col" class="u8sMeasure">测量绝对门限</th>
+					<th scope="col" class="u8NbrCellAntennaPort1">邻区天线端口1使用指示</th>
+					<th scope="col" class="u8NbrCellConfig">EUTRAN测量邻区配置</th>
+					<th scope="col" class="u16IntraFreqPrdMeasCfg">同频周期测量配置索引</th>
+					<th scope="col" class="u8IntraFreqPrdMeasCfg">同频周期测量配置索引</th>
+					<th scope="col" class="u8IcicA3MeasCfg">ICIC的A3测量配置索引</th>
+<!-- 					<th scope="col" class="u16AdmitMaxUeNum">小区支持最大UE数</th> -->
+<!-- 					<th scope="col" class="u8AdmitUeMaxErabNum">UE支持最大ERAB数</th> -->
+<!-- 					<th scope="col" class="u16AdmitMaxErabNum">小区支持最大ERAB数</th> -->
+					<th scope="col" class="u8TopoNO">小区单板号</th>
+					<th scope="col" class="u8RedSrvCellRsrp">重定向服务小区门限</th>
+					<th scope="col" class="u8ManualOP">管理状态</th>
+					<th scope="col" class="u32Status">小区状态</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+					<th scope="col" class="justForView">小区配置向导</th>
+					<th scope="col" class="justForView" width="60px;">删除</th>
+				  </tr>
+				 <#list records! as record>
+				 	<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CId">${record.fieldMap["u8CId"].value!}</td>
+						<td class="u16TAC">${record.fieldMap["u16TAC"].value!}</td>
+						<td class="au8MCC_hide">${record.fieldMap["au8MCC"].value!}</td>
+						<td class="au8MNC_hide">${record.fieldMap["au8MNC"].value!}</td>
+						<td class="au8CellLable">${record.fieldMap["au8CellLable"].value!}</td>
+						<td class="u8FreqBandInd">${record.fieldMap["u8FreqBandInd"].value!}</td>
+						<td class="u32CenterFreq">${record.fieldMap["u32CenterFreq"].value!}</td>
+						<td class="u8SysBandWidth">${record.fieldMap["u8SysBandWidth"].value!}</td>
+						<td class="u8UlDlSlotAlloc">${record.fieldMap["u8UlDlSlotAlloc"].value!}</td>
+						<td class="u8SpecSubFramePat">${record.fieldMap["u8SpecSubFramePat"].value!}</td>
+						<td class="u16PhyCellId">${record.fieldMap["u16PhyCellId"].value!}</td>
+						<td class="u8nB">${record.fieldMap["u8nB"].value!}</td>
+						<td class="u8UlAntNum">${record.fieldMap["u8UlAntNum"].value!}</td>
+						<td class="u8UlAntUsdNum_hide">${record.fieldMap["u8UlAntUsdNum"].value!}</td>
+						<td class="au8UlAntUsdIdx">${record.fieldMap["au8UlAntUsdIdx"].value!}</td>				
+						<td class="u8DlAntNum">${record.fieldMap["u8DlAntNum"].value!}</td>
+						<td class="u8DlAntUsdNum_hide">${record.fieldMap["u8DlAntUsdNum"].value!}</td>
+						<td class="au8DlAntUsdIdx">${record.fieldMap["au8DlAntUsdIdx"].value!}</td>
+						<td class="u8DlAntPortNum">${record.fieldMap["u8DlAntPortNum"].value!}</td>
+						<td class="au8DlAntPortMap">${record.fieldMap["au8DlAntPortMap"].value!}</td>
+						<td class="au16AntCchWgtAmpltd">${record.fieldMap["au16AntCchWgtAmpltd"].value!}</td>
+						<td class="au16AntCchWgtPhase">${record.fieldMap["au16AntCchWgtPhase"].value!}</td>
+						<td class="au16AntSynWgtAmpltd">${record.fieldMap["au16AntSynWgtAmpltd"].value!}</td>
+						<td class="au16AntSynWgtPhase">${record.fieldMap["au16AntSynWgtPhase"].value!}</td>						
+						<td class="u8BcchModPrdPara">${record.fieldMap["u8BcchModPrdPara"].value!}</td>
+						<td class="u8SIWindowLength">${record.fieldMap["u8SIWindowLength"].value!}</td>
+						<td class="u8UeTransMode">${record.fieldMap["u8UeTransMode"].value!}</td>						
+						<td class="u8Ocs">${record.fieldMap["u8Ocs"].value!}</td>
+						<td class="u8TimeAlignTimer">${record.fieldMap["u8TimeAlignTimer"].value!}</td>
+						<td class="u8IntraFreqHOMeasCfg">${record.fieldMap["u8IntraFreqHOMeasCfg"].value!}</td>
+						<td class="u8A2ForInterFreqMeasCfg">${record.fieldMap["u8A2ForInterFreqMeasCfg"].value!}</td>						
+						<td class="u8A1ForInterFreqMeasCfg">${record.fieldMap["u8A1ForInterFreqMeasCfg"].value!}</td>
+						<td class="u8A2ForRedirectMeasCfg">${record.fieldMap["u8A2ForRedirectMeasCfg"].value!}</td>
+						<td class="u8IntraFreqMeasBW">${record.fieldMap["u8IntraFreqMeasBW"].value!}</td>
+						<td class="u8FilterCoeffRsrp">${record.fieldMap["u8FilterCoeffRsrp"].value!}</td>
+						<td class="u8FilterCoeffRsrq">${record.fieldMap["u8FilterCoeffRsrq"].value!}</td>
+						<td class="u8sMeasure">${record.fieldMap["u8sMeasure"].value!}</td>
+						<td class="u8NbrCellAntennaPort1">${record.fieldMap["u8NbrCellAntennaPort1"].value!}</td>
+						<td class="u8NbrCellConfig">${record.fieldMap["u8NbrCellConfig"].value!}</td>
+						
+						<#if (record.fieldMap["u16IntraFreqPrdMeasCfg"])??>
+							<td class="u16IntraFreqPrdMeasCfg">${record.fieldMap["u16IntraFreqPrdMeasCfg"].value!}</td>
+						<#else>
+							<td></td>
+						</#if>
+						<#if (record.fieldMap["u8IntraFreqPrdMeasCfg"])??>
+							<td class="u8IntraFreqPrdMeasCfg">${record.fieldMap["u8IntraFreqPrdMeasCfg"].value!}</td>
+						<#else>
+							<td></td>
+						</#if>
+						<td class="u8IcicA3MeasCfg">${record.fieldMap["u8IcicA3MeasCfg"].value!}</td>		
+<!-- 						<td class="u16AdmitMaxUeNum">${record.fieldMap["u16AdmitMaxUeNum"].value!}</td> -->
+<!-- 						<td class="u8AdmitUeMaxErabNum">${record.fieldMap["u8AdmitUeMaxErabNum"].value!}</td> -->
+<!-- 						<td class="u16AdmitMaxErabNum">${record.fieldMap["u16AdmitMaxErabNum"].value!}</td> -->
+						<td class="u8TopoNO">${record.fieldMap["u8TopoNO"].value!}</td>
+						<td class="u8RedSrvCellRsrp">${record.fieldMap["u8RedSrvCellRsrp"].value!}</td>
+						<td class="u8ManualOP">${record.fieldMap["u8ManualOP"].value!}</td>
+						<td class="u32Status">${record.fieldMap["u32Status"].value!}</td>	
+						<td  class="justForView" style="cursor:pointer;"><a>修改</a></td>
+						<td  class="justForView" style="cursor:pointer;"><a href="javascript:turnModifyCellGuide(${moId},${record.fieldMap['u8CId'].value!});">小区配置向导</a></td>
+						<td  class="justForView" style="cursor:pointer;"><a>删除</a></td>
+					</tr>
+				</#list>
+				</table>
+				<span id="table_error" style="color:red;"></span>
+			</div>
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

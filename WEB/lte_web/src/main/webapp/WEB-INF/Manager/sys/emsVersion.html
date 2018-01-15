@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<style>
+
+</style>
+<script type="text/javascript">
+	$(function(){
+		$("#fresh").click(function(){
+			window.location.href = "${base}/lte/queryEmsVersion.do";
+		});
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow: hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span>
+		<a>版本管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>版本查询</a>
+	</div>
+	<div class="enbPage">
+		<div class="contentDivObj" style="width:100%">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="fresh" value="刷新" /></li>
+			</ul>			
+		</div>
+		<div>
+			<table width="100%"  class="enbTable">
+				<thead>
+					<tr>
+						<th scope="col">网管平台版本号</th>
+						<th scope="col">宏站模块版本号</th>
+						<th scope="col">一体化基站模块版本号</th>
+						<th scope="col">TCN1000模块版本号</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>${ems_version}</td>
+						<td>${xw7400_version}</td>
+						<td>${xw7102_version}</td>
+						<td>${tcn1000_version}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

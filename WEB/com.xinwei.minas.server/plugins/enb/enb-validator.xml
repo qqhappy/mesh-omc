@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="enbBizDataValidateHelper" class="com.xinwei.minas.server.enb.validator.EnbBizDataValidateHelper">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+	</bean>
+	
+	<bean id="tBoardDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TBoardDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelAlgDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelAlgDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelDlpcDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelDlpcDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelNbrcelDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelNbrcelDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelParaDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelParaDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelPrachDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelPrachDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelPttDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelPttDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelPuchDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelPuchDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelSischDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelSischDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEnbCtfreqDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TEnbCtfreqDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEnbMeascfgDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TEnbMeascfgDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEnbParaDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TEnbParaDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEnbSrvpcDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TEnbSrvpcDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEnvmonDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TEnvmonDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEthparaDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TEthparaDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tIpv4DataValidator" class="com.xinwei.minas.server.enb.validator.impl.TIpv4DataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tRackDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TRackDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tStroutDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TStroutDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tTopoDataValidator" class="com.xinwei.minas.server.enb.validator.impl.TTopoDataValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tAlarmParaValidator" class="com.xinwei.minas.server.enb.validator.impl.TAlarmParaValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelDrxValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelDrxValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelSpsValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelSpsValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tEnbSevQciValidator" class="com.xinwei.minas.server.enb.validator.impl.TEnbSevQciValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tCelAlgTwoValidator" class="com.xinwei.minas.server.enb.validator.impl.TCelAlgTwoValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="tVlanValidator" class="com.xinwei.minas.server.enb.validator.impl.TVlanValidator">
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+	</bean>
+	
+	<bean id="enbBizDataValidatorRegistry" class="com.xinwei.minas.server.enb.validator.EnbBizDataValidatorRegistry" factory-method="getInstance"/>
+
+	<!-- 注册校验器 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_BOARD</value>
+				<ref bean="tBoardDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_ALG</value>
+				<ref bean="tCelAlgDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_DLPC</value>
+				<ref bean="tCelDlpcDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_NBRCEL</value>
+				<ref bean="tCelNbrcelDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_PARA</value>
+				<ref bean="tCelParaDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_PRACH</value>
+				<ref bean="tCelPrachDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_PTT</value>
+				<ref bean="tCelPttDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_PUCH</value>
+				<ref bean="tCelPuchDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_SISCH</value>
+				<ref bean="tCelSischDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ENB_CTFREQ</value>
+				<ref bean="tEnbCtfreqDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ENB_MEASCFG</value>
+				<ref bean="tEnbMeascfgDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ENB_PARA</value>
+				<ref bean="tEnbParaDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ENB_SRVPC</value>
+				<ref bean="tEnbSrvpcDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ENVMON</value>
+				<ref bean="tEnvmonDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ETHPARA</value>
+				<ref bean="tEthparaDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_IPV4</value>
+				<ref bean="tIpv4DataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_RACK</value>
+				<ref bean="tRackDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_STROUT</value>
+				<ref bean="tStroutDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_TOPO</value>
+				<ref bean="tTopoDataValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ALARM_PARA</value>
+				<ref bean="tAlarmParaValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_DRX</value>
+				<ref bean="tCelDrxValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_SPS</value>
+				<ref bean="tCelSpsValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_VLAN</value>
+				<ref bean="tVlanValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_ENB_SRVQCI</value>
+				<ref bean="tEnbSevQciValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="enbBizDataValidatorRegistry" />
+		<property name="targetMethod" value="register" />
+		<property name="arguments">
+			<list>
+				<value>T_CEL_ALG2</value>
+				<ref bean="tCelAlgTwoValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	
+</beans>

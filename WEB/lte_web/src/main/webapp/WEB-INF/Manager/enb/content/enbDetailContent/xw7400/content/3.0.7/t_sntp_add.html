@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_sntp.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>对时协议表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_SNTP-3.0.7" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8SntpID">
+							<td>对时服务器标识(0~255) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"   id="u8SntpID"/></td>
+							<td id="u8SntpIDError" class="error"></td>
+						</tr>
+						<tr class="u8IsSntpUse">
+							<td>使能开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8IsSntpUse" value="1">启用</input>
+								<input type="radio" name="u8IsSntpUse" value="0" checked="checked" style="margin-left:80px;">不启用</input>
+							</td>
+						</tr>
+						<tr class="au8SntpMServer">
+							<td>SNTP主服务器 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;"   id="au8SntpMServer1"/>
+								<input type="hidden"  style="width:240px;"   id="au8SntpMServer"/>
+							</td>
+							<td id="au8SntpMServer1Error" class="error"></td>
+						</tr>
+						<tr class="au8SntpSServer">
+							<td>SNTP备服务器 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="0.0.0.0"  id="au8SntpSServer1" />
+								<input type="hidden"  style="width:240px;" id="au8SntpSServer" />
+							</td>
+							<td id="au8SntpSServer1Error" class="error"></td>
+						</tr>
+						<tr class="u16SyncCycle">
+							<td>SNTP同步周期(30~1440)(分钟) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" value="30" id="u16SyncCycle"/></td>
+							<td id="u16SyncCycleError" class="error"></td>
+						</tr>
+						<tr class="u16SntpPort">
+							<td>SNTP服务器端口号 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" value="123"  id="u16SntpPort" disabled="disabled"/></td>
+							<td id="u16SntpPortError" class="error"></td>
+						</tr>
+						<tr class="u8TimeZone">
+							<td>时区 :</td>
+							<td class="blankTd"></td>
+							<td>
+							<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff" id="u8TimeZone">
+									<option value="0">西12区</option>
+									<option value="1">西11区</option>
+									<option value="2">西10区</option>
+									<option value="3">西9区</option>
+									<option value="4">西8区</option>
+									<option value="5">西7区</option>
+									<option value="6">西6区</option>
+									<option value="7">西5区</option>
+									<option value="8">西4区</option>
+									<option value="9">西3区</option>
+									<option value="10">西2区</option>
+									<option value="11">西1区</option>
+									<option value="12">0区</option>
+									<option value="13">东1区</option>
+									<option value="14">东2区</option>
+									<option value="15">东3区</option>
+									<option value="16">东4区</option>
+									<option value="17">东5区</option>
+									<option value="18">东6区</option>
+									<option value="19">东7区</option>
+									<option value="20" selected="selected">东8区</option>
+									<option value="21">东9区</option>
+									<option value="22">东10区</option>
+									<option value="23">东11区</option>
+									<option value="24">东12区</option>
+								</select></div>
+							</td>
+							<td id="u8TimeZoneError" class="error"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

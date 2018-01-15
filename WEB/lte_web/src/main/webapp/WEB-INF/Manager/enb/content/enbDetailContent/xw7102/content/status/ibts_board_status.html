@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var error = '${error!}';
+		if(error != '' && error != null){
+			$("#errorInfo").html(error);
+		}
+		function document.onkeydown(){ 
+		 	if(event.keyCode == 8){ 
+		 		if(document.activeElement.type.toLowerCase() == "textarea" || document.activeElement.type.toLowerCase() == "text"){ 
+		 			if(document.activeElement.readOnly == false){ 
+		 				return true; 
+		 			} 
+		 		}
+		 		return false; 
+		 	} 
+		 }
+	});
+	function fresh(){
+		window.location.href = '{base}/lte/queryEnbDynamicInfo.do?queryFlag=106&moId=${moId}';
+	}
+</script>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>单板状态信息</a>
+	</div>
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap" >
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding:10px; width:420px; float:left; margin-left:100px;">			
+				<div style="padding:10px 0px;">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新"  onclick="fresh()"/></li>
+						</ul>
+					</div>
+					<table width="100%" style="line-height:35px;">
+						<tr>
+							<td>单板状态 :</td>
+							<td>						
+								<#if (boardstatus.status)??>	
+									<#if (boardstatus.status) == 0>
+										<input type="text" style="width:240px;" readonly="readonly" value="正常"/>
+									<#else>
+										<input type="text" style="width:240px;" readonly="readonly" value="故障"/>
+									</#if>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>					
+							</td>
+						</tr>
+						<tr>
+							<td>MBD硬件版本 :</td>
+							<td>								
+								<#if (boardstatus.mbdHardWareVersion)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${boardstatus.mbdHardWareVersion}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>						
+							</td>
+						</tr>
+						<tr>
+							<td>MBD生产序列号 :</td>
+							<td>						
+								<#if (boardstatus.mbdProductionSn)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${boardstatus.mbdProductionSn}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>							
+							</td>
+						</tr>
+						<tr>
+							<td>PAU硬件版本 :</td>
+							<td>						
+								<#if (boardstatus.pauHardWareVersion)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${boardstatus.pauHardWareVersion}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>							
+							</td>
+						</tr>
+						<tr>
+							<td>PAU生产序列号 :</td>
+							<td>						
+								<#if (boardstatus.pauProductionSn)??>	
+									<input type="text" style="width:240px;" readonly="readonly" value="${boardstatus.pauProductionSn}"/>		
+								<#else>
+									<input type="text" style="width:240px;" readonly="readonly"/>
+								</#if>							
+							</td>
+						</tr>
+					</table>
+					<span id="errorInfo"></span>
+				</div>				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

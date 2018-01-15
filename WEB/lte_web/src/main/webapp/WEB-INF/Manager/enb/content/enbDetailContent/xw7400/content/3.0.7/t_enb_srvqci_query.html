@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_enb_srvqci.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_enb_srvqci").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'
+					+'<th scope="col" class="u8QCI">业务类型QCI编号</th>'
+					+'<th scope="col" class="u16SrvPacketDelay">QoS时延(ms)</th>'
+					+'<th scope="col" class="u32SrvPacketLoss">QOS丢包率(*0.000001)</th>'
+					+'<th scope="col" class="u8SrvClassName">业务类型名称</th>'
+					+'<th scope="col" class="u8SrvPrior">业务优先级</th>'
+					+'<th scope="col" class="u8SrvBearerType">业务承载类型</th>'
+					+'<th scope="col" class="u8RlcMode">RLC传输模式</th>'
+					+'<th scope="col" class="u16RohcMaxCid">头压缩支持的最大上下文数</th>'
+					+'<th scope="col" class="u8RohcRTP">RTP协议头压缩开关</th>'
+					+'<th scope="col" class="u8RohcUDP">UDP协议头压缩开关</th>'
+					+'<th scope="col" class="u8RohcIP">IP协议头压缩开关</th>'
+					+'<th scope="col" class="u8UPheaderRatio">用户面头比例因子</th>'
+					+'<th scope="col" class="u8ServiceActiveFactor">业务激活因子</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				+'<tr>'	
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+					+'<th scope="row" class="justForView"></th>'
+					+'<td class="u8QCI">暂无相关数据</td>'
+					+'<td class="u16SrvPacketDelay"></td>'
+					+'<td class="u32SrvPacketLoss"></td>'
+					+'<td class="u8SrvClassName"></td>'
+					+'<td class="u8SrvPrior"></td>'
+					+'<td class="u8SrvBearerType"></td>'
+					+'<td class="u8RlcMode"></td>'
+					+'<td class="u16RohcMaxCid"></td>'
+					+'<td class="u8RohcRTP"></td>'
+					+'<td class="u8RohcUDP"></td>'
+					+'<td class="u8RohcIP"></td>'
+					+'<td class="u8UPheaderRatio"></td>'
+					+'<td class="u8ServiceActiveFactor"></td>'
+					+'<td class="justForView"></td>'
+					+'<td class="justForView" ></td>'
+				+'</tr>'				
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}		
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_ENB_SRVQCI-3.0.7";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务QCI配置表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button" id="delete" value="批量删除"/></li>
+		</ul>
+		</div>
+		<div style="width:1700px;padding-right:20px;" class="dynamicLengthDiv">
+		<table width="100%" id="t_enb_srvqci" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>   
+			<th scope="col" class="u8QCI">业务类型QCI编号</th>
+			<th scope="col" class="u16SrvPacketDelay">QoS时延(ms)</th>
+			<th scope="col" class="u32SrvPacketLoss">QOS丢包率(*0.000001)</th>
+			<th scope="col" class="u8SrvClassName">业务类型名称</th>
+			<th scope="col" class="u8SrvPrior">业务优先级</th>
+			<th scope="col" class="u8SrvBearerType">业务承载类型</th>
+			<th scope="col" class="u8RlcMode">RLC传输模式</th>
+			<th scope="col" class="u16RohcMaxCid">头压缩支持的最大上下文数</th>
+			<th scope="col" class="u8RohcRTP">RTP协议头压缩开关</th>
+			<th scope="col" class="u8RohcUDP">UDP协议头压缩开关</th>
+			<th scope="col" class="u8RohcIP">IP协议头压缩开关</th>
+			<th scope="col" class="u8UPheaderRatio">用户面头比例因子</th>
+			<th scope="col" class="u8ServiceActiveFactor">业务激活因子</th>
+			<th scope="col" class="justForView" width="60px;">修改</th>
+			<th scope="col" class="justForView" width="60px;">删除</th>
+		  </tr>
+		  <#list records! as record>
+			<tr>
+				<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+				<td class="u8QCI">${record.fieldMap["u8QCI"].value!}</td>
+				<td class="u16SrvPacketDelay">${record.fieldMap["u16SrvPacketDelay"].value!}</td>
+				<td class="u32SrvPacketLoss">${record.fieldMap["u32SrvPacketLoss"].value!}</td>
+				<td class="u8SrvClassName">${record.fieldMap["u8SrvClassName"].value!}</td>
+				<td class="u8SrvPrior">${record.fieldMap["u8SrvPrior"].value!}</td>
+				<td class="u8SrvBearerType">${record.fieldMap["u8SrvBearerType"].value!}</td>
+				<td class="u8RlcMode">${record.fieldMap["u8RlcMode"].value!}</td>
+				<td class="u16RohcMaxCid">${record.fieldMap["u16RohcMaxCid"].value!}</td>
+				<td class="u8RohcRTP">${record.fieldMap["u8RohcRTP"].value!}</td>
+				<td class="u8RohcUDP">${record.fieldMap["u8RohcUDP"].value!}</td>
+				<td class="u8RohcIP">${record.fieldMap["u8RohcIP"].value!}</td>
+				<td class="u8UPheaderRatio">${record.fieldMap["u8UPheaderRatio"].value!}</td>
+				<td class="u8ServiceActiveFactor">${record.fieldMap["u8ServiceActiveFactor"].value!}</td>
+				<td  class="justForView" style="cursor:pointer;"><a>修改</a></td>
+				<td  class="justForView" style="cursor:pointer;"><a>删除</a></td>
+			</tr>
+			</#list>
+		</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

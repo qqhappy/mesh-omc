@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/IMD6000/UE/UEVersionManageQuery.js"></script>
+<script type="text/javascript">
+	$(function(){		
+		var $UEVersionList = $("#UeVersionTbody tr td[id='UeType']");
+		$UEVersionList.each(function (index) {
+			var UEType = $(this).text();
+			if(UEType ==null || $.trim(UEType).length ==0 ||
+					UEType == "暂无相关数据"){
+				return;
+			}
+			if (parseInt(UEType) == 1){
+				$(this).text("CPE");
+			}else{
+				$(this).text("-");
+			}
+		});			
+	});
+</script>
+
+<title>无标题文档</title>
+</head>
+<body  style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="UEID" name="UEID" value="${UEID}"/>
+		<input type="hidden" id="type" name="type" value="${type}"/>
+		<input type="hidden" id="basePath" value="${base}" />
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端版本文件管理</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="delete" value="删除"/></li>
+		</ul>
+		</div>
+		<div class="tableHeight">
+		<table width="100%" id="t_version">
+		<thead>
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col">终端类型</th>
+			<th scope="col">版本</th>
+			<th scope="col">版本文件名称</th>
+			<th scope="col">版本文件类型</th>
+			<th scope="col" style="width:150px;">下载到UE</th>
+
+		  </tr>
+		<thead>
+		<tbody id="UeVersionTbody">  
+		  <#if !UEVersionList?exists>
+		  	<tr>
+				<th scope="row"><input type="checkbox" name="checkson" value="checkbox" /></th>			
+				<td id="UeType">暂无相关数据</td>
+				<td id="Version"></td>
+				<td id="verFileName"></td>
+				<td id="verFileType"></td>
+				<td class="justForView" style="cursor:pointer;"></td>
+			</tr>
+		  </#if>
+		  <#list UEVersionList! as UEVersion>
+			<tr>
+				<th scope="row"><input type="checkbox" name="checkson" value="checkbox" /></th>		
+				<td id="UeType">${UEVersion.UeType!}</td>
+				<td id="Version">${UEVersion.Version!}</td>
+				<td id="verFileName">${UEVersion.verFileName!}</td>
+				<td id="verFileType"></td>
+				<td class="justForView" style="cursor:pointer;"><a opetype="update">下载到UE</a></td>
+			</tr>
+		   </#list>
+		</tbody>
+		</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

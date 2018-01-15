@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer1.PSConfigItem"
+		table="mcbts_rfconfig_subps">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="antennaIndex" type="int">
+			<column name="antennaIndex" not-null="true"/>
+		</property>
+		<property name="psNormX" type="int">
+			<column name="psNormX" not-null="true"/>
+		</property>
+		<property name="psNormY" type="int">
+			<column name="psNormY" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

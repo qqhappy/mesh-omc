@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_board.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/simplify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//新增
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+		window.location.href="{base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_BOARD-3.0.6&referTable=T_SHELF&isActiveEnbTable=${isActiveEnbTable}"; 
+		});
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_board").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'
+					+'<th scope="col" class="u8RackNO">单板</th>'
+					+'<th scope="col" class="u8ShelfNO_hide">机框号</th>'
+					+'<th scope="col" class="u8SlotNO_hide">槽位号</th>'
+					+'<th scope="col" class="u8BDType">单板类型</th>'
+					+'<th scope="col" class="justForView" info="u8FiberPort">光口号</th>'
+					+'<th scope="col" class="u8RadioMode">无线模式</th>'
+					+'<th scope="col" class="u8ManualOP">管理状态</th>'
+					+'<th scope="col" class="u32Status">单板状态</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">复位</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				+'<tr>'	
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th scope="row" class="justForView"></th>'
+			
+					+'<td class="u8RackNO">暂无相关数据</td>'
+					+'<td class="u8ShelfNO_hide"></td>'
+					+'<td class="u8SlotNO_hide"></td>'
+					+'<td class="u8BDType"></td>'
+					+'<td class="justForView" info="u8FiberPort"></td>'
+					+'<td class="u8RadioMode"></td>'
+					+'<td class="u8ManualOP"></td>'
+					+'<td class="u32Status"></td>'
+					+'<td class="justForView"></td>'
+					+'<td class="justForView"></td>'
+					+'<td class="justForView"></td>'
+				+'</tr>'				
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		checkLevel();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>单板表</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<input type="hidden" id="isActiveEnbTable" name="isActiveEnbTable" value="${isActiveEnbTable}"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<#if isActiveEnbTable == 1>
+			<a>开站参数</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<#else>
+			<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			</#if>
+			<a>单板表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button" id="delete" value="批量删除"/></li>
+		
+		</ul>
+		</div>
+		<div class="tableHeight">
+		<table width="100%"  id="t_board" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>
+			<th scope="col" class="u8RackNO">单板</th>
+			<th scope="col" class="u8ShelfNO_hide">机框号</th>
+			<th scope="col" class="u8SlotNO_hide">槽位号</th>
+			<th scope="col" class="u8BDType">单板类型</th>
+			<th scope="col" class="justForView" info="u8FiberPort">光口号</th>
+			<th scope="col" class="u8RadioMode">无线模式</th>
+			<th scope="col" class="u8ManualOP">管理状态</th>
+			<th scope="col" class="u32Status">单板状态</th>
+			<th scope="col" class="justForView" width="60px;">修改</th>
+			<th scope="col" class="justForView" width="60px;">复位</th>
+			<th scope="col" class="justForView" width="60px;">删除</th>
+		  </tr>
+		 <#list records! as record>
+		  <tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+			<td class="u8RackNO" u8RackNO="${record.fieldMap['u8RackNO'].value!}">${record.fieldMap["u8RackNO"].value!}</td>
+			<td class="u8ShelfNO_hide">${record.fieldMap["u8ShelfNO"].value!}</td>
+			<td class="u8SlotNO_hide">${record.fieldMap["u8SlotNO"].value!}</td>
+			<td class="u8BDType">${record.fieldMap["u8BDType"].value!}</td>
+			<td class="justForView" info="u8FiberPort"></td>
+			<td class="u8RadioMode">${record.fieldMap["u8RadioMode"].value!}</td>
+			<td class="u8ManualOP">${record.fieldMap["u8ManualOP"].value!}</td>
+			<td class="u32Status">${record.fieldMap["u32Status"].value!}</td>
+			<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+			<td class="justForView"  style="cursor:pointer;"><a>复位</a></td>
+			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td>
+		  </tr>
+		 </#list>
+		</table>
+		<span id="error" class="error"></span>
+		</div>
+		</div>
+</div>
+</body>
+</html>

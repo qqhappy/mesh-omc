@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/cel_guide.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".plus_img").click(function(){
+			$(this).addClass("hide").siblings(".minus_img").removeClass("hide");	
+			$(this).parents("li:first").siblings(".para_info_li").removeClass("hide");
+		});
+		$(".minus_img").click(function(){
+			$(this).addClass("hide").siblings(".plus_img").removeClass("hide");		
+			$(this).parents("li:first").siblings(".para_info_li").addClass("hide");
+		})
+		$("#u8FreqBandInd").change(function(){
+			var u8FreqBandInd = $(this).val();
+			var u8SysBandWidth = $("#u8SysBandWidth").val();
+			$("#u32CenterFreq").val("");
+			setFreqBandRange(u8FreqBandInd);
+			$("#centerFreq_min").html(getMinBoundary(u8FreqBandInd,u8SysBandWidth));	
+			$("#centerFreq_max").html(getMaxBoundary(u8FreqBandInd,u8SysBandWidth));
+		});
+		$("#u8SysBandWidth").change(function(){
+			var u8FreqBandInd = $("#u8FreqBandInd").val();
+			var u8SysBandWidth = $(this).val();
+			$("#u32CenterFreq").val("");
+			$("#centerFreq_min").html(getMinBoundary(u8FreqBandInd,u8SysBandWidth));	
+			$("#centerFreq_max").html(getMaxBoundary(u8FreqBandInd,u8SysBandWidth));
+		});
+		
+		//为小区参数表查询跟踪区码列表，并填入dom
+		queryTaForCel();
+		//频点联动 
+		var u8FreqBandInd = $("#u8FreqBandInd").val();
+		var u8SysBandWidth = $("#u8SysBandWidth").val();
+		setFreqBandRange(u8FreqBandInd);
+		$("#centerFreq_min").html(getMinBoundary(u8FreqBandInd,u8SysBandWidth));	
+		$("#centerFreq_max").html(getMaxBoundary(u8FreqBandInd,u8SysBandWidth));
+		// 查询空闲物理小区标识并填入dom
+		//getFreeU16PhyCellId();
+		// 查询逻辑根序列并填入dom
+		//getFreeU16RootSeqIndex();
+	})
+</script>
+<style>
+	.a{height:100px;}
+	.b{height:20px;padding:0 0 0 16px;font-size:13px;font-weight:bold;color:black}
+	.c{padding:0 0 0 10px;}
+	.c ul{margin:0;padding:0;}
+	.c ul li{padding:0 5px;float:left;line-height:22px;}
+	.e{margin:5px 0;cursor:pointer;};
+	.hide{display:none;}
+	.para_info_li{color:gray;}
+	.para_warn_li{color:red;background-color:yellow;}
+	.a ul li{float:left;}
+</style>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<input type="hidden" value="${moId!}" id="moId"/>
+	<input type="hidden" id="basePath"  value="${base!}"/>
+	<input type="hidden" id="enbVersion"  value="${enbVersion!}"/>
+	<input type="hidden" id="enbHexId" value="${enbHexId}" />
+	<input type="hidden" id="enbType" value="${enbType}" />
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>eNB(${enbHexId!})</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>小区新增向导</a>
+	</div>
+	<div style="padding:10px 10px;" >
+		<div class="a"  style="height:130px;">
+			<div class="b">
+				小区基本信息
+			</div>
+			<div class="c">
+				<table>
+					<tr>
+						<td>
+							<ul>
+								<li style="width:100px;">小区标识:</li>
+								<li><input type="text"  id="u8CId"></input></li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(0~254,站内小区唯一标识)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li style="width:100px;">小区名称:</li>
+								<li><input type="text"  id="au8CellLable"></input></li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li style="width:100px;">应用场景:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff;" id="scene">
+										<option value="0">默认配置</option>
+										<option value="1">市区场景</option>
+										<option value="2">郊区场景</option>
+										<option value="3">超远覆盖</option>
+										<option value="4">上行流量</option>
+										<option value="5">下行流量</option>
+									</select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(系统会根据应用场景而智能配置最优的小区无线参数)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">跟踪区码:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff"  id="u16TAC">
+										
+									</select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(用于寻呼和集群组呼区域标识，修改会导致S1口eNodeB配置更新、广播更新、UE发起TAU)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="a">
+			<div class="b">
+				小区RRU配置信息
+			</div>
+			<div class="c">
+				<table>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">RRU型号:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff"  id="rruType">
+										<option value="1">RRU8A10</option>
+										<option value="2">RRU8B10</option>
+										<option value="3">RRU8C10</option>
+										<option value="4">RRU8D10</option>
+										<option value="5">RRU8E10</option>
+										<option value="6">RRU8F10</option>
+										<option value="7">RRU8G10</option>
+										<option value="8">RRU8H10</option>
+										<option value="9">RRU8I10</option>
+										<option value="10">RRU8J10</option>
+										<option value="11">RRU8K10</option>
+										<option value="12">RRU4B10_FF</option>
+										<option value="13">RRU4B30_CF</option>
+										<option value="14">RRU4D30_CF</option>
+										<option value="15">RRU4E10_FF</option>
+										<option value="16">RRU4E30_CF</option>
+										<option value="17">RRU2J30_CC</option>
+										<option value="18">RRU4K30_CF</option>
+										<option value="19">RRU4J30_CF</option>
+										<option value="23">RRU4E30a_CF</option>
+										<option value="24">RRU4L30_CF</option>
+									 </select></div>
+								</li>
+<!-- 								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li> -->
+<!-- 								<li class="para_info_li"></li> -->
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">天线数:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff"  id="anNum">
+										<option value="0">an1</option>
+										<option value="1" selected="selected">an2</option>
+										<option value="2">an4</option>
+<!-- 										<option value="3">an8</option>  -->
+									 </select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li> 
+								<li class="para_info_li">(RRU实际连接天线个数)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li style="width:100px;">RRU单板 :</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff" id="u8TopoNO">
+										<#list topoList! as topo>
+											<option value="${topo}">RRU${topo+1}</option>
+										</#list>
+									</select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(当前小区对应的RRU单板号)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					
+				</table>
+			</div>
+		</div>
+		<div class="a">
+			<div class="b">
+				小区射频信息
+			</div>
+			<div class="c">
+				<table>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">频段指示:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff"  id="u8FreqBandInd">
+										<option value="38">38</option>
+										<option value="39">39</option>
+										<option value="40">40</option>
+										<option value="45">45</option>
+										<option value="53">53</option>
+										<option value="58">58</option>
+										<option value="59">59</option>
+										<option value="61">61</option>
+										<option value="62" selected="selected">62</option>
+										<option value="63">63</option>
+									</select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(指示小区频率范围，小区频段改变，小区中心频点需要重新配置)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">系统带宽:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff"  id="u8SysBandWidth">
+										<option value="2">5M(25RB)</option>
+										<option value="3">10M(50RB)</option>
+										<option value="4" selected="selected">15M(75RB)</option>
+										<option value="5">20M(100RB)</option> 
+									 </select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li> 
+								<li class="para_info_li">(调节传输速率，小区可用最大RB数增加，传输速率提高，反之则减少)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li style="width:100px;">中心频点(MHz) :</li>
+								<li>
+									<input type="text"   id="u32CenterFreq" value="1795"/>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(<span id="centerFreq_min"></span>~<span id="centerFreq_max"></span>,步长为0.1)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					
+				</table>
+			</div>
+		</div>
+		<div class="a">
+			<div class="b">
+				小区物理信息
+			</div>
+			<div class="c">
+				<table>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">子帧配比:</li>
+								<li>
+									<div style="border:1px solid #C6D7E7;overflow:hidden;width:160px;">
+									<select  style="width:160px;border:1px solid #fff"  id="u8UlDlSlotAlloc">
+										<option value="0">0</option>
+										<option value="1" selected="selected">1</option>
+										<option value="2">2</option>
+									 </select></div>
+								</li>
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(上下行子帧配比，TDD专用无线参数，影响上下行传输速率)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li  style="width:100px;">物理小区标识:</li>
+								<li>
+									<input type="text"    id="u16PhyCellId"/>
+								</li>
+<!-- 								<li><input type="button" value="获取空闲标识" style="width:100px;" onclick="getFreeU16PhyCellId()"></input></li> -->
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li> 
+								<li class="para_info_li">(0~503，同频邻区的物理小区标识不能相同)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<ul>
+								<li style="width:100px;">逻辑根序列索引:</li>
+								<li>
+									<input type="text"   id="u16RootSeqIndex"/>
+								</li>
+<!-- 								<li><input type="button" value="获取空闲索引" style="width:100px;" onclick="getFreeU16RootSeqIndex()"></input></li> -->
+								<li><img src="${base}/Manager/images/jia.png" class="e plus_img hide"/><img src="${base}/Manager/images/jian.png" class="e minus_img"/></li>
+								<li class="para_info_li">(0~837，用于产生前导序列的逻辑索引，相邻小区需配置不同的起始逻辑根序列号)</li>
+								<li class="para_warn_li"></li>
+							</ul>
+						</td>
+					</tr>
+					
+				</table>
+			</div>
+		</div>
+		<div class="a" style="height:50px;margin:10px 0 0 123px;">
+			<ul>
+				<li><input type="button" value="确定" onclick="addCellGuide()"/></li>
+				<li style="padding:0 0 0 10px;"><input type="button" onclick="cancelModify()" value="取消"/></li>
+			</ul>
+			<span id="error" style="color:red;margin-left:10px;"></span>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
+

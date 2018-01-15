@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//异常
+		var error = "${error!}";
+		if(error != null && error != ""){
+			alert(error);
+		}
+		//生成表格序号
+		var i = 1;
+		$("#t_backupAndrestore tr").each(function(index){
+			if(index != 0){
+				$("#t_backupAndrestore tr:eq("+index+") td:eq(0)").text(i++);
+			}
+		})
+		//新增跳转
+		$("#newAdd").click(function(){
+			window.location.href = "${base}/lte/toAddRestoreHtml.do"
+		});
+		//刷新
+		$("#fresh").click(function(){
+			window.location.href = "${base}/lte/queryBackupFiles.do"
+		});
+		//删除
+		$("#t_backupAndrestore tr").each(function(index){
+			$("#t_backupAndrestore tr:eq("+index+") td:eq(4) a").click(function(){
+				var fileName = $("#t_backupAndrestore tr:eq("+index+") td:eq(1)").text();
+				if(confirm("确定删除文件:"+fileName+"?")){
+					$.ajax({
+						type:"post",
+						url:"deleteBackupFile.do",
+						data:"fileFileName="+fileName,
+						dataType:"json",
+						async:false,
+						success:function(data){
+							if(data != "" && data != null){
+								alert("删除失败,原因:"+data); 
+							}else{
+								window.location.href = "${base}/lte/queryBackupFiles.do";
+							}
+						}
+					});
+				}				
+			});
+		});
+		//下载
+		$("#t_backupAndrestore tr").each(function(index){
+			$("#t_backupAndrestore tr:eq("+index+") td:eq(3) a").click(function(){
+				var fileName = $("#t_backupAndrestore tr:eq("+index+") td:eq(1)").text();
+				if(confirm("确定下载该文件?")){
+					window.location.href = "${base}/lte/downloadBackupFile.do?fileFileName="+fileName;
+				}				
+			});
+		});
+		//备份
+		$("#backup").click(function(){
+			if(confirm("确定进行备份?")){
+				$.ajax({
+					type:"post",
+					url:"backup.do",
+					dataType:"json",
+					async:false,
+					success:function(data){
+						if(data.status == -1){
+							alert("备份失败,原因:"+data.error);
+						}else if(data.status == 0){
+							alert("备份指令已成功下发");
+						}else{
+							alert("备份失败,原因:"+data.message);
+						}	
+					}
+				});
+			}	
+		});
+		//恢复
+		$("#t_backupAndrestore tr").each(function(index){
+			$("#t_backupAndrestore tr:eq("+index+") td:eq(2) a").click(function(){
+				var fileName = $("#t_backupAndrestore tr:eq("+index+") td:eq(1)").text();
+				if(confirm("确定根据文件:"+fileName+"恢复数据库?")){
+					$.ajax({
+						type:"post",
+						url:"restore.do",
+						data:"fileFileName="+fileName,
+						dataType:"json",
+						async:false,
+						success:function(data){
+							if(data.status == -1){
+								alert("数据库恢复失败,原因:"+data.error);
+							}else if(data.status == 0){
+								alert("数据库恢复成功,核心网将会重启");
+							}else{
+								alert("数据库恢复失败,原因:"+data.message);
+							}	
+						}
+					});
+				}				
+			});
+		});
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body  style="overflow:hidden;">
+	<div>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>数据备份与恢复</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="backup" value="备份"/></li>
+		<li><label></label><input type="button" id="newAdd" value="上传"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		</ul>
+		</div>
+		<div class="tableHeight">
+		<table width="100%" id="t_backupAndrestore">
+		  <tr>
+<!-- 			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th> -->
+			<th scope="col" style="width:150px;">序号</th>
+			<th scope="col">文件名</th>
+			<th scope="col" style="width:150px;">恢复</th>
+			<th scope="col" style="width:150px;">下载</th>
+			<th scope="col" style="width:150px;">删除</th>
+		  </tr>
+		  <#list backupFiles! as file>
+		  <tr>
+<!-- 			<th scope="row"><input type="checkbox" name="checkson" value="checkbox" /></th>			 -->
+			<td></td>
+			<td>${file.fileName!}</td>
+			<td><a style="cursor:pointer;">恢复</a></td>
+			<td><a style="cursor:pointer;">下载</a></td>
+			<td><a style="cursor:pointer;">删除</a></td>
+		  </tr>
+		  </#list>
+		  <#if backupFiles?size < 1>
+		  <tr>
+<!-- 			<th scope="row"><input type="checkbox" name="checkson" value="checkbox" /></th>			 -->
+			<td></td>
+			<td>暂无相关数据</td>
+			<td><a style="cursor:pointer;"></a></td>
+			<td><a style="cursor:pointer;"></a></td>
+			<td><a style="cursor:pointer;"></a></td>
+		  </tr>
+		  </#if>
+		</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

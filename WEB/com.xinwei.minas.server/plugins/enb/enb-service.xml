@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="enbBizTemplateService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbBizTemplateServiceImpl">
+		<property name="enbBizTemplateDAO" ref="enbBizTemplateDAO" />
+	</bean>
+
+	<bean id="enbBasicService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbBasicServiceImpl">
+		<property name="enbBasicDAO" ref="enbBasicDAO" />
+		<property name="sequenceService" ref="sequenceService" />
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizConfigService" ref="enbBizConfigService" />
+		<property name="enbBizTemplateService" ref="enbBizTemplateService" />
+		<property name="enbGlobalConfigService" ref="enbGlobalConfigService" />
+		<property name="alarmDAO" ref="alarmDAO" />
+		<property name="transactionTemplate" ref="platform.transactionTemplate" />
+		<property name="enbNeighbourService" ref="enbNeighbourService" />
+	</bean>
+
+	<bean id="enbBizConfigService" class="com.xinwei.minas.server.enb.service.EnbBizConfigService">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizConfigProxy" ref="enbBizConfigProxy" />
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+		<property name="enbBasicDAO" ref="enbBasicDAO" />
+		<property name="enbNeighbourService" ref="enbNeighbourService" />
+	</bean>
+
+	<bean id="enbBizConfigService.hook"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref bean="moBizConfigServiceFactory" />
+		</property>
+		<property name="targetMethod">
+			<value>addService</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${enb.moTypeId}</value>
+				<ref bean="enbBizConfigService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="enbFullTableConfigService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbFullTableConfigServiceImpl">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizConfigProxy" ref="enbBizConfigProxy" />
+		<property name="enbFullTableConfigDAO" ref="enbFullTableConfigDAO" />
+		<property name="enbBizTemplateDAO" ref="enbBizTemplateDAO" />
+		<property name="sequenceService" ref="sequenceService" />
+	</bean>
+
+	<bean id="enbFullTableReverseService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbFullTableReverseServiceImpl">
+		<property name="enbBizConfigProxy" ref="enbBizConfigProxy" />
+	</bean>
+
+	<bean id="enbAlarmHelper" class="com.xinwei.minas.server.enb.helper.EnbAlarmHelper">
+		<property name="alarmEventProcessor" ref="alarmProcessor" />
+		<property name="alarmTimethreshold" value="${enb.alarmTime.threshold}" />
+	</bean>
+
+	<bean id="enbAlarmService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbAlarmServiceImpl" />
+
+	<bean id="enbExtBizService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbExtBizServiceImpl">
+		<property name="enbExtBizProxy" ref="enbExtBizProxy" />
+		<property name="enbStudyDataConfigDAO" ref="enbStudyDataConfigDAO" />
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizConfigService" ref="enbBizConfigService" />
+		<property name="enbBizTemplateService" ref="enbBizTemplateService" />
+	</bean>
+
+	<bean id="enbBizDataValidator" class="com.xinwei.minas.server.enb.service.EnbBizDataValidator">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+	</bean>
+
+	<bean id="enbBizDataConvertor" class="com.xinwei.minas.server.enb.helper.EnbBizDataConvertor">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizTemplateDAO" ref="enbBizTemplateDAO" />
+	</bean>
+
+	<bean id="enbStudyDataConfigCache" class="com.xinwei.minas.server.enb.service.EnbStudyDataConfigCache" factory-method="getInstance"/>
+	<bean id="enbStudyDataConfigCache.init" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="targetObject"><ref local="enbStudyDataConfigCache"/></property>
+	    <property name="targetMethod"><value>initialize</value></property>	
+	    <property name="arguments">
+			<list>
+				<ref bean="enbStudyDataConfigDAO" />
+			</list>
+		</property>
+      
+	</bean>
+
+	<bean id="enbStatusService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbStatusServiceImpl">
+		<property name="enbStatusProxy" ref="enbStatusProxy" />
+	</bean>
+
+	<bean id="enbDataImportExportService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbDataImportExportServiceImpl">
+		<property name="enbBasicDAO" ref="enbBasicDAO" />
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="sequenceService" ref="sequenceService" />
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+	</bean>
+	
+	<bean id="enbRealtimeMonitorService" class="com.xinwei.minas.server.enb.stat.service.impl.EnbRealtimeMonitorServiceImpl">
+		<property name="enbBasicService" ref="enbBasicService" />
+		<property name="enbRealtimeMonitorProxy" ref="enbRealtimeMonitorProxy" />
+		<property name="enbRealtimeItemConfigDAO" ref="enbRealtimeItemConfigDAO" />
+	</bean>
+	
+	<bean id="enbRealtimeItemConfigCache" class="com.xinwei.minas.server.enb.stat.service.EnbRealtimeItemConfigCache" factory-method="getInstance"/>
+	<bean id="enbRealtimeItemConfigCache.init" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="targetObject"><ref local="enbRealtimeItemConfigCache"/></property>
+	    <property name="targetMethod"><value>initialize</value></property>	
+	    <property name="arguments">
+			<list>
+				<ref bean="enbRealtimeItemConfigDAO" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="enbGlobalConfigService" class="com.xinwei.minas.server.enb.service.impl.EnbGlobalConfigServiceImpl">
+		<property name="taModelDAO" ref="taModelDAO" />
+		<property name="systemPropertyDAO" ref="systemPropertyDao" />
+		<property name="enbBizConfigService" ref="enbBizConfigService" />
+	</bean>
+	
+	<bean id="enbSimplifyConfigService" class="com.xinwei.minas.server.enb.service.impl.EnbSimplifyConfigServiceImpl">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizConfigService" ref="enbBizConfigService" />
+		<property name="enbNeighbourService" ref="enbNeighbourService" />
+		<property name="transactionTemplate" ref="platform.transactionTemplate" />
+	</bean>
+	
+	<bean id="enbNeighbourService" class="com.xinwei.minas.server.enb.service.impl.EnbNeighbourServiceImpl">
+		<property name="enbNeighbourRelationDAO" ref="enbNeighbourRelationDAO" />
+		<property name="enbBizConfigService" ref="enbBizConfigService" />
+		<property name="sequenceService" ref="sequenceService" />
+		<property name="transactionTemplate" ref="platform.transactionTemplate" />
+	</bean>
+   
+
+	<bean id="enbBlackBoxFileService" class="com.xinwei.minas.server.enb.service.impl.EnbBlackBoxFileServiceImpl">
+		<property   name="firstFilePath"  value = "${enb.blackbox.firstFilePath}"> </property>
+		<property   name="localFirstFilePath"  value = "${enb.blackbox.localFirstFilePath}"> </property>
+	</bean>
+	
+	<bean id="enbCellService"
+		class="com.xinwei.minas.server.enb.service.impl.EnbCellServiceImpl">
+		<property name="enbBizTemplateService" ref="enbBizTemplateService" />
+		<property name="enbGlobalConfigService" ref="enbGlobalConfigService" />
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+		<property name="enbBizConfigService" ref="enbBizConfigService" />
+		<property name="tCelParaDataValidator" ref="tCelParaDataValidator" />
+		<property name="enbNeighbourService" ref="enbNeighbourService" />
+		
+	</bean>
+	
+	<bean id="xenbBizConfigService" class="com.xinwei.minas.server.enb.service.impl.XEnbBizConfigServiceImpl">
+		<property name="enbBizConfigDAO" ref="enbBizConfigDAO" />
+		<property name="enbBizConfigProxy" ref="enbBizConfigProxy" />
+		<property name="validateHelper" ref="enbBizDataValidateHelper" />
+		<property name="enbBasicDAO" ref="enbBasicDAO" />
+		<property name="enbNeighbourService" ref="enbNeighbourService" />
+	</bean>
+	
+</beans>

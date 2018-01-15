@@ -1,0 +1,418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});			
+		//设置查询条件默认值
+		var first = $("#firstHidden").val();	
+		
+		if(first != 0){
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+			$("#queryType option").each(function(){
+				if($(this).val() == queryType){
+					$(this).attr("selected",true);
+				}
+			});
+			
+			if(queryType == '1'){
+				$("#imsiQuery").show();
+				$("#statusQuery").hide();
+				checkImsi();
+				$("#imsiQuery").val(queryValue);
+			}else{
+				$("#imsiQuery").hide();
+				$("#statusQuery").show();
+				$("#statusQuery option").each(function(){
+					if($(this).val() == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+			}			
+		}
+	
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$("input[type='checkbox']:gt(0):checked").each(function(){
+				checkCount++;
+			})
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录?")){
+				var queryfirst = $("#firstHidden").val();
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				
+				var imsiArray = [];
+				var imsiArrayIndex = 0;
+				$("input[type='checkbox']:gt(0):checked").each(function(){
+					imsiArray[imsiArrayIndex]=$(this).val();
+					imsiArrayIndex++;
+				});
+
+				$.ajax({
+					type:"post",
+					url:"lte/deleteImsi.do",
+					data:"wirelessImsiModel.imsi="+imsiArray,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoImsi.do?querywirelessImsiModel.first="+queryfirst+
+										"&querywirelessImsiModel.queryType="+queryType+
+										"&querywirelessImsiModel.queryValue="+queryValue+
+										"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					} 				
+				});
+			}			
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){	
+			if(confirm("确定要删除该条记录?")){
+				var queryfirst = $("#firstHidden").val();
+				var queryType = $("#queryTypeHidden").val();
+				var queryValue = $("#queryValueHidden").val();
+				
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				var imsi = $(this).siblings("input").val();	
+				$.ajax({
+					type:"post",
+					url:"lte/deleteImsi.do",
+					data:"wirelessImsiModel.imsi="+imsi,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoImsi.do?querywirelessImsiModel.first="+queryfirst+
+										"&querywirelessImsiModel.queryType="+queryType+
+										"&querywirelessImsiModel.queryValue="+queryValue+
+										"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}
+				});
+			}			
+		});
+		
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var queryType = $.trim($("#queryType").val());
+			var queryValue = "";
+			if(queryType == '1'){
+				var valTest = /^\d{4,15}$/;
+				queryValue = $("#imsiQuery").val();
+				if(!valTest.test(queryValue)){
+					return false;
+				}
+			}else{
+				queryValue = $("#statusQuery").val();
+			}
+			window.location=basePath+"/lte/turntoImsi.do?querywirelessImsiModel.first=1&querywirelessImsiModel.queryType="+queryType+"&querywirelessImsiModel.queryValue="+queryValue+"&onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;			
+		});
+
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoImsi.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoImsi.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoImsi.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoImsi.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		
+		
+		$("#queryType").change(function(){
+			var val = $(this).val();
+			if(val == '1'){
+				$("#imsiQuery").show();
+				$("#statusQuery").hide();
+				
+			}else{
+				$("#imsiQuery").hide();
+				$("#statusQuery").show();
+			}
+		});
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turntoImsiAdd.do?querywirelessImsiModel.first=${querywirelessImsiModel.first!}&querywirelessImsiModel.queryType=${querywirelessImsiModel.queryType!}&querywirelessImsiModel.queryValue=${querywirelessImsiModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+
+		checkImsi();
+	});
+	
+function checkImsi(){
+	$("#imsiQuery").blur(function(){
+		var valTest = /^\d{4,15}$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("4~15位数字");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#imsiQuery").focus(function(){
+		var valTest = /^[1-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});	
+}
+	
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var first = $("#firstHidden").val();
+	var queryType = $("#queryTypeHidden").val();
+	var queryValue = $("#queryValueHidden").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+	
+	var myForm = '<form action="'+basePath+'/lte/turntoImsi.do" id="myForm" method="post">'+
+					'<input name="querywirelessImsiModel.first" value="'+first+'">'+
+					'<input name="querywirelessImsiModel.queryType" value="'+queryType+'">'+
+					'<input name="querywirelessImsiModel.queryValue" value="'+queryValue+'">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';
+
+	$("#hiddenDiv").html(myForm);
+	$("#myForm").submit();
+	$("#hiddenDiv").html("");
+}
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>无线终端IMSI</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+<!-- 				<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>	 -->
+				<li><label></label><input type="button" id="batchImport" onclick="window.location.href='${base}/lte/turntoImsiBatchImport.do'" value="批量导入"/></li>		
+			</ul>
+			<div class="fright">
+				<select id="queryType" style="width:100px;height:21px;font-size:13px;margin-top:1px;">
+					<option value="1">IMSI</option>
+					<option value="2">终端状态</option>
+				</select>
+				
+				<input type="text" id="imsiQuery" style="margin-top:1px;" title="4~15位数字"/>
+				
+				<select style="display:none;width:162px;height:21px;font-size:13px;margin-top:1px;" id="statusQuery" >
+					<option value="0">未开户</option>
+					<option value="1">已开户</option>		
+				</select>
+				<input type="button" id="searchBtn" value="查询"/>
+			</div>
+		</div>
+		<table width="100%" id="myTable" class="enbTable changeRowColor">
+		  <tr>
+			<th scope="col" class="checkWidth" style="display:none;"><input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th>  
+			<th scope="col" style="width:60px;">修改</th>
+			<th scope="col" width="15%">IMSI</th>
+			<th scope="col" width="35%">根密钥</th>
+			<th scope="col">终端状态</th>
+			<th scope="col" style="width:60px;">修改</th>
+			<th scope="col" style="width:60px;">删除</th>
+		  </tr>
+		  <#list wirelessImsiModelList! as wirelessImsiModel>
+		  	<tr>
+		  		<#if wirelessImsiModel.imsi_uestatus! == "0">
+					<th scope="row" style="display:none;"><input type="checkbox" name="checkson" value="${wirelessImsiModel.imsi!}" /></th>
+				<#else>
+					<th scope="row" style="display:none;"><input type="checkbox" name="checkson" value="${wirelessImsiModel.imsi!}" disabled="disabled"/></th>
+				</#if>
+				<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyImsi.do?querywirelessImsiModel.first=${querywirelessImsiModel.first!}&querywirelessImsiModel.queryType=${querywirelessImsiModel.queryType!}&querywirelessImsiModel.queryValue=${querywirelessImsiModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}&wirelessImsiModel.imsi_index=${wirelessImsiModel.imsi_index!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+				<td>${wirelessImsiModel.imsi!}<input type="hidden" value="1" id="noRecordInput"/></td>
+				<td>${wirelessImsiModel.imsi_k!}</td>
+				<#if wirelessImsiModel.imsi_uestatus! == "0">
+					<td style="color:red;">未开户</td>
+				<#else>
+					<td style="color:green;">已开户</td>
+				</#if>
+				<td><a href="${base}/lte/toModifyImsi.do?querywirelessImsiModel.first=${querywirelessImsiModel.first!}&querywirelessImsiModel.queryType=${querywirelessImsiModel.queryType!}&querywirelessImsiModel.queryValue=${querywirelessImsiModel.queryValue!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}&wirelessImsiModel.imsi_index=${wirelessImsiModel.imsi_index!}">修改</a></td>
+				<#if wirelessImsiModel.imsi_uestatus! == "0">
+					<td><a class="deleteOne" style="cursor:pointer;">删除</a><input type="hidden" value="${wirelessImsiModel.imsi!}"/></td>
+				<#else>
+					<td><input type="hidden" value="${wirelessImsiModel.imsi!}"/></td>
+				</#if>
+				
+			  </tr>
+		  </#list>
+		  <#if wirelessImsiModelList?size < 1>
+		  		
+		  			<tr>
+		  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+		  				<td></td>
+		  				<td>${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+		  				<td></td>
+		  				<td></td>
+		  				<td></td>
+		  				<td></td>
+		  			</tr>
+		  		
+		  </#if>
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+<!-- 	<div class="fright" style="margin-right:20px;"> -->
+<!-- 		<span class="fleft"><span style="color:red;">${onlinePage.currentPageNum!}</span>/${onlinePage.totalPages!}</span>&nbsp; -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/first_page.png" onclick="turnPageFunction('1')"/></a></span> -->
+<!-- 		<span class="fleft"> -->
+<!-- 			<#if onlinePage.currentPageNum! != 1> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/previous_page.png" onclick="turnPageFunction('pre')"/></a> -->
+<!-- 			<#else> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/previous_page.png"/></a> -->
+<!-- 			</#if> -->
+<!-- 		</span> -->
+		
+<!-- 		<span class="fleft"> -->
+<!-- 			<#if onlinePage.currentPageNum! != onlinePage.totalPages!> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/next_page.png" onclick="turnPageFunction('next')"/></a> -->
+<!-- 			<#else> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/next_page.png"/></a> -->
+<!-- 			</#if>		 -->
+<!-- 		</span> -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/end_page.png" onclick="turnPageFunction('max')"/></a></span>		 -->
+<!-- 		<span class="fleft"><input type="text" style="width:30px;" id="turnPageInput"/></span> -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg"/></a></span> -->
+<!-- 	</div> -->
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+
+<input type="hidden" value="${querywirelessImsiModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${querywirelessImsiModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${querywirelessImsiModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

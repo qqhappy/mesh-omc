@@ -1,0 +1,109 @@
+#!/bin/bash
+#
+# stbcd	This shell script takes care of starting and stopping
+#		the im6000s server.
+#
+# chkconfig: 2345 98 20
+# description:	im6000s server.
+# processname: im6000s
+# Source function library.
+#. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+#. /etc/sysconfig/network
+. /etc/profile
+prog="im6000s"
+
+start()
+{
+	cd /usr/xinwei/wireless/im5000
+
+	echo "Starting iM6000s app server..."
+	pid=`ps -ef | grep product=minas | grep -v grep | awk '{print $2}'`
+     	if [ -z "$pid" ]; then
+	      	nohup java -cp ./etc/launcher LauncherBootstrap -launchfile launcher_server.xml -executablename launcher server $@ >/dev/null 2>&1 &
+	      	echo "Done."
+      	else
+      		echo "Already started."
+      	fi
+      	
+      	cd /usr/xinwei/wireless/apache-tomcat-6.0.37/bin
+      	echo "Starting iM6000s web server..."
+      	pid=`ps -ef | grep org.apache.catalina.startup.Bootstrap | grep -v grep | awk '{print $2}'`
+      	if [ -z "$pid" ]; then
+      		./startup.sh
+      		echo "Done."
+      	else 
+      		echo "Already started."
+      	fi
+      	
+      	service ntpd start
+      	
+}
+
+stop()
+{
+     	cd /usr/xinwei/wireless/im5000
+     	echo "Stopping iM6000s app server..."
+     	pid=`ps -ef | grep product=minas | grep -v grep | awk '{print $2}'`
+     	if [ -n "$pid" ]; then
+  		ps -ef | grep product=minas | grep -v grep | awk '{print $2}'| xargs kill -9
+	fi
+     	echo "Done."
+     	
+     	
+     	cd /usr/xinwei/wireless/apache-tomcat-6.0.37/bin
+     	echo "Stopping iM6000s web server..."
+     	./shutdown.sh
+     	pid=`ps -ef | grep org.apache.catalina.startup.Bootstrap | grep -v grep | awk '{print $2}'`
+     	if [ -n "$pid" ]; then
+  		ps -ef | grep org.apache.catalina.startup.Bootstrap | grep -v grep | awk '{print $2}'| xargs kill -9
+	fi
+     	echo "Done."
+     	
+     	service ntpd stop
+}
+ 
+restart()
+{
+    stop
+    start
+}
+
+
+status()
+{
+	pid=`ps -ef | grep product=minas | grep -v grep | awk '{print $2}'`
+	if  [ -n "$pid" ]; then
+		echo "iM6000s app server is running ($pid)."  
+	else 
+		echo "iM6000s app server is not running."   
+	fi
+	pid=`ps -ef | grep org.apache.catalina.startup.Bootstrap | grep -v grep | awk '{print $2}'`
+	if  [ -n "$pid" ]; then
+		echo "iM6000s web server is running ($pid)."  
+	else 
+		echo "iM6000s web server is not running."   
+	fi
+}
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  status)
+    status
+    ;;	
+  *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+
+exit $?

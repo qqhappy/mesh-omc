@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_enb_meascfg.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_enb_meascfg1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>测量配置表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_ENB_MEASCFG-3.0.6" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8MeasCfgIdx">
+							<td style="width:330px;">测量配置索引(1~128) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   id="u8MeasCfgIdx"/></td>
+							<td class="error" style="width:250px;" id="u8MeasCfgIdxError"></td>						
+						</tr>
+						<tr class="u8TrigQuan">
+							<td>事件触发量 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8TrigQuan">
+									<option value="0"  selected="selected">rsrp</option>
+									<option value="1">rsrq</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8ReportQuan">
+							<td>测量报告量 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8ReportQuan">
+									<option value="0" >sameAsTriggerQuantity</option>
+									<option value="1" selected="selected">both</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8RptCriteria">
+							<td>上报规则 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8RptCriteria">
+									<option value="1" selected="selected">事件上报</option>
+									<option value="2">周期上报</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8EvtId">
+							<td>事件标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8EvtId">
+									<option value="1">A1</option>
+									<option value="2">A2</option>
+									<option value="3">A3</option>
+									<option value="4">A4</option>
+									<option value="5">A5</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8RsrpThreshold">
+							<td>事件判决的RSRP绝对门限(-141~-44)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  id="u8RsrpThreshold"/></td>
+							<td class="error" style="width:250px;" id="u8RsrpThresholdError"></td>
+						</tr>
+						<tr class="u8RsrqThreshold">
+							<td>事件判决的RSRQ绝对门限(-20~-3,步长为0.5)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;" id="u8RsrqThreshold" /></td>
+							<td class="error" style="width:250px;" id="u8RsrqThresholdError"></td>
+						</tr>
+						<tr class="u8A3offset">
+							<td>A3事件偏移(-15~15,步长0.5)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  id="u8A3offset"/></td>
+							<td class="error" style="width:250px;" id="u8A3offsetError"></td>
+						</tr>
+						<tr class="u8A5Thrd2Rsrp">
+							<td>A5事件判决的RSRP绝对门限2(-141~-44)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   id="u8A5Thrd2Rsrp"/></td>
+							<td class="error" style="width:250px;" id="u8A5Thrd2RsrpError"></td>
+						</tr>
+						<tr class="u8A5Thrd2Rsrq">
+							<td>A5事件判决的RSRQ绝对门限2(-20~-3,步长0.5)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  id="u8A5Thrd2Rsrq"/></td>
+							<td class="error" style="width:250px;" id="u8A5Thrd2RsrqError"></td>
+						</tr>
+						<tr class="u8Hysteresis">
+							<td>事件迟滞参数(0~15,步长0.5)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="0" id="u8Hysteresis"/></td>
+							<td class="error" style="width:250px;" id="u8HysteresisError"></td>
+						</tr>
+						<tr class="u8TrigTime">
+							<td>触发测量报告的时间(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8TrigTime">
+									<option value="0">0</option>
+									<option value="1">40</option>
+									<option value="2">64</option>
+									<option value="3">80</option>
+									<option value="4">100</option>
+									<option value="5">128</option>
+									<option value="6">160</option>
+									<option value="7">256</option>
+									<option value="8" selected="selected">320</option>
+									<option value="9">480</option>
+									<option value="10">512</option>
+									<option value="11">640</option>
+									<option value="12">1024</option>
+									<option value="13">1280</option>
+									<option value="14">2560</option>
+									<option value="15">5120</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8RptIntvl">
+							<td>事件触发周期报告间隔 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8RptIntvl">
+									<option value="0">120ms</option>
+									<option value="1">240ms</option>
+									<option value="2">480ms</option>
+									<option value="3">640ms</option>
+									<option value="4" selected="selected">1024ms</option>
+									<option value="5">2048ms</option>
+									<option value="6">5120ms</option>
+									<option value="7">10240ms</option>
+									<option value="8">1min</option>
+									<option value="9">6min</option>
+									<option value="10">12min</option>
+									<option value="11">30min</option>
+									<option value="12">60min</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8RptAmt">
+							<td>事件触发周期报告次数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8RptAmt">
+									<option value="0">1</option>
+									<option value="1">2</option>
+									<option value="2" selected="selected">4</option>
+									<option value="3">8</option>
+									<option value="4">16</option>
+									<option value="5">32</option>
+									<option value="6">64</option>
+									<option value="7">无穷大</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PrdRptInterval">
+							<td>周期报告规则中的报告间隔 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PrdRptInterval">
+									<option value="0">120ms</option>
+									<option value="1">240ms</option>
+									<option value="2">480ms</option>
+									<option value="3">640ms</option>
+									<option value="4" selected="selected">1024ms</option>
+									<option value="5">2048ms</option>
+									<option value="6">5120ms</option>
+									<option value="7">10240ms</option>
+									<option value="8">1min</option>
+									<option value="9">6min</option>
+									<option value="10">12min</option>
+									<option value="11">30min</option>
+									<option value="12">60min</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PrdRptAmount">
+							<td>周期报告规则中报告次数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PrdRptAmount">
+									<option value="0">1</option>
+									<option value="1">2</option>
+									<option value="2">4</option>
+									<option value="3">8</option>
+									<option value="4">16</option>
+									<option value="5">32</option>
+									<option value="6">64</option>
+									<option value="7" selected="selected">无穷大</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8MaxRptCellNum">
+							<td>最大上报小区数目 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8MaxRptCellNum">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8" selected="selected">8</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8ReportOnLeave">
+							<td>A3事件离开上报指示 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8ReportOnLeave" value="0" id="radio1">否</input>
+								<input type="radio" name="u8ReportOnLeave"  value="1" id="radio2" style="margin-left:90px;">是</input>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

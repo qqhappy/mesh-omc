@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_device.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_device").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+// 					+'<th scope="col" class="justForView" width="50px;">修改</th>'
+					+'<th scope="col" class="u32DevID">设备号</th>'
+					+'<th scope="col" class="u8DevName">设备名称</th>'
+					+'<th scope="col" class="u8DevType">设备类型</th>'
+					+'<th scope="col" class="u32Longitude">经度</th>'
+					+'<th scope="col" class="u32Latitude">纬度</th>'
+					+'<th scope="col" class="u8ManualOP">管理状态</th>'
+					+'<th scope="col" class="u32Status">设备状态</th>'
+// 					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">复位</th>'
+// 					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				+'<tr>'	
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+// 			+'<th scope="row" class="justForView"></th>'
+					+'<td class="u32DevID">暂无相关数据</td>'
+					+'<td class="u8DevName"></td>'
+					+'<td class="u8DevType"></td>'
+					+'<td class="u32Longitude"></td>'
+					+'<td class="u32Latitude"></td>'
+					+'<td class="u8ManualOP"></td>'
+					+'<td class="u32Status"></td>'
+// 					+'<td class="justForView"></td>'
+					+'<td class="justForView"></td>'
+// 					+'<td class="justForView"></td>'
+				+'</tr>'				
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_DEVICE-3.0.6";
+		});
+		checkLevel();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body  style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>设备表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+<!-- 		<li><label></label><input type="button" id="newAdd" value="新增"/></li>  -->
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+<!-- 		<li><label></label><input type="button" id="delete" value="批量删除"/></li> -->
+		
+		</ul>
+		</div>
+		<div class="tableHeight">
+		<table width="100%" id="t_device" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+<!-- 			<th scope="col" class="justForView" width="50px;">修改</th>   -->
+			<th scope="col" class="u32DevID">设备号</th>
+			<th scope="col" class="u8DevName">设备名称</th>
+			<th scope="col" class="u8DevType">设备类型</th>
+			<th scope="col" class="u32Longitude">经度</th>
+			<th scope="col" class="u32Latitude">纬度</th>
+			<th scope="col" class="u8ManualOP">管理状态</th>
+			<th scope="col" class="u32Status">设备状态</th>
+<!-- 			<th scope="col" class="justForView" width="60px;">修改</th> -->
+			<th scope="col" class="justForView" width="60px;">复位</th>
+<!-- 			<th scope="col" class="justForView" width="60px;">删除</th> -->
+		  </tr>
+		  <#list records! as record>
+		  <tr>
+				<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+<!-- 			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th> -->
+				<td class="u32DevID">${record.fieldMap["u32DevID"].value!}</td>
+				<td class="u8DevName">${record.fieldMap["u8DevName"].value!}</td>
+				<td class="u8DevType">${record.fieldMap["u8DevType"].value!}</td>
+				<td class="u32Longitude">${record.fieldMap["u32Longitude"].value!}</td>
+				<td class="u32Latitude">${record.fieldMap["u32Latitude"].value!}</td> 
+				<td class="u8ManualOP">${record.fieldMap["u8ManualOP"].value!}</td>
+				<td class="u32Status">${record.fieldMap["u32Status"].value!}</td>
+<!-- 				<td class="justForView"  style="cursor:pointer;"><a>修改</a></td> -->
+				<td class="justForView"  style="cursor:pointer;"><a>复位</a></td>
+<!-- 				<td class="justForView"  style="cursor:pointer;"><a>删除</a></td> -->
+		  </tr>
+		  </#list>	
+		</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

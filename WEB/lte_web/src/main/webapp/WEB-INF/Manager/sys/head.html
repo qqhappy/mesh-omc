@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//控制eNB的C类参数显示 
+		var $mainFrameSet = $("#leftFrame",parent.document).parent();
+		document.onkeydown = function(e){
+			var e = e||event;
+			var keyCode = e.keyCode||e.which||e.charCode;
+			if(keyCode == 192  && e.ctrlKey && e.shiftKey && e.altKey){
+				var cFlag = $("#topFrame",parent.document).attr("c_para_ctrl");
+				cFlag = cFlag * (-1);
+				$("#topFrame",parent.document).attr("c_para_ctrl",cFlag);
+				window.parent.mainFrame.location.href = "${base}/uem_web/gis/turnToGisHome.do";
+				window.parent.leftFrame.location.href = "${base}/lte/turnConfigManageLeft.do";	
+			}
+		}
+	
+		 setInterval(handshake,15000);
+		
+		$(".head_nav li").click(function(){
+			$(this).addClass("chooseLi").siblings().removeClass("chooseLi");
+			
+		});	
+		
+		var coreNetType = "${coreNetType!}";
+		if(coreNetType != "1000"){
+			$("#user").css("display","none");
+		}
+		
+		//标题选项
+		$("#config").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/lte/turntoSysAddress.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/showSysConfigLeft.do?browseTime="+getBrowseTime());
+			
+		});
+
+		$("#manage").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/lte/turntoWebMaster.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/showWebMaster.do?browseTime="+getBrowseTime());
+			
+		});
+		$("#enb").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/uem_web/UE/QueryUE.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/turnConfigManageLeft.do?browseTime="+getBrowseTime());
+		});
+		$("#alarm").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/lte/turnCurrentAlarm.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/turnAlarmLeft.do?browseTime="+getBrowseTime());
+		});
+		$("#secu").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/lte/turnUserLog.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/turnSecuLeft.do?browseTime="+getBrowseTime());
+		});
+		$("#property").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/lte/turnToMonitoringInfoHtml.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/turnPropertyLeft.do?browseTime="+getBrowseTime());
+		});
+		$("#version").click(function(){
+			$mainFrameSet.attr("cols","205,*");
+			$("#mainFrame",parent.document).attr("src","${base}/lte/queryEmsVersion.do?browseTime="+getBrowseTime());
+			$("#leftFrame",parent.document).attr("src","${base}/lte/turnEmsVersionLeft.do?browseTime="+getBrowseTime());
+		});
+		$("#gis").click(function(){
+			$mainFrameSet.attr("cols","0,*");
+			$("#mainFrame",parent.document).attr("src","${base}/uem_web/gis/turnToGisHome.do");
+			$("#leftFrame",parent.document).attr("src","${base}/lte/turnConfigManageLeft.do?browseTime="+getBrowseTime());
+		});
+		//登出
+		$("#logout").click(function(){
+			if(confirm("确定退出当前用户?")){
+				window.top.location.href="${base}/login/logout.do?browseTime="+getBrowseTime();
+			}
+		});
+		//握手
+		function handshake(){	
+			$.ajax({
+				type:"post",
+				url:"handShake.do",
+				data:"browseTime="+getBrowseTime(),
+				dataType:"json",
+				async:false,
+				success:function(data){
+					
+				}
+			});	
+		}	
+});
+	function getBrowseTime(){
+		var time = new Date();
+		return time.getTime();
+	}
+</script>
+</head>
+
+<body>
+<div class="head">
+	<div style="float: left;margin-top:75px;margin-left:70px;color: #fff">01.04.03.24</div>
+	<div style="float: right;background:url(${base}/Manager/images/tnc/newTop2.png)">
+   		<img src = "${base}/Manager/images/tnc/newTop3z.png"/>
+   	</div> 
+   	<div style="float: right;margin-top:5px;margin-right:3px;">
+		<span style="color:white;cursor:default;">当前登录 : </span>
+		<span style="color:white;margin-left:5px;cursor:default;" id="loginUserName">${loginUser.username!}</span>
+		<span style="color:white;margin-left:10px;cursor:pointer;" id="logout">退出</span>			
+	</div>
+	<div class="head_nav">
+		<ul>
+			<li class="chooseLi" id="gis">系统拓扑</li>
+        	<li id="enb">配置管理</li>
+            <li id="alarm">故障管理</li>
+            <li id="property">性能管理</li> 
+            <li id="secu">安全管理</li> 
+            <li id="version">版本管理</li>  
+    	</ul>
+    </div>
+    
+</div>
+</body>
+</html>

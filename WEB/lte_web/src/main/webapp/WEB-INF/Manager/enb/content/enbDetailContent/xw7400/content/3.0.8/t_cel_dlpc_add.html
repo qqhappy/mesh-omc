@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/t_cel_dlpc.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+	});
+</script> 
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>小区下行功控参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz_xw7400.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_DLPC-3.0.8" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td style="width:330px;">小区标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CId">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="u8CIdError"></td>						
+						</tr>
+						<tr class="u16CellTransPwr">
+							<td>小区最大发射总功率(0~50,步长为0.1)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;"  value="43" id="u16CellTransPwr"/>
+								<input type="hidden"   id="u16CellTransPwr1"/>
+							</td>
+							<td class="error" style="width:250px;" id="u16CellTransPwrError"></td>						
+						</tr>
+						<tr class="u16CellSpeRefSigPwr">
+							<td>小区参考信号功率(-60~50)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;" value="13"  id="u16CellSpeRefSigPwr"/></td>
+							<td class="error" style="width:250px;" id="u16CellSpeRefSigPwrError"></td>						
+						</tr>
+						<tr class="u16PschPwrOfst">
+							<td>小区主同步信号的功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;"   id="u16PschPwrOfst" value="0"/>
+								<input type="hidden"    id="u16PschPwrOfst1" />
+							</td>
+							<td class="error" style="width:250px;" id="u16PschPwrOfstError"></td>						
+						</tr>
+						<tr class="u16SschPwrOfst">
+							<td>小区辅同步信号的功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;"  id="u16SschPwrOfst" value="0"/>
+								<input type="hidden"   id="u16SschPwrOfst1"/>
+							</td>
+							<td class="error" style="width:250px;" id="u16SschPwrOfstError"></td>						
+						</tr>
+						<tr class="u16PcfichPwrOfst">
+							<td>PCFICH物理信道的功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;"  id="u16PcfichPwrOfst" value="0"/>
+								<input type="hidden"    id="u16PcfichPwrOfst1"/>
+							</td>
+							<td class="error" style="width:250px;" id="u16PcfichPwrOfstError"></td>						
+						</tr>
+						<tr class="u16PhichPwrOfst">
+							<td>PHICH物理信道的功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;"  id="u16PhichPwrOfst" value="0"/>
+								<input type="hidden"   id="u16PhichPwrOfst1" />
+							</td>
+							<td class="error" style="width:250px;" id="u16PhichPwrOfstError"></td>						
+						</tr>
+						<tr class="au16PdcchF0PwrOfst">
+							<td>DCI 0功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden"  style="width:240px;" value="0"  id="au16PdcchF0PwrOfst"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF0PwrOfst1"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF0PwrOfst2"/>
+								<input type="text"  style="width:48px;"   value="0" id="au16PdcchF0PwrOfst3"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF0PwrOfst4"/>
+							</td>
+							<td class="error" style="width:250px;" id="au16PdcchF0PwrOfstError"></td>						
+						</tr>
+						<tr class="au16PdcchF1PwrOfst">
+							<td>DCI 1功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden"  style="width:240px;"  value="0"  id="au16PdcchF1PwrOfst"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF1PwrOfst1"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF1PwrOfst2"/>
+								<input type="text"  style="width:48px;"  value="0"  id="au16PdcchF1PwrOfst3"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF1PwrOfst4"/>
+							</td>
+							<td class="error" style="width:250px;" id="au16PdcchF1PwrOfstError"></td>						
+						</tr>
+						<tr  class="au16PdcchF1APwrOfst">
+							<td>DCI 1A功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden"  style="width:240px;"   value="0" id="au16PdcchF1APwrOfst"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF1APwrOfst1"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF1APwrOfst2"/>
+								<input type="text"  style="width:48px;"  value="0"  id="au16PdcchF1APwrOfst3"/>
+								<input type="text"  style="width:48px;" value="0"  id="au16PdcchF1APwrOfst4"/>
+							</td>
+							<td class="error" style="width:250px;" id="au16PdcchF1APwrOfstError"></td>						
+						</tr>
+						<tr class="au16PdcchF2PwrOfst">
+							<td>DCI 2功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden"  style="width:240px;" value="0"   id="au16PdcchF2PwrOfst"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF2PwrOfst1"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF2PwrOfst2"/>
+								<input type="text"  style="width:48px;"  value="0"  id="au16PdcchF2PwrOfst3"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF2PwrOfst4"/>
+							</td>
+							<td class="error" style="width:250px;" id="au16PdcchF2PwrOfstError"></td>						
+						</tr>
+						<tr class="au16PdcchF2APwrOfst">
+							<td>DCI 2A功率偏置(-76~40,步长为0.1)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden"  style="width:240px;"  value="0"  id="au16PdcchF2APwrOfst"/>
+								<input type="text"  style="width:48px;"   value="0" id="au16PdcchF2APwrOfst1"/>
+								<input type="text"  style="width:48px;"  value="0" id="au16PdcchF2APwrOfst2"/>
+								<input type="text"  style="width:48px;"  value="0"  id="au16PdcchF2APwrOfst3"/>
+								<input type="text"  style="width:48px;" value="0"  id="au16PdcchF2APwrOfst4"/>
+							</td>
+							<td class="error" style="width:250px;" id="au16PdcchF2APwrOfstError"></td>						
+						</tr>
+						<tr class="u8PAForBCCH">
+							<td>BCCH与小区RS的功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PAForBCCH">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2" selected="selected">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PAForCCCH">
+							<td>CCCH与小区RS的功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PAForCCCH">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2" selected="selected">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PAForPCCH">
+							<td>PCCH与小区RS的功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PAForPCCH">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2" selected="selected">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PAForMSG2">
+							<td>MSG2与小区RS的功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PAForMSG2">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2" selected="selected">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PB">
+							<td>PB :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PB">
+									<option value="0">0</option>
+									<option value="1" selected="selected">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PAForDTCH">
+							<td>公共级PDSCH与小区RS的功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PAForDTCH">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2" selected="selected">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								 </select></div>
+							</td>
+							<td id="u8PAForDTCHError" class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;margin:2px;" id="submit_add">
+								<input type="button"  value="取消"  style="padding:3px 25px;margin:2px;" id="cancel">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

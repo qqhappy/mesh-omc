@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_enb_srvpc.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		//u8PeriodicPHRTimer
+		$("#u8PeriodicPHRTimer option").each(function(index){
+			if($("#u8PeriodicPHRTimer option:eq("+index+")").val() == ${record.fieldMap["u8PeriodicPHRTimer"].value}){
+				$("#u8PeriodicPHRTimer option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8ProhibitPHRTimer
+		$("#u8ProhibitPHRTimer option").each(function(index){
+			if($("#u8ProhibitPHRTimer option:eq("+index+")").val() == ${record.fieldMap["u8ProhibitPHRTimer"].value}){
+				$("#u8ProhibitPHRTimer option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8DlPathlossChange
+		$("#u8DlPathlossChange option").each(function(index){
+			if($("#u8DlPathlossChange option:eq("+index+")").val() == ${record.fieldMap["u8DlPathlossChange"].value}){
+				$("#u8DlPathlossChange option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8PuschAccumulationEnable
+		$("#u8PuschAccumulationEnable option").each(function(index){
+			if($("#u8PuschAccumulationEnable option:eq("+index+")").val() == ${record.fieldMap["u8PuschAccumulationEnable"].value}){
+				$("#u8PuschAccumulationEnable option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8PoUePuschDynamic
+		$("#u8PoUePuschDynamic option").each(function(index){
+			if($("#u8PoUePuschDynamic option:eq("+index+")").val() == ${record.fieldMap["u8PoUePuschDynamic"].value}){
+				$("#u8PoUePuschDynamic option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8PoUEPucchDynamic
+		$("#u8PoUEPucchDynamic option").each(function(index){
+			if($("#u8PoUEPucchDynamic option:eq("+index+")").val() == ${record.fieldMap["u8PoUEPucchDynamic"].value}){
+				$("#u8PoUEPucchDynamic option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8PoUePuschPersistent
+		$("#u8PoUePuschPersistent option").each(function(index){
+			if($("#u8PoUePuschPersistent option:eq("+index+")").val() == ${record.fieldMap["u8PoUePuschPersistent"].value}){
+				$("#u8PoUePuschPersistent option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8PA
+		$("#u8PA option").each(function(index){
+			if($("#u8PA option:eq("+index+")").val() == ${record.fieldMap["u8PA"].value}){
+				$("#u8PA option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8Ks
+		for(var i=1;i<3;i++){
+			if($("#radio"+i).val() == ${record.fieldMap["u8Ks"].value}){
+				$("#radio"+i).attr("checked","checked");
+			}
+		}
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务功控参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_ENB_SRVPC-1.1.5" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CfgIdx">
+							<td style="width:290px;">配置索引(0~255) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;" disabled="disabled" value="${record.fieldMap['u8CfgIdx'].value}"  />
+								<input type="hidden"    value="${record.fieldMap['u8CfgIdx'].value}"  id="u8CfgIdx"/>
+							</td>
+							<td class="error" style="width:250px;" id="u8CfgIdxError"></td>						
+						</tr>
+						<tr class="u8PeriodicPHRTimer">
+							<td>周期PHR定时器(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PeriodicPHRTimer">
+									<option value="0">10</option>
+									<option value="1">20</option>
+									<option value="2" >50</option>
+									<option value="3">100</option>
+									<option value="4">200</option>
+									<option value="5">500</option>
+									<option value="6">1000</option>
+									<option value="7">无穷大</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8ProhibitPHRTimer">
+							<td>禁止PHR定时器(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8ProhibitPHRTimer">
+									<option value="0">0</option>
+									<option value="1">10</option>
+									<option value="2">20</option>
+									<option value="3">50</option>
+									<option value="4">100</option>
+									<option value="5" >200</option>
+									<option value="6">500</option>
+									<option value="7">1000</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8DlPathlossChange">
+							<td>下行路损变化值(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8DlPathlossChange">
+									<option value="0">1</option>
+									<option value="1">3</option>
+									<option value="2" >6</option>
+									<option value="3">无穷大</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8Ks" >
+							<td>基于MCS的功率调整开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8Ks" value="0" id="radio1" > 0</input>
+								<input type="radio" name="u8Ks" value="1" id="radio2" style="margin-left:90px;">1.25</input>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PuschAccumulationEnable">
+							<td>PUSCH闭环功控的调整类型 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PuschAccumulationEnable">
+									<option value="0" >Current Absolute</option>
+									<option value="1">Accumulation</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PoUePuschDynamic">
+							<td>PUSCH动态调度时UE功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PoUePuschDynamic">
+									<option value="0">-8</option>
+									<option value="1">-7</option>
+									<option value="2">-6</option>
+									<option value="3">-5</option>
+									<option value="4">-4</option>
+									<option value="5">-3</option>
+									<option value="6">-2</option>
+									<option value="7">-1</option>
+									<option value="8" >0</option>
+									<option value="9">1</option>
+									<option value="10">2</option>
+									<option value="11">3</option>
+									<option value="12">4</option>
+									<option value="13">5</option>
+									<option value="14">6</option>
+									<option value="15">7</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PoUEPucchDynamic">
+							<td>PUCCH UE功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PoUEPucchDynamic">
+									<option value="0">-8</option>
+									<option value="1">-7</option>
+									<option value="2">-6</option>
+									<option value="3">-5</option>
+									<option value="4">-4</option>
+									<option value="5">-3</option>
+									<option value="6">-2</option>
+									<option value="7">-1</option>
+									<option value="8" >0</option>
+									<option value="9">1</option>
+									<option value="10">2</option>
+									<option value="11">3</option>
+									<option value="12">4</option>
+									<option value="13">5</option>
+									<option value="14">6</option>
+									<option value="15">7</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PoUePuschPersistent">
+							<td>PUSCH半静态调度时UE功率偏置(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PoUePuschPersistent">
+									<option value="0">-8</option>
+									<option value="1">-7</option>
+									<option value="2">-6</option>
+									<option value="3">-5</option>
+									<option value="4">-4</option>
+									<option value="5">-3</option>
+									<option value="6">-2</option>
+									<option value="7">-1</option>
+									<option value="8" >0</option>
+									<option value="9">1</option>
+									<option value="10">2</option>
+									<option value="11">3</option>
+									<option value="12">4</option>
+									<option value="13">5</option>
+									<option value="14">6</option>
+									<option value="15">7</option>
+								 </select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PA">
+							<td>业务级PDSCH与小区RS的功率偏差(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PA">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4" >0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								 </select></div>
+							</td>
+							<td id="u8PAError" class="error"></td>
+						</tr>	
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

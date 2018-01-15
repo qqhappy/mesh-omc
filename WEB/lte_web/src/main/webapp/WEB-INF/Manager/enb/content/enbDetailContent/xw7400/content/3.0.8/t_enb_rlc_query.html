@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/t_enb_rlc.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_enb_rlc1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CfgIdx">配置索引</th>'
+					+'<th scope="col" class="u8SNType">序号类型(bit)</th>'
+					+'<th scope="col" class="u8ReorderingTimer">RLC重排序定时器(ms)</th>'
+					+'<th scope="col" class="u8StatusProhibtTimer">状态报告禁止定时器(ms)</th>'
+					+'<th scope="col" class="u8PollRetransmtTimer">POLL重传定时器(ms)</th>'
+					+'<th scope="col" class="u8PollPdu">触发POLL的PDU个数</th>'
+					+'<th scope="col" class="u8PollByte">触发POLL的字节数(KB)</th>'
+					+'<th scope="col" class="u8MaxRetxThrd">RLC最大重传次数</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th class="justForView" scope="row"></th>'
+					+'<td class="u8CfgIdx">暂无相关数据</td>'
+					+'<td class="u8SNType"></td>'
+					+'<td class="u8ReorderingTimer"></td>'
+					+'<td class="u8StatusProhibtTimer"></td>'
+					+'<td class="u8PollRetransmtTimer"></td>'
+					+'<td class="u8PollPdu"></td>'
+					+'<td class="u8PollByte"></td>'
+					+'<td class="u8MaxRetxThrd"></td>'		
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}		
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz_xw7400.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_ENB_RLC-3.0.8";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>RLC参数表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button" id="delete" value="批量删除"/></li>
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_enb_rlc_div">  -->
+			<div style="width:1500px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_enb_rlc1" class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>  
+					<th scope="col" class="u8CfgIdx">配置索引</th>
+					<th scope="col" class="u8SNType">序号类型(bit)</th>
+					<th scope="col" class="u8ReorderingTimer">RLC重排序定时器(ms)</th>
+					<th scope="col" class="u8StatusProhibtTimer">状态报告禁止定时器(ms)</th>
+					<th scope="col" class="u8PollRetransmtTimer">POLL重传定时器(ms)</th>
+					<th scope="col" class="u8PollPdu">触发POLL的PDU个数</th>
+					<th scope="col" class="u8PollByte">触发POLL的字节数(KB)</th>
+					<th scope="col" class="u8MaxRetxThrd">RLC最大重传次数</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+					<th scope="col" class="justForView" width="60px;">删除</th>
+				  </tr>
+				 <#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CfgIdx">${record.fieldMap["u8CfgIdx"].value!}</td>
+						<td class="u8SNType">${record.fieldMap["u8SNType"].value!}</td>
+						<td class="u8ReorderingTimer">${record.fieldMap["u8ReorderingTimer"].value!}</td>
+						<td class="u8StatusProhibtTimer">${record.fieldMap["u8StatusProhibtTimer"].value!}</td>
+						<td class="u8PollRetransmtTimer">${record.fieldMap["u8PollRetransmtTimer"].value!}</td>
+						<td class="u8PollPdu">${record.fieldMap["u8PollPdu"].value!}</td>
+						<td class="u8PollByte">${record.fieldMap["u8PollByte"].value!}</td>
+						<td class="u8MaxRetxThrd">${record.fieldMap["u8MaxRetxThrd"].value!}</td>
+						<td  class="justForView" style="cursor:pointer;"><a>修改</a></td>
+			<td  class="justForView" style="cursor:pointer;"><a>删除</a></td>
+					</tr>
+					</#list>
+				</table>
+			</div>
+			
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

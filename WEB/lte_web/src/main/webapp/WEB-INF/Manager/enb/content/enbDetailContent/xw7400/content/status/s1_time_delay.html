@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+
+<title>单板状态信息</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>S1用户面时延</a>
+	</div>
+	<div class="tableHeight">
+		<div class="title"></div>
+		<div class="content " style="padding:10px;">
+				<div class="toolBar" style="padding:0px;">
+					<ul>
+<!-- 						<li><input type="button" id="fresh" value="刷新" /></li> -->
+					</ul>
+<!-- 					<input type="hidden" value="${moId}" id="moId"/> -->
+<!-- 					<input type="hidden" value="${enbHexId}" id="enbHexId"/> -->
+<!-- 					<input type="hidden" value="${statusFlag}" id="statusFlag"/> -->
+				</div>
+					<table id="boardStatusTable" width="100%" class="newTabStyle">
+					<thead>
+					  <tr class="header">
+						<th scope="col" style="width:150px;">测量次数</th>
+						 <#if timeDelayModelList?size < 1>
+							 <th scope="col">0</th>
+						 </#if>
+						 <#assign i = 0>
+						 <#list timeDelayModelList as timeDelayModel>
+						 	 <#assign i = i+1>
+						 	 <th scope="col">${i}</th>
+					     </#list>
+					  </tr>
+					 </thead>
+					 <tbody>
+					 	<tr>
+					 		<td>S1用户面时延(s)</td>
+					 	<#if timeDelayModelList?size < 1>
+							 <td scope="col">--</td>
+						 </#if>
+					 	 <#list timeDelayModelList as timeDelayModel>
+						 	 <td scope="col">${timeDelayModel.timeDelay}</td>
+					     </#list>
+					    </tr>
+					  </tbody>
+					</table>
+				</div>
+		</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>xinwei map</title>
+<meta name="keywords" content="xinwei,lte,mcwill,tcn" />
+<link href="mapfiles/css/default.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="conf.txt"></script>
+
+<script type="text/javascript" src="mapfiles/mapapi.js"></script>
+
+<link   type="text/css" rel="stylesheet" href="css/xwmap.css" />
+<script type="text/javascript" src="js/markerwithlabel.js"></script>
+<script type="text/javascript" src="js/keydragzoom.js"></script>
+<script type="text/javascript" src="js/gps.js"></script>
+<script type="text/javascript" src="js/json.js"></script>
+<script type="text/javascript" src="js/model.js"></script>
+<script type="text/javascript" src="js/maputil.js"></script>
+<script type="text/javascript" src="js/service.js"></script>
+
+<script>
+   //初始谷歌地图
+  function initialize() { 
+    createXinWeiMap(document.getElementById('map_canvas'));
+  }
+</script>
+
+</head>
+
+<body onload="initialize()" style="overflow: hidden;margin:0px;">
+
+	<!-- 地图显示 -->
+	<center>
+		<div id="map_canvas" style="width: 100%; height: 100%;"></div>
+	</center>
+</body>
+</html>

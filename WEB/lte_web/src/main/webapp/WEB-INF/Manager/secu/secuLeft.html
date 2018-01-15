@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+$(function(){
+// 	$(".left_nav dd").click(function(){
+// 			$(".left_nav a").removeClass("selector");
+// 			$(this).children("a").addClass("selector");
+// 	});		
+// 	$(".left_nav dl").each(function() {
+//         var leng=$(this).children("dd").size();		
+// 		if(leng==0){
+// 			$(this).children("dt").addClass("sdt");	
+// 		}		
+//     });
+	var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: true,
+				selectedMulti: false
+			},	
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+		var zNode =[
+					{ id:2, pId:0, name:"操作员日志管理",url:"${base}/lte/turnUserLog.do",target:"mainFrame", iconSkin:"icon09"},
+					{ id:1, pId:0, name:"操作员管理",url:"${base}/lte/queryAllUser.do",target:"mainFrame", iconSkin:"icon08"}
+		 		];
+		$.fn.zTree.init($("#treeDemo"), setting, zNode);
+		
+		$("#leftDivOne ul li:eq(0) a").addClass("curSelectedNode");
+
+
+		$("#leftDivOne ul li a").click(function(event){
+			$("#leftDivOne ul li a").removeClass("curSelectedNode");
+			$(this).addClass("curSelectedNode");
+			event.preventDefault();
+			var href = $(this).attr("href");
+			var myHref = "";
+			if(href != "" && href != null && typeof(href) != "undefined"){
+				var myHref = "";
+				if(href.indexOf("?") == -1){
+					myHref = href + "?browseTime="+getBrowseTime();
+				}else{
+					myHref = href + "&browseTime="+getBrowseTime();
+				}
+				window.parent.mainFrame.location.href=myHref;
+			}
+		});
+		
+});
+</script>
+</head>
+
+<body style="background:#e9f6fe;">
+<div class="left_nav">
+<!-- <div class="title">安全管理</div> -->
+<!--   <dl> -->
+<!-- 	<dt style="line-height:10px;">&nbsp;</dt> -->
+<!-- 	<dd><a href="${base}/lte/queryAllUser.do" target="mainFrame" class="selector">操作员管理</a></dd> -->
+<!--     <dd><a href="${base}/lte/turnUserLog.do?" target="mainFrame">操作员日志管理</a></dd> -->
+<!--   </dl> -->
+  <div class="title" style="font-size:12px;">安全管理</div>
+	<div id="leftDivOne">
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+</div>
+</body>
+</html>

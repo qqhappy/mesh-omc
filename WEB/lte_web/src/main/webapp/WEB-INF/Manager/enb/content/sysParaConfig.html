@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	var numRegex = /^\d+$/; 
+	$(function(){	
+		
+		$("#taFrameDiv").css("height","325px");
+		
+		queryTcnSysPara();
+		queryEnbSysPara();
+		queryVideoSysPara();
+		setVideoParaState();
+		
+		$("#tcn1000Config").click(function(){
+			var index = 0;
+			//报错信息清空
+			$(".tcn1000Error").text("");
+			$("#tcnResultSign").html("");
+			var au8MCC = $("#au8MCC").val();
+			if(!numRegex.test(au8MCC) || au8MCC.length != 3){
+				index++;
+				$("#au8MCCError").text("请输入三位数字");
+			}
+			var au8MNC = $("#au8MNC").val();
+			if(!numRegex.test(au8MNC) || !(au8MNC.length == 3 || au8MNC.length == 2)){
+				index++;
+				$("#au8MNCError").text("请输入两位或三位数字"); 
+			}
+			if(index == 0){
+				var coreNetType = $("#coreNetType").val();
+				if(coreNetType == 1000){
+//					var result = checkModifyCondition(); 
+// 					if(result.checkResult == true){
+					if(true){
+						modifyTcnSysPara();
+					}else{
+						$("#tcn1000Error").text("error: 存在终端用户使用移动国家码和移动网络码,当前项不允许修改");
+						$("#tcnResultSign").html("<img src='${base}/Manager/images/clos.png'/><a>配置失败</a>");
+					}
+				}else{
+					modifyTcnSysPara();
+				}			
+			}			
+		});
+		
+		$("#enbConfig").click(function(){
+			$("#enbError").text("");
+			$("#enbResultSign").html("");
+			modifyEnbSysPara();
+		});
+		$("#videoConfig").click(function(){
+			var index = 0;
+			//报错信息清空
+			$(".videoError").text("");
+			$("#videoResultSign").html("");
+			var isIp=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)$/;
+			var isNum=/^\d+$/;
+			var videoIp = $("#videoIp").val();
+			var videoPort = $("#videoPort").val();
+			if(!isIp.test(videoIp)){
+				$("#videoIpError").text("请输入正确的IP地址");
+				index++;
+			}
+			if(!isNum.test(videoPort)){
+				$("#videoPortError").text("请输入正确的端口");
+				index++;
+			}
+			if(index == 0){
+				modifyVideoSysPara();
+			}			
+		});
+		
+		$("input[name='videoSwitch']").change(function(){
+			setVideoParaState();
+		});
+	});
+	function setVideoParaState(){
+		var flag  = $("input[name='videoSwitch']:checked").val();
+		if(flag == 1){
+			$("#videoIp").removeAttr("disabled");
+			$("#videoPort").removeAttr("disabled");
+		}else{
+			$("#videoIp").attr("disabled","disabled");
+			$("#videoPort").attr("disabled","disabled");
+		}
+	}
+	//查询是否具备修改MNC和MCC的条件
+	function checkModifyCondition(){
+		var mcc = $("#au8MCC").val().split("");
+		var myMcc = "";
+		for(var i = 0;i<mcc.length;i++){
+			myMcc = myMcc + "0" + mcc[i];
+		}
+		var mnc = $("#au8MNC").val().split("");
+		var myMnc = "";
+		for(var i = 0;i<mnc.length;i++){
+			myMnc = myMnc + "0" + mnc[i];
+		}
+		if(myMnc.length<6){
+			myMnc = myMnc + "ff";
+		}
+		var result = "";
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/checkModifyCondition.do",
+			data:"config.mcc="+myMcc+
+				"&config.mnc="+myMnc,
+			dataType:"json",
+			async:false,
+			success:function(data){
+				result = data;
+			}
+		});
+		return result;
+	}
+	//查询tcn1000系统参数
+	function queryTcnSysPara(){
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/querySysPara.do",
+			dataType:"json",
+			async:false,
+			success:function(data){
+				var status = data.status;
+				if(status != 0){
+					$(".tcn1000Error").text("");
+					$("#tcn1000Error").text("error: "+data.error);
+				}else{
+					$(".tcn1000Error").text("");
+					$("#coreNetType").val(data.message.coreNetType);
+					var mcc = data.message.mcc;
+					var mccArray = mcc.split("");
+					$("#au8MCC").val(mccArray[1]+mccArray[3]+mccArray[5]);
+					var mnc = data.message.mnc;
+					var mncArray = mnc.split("");
+					if(mncArray[5] == "f" || mncArray[5] == "F"){
+						$("#au8MNC").val(mncArray[1]+mncArray[3]);
+					}else{
+						$("#au8MNC").val(mncArray[1]+mncArray[3]+mncArray[5]);
+					}				
+				}
+			}
+		});
+	}
+	
+	//查询加密算法系统参数
+	function queryEnbSysPara(){
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/querySysPara.do",
+			dataType:"json",
+			async:false,
+			success:function(data){
+				var status = data.status;
+				if(status != 0){
+					$("#enbError").text("");
+					$("#enbError").text("error: "+data.error);
+				}else{
+					$("#enbError").text("");
+					var au8EEA = data.message.eea;
+					var au8EEAArray = au8EEA.split("");
+					$("#au8EEA1").val(au8EEAArray[1]);
+					$("#au8EEA2").val(au8EEAArray[3]);
+					$("#au8EEA3").val(au8EEAArray[5]);
+					var au8EIA = data.message.eia;
+					var au8EIAArray = au8EIA.split("");
+					$("#au8EIA1").val(au8EIAArray[1]);
+					$("#au8EIA2").val(au8EIAArray[3]);					
+					$("#au8EIA3").val(au8EIAArray[5]);
+				}
+			}
+		});
+	}
+	//查询视频会议系统参数
+	function queryVideoSysPara(){
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/querySysPara.do",
+			dataType:"json",
+			async:false,
+			success:function(data){
+				var status = data.status;
+				if(status != 0){
+					$("#videoError").text("error: "+data.error);
+				}else{
+					$("#enbError").text("");
+					checkRadio("videoSwitch",data.message.videoSwitch);
+					$("#videoIp").val(data.message.videoIp);
+					$("#videoPort").val(data.message.videoPort);
+				}
+			}
+		});
+	}
+	//修改tcn1000系统参数
+	function modifyTcnSysPara(){		
+		var mcc = $("#au8MCC").val().split("");
+		var myMcc = "";
+		for(var i = 0;i<mcc.length;i++){
+			myMcc = myMcc + "0" + mcc[i];
+		}
+		var mnc = $("#au8MNC").val().split("");
+		var myMnc = "";
+		for(var i = 0;i<mnc.length;i++){
+			myMnc = myMnc + "0" + mnc[i];
+		}
+		if(myMnc.length<6){
+			myMnc = myMnc + "ff";
+		}
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/modifyTcnSysPara.do",
+			data:"config.coreNetType="+$("#coreNetType").val()+
+				"&config.mcc="+myMcc+
+				"&config.mnc="+myMnc,
+			dataType:"json",
+			async:true,
+			success:function(data){
+				var status = data.status;
+				if(status == -1){
+					$(".tcn1000Error").text("");
+					$("#tcn1000Error").text("error: "+data.error);
+					$("#tcnResultSign").html("<img src='${base}/Manager/images/clos.png'/><a>配置失败</a>");
+				}else if(status == 1){
+					$(".tcn1000Error").text("");
+					$("#tcn1000Error").text("error: "+data.message);
+					$("#tcnResultSign").html("<img src='${base}/Manager/images/clos.png'/><a>配置失败</a>");
+				}else if(status == 0){
+					$(".tcn1000Error").text("");
+					$("#tcn1000Message").text(data.message);
+					$("#tcn1000Error").text("");
+					$("#tcnResultSign").html("<img src='${base}/Manager/images/onCorrect.gif'/><a>配置成功</a>");
+					setTimeout(clearTcnInfo,5000);
+				}
+			}
+		});
+	}
+	//修改enb系统参数
+	function modifyEnbSysPara(){
+		var eea = "";
+		var eia = "";
+		for(var i = 1;i<4;i++){
+			eea = eea + "0" + $("#au8EEA"+i).val();
+			eia = eia + "0" + $("#au8EIA"+i).val();
+		}
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/modifyEnbSysPara.do",
+			data:"config.eea="+eea+
+				"&config.eia="+eia,
+			dataType:"json",
+			async:true,
+			success:function(data){
+				var status = data.status;
+				if(status != 0){
+					$("#enbError").text("error: "+data.error);
+					$("#enbResultSign").html("<img src='${base}/Manager/images/clos.png'/><a>配置失败</a>");
+				}else{
+					$("#enbError").text("");
+					$("#enbMessage").text(data.message);
+					$("#enbResultSign").html("<img src='${base}/Manager/images/onCorrect.gif'/><a>配置成功</a>");
+					setTimeout(clearEnbInfo,5000);
+				}
+			}
+		});
+	}
+	//修改视频会议系统参数
+	function modifyVideoSysPara(){
+		var videoSwitch = $("input[name='videoSwitch']:checked").val();
+		var videoIp = $("#videoIp").val();
+		var videoPort = $("#videoPort").val();
+		$.ajax({
+			type:"post",
+			url:"${base}/lte/modifyVideoSysPara.do",
+			data:"config.videoSwitch="+videoSwitch+
+				"&config.videoIp="+videoIp+
+				"&config.videoPort="+videoPort,
+			dataType:"json",
+			async:true,
+			success:function(data){
+				var status = data.status;
+				if(status != 0){
+					$("#videoError").text("error: "+data.error);
+					$("#videoResultSign").html("<img src='${base}/Manager/images/clos.png'/><a>配置失败</a>");
+				}else{
+					$("#videoError").text("");
+					$("#videoResultSign").html("<img src='${base}/Manager/images/onCorrect.gif'/><a>配置成功</a>");
+					setTimeout(clearVideoInfo,5000);
+				}
+			}
+		});
+	}
+	function clearTcnInfo(){
+		$("#tcnResultSign").html("");
+	}
+	function clearEnbInfo(){
+		$("#enbResultSign").html("");
+	}
+	function clearVideoInfo(){
+		$("#videoResultSign").html("");
+	}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow: hidden;">
+	<input type="hidden" id="basePath" value="${base}" />
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span>
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>系统参数配置</a>
+	</div>
+	<div class="enbPage">
+		<div class="contentDivObj" style="width:100%">
+		<div style="margin-top:10px;">
+			<span style="font-size: 13px;;color:#0088cc">系统参数配置</span>	
+		</div>
+		<div style="border-bottom:solid 1px #CCCCCC;padding-bottom:10px;">
+			<table  style="line-height:30px;white-space: nowrap;">
+				<tr>
+					<td style="width:80px;">核心网设备 :</td>
+					<td>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:158px;">
+							<select  style="width:158px;border:1px solid #fff;" disabled="disabled" id="coreNetType">
+								<option value="1000">TCN1000</option>
+								<option value="4000">其它</option>
+							</select></div>
+					</td>
+					<td style="width:10px;"></td>
+					<td style="width:100px;">移动国家码:</td>
+					<td>
+						<input type="text" style="width:148px;" id="au8MCC"/>
+					</td>
+					<td style="width:10px;"></td>
+					<td>移动网络码:</td>
+					<td>
+						<input type="text" style="width:148px;margin-left:10px;" id="au8MNC"/>
+					</td>
+					<td><input type="button" style="margin-left:10px;" id="tcn1000Config"  value="配置" /></td>
+					<td id="tcnResultSign"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td style="color:red" id="au8MCCError" class="tcn1000Error"></td>
+					<td></td>
+					<td></td>
+					<td style="color:red" id="au8MNCError" class="tcn1000Error"></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td colspan="10" id="tcn1000Error" style="color:red" class="tcn1000Error"></td>					
+				</tr>
+				<tr>
+					<td colspan="10" id="tcn1000Message" style="color:blue"></td>					
+				</tr>
+			</table>
+		</div>
+		<div style="border-bottom:solid 1px #CCCCCC;padding-bottom:10px;padding-top:10px;">
+			<table style="white-space: nowrap;">
+				<tr>
+					<td style="width:80px;">加密算法 :</td>
+					<td style="width:160px;">
+						<div style="float: left">Snow3G算法 : 优先级 :</div>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:35px;">
+						<select  style="width:37px;height:21px;margin:-1px;font-size:13px;"  id="au8EEA1">
+							<option value="3">3</option>
+							<option value="2">2</option>
+							<option value="1">1</option>
+							<option value="0"  selected="selected">0</option>
+						</select></div>
+					</td>
+					<td style="width:10px;"></td>
+					<td style="width:100px;">完整性保护算法 :</td>
+					<td  style="width:160px;">
+						<div style="float: left">Snow3G算法 : 优先级 :</div>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:35px;">
+						<select  style="width:37px;height:21px;margin:-1px;font-size:13px;"  id="au8EIA1">
+							<option value="3">3</option>
+							<option value="2">2</option>
+							<option value="1">1</option>
+							<option value="0" selected="selected">0</option>
+						</select></div>
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<div style="float: left">AES算法 : <span style="margin-left:23px;">优先级 :</span></div>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:36px;">
+						<select  style="width:38px;height:21px;margin:-1px;font-size:13px;"  id="au8EEA2">
+							<option value="3">3</option>
+							<option value="2">2</option>
+							<option value="1">1</option>
+							<option value="0"  selected="selected">0</option>
+						</select></div>
+					</td>
+					<td></td>
+					<td></td>
+					<td>
+						<div style="float: left">AES算法 : <span style="margin-left:23px;">优先级 :</span></div>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:36px;">
+						<select  style="width:38px;height:21px;margin:-1px;font-size:13px;"  id="au8EIA2">
+							<option value="3">3</option>
+							<option value="2">2</option>
+							<option value="1">1</option>
+							<option value="0" selected="selected">0</option>
+						</select></div>
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<div style="float: left">祖冲之算法 : <span style="margin-left:10px;">优先级 :</span></div>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:36px;">
+						<select  style="width:38px;height:21px;margin:-1px;font-size:13px;"  id="au8EEA3">
+							<option value="3">3</option>
+							<option value="2">2</option>
+							<option value="1">1</option>
+							<option value="0"  selected="selected">0</option>
+						</select></div>
+					</td>
+					<td></td>
+					<td></td>
+					<td>
+						<div style="float: left">祖冲之算法 : <span style="margin-left:10px;">优先级 :</span></div>
+						<div style="border:1px solid #C6D7E7;overflow:hidden;width:36px;">
+						<select  style="width:38px;height:21px;margin:-1px;font-size:13px;"  id="au8EIA3">
+							<option value="3">3</option>
+							<option value="2">2</option>
+							<option value="1">1</option>
+							<option value="0" selected="selected">0</option>
+						</select></div>
+					</td>
+					<td>
+						<input type="button" style="margin-left:10px;" value="配置" id="enbConfig" />
+						<span style="margin-left:2px;" id="enbResultSign"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6" style="color:red"  id="enbError"></td>					
+				</tr>
+				<tr>
+					<td colspan="6"id="enbMessage" style="color:blue"></td>					
+				</tr>
+			</table>
+		</div>
+		<div style="border-bottom:solid 1px #CCCCCC;padding-bottom:10px;padding-top:10px;display:none;">
+			<table  style="line-height:30px;white-space: nowrap;">
+				<tr>
+					<td style="width:80px;">是否开通视频会议 :</td>
+					<td style="width:140px;">
+						<input type="radio" name="videoSwitch" style="margin-left:20px;" value="1">是</input>
+						<input type="radio" name="videoSwitch" style="margin-left:20px;" value="0">否</input>
+					</td>
+					<td style="width:10px;"></td>
+					<td style="width:100px;">视频服务器IP:</td>
+					<td>
+						<input type="text" style="width:148px;" id="videoIp"/>
+					</td>
+					<td style="width:10px;"></td>
+					<td>视频服务器端口:</td>
+					<td>
+						<input type="text" style="width:148px;margin-left:10px;" id="videoPort"/>
+					</td>
+					<td><input type="button" style="margin-left:10px;" id="videoConfig"  value="配置" /></td>
+					<td id="videoResultSign"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td style="color:red" id="videoIpError" class="videoError"></td>
+					<td></td>
+					<td></td>
+					<td style="color:red" id="videoPortError" class="videoError"></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td colspan="10" id="videoError" style="color:red" class="videoError"></td>					
+				</tr>
+			</table>
+		</div>
+		<div style="margin-top:10px;">
+			<span style="font-size: 13px;;color:#0088cc">跟踪区码列表</span>	
+		</div>
+		<div id="taFrameDiv">
+			<iframe src="${base}/lte/htmlDispactcher.do?htmlFileName=sysParaTaInfo" id="taInfo" width="100%" height="100%" scrolling="no" frameborder="0" >
+			</iframe>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-3-9 16:30:01 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.sxc.core.model.SxcBasic" table="sxc_basic">
+		<id name="moId" type="long">
+			<column name="moId" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="sagName" type="java.lang.String">
+			<column name="sagName" not-null="true" />
+		</property>
+		<property name="sagId" type="long">
+			<column name="sagId" not-null="true" />
+		</property>
+		<property name="sagSignalPointCode" type="long">
+			<column name="sagSignalPointCode" not-null="true" />
+		</property>
+		<property name="sagVoiceIp" type="java.lang.String">
+			<column name="sagVoiceIp" not-null="true" />
+		</property>
+		<property name="sagSignalIp" type="java.lang.String">
+			<column name="sagSignalIp" not-null="true" />
+		</property>
+		<property name="sagDefaultGateway" type="java.lang.String">
+			<column name="sagDefaultGateway" not-null="true" />
+		</property>
+		<property name="sagSubnetMask" type="java.lang.String">
+			<column name="sagSubnetMask" not-null="true" />
+		</property>
+		
+	</class>
+</hibernate-mapping>

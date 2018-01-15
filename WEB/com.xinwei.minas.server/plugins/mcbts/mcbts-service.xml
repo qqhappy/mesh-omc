@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="mcBtsTypeDDService"
+		class="com.xinwei.minas.server.mcbts.service.impl.McBtsTypeDDServiceImpl" />
+
+	<bean id="mcBtsBizService"
+		class="com.xinwei.minas.server.mcbts.service.impl.McBtsBizServiceImpl">
+		<property name="mcBtsBizDAO" ref="mcBtsBizDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="mcBtsBasicService"
+		class="com.xinwei.minas.server.mcbts.service.impl.McBtsBasicServiceImpl">
+		<property name="emsServerIp" value="${platform.server.ip}" />
+		<property name="mcBtsBasicDAO" ref="mcBtsBasicDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="neighbourDAO" ref="neighbourDAO" />
+		<property name="appendNeighborDAO" ref="appendNeighbourDAO" />
+		<property name="neighborFailedDAO" ref="neighborFailedDAO" />
+		<property name="sysFreqService" ref="sysFreqService" />
+		<property name="sxcBasicService" ref="sxcBasicService" />
+		<property name="mcBtsPowerConfigDAO" ref="mcBtsPowerConfigDAO"/>
+	</bean>
+
+	<bean id="l1GeneralSettingService"
+		class="com.xinwei.minas.server.mcbts.service.layer1.impl.L1GeneralSettingServiceImpl">
+		<property name="l1generalSettingDAO" ref="l1generalSettingDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="calibrationTypeService"
+		class="com.xinwei.minas.server.mcbts.service.layer1.impl.CalibrationTypeServiceImpl">
+		<property name="calibrationTypeDAO" ref="calibrationTypeDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="calibrationDataService"
+		class="com.xinwei.minas.server.mcbts.service.layer1.impl.CalibrationDataServiceImpl">
+		<property name="rfConfigDAO" ref="rfConfigDAO" />
+		<property name="subPsConfigDAO" ref="subPsConfigDAO" />
+		<property name="genConfigDAO" ref="genConfigDAO" />
+		<property name="subGenConfigDAO" ref="subGenConfigDAO" />
+		<property name="antConfigDAO" ref="antConfigDAO" />
+		<property name="calibDataProxy" ref="calibDataProxy" />
+	</bean>
+
+	<bean id="airlinkService"
+		class="com.xinwei.minas.server.mcbts.service.layer2.impl.AirlinkServiceImpl">
+		<property name="airlinkConfigDAO" ref="airlinkConfigDAO" />
+		<property name="subChannelConfigDAO" ref="subChannelConfigDAO" />
+		<property name="subScaleConfigDAO" ref="subScaleConfigDAO" />
+		<property name="subW0ConfigDAO" ref="subW0ConfigDAO" />
+		<property name="neighbourDAO" ref="neighbourDAO" />
+		<property name="airlinkProxy" ref="airlinkProxy" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="mcBtsBizDAO" ref="mcBtsBizDAO" />
+		<property name="mBMSClusterDAO" ref="mBMSClusterDAO" />
+	</bean>
+
+	<bean id="loadBalanceService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.LoadBalanceServiceImpl">
+		<property name="loadBalanceDAO" ref="loadBalanceDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="changeAlgParamDAO" ref="changeAlgParamDAO" />
+	</bean>
+
+	<bean id="weakFaultService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.WeakFaultServiceImpl">
+		<property name="faultSwitchDAO" ref="faultSwitchDAO" />
+		<property name="weakVoiceFaultDAO" ref="weakVoiceFaultDAO" />
+		<property name="dnInfoDAO" ref="dnInfoDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="weakFaultProxy" ref="weakFaultProxy" />
+	</bean>
+
+	<bean id="resManagementService"
+		class="com.xinwei.minas.server.mcbts.service.layer2.impl.ResManagementServiceImpl">
+		<property name="resManagementDAO" ref="resManagementDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="changeAlgParamService"
+		class="com.xinwei.minas.server.mcbts.service.layer2.impl.ChangeAlgParamServiceImpl">
+		<property name="changeAlgParamDAO" ref="changeAlgParamDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="restrictFlag" value="${restrictFlag}" />
+	</bean>
+
+	<bean id="sAGParamService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.SAGParamServiceImpl">
+		<property name="backupSagDAO" ref="backupSagDAO" />
+		<property name="sagParamProxy" ref="sagParamProxy" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="wcpeService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.WCPEServiceImpl">
+		<property name="wcpedao" ref="wcpedao" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="rcpeService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.RCPEServiceImpl">
+		<property name="rcpedao" ref="rcpedao" />
+		<property name="rcpeItemDAO" ref="rcpeItemDAO" />
+		<property name="rcpeProxy" ref="rcpeProxy" />
+	</bean>
+
+	<bean id="remoteBtsService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.RemoteBtsServiceImpl">
+		<property name="remoteBtsDAO" ref="remoteBtsDAO" />
+		<property name="mbmsBtsDAO" ref="mbmsBtsDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="mbmsBtsService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.MBMSBtsServiceImpl">
+		<property name="remoteBtsDAO" ref="remoteBtsDAO" />
+		<property name="mbmsBtsDAO" ref="mbmsBtsDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="antijammingParamService"
+		class="com.xinwei.minas.server.mcbts.service.layer2.impl.AntijammingParamServiceImpl">
+		<property name="antijammingParamDAO" ref="antijammingParamDAO" />
+		<property name="freqSetDAO" ref="freqSetDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="freqSetProxy" ref="freqSetProxy" />
+	</bean>
+
+
+	<bean id="neighborService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.NeighborServiceImpl">
+		<property name="neighbourDAO" ref="neighbourDAO" />
+		<property name="appendNeighborDAO" ref="appendNeighbourDAO" />
+		<property name="neighborFailedDAO" ref="neighborFailedDAO" />
+		<property name="remoteBtsDAO" ref="remoteBtsDAO" />
+		<property name="rfConfigDAO" ref="rfConfigDAO" />
+		<property name="l1generalSettingDAO" ref="l1generalSettingDAO" />
+		<property name="airlinkConfigDAO" ref="airlinkConfigDAO" />
+		<property name="subChannelConfigDAO" ref="subChannelConfigDAO" />
+		<property name="subScaleConfigDAO" ref="subScaleConfigDAO" />
+		<property name="neighbourProxy" ref="neighbourProxy" />
+		<property name="neighborValidatorDAO" ref="neighborValidatorDAO" />
+	</bean>
+
+	<bean id="tosConfService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.TosConfServiceImpl">
+		<property name="tosConfDAO" ref="tosConfDAO" />
+		<property name="tosConfProxy" ref="tosConfProxy" />
+	</bean>
+
+	<bean id="terminalParamService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.TerminalParamServiceImpl">
+		<property name="terminalParamDAO" ref="terminalParamDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="aCLService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.ACLServiceImpl">
+		<property name="aCLDAO" ref="aCLDAO" />
+		<property name="aCLProxy" ref="aCLProxy" />
+	</bean>
+
+	<bean id="sysFreqService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.SysFreqServiceImpl">
+		<property name="sysFreqDao" ref="TSysFreqDao" />
+		<property name="sysFreqProxy" ref="sysFreqProxy" />
+	</bean>
+
+	<bean id="repeaterService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.RepeaterServiceImpl">
+		<property name="repeaterDAO" ref="repeaterDAO" />
+		<property name="repeaterProxy" ref="repeaterProxy" />
+	</bean>
+
+	<bean id="vlanService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.VlanServiceImpl">
+		<property name="vlanDAO" ref="vlanDAO" />
+		<property name="vlanProxy" ref="vlanProxy" />
+		<property name="qinQProxy" ref="qinQProxy" />
+	</bean>
+
+	<bean id="locAreaService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.LocAreaServiceImpl">
+		<property name="locAreaDAO" ref="locAreaDAO" />
+	</bean>
+
+
+	<bean id="calibrationResultService"
+		class="com.xinwei.minas.server.mcbts.service.layer1.impl.CalibrationResultServiceImpl">
+		<property name="localPath" value="${mcbts.folder.calibration_result}" />
+		<property name="genConfigDAO" ref="genConfigDAO" />
+		<property name="subGenConfigDAO" ref="subGenConfigDAO" />
+	</bean>
+
+	<bean id="mcBtsStudyService" class="com.xinwei.minas.server.mcbts.net.McBtsStudyServiceImpl">
+		<property name="supportedBizDAO" ref="supportedBizDAO" />
+	</bean>
+
+	<bean id="syncConfigService"
+		class="com.xinwei.minas.server.mcbts.service.oamManage.impl.McBtsSynConfigServiceImpl">
+		<property name="mcBtsStudyService" ref="mcBtsStudyService" />
+		<property name="mcBtsBizService" ref="mcBtsBizService" />
+		<property name="mcBtsBasicService" ref="mcBtsBasicService" />
+	</bean>
+
+	<bean id="terminalVersionManageService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.TerminalVersionManageServiceImpl">
+		<property name="terminalVersionManageDao" ref="terminalVersionManageDao" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="mcBtsUTCodeDownloadTaskManager" ref="mcBtsUTCodeDownloadTaskManager" />
+		<property name="emsServerIp" value="${platform.ftp.ip}" />
+		<property name="ftpUsername" value="${platform.ftp.username}" />
+		<property name="ftpPassword" value="${platform.ftp.password}" />
+		<property name="ftpPort" value="${platform.ftp.port}" />
+		<property name="utFolder" value="${mcbts.folder.ut}" />
+		<property name="ftpTVPath" value="${mcbts.ftp.path_ut_version}" />
+		<property name="dEAD_TIME" value="${mcbts.ut_version.timeout}" />
+	</bean>
+
+	<bean id="tvForceUpdateService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.TerminalVersionForceUpdateServiceImpl">
+		<property name="tvForceUpdateDao" ref="tvForceUpdateDao" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<!-- <property name="mcBtsUTRegisterTaskManager" ref="mcBtsUTRegisterTaskManager" 
+			/> -->
+		<property name="utForceUpgradeTaskManager" ref="utForceUpgradeTaskManager" />
+		<property name="mcbtsUTUpgradeTaskManager" ref="mcBtsUTUpgradeTaskManager" />
+
+	</bean>
+
+	<bean id="tvDetectiveService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.TerminalDetectiveServiceImpl">
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="terminalDetectiveProxy" ref="terminalDetectiveProxy" />
+
+	</bean>
+
+	<bean id="tvRestartService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.TerminalRestartServiceImpl">
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="systemPropertyService"
+		class="com.xinwei.minas.server.core.conf.service.impl.SystemPropertyServiceImpl">
+		<property name="systemPropertyDao" ref="systemPropertyDao" />
+	</bean>
+
+	<bean id="mcBtsVersionManageService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.McBtsVersionManageServiceImpl">
+		<property name="mcBtsVersionManageDAO" ref="mcBtsVersionManageDAO" />
+		<property name="mcBtsVersionHistoryManageDAO" ref="mcBtsVersionHistoryManageDAO" />
+		<property name="mcBtsCodeDownloadTaskManager" ref="mcBtsCodeDownloadTaskManager" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="enbFileManagerProxy" ref="enbFileManagerProxy"></property>
+		<property name="enbFullTableConfigService" ref="enbFullTableConfigService"></property>
+		<property name="enbBizConfigService" ref="enbBizConfigService"></property>
+		<property name="emsServerIp" value="${platform.ftp.ip}" />
+		<property name="ftpUsername" value="${platform.ftp.username}" />
+		<property name="enbFtpUsername" value="${enb.ftp.username}"></property>
+		<property name="ftpPassword" value="${platform.ftp.password}" />
+		<property name="ftpPort" value="${platform.ftp.port}" />
+		<property name="btsFolder" value="${mcbts.folder.mcbts}" />
+		<property name="ftpSoftwarePath" value="${mcbts.ftp.path_mcbts_version}" />
+		<property name="dEAD_TIME" value="${mcbts.mcbts_version.timeout}" />
+		<property name="enbFolder" value="${enb.folder.enb}"></property>
+		<property name="enbFtpPath" value="${enb.folder.ftp}"></property>
+	</bean>
+
+	<bean id="gpsDataService"
+		class="com.xinwei.minas.server.mcbts.service.common.impl.GPSDataServiceImpl">
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+		<property name="gpsDataDao" ref="gpsDataDao" />
+	</bean>
+
+	<bean id="rruResetService"
+		class="com.xinwei.minas.server.mcbts.service.rruManage.impl.RRUResetServiceImpl">
+		<property name="rruResetProxy" ref="rruResetProxy" />
+	</bean>
+
+	<bean id="mcBtsTemplateManageService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.McBtsTemplateManageServiceImpl">
+		<property name="mcBtsTemplateManageDao" ref="mcBtsTemplateManageDao" />
+	</bean>
+
+	<bean id="mcBtsSNService"
+		class="com.xinwei.minas.server.mcbts.service.common.impl.McBtsSNServiceImpl">
+		<property name="mcBtsSNDAO" ref="mcBtsSNDAO" />
+		<property name="mcBtsSNProxy" ref="mcBtsSNProxy" />
+		<property name="sequenceService" ref="sequenceService" />
+	</bean>
+
+	<bean id="mcBtsStatusQueryService"
+		class="com.xinwei.minas.server.mcbts.service.oamManage.impl.McBtsStateQueryServiceImpl">
+		<property name="mcBtsStateQueryDAO" ref="mcBtsStateQueryDAO" />
+		<property name="mcBtsStateQueryProxy" ref="mcBtsStateQueryProxy" />
+	</bean>
+
+	<bean id="mcBtsRfPanelStatusService"
+		class="com.xinwei.minas.server.mcbts.service.oamManage.impl.McBtsRfPanelStatusServiceImpl">
+		<property name="mcBtsRfPanelStatusDAO" ref="mcBtsRfPanelStatusDAO" />
+		<property name="mcBtsRfPanelStatusProxy" ref="mcBtsRfPanelStatusProxy" />
+	</bean>
+
+	<bean id="mcBtsUserCountsQueryService"
+		class="com.xinwei.minas.server.mcbts.service.oamManage.impl.McBtsUserCountsQueryServiceImpl">
+		<property name="mcBtsUserCountsQueryDAO" ref="mcBtsUserCountsQueryDAO" />
+		<property name="mcBtsUserCountsQueryProxy" ref="mcBtsUserCountsQueryProxy" />
+	</bean>
+
+	<bean id="mcBtsOnlineTerminalListService"
+		class="com.xinwei.minas.server.mcbts.service.oamManage.impl.McBtsOnlineTerminalListServiceImpl">
+		<property name="mcBtsOnlineTerminalListProxy" ref="mcBtsOnlineTerminalListProxy" />
+	</bean>
+
+
+	<bean id="MinasServerVersionService"
+		class="com.xinwei.minas.server.core.secu.service.impl.MinasServerVersionServiceImpl">
+	</bean>
+	<bean id="sdmaConfigService"
+		class="com.xinwei.minas.server.mcbts.service.layer2.impl.SDMAConfigServiceImpl">
+		<property name="sdmaDAO" ref="sdmaDAO" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="mcbtsModeService"
+		class="com.xinwei.minas.server.mcbts.service.common.impl.McBtsModeServiceImpl">
+		<property name="proxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="mcBtsUserInfoBizService"
+		class="com.xinwei.minas.server.mcbts.service.impl.McBtsUserInfoBizServiceImpl">
+		<property name="ftpServerIp" value="${platform.ftp.ip}"></property>
+		<property name="ftpServerPort" value="${platform.ftp.port}"></property>
+		<property name="ftpUserName" value="${platform.ftp.username}"></property>
+		<property name="ftpPassword" value="${platform.ftp.password}"></property>
+		<property name="localUserDataPath" value="${mcbts.local.userdata}"></property>
+		<property name="ftpUserDataPath" value="${mcbts.ftp.userdata}"></property>
+		<property name="proxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="perfLogConfigService"
+		class="com.xinwei.minas.server.mcbts.service.common.impl.PerfLogConfigServiceImpl">
+		<property name="mcBtsBizService" ref="mcBtsBizService" />
+		<property name="mcBtsBizDAO" ref="mcBtsBizDAO" />
+		<property name="sequenceService" ref="sequenceService" />
+		<property name="realTimePerfProxy" ref="realTimePerfProxy" />
+	</bean>
+
+	<bean id="dataPackageFilterService"
+		class="com.xinwei.minas.server.mcbts.service.layer3.impl.DataPackageFilterServiceImpl">
+		<property name="dataPackageFilterDAO" ref="dataPackageFilterDAO" />
+		<property name="dataPackageFilterProxy" ref="dataPackageFilterProxy" />
+	</bean>
+
+	<bean id="switchOptimizeService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.SwitchOptimizeServiceImpl">
+		<property name="systemPropertyService" ref="systemPropertyService" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+	<bean id="preventBroadcastService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.PreventBroadcastServiceImpl">
+		<property name="systemPropertyService" ref="systemPropertyService" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+	
+	<bean id="btsReleaseVoiceTimerService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.BtsReleaseVoiceTimerServiceImpl">
+		<property name="systemPropertyService" ref="systemPropertyService" />
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="mcBtsBatchUpgradeService"
+		class="com.xinwei.minas.server.mcbts.service.common.impl.McBtsBatchUpgradeServiceImpl">
+		<property name="mcBtsBatchUpgradeTaskManager" ref="mcBtsBatchUpgradeTaskManager" />
+	</bean>
+
+	<bean id="districtManageService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.DistrictManageServiceImpl">
+		<property name="districtManageDAO" ref="districtManageDAO" />
+		<property name="sequenceService" ref="sequenceService" />
+	</bean>
+
+	<bean id="simulcastManageService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.SimulcastManageServiceImpl">
+		<property name="simulcastManageDAO" ref="simulcastManageDAO" />
+		<property name="sequenceService" ref="sequenceService" />
+		<property name="iM3000IP" value="${platform.iM3000.ip}" />
+		<property name="iM3000PORT" value="${platform.iM3000.port}" />
+	</bean>
+
+	<bean id="mcBtsAlarmHelper" class="com.xinwei.minas.server.mcbts.helper.McBtsAlarmHelper">
+		<property name="alarmEventProcessor" ref="alarmProcessor" />
+	</bean>
+
+	<bean id="channelComparableModeService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.ChannelComparableModeServiceImpl">
+		<property name="mcBtsBizProxy" ref="mcBtsBizProxy" />
+	</bean>
+
+	<bean id="mcBtsConfigService"
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.McBtsConfigServiceImpl">
+		<property name="mcBtsBizDAO" ref="mcBtsBizDAO" />
+	</bean>
+
+	<!-- <context:mbean-server/> <bean id="mbeanExporter" class="org.springframework.jmx.export.MBeanExporter"> 
+		<property name="beans"> <map> <entry key="minas:name=McBtsTypeDDService" 
+		value-ref="mcBtsTypeDDService" /> </map> </property> <property name="server" 
+		ref="mbeanServer"/> </bean> -->
+	<bean id="validatorService" class="com.xinwei.minas.server.mcbts.service.common.impl.ValidatorServiceImpl">
+	</bean>
+	
+	<bean id="commonChannelService" 
+		class="com.xinwei.minas.server.mcbts.service.common.impl.CommonChannelServiceImpl">
+		<property name="commonChannelSynDAO" ref="commonChannelSynDAO"/>
+		<property name="sequenceService" ref="sequenceService"/>
+	</bean>
+	
+	<bean id="mPowerSupplyManagerService" 
+		class="com.xinwei.minas.server.mcbts.service.sysManage.impl.PowerSupplyManagerServiceImpl">
+		<property name="mPowerSupplyManagerDAO" ref="powerSupplyManagerDAO"/>
+		<property name="mcBtsPowerConfigDAO" ref="mcBtsPowerConfigDAO"/>
+		<property name="mSequenceService" ref="sequenceService"/>
+	</bean>
+	
+	<!-- 
+	<context:mbean-server/>
+	<bean id="mbeanExporter" class="org.springframework.jmx.export.MBeanExporter">
+		<property name="beans">
+			<map>
+				<entry key="minas:name=McBtsTypeDDService" value-ref="mcBtsTypeDDService" />
+			</map>
+		</property>
+		<property name="server" ref="mbeanServer"/>
+	</bean>
+	 -->
+</beans>

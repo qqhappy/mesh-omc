@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-3-9 16:30:01 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.McBts" table="mcbts_basic">
+		<id name="moId" type="long">
+			<column name="moId" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="typeId" type="int">
+			<column name="typeId" not-null="true" />
+		</property>
+		<property name="name" type="java.lang.String">
+			<column name="name" not-null="true" />
+		</property>
+		<property generated="never" lazy="false" name="antennaType"
+			type="int">
+			<column name="antennaType" not-null="true" />
+		</property>
+		<property name="antennaAngle" type="int">
+			<column name="antennaAngle" not-null="true" />
+		</property>
+		<property name="description" type="java.lang.String">
+			<column name="description" not-null="false" />
+		</property>
+		<property name="manageStateCode" type="int">
+			<column name="manageState" not-null="true" />
+		</property>
+		<property name="btsId" type="long">
+			<column name="btsId" not-null="true" />
+		</property>
+		<property name="btsType" type="int">
+			<column name="btsType" not-null="true" />
+		</property>
+		<property name="btsFreqType" type="int">
+			<column name="btsFreqType" not-null="true" />
+		</property>
+		<property name="locationAreaId" type="long">
+			<column name="locationAreaId" not-null="true" />
+		</property>
+		<property name="networkId" type="int">
+			<column name="networkId" not-null="true" />
+		</property>
+		<property name="bootSource" type="int">
+			<column name="bootSource" not-null="true" />
+		</property>
+		<property name="natAPKey" type="int">
+			<column name="natAPKey" not-null="true" />
+		</property>
+		<property name="sagVlanUsedFlag" type="int">
+			<column name="sagVlanUsedFlag" not-null="true" />
+		</property>
+		<property name="sagVlanId" type="int">
+			<column name="sagVlanId" not-null="true" />
+		</property>
+		<property name="sagBtsIp" type="java.lang.String">
+			<column name="sagBtsIp" not-null="false" />
+		</property>
+		<property name="restrictAreaFlag" type="int">
+			<column name="restrictAreaFlag" not-null="false" />
+		</property>
+		<property name="sagDeviceId" type="long">
+			<column name="sagDeviceId" not-null="true" />
+		</property>
+		<property name="sagVoiceIp" type="java.lang.String">
+			<column name="sagVoiceIp" not-null="true" />
+		</property>
+		<property name="sagSignalIp" type="java.lang.String">
+			<column name="sagSignalIp" not-null="true" />
+		</property>
+		<property name="sagDefaultGateway" type="java.lang.String">
+			<column name="sagDefaultGateway" not-null="true" />
+		</property>
+		<property name="sagSubNetMask" type="java.lang.String">
+			<column name="sagSubNetMask" not-null="true" />
+		</property>
+		<property name="btsMediaPort" type="int">
+			<column name="btsMediaPort" not-null="true" />
+		</property>
+		<property name="sagMediaPort" type="int">
+			<column name="sagMediaPort" not-null="true" />
+		</property>
+		<property name="btsSignalPort" type="int">
+			<column name="btsSignalPort" not-null="true" />
+		</property>
+		<property name="sagSignalPort" type="int">
+			<column name="sagSignalPort" not-null="true" />
+		</property>
+		<property name="btsSignalPointCode" type="int">
+			<column name="btsSignalPointCode" not-null="true" />
+		</property>
+		<property name="sagSignalPointCode" type="int">
+			<column name="sagSignalPointCode" not-null="true" />
+		</property>
+		<property name="templateId" type="long">
+			<column name="templateId" not-null="true" />
+		</property>
+		<property name="districtId" type="long">
+			<column name="districtId" not-null="true" />
+		</property>
+		<property name="btsConfigIp" type="java.lang.String">
+			<column name="btsConfigIp" not-null="true" />
+		</property>
+		<property name="voiceDirectConnFlag" type="int">
+			<column name="voiceDirectConnFlag" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

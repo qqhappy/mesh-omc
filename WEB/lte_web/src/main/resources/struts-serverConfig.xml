@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- enb模块  -->
+	<package name="server" extends="struts-base" namespace="/uem_web">	
+	
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />		
+		
+		<action name="QueryServer" class="com.xinwei.lte.web.uem.action.QueryServer" method="Query">
+			<result name="success" type="freemarker">/WEB-INF/Manager/IMD6000/Server/ServerQuery.html</result>		
+			<result name="error"   type="freemarker">/WEB-INF/Manager/IMD6000/Server/error.html</result>
+		</action>
+		
+		<action name="TurnToConfigPage" class="com.xinwei.lte.web.uem.action.QueryServer" method="TurnToPage">
+			<result name="FtpServer" type="freemarker">/WEB-INF/Manager/IMD6000/Server/FtpServerCfg.html</result>
+			<result name="NtpServer" type="freemarker">/WEB-INF/Manager/IMD6000/Server/NtpServerCfg.html</result>
+			<result name="DataServer" type="freemarker">/WEB-INF/Manager/IMD6000/Server/DataServerCfg.html</result>
+			<result name="AddDataServer" type="freemarker">/WEB-INF/Manager/IMD6000/Server/DataServerAdd.html</result>
+			<result name="GisInit" type="freemarker">/WEB-INF/Manager/IMD6000/Server/GisInitCfg.html</result>
+			<result name="Im6000sUE" type="freemarker">/WEB-INF/Manager/IMD6000/Server/Im6000sServerUECfg.html</result>
+			<result name="Im6000sTimer" type="freemarker">/WEB-INF/Manager/IMD6000/Server/Im6000sServerTimerCfg.html</result>		
+			<result name="error"   type="freemarker">/WEB-INF/Manager/IMD6000/Server/error.html</result>
+		</action>
+		
+		<action name="CfgServer" class="com.xinwei.lte.web.uem.action.ConfigServer" method="CfgServer">
+			<result name="success" type="redirectAction">QueryServer</result>					
+			<result name="error"   type="freemarker">/WEB-INF/Manager/IMD6000/Server/error.html</result>
+		</action>		
+		
+		<action name="DelServer" class="com.xinwei.lte.web.uem.action.ConfigServer" method="Delete">
+			<result name="success" type="redirectAction">QueryServer</result>		
+			<result name="error"   type="freemarker">/WEB-INF/Manager/IMD6000/Server/error.html</result>
+		</action>
+	</package>
+	
+	
+</struts>

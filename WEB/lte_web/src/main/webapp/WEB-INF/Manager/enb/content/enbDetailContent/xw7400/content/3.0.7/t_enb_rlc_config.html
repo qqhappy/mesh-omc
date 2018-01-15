@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_enb_rlc.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		//u8SNType
+		for(var i=1;i<3;i++){
+			if($("#radio"+i).val() == ${record.fieldMap["u8SNType"].value}){
+				$("#radio"+i).attr("checked","checked");
+			}
+		}
+		//
+		$("#u8ReorderingTimer option").each(function(index){
+			if($("#u8ReorderingTimer option:eq("+index+")").val() == ${record.fieldMap["u8ReorderingTimer"].value}){
+				$("#u8ReorderingTimer option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		$("#u8StatusProhibtTimer option").each(function(index){
+			if($("#u8StatusProhibtTimer option:eq("+index+")").val() == ${record.fieldMap["u8StatusProhibtTimer"].value}){
+				$("#u8StatusProhibtTimer option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		$("#u8PollRetransmtTimer option").each(function(index){
+			if($("#u8PollRetransmtTimer option:eq("+index+")").val() == ${record.fieldMap["u8PollRetransmtTimer"].value}){
+				$("#u8PollRetransmtTimer option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		$("#u8PollPdu option").each(function(index){
+			if($("#u8PollPdu option:eq("+index+")").val() == ${record.fieldMap["u8PollPdu"].value}){
+				$("#u8PollPdu option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		$("#u8PollByte option").each(function(index){
+			if($("#u8PollByte option:eq("+index+")").val() == ${record.fieldMap["u8PollByte"].value}){
+				$("#u8PollByte option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		$("#u8MaxRetxThrd option").each(function(index){
+			if($("#u8MaxRetxThrd option:eq("+index+")").val() == ${record.fieldMap["u8MaxRetxThrd"].value}){
+				$("#u8MaxRetxThrd option:eq("+index+")").attr("selected",true);
+			}
+		});
+		
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>RLC参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_ENB_RLC-3.0.7" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CfgIdx">
+							<td style="width:220px;">配置索引(0~255) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="text"  style="width:240px;"  disabled="disabled" value="${record.fieldMap['u8CfgIdx'].value}" />
+								<input type="hidden"   value="${record.fieldMap['u8CfgIdx'].value}"  id="u8CfgIdx"/>
+							</td>
+							<td class="error" style="width:250px;" id="u8CfgIdxError"></td>						
+						</tr>
+						<tr class="u8SNType">
+							<td>序号类型(bit) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8SNType" value="0"  id="radio1" > 5</input>
+								<input type="radio" name="u8SNType" value="1"  id="radio2" style="margin-left:90px;">10</input>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8ReorderingTimer">
+							<td>RLC重排序定时器(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8ReorderingTimer">
+									<option value="0">0</option>
+									<option value="1">5</option>
+									<option value="2">10</option>
+									<option value="3">15</option>
+									<option value="4">20</option>
+									<option value="5">25</option>
+									<option value="6">30</option>
+									<option value="7">35</option>
+									<option value="8">40</option>
+									<option value="9">45</option>
+									<option value="10">50</option>
+									<option value="11">55</option>
+									<option value="12">60</option>
+									<option value="13">65</option>
+									<option value="14">70</option>
+									<option value="15">75</option>
+									<option value="16">80</option>
+									<option value="17">85</option>
+									<option value="18">90</option>
+									<option value="19">95</option>
+									<option value="20">100</option>
+									<option value="21">110</option>
+									<option value="22">120</option>
+									<option value="23">130</option>
+									<option value="24">140</option>
+									<option value="25">150</option>
+									<option value="26">160</option>
+									<option value="27">170</option>
+									<option value="28">180</option>
+									<option value="29">190</option>
+									<option value="30">200</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8StatusProhibtTimer">
+							<td>状态报告禁止定时器(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8StatusProhibtTimer">
+									<option value="0">0</option>
+									<option value="1">5</option>
+									<option value="2">10</option>
+									<option value="3">15</option>
+									<option value="4">20</option>
+									<option value="5">25</option>
+									<option value="6">30</option>
+									<option value="7">35</option>
+									<option value="8">40</option>
+									<option value="9">45</option>
+									<option value="10">50</option>
+									<option value="11">55</option>
+									<option value="12">60</option>
+									<option value="13">65</option>
+									<option value="14">70</option>
+									<option value="15">75</option>
+									<option value="16">80</option>
+									<option value="17">85</option>
+									<option value="18">90</option>
+									<option value="19">95</option>
+									<option value="20">100</option>
+									<option value="21">105</option>
+									<option value="22">110</option>
+									<option value="23">115</option>
+									<option value="24">120</option>
+									<option value="25">125</option>
+									<option value="26">130</option>
+									<option value="27">135</option>
+									<option value="28">140</option>
+									<option value="29">145</option>
+									<option value="30">150</option>
+									<option value="31">155</option>
+									<option value="32">160</option>
+									<option value="33">165</option>
+									<option value="34">170</option>
+									<option value="35">175</option>
+									<option value="36">180</option>
+									<option value="37">185</option>
+									<option value="38">190</option>
+									<option value="39">195</option>
+									<option value="40">200</option>
+									<option value="41">205</option>
+									<option value="42">210</option>
+									<option value="43">215</option>
+									<option value="44">220</option>
+									<option value="45">225</option>
+									<option value="46">230</option>
+									<option value="47">235</option>
+									<option value="48">240</option>
+									<option value="49">245</option>
+									<option value="50">250</option>
+									<option value="51">300</option>
+									<option value="52">350</option>
+									<option value="53">400</option>
+									<option value="54">450</option>
+									<option value="55">500</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PollRetransmtTimer">
+							<td>POLL重传定时器(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PollRetransmtTimer">
+									<option value="0">5</option>
+									<option value="1">10</option>
+									<option value="2">15</option>
+									<option value="3">20</option>
+									<option value="4">25</option>
+									<option value="5">30</option>
+									<option value="6">35</option>
+									<option value="7">40</option>
+									<option value="8">45</option>
+									<option value="9">50</option>
+									<option value="10">55</option>
+									<option value="11">60</option>
+									<option value="12">65</option>
+									<option value="13">70</option>
+									<option value="14">75</option>
+									<option value="15">80</option>
+									<option value="16">85</option>
+									<option value="17">90</option>
+									<option value="18">95</option>
+									<option value="19">100</option>
+									<option value="20">105</option>
+									<option value="21">110</option>
+									<option value="22">115</option>
+									<option value="23">120</option>
+									<option value="24">125</option>
+									<option value="25">130</option>
+									<option value="26">135</option>
+									<option value="27">140</option>
+									<option value="28">145</option>
+									<option value="29">150</option>
+									<option value="30">155</option>
+									<option value="31">160</option>
+									<option value="32">165</option>
+									<option value="33">170</option>
+									<option value="34">175</option>
+									<option value="35">180</option>
+									<option value="36">185</option>
+									<option value="37">190</option>
+									<option value="38">195</option>
+									<option value="39">200</option>
+									<option value="40">205</option>
+									<option value="41">210</option>
+									<option value="42">215</option>
+									<option value="43">220</option>
+									<option value="44">225</option>
+									<option value="45">230</option>
+									<option value="46">235</option>
+									<option value="47">240</option>
+									<option value="48">245</option>
+									<option value="49">250</option>
+									<option value="50">300</option>
+									<option value="51">350</option>
+									<option value="52">400</option>
+									<option value="53">450</option>
+									<option value="54">500</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PollPdu">
+							<td>触发POLL的PDU个数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PollPdu">
+									<option value="0">4</option>
+									<option value="1">8</option>
+									<option value="2">16</option>
+									<option value="3">32</option>
+									<option value="4">64</option>
+									<option value="5">128</option>
+									<option value="6">256</option>
+									<option value="7">无穷大</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8PollByte">
+							<td>触发POLL的字节数(KB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PollByte">
+									<option value="0">25</option>
+									<option value="1">50</option>
+									<option value="2">75</option>
+									<option value="3">100</option>
+									<option value="4">125</option>
+									<option value="5">250</option>
+									<option value="6">375</option>
+									<option value="7">500</option>
+									<option value="8">750</option>
+									<option value="9">1000</option>
+									<option value="10">1250</option>
+									<option value="11">1500</option>
+									<option value="12">2000</option>
+									<option value="13">3000</option>
+									<option value="14">无穷大</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="u8MaxRetxThrd">
+							<td>RLC最大重传次数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8MaxRetxThrd">
+									<option value="0">1</option>
+									<option value="1">2</option>
+									<option value="2">3</option>
+									<option value="3">4</option>
+									<option value="4">6</option>
+									<option value="5">8</option>
+									<option value="6">16</option>
+									<option value="7">32</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>		
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

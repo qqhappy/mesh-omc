@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="enbStatAnalyzer"
+		class="com.xinwei.minas.server.enb.xstat.analyze.EnbStatAnalyzer" />
+
+	<bean id="enbOneHourPreStatJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.xinwei.minas.server.enb.xstat.analyze.EnbPreStatJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="preStatType" value="1" />
+				<entry key="analyzer" value-ref="enbStatAnalyzer" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="enbOneDayPreStatJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.xinwei.minas.server.enb.xstat.analyze.EnbPreStatJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="preStatType" value="2" />
+				<entry key="analyzer" value-ref="enbStatAnalyzer" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="deleteEnbFileJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.xinwei.minas.server.enb.xstat.task.EnbDeleteOverTimeFileJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="dirPath" value="${enb.xstat.local.path}" />
+				<entry key="overTime" value="${enb.xstat.file.overtime}" />
+				<entry key="statFileParser" value-ref="enbStatFileParser" />
+			</map>
+		</property>
+	</bean>
+  
+	<bean id="deleteEnbDataJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.xinwei.minas.server.enb.xstat.task.EnbDeleteOverTimeDataJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="overTime" value="${enb.xstat.data.overtime}" />
+			</map>
+		</property>
+	</bean>
+	<bean id="deleteTableConfigDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.xinwei.minas.server.enb.task.DeleteOverTimeTableConfig"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="overTime" value="${enb.task.tableconfig.overtime}"/>
+			</map>
+		</property> 
+	</bean>
+	<bean id="deleteEnbFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="deleteEnbFileJobDetail" />
+		<property name="cronExpression" value="${enb.deletefile.trigger.cronExpression}" />
+	</bean>
+
+	<bean id="deleteEnbDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="deleteEnbDataJobDetail" />
+		<property name="cronExpression" value="${enb.deletedata.trigger.cronExpression}" />
+	</bean>
+	<bean id="deleteTableconfigTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="deleteTableConfigDetail"/>
+		<property name="cronExpression" value="${enb.deletetableconfig.trigger.cronExpression}"/>
+	</bean>
+
+	<bean id="enbOneHourPreStatTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="enbOneHourPreStatJobDetail" />
+		<property name="cronExpression" value="${enb.prestat.hour.trigger.cronExpression}" />
+	</bean>
+
+	<bean id="enbOneDayPreStatTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="enbOneDayPreStatJobDetail" />
+		<property name="cronExpression" value="${enb.prestat.day.trigger.cronExpression}" />
+	</bean>
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="enbOneHourPreStatTrigger" />
+				<ref bean="enbOneDayPreStatTrigger" />
+				<ref bean="deleteEnbFileTrigger" />
+				<ref bean="deleteEnbDataTrigger" />
+				<ref bean="deleteTableconfigTrigger"/>
+			</list>
+		</property>
+	</bean>
+
+</beans>

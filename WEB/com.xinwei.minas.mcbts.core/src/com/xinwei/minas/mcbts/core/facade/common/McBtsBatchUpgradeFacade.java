@@ -1,0 +1,126 @@
+/*      						
+ * Copyright 2010 Beijing Xinwei, Inc. All rights reserved.
+ * 
+ * History:
+ * ------------------------------------------------------------------------------
+ * Date    	|  Who  		|  What  
+ * 2013-9-14	| tiance 	| 	create the file                       
+ */
+
+package com.xinwei.minas.mcbts.core.facade.common;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
+
+import com.xinwei.minas.core.annotation.Loggable;
+import com.xinwei.minas.core.model.OperObject;
+import com.xinwei.minas.mcbts.core.model.common.UpgradeInfo;
+import com.xinwei.minas.mcbts.core.model.common.UpgradeInfoArchive;
+
+/**
+ * 
+ * 基站批量升级门面的接口
+ * 
+ * @author tiance
+ * 
+ */
+
+public interface McBtsBatchUpgradeFacade extends Remote {
+
+	/**
+	 * 添加基站批量升级任务
+	 * 
+	 * @param list
+	 *            添加的基站的任务
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	@Loggable
+	public void addTask(OperObject operObject, List<UpgradeInfo> list)
+			throws RemoteException, Exception;
+
+	/**
+	 * 获取所有基站批量升级任务的Map
+	 * 
+	 * @return 外层Map以btsType为Key; 内层Map以基站moId为Key
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	public Map<Integer, Map<Long, UpgradeInfo>> queryAll()
+			throws RemoteException, Exception;
+
+	/**
+	 * 获取所有基站升级任务的Map
+	 * 
+	 * @return 外层Map以btsType为Key; 内层为UpgradeInfo的列表
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	public Map<Integer, List<UpgradeInfo>> queryAll2() throws RemoteException,
+			Exception;
+
+	/**
+	 * 获取正在进行升级的任务
+	 * 
+	 * @return
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	public List<UpgradeInfo> queryUpgrading() throws RemoteException, Exception;
+
+	/**
+	 * 终止基站批量升级的任务
+	 * 
+	 * @param list
+	 *            待终止的升级任务列表
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	@Loggable
+	public void terminate(OperObject operObject, List<UpgradeInfo> list)
+			throws RemoteException, Exception;
+
+	/**
+	 * 对已经结束的任务进行归档
+	 * 
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	@Loggable
+	public void archive(OperObject operObject) throws RemoteException,
+			Exception;
+
+	/**
+	 * 获取每个基站的最新一个归档
+	 * 
+	 * @return 归档升级任务的列表
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	public Map<Integer, List<UpgradeInfoArchive>> queryLatestArchive()
+			throws RemoteException, Exception;
+
+	/**
+	 * 获取一个基站的所有历史记录
+	 * 
+	 * @param moId
+	 * @return 一个基站的所有历史记录
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	public List<UpgradeInfoArchive> queryArchiveByMoId(long moId)
+			throws RemoteException, Exception;
+
+	/**
+	 * 获取将要升级某个版本软件的任务列表
+	 * 
+	 * @param version
+	 * @return
+	 * @throws RemoteException
+	 * @throws Exception
+	 */
+	public List<UpgradeInfo> queryUpgradingInfoByVersion(String version)
+			throws RemoteException, Exception;
+}

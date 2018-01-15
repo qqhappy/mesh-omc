@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-5-15 20:16:15 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.xinwei.minas.enb.core.model.FullTableConfigInfo" table="enb_full_table_config">
+        <id name="idx" type="java.lang.Long">
+            <column name="idx" />
+            <generator class="assigned" />
+        </id>
+        <property name="moId" type="long">
+            <column name="moId" />
+        </property>
+        <property name="configStatus" type="int">
+            <column name="configureStatus" />
+        </property>
+        <property name="startConfigTime" type="java.util.Date">
+            <column name="startConfigTime" />
+        </property>
+        <property name="errorMessage" type="java.lang.String">
+            <column name="errorMessage" />
+        </property>
+    </class>
+</hibernate-mapping>

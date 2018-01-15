@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="xw7400" extends="struts-base" namespace="/lte">
+		<!-- 跳转至enb配置左部菜单 -->
+		<action name="turnEnbWebLmtLeft_xw7400" class="com.xinwei.lte.web.enb.xw7400.TurnToHtmlAction"
+			method="turnEnbWebLmtLeft_xw7400">
+			<!-- xw7400 -->
+			<result name="xw7400-biz-menu-2.1.5" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/xw7400-biz-menu-2.1.5.html</result>	
+			<result name="xw7400-biz-menu-3.0.6" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/xw7400-biz-menu-3.0.6.html</result>	
+			<result name="xw7400-biz-menu-3.0.7" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/xw7400-biz-menu-3.0.7.html</result>	
+			<result name="xw7400-biz-menu-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/xw7400-biz-menu-3.0.8.html</result>			
+		</action>
+		<!-- 查询EnbBiz -->
+		<action name="queryEnbBiz_xw7400"
+			class="com.xinwei.lte.web.enb.xw7400.QueryGenericEnbAction" method="queryEnbBiz_xw7400">
+			<!-- xw7400 -->
+			<result name="error" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/error.html</result>
+			<!-- 3.0.8 -->
+			<result name="T_DEVICE-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_device_query.html</result>
+			<result name="T_BOARD-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_board_query.html</result>
+			<result name="T_ENVMON-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_envmon_query.html</result>
+			<result name="T_ETHPARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_ethpara_query.html</result>	
+			<result name="T_IPV4-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_ipv4_query.html</result>	
+			<result name="T_STROUT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_strout_query.html</result>
+			<result name="T_SCTP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sctp_query.html</result>
+			<result name="T_OMC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_omc_query.html</result>
+			<result name="T_SWPKG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_swpkg_query.html</result>
+			<result name="T_SWINFO-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_swinfo_query.html</result>
+			<result name="T_ENB_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_para_query.html</result>	
+			<result name="T_CEL_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_para_query.html</result>
+			<result name="T_CEL_PUCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_puch_query.html</result>	
+			<result name="T_CEL_PDCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_pdch_query.html</result>
+			<result name="T_CEL_PRACH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_prach_query.html</result>			
+			<result name="T_CEL_ULPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_ulpc_query.html</result>			
+			<result name="T_CEL_DLPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_dlpc_query.html</result>						
+			<result name="T_CEL_ALG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_alg_query.html</result>									
+			<result name="T_CEL_NBRCEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_nbrcel_query.html</result>
+			<result name="T_ENB_CTFREQ-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_ctfreq_query.html</result>			
+			<result name="T_ENB_MEASCFG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_meascfg_query.html</result>			
+			<result name="T_ENB_SRVQOS-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvqos_query.html</result>
+			<result name="T_ENB_PDCP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_pdcp_query.html</result>
+			<result name="T_ENB_RLC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_rlc_query.html</result>
+			<result name="T_ENB_CTLTMR-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_ctltmr_query.html</result>						
+			<result name="T_ENB_UEPARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_uepara_query.html</result>
+			<result name="T_ENB_SRVQCI-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvqci_query.html</result>									
+			<result name="T_ENB_SRVPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvpc_query.html</result>			
+			<result name="T_ENB_SRVMAC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvmac_query.html</result>
+			<result name="T_CEL_RESEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_resel_query.html</result>			
+			<result name="T_CEL_SISCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_sisch_query.html</result>			
+			<result name="T_CEL_PTT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_ptt_query.html</result>												
+			<result name="T_CEL_DRX-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_drx_query.html</result>
+			<result name="T_SYS_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sys_para_query.html</result>
+			<result name="T_ALARM_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_alarm_para_query.html</result>
+			<result name="T_CEL_SPS-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_sps_query.html</result>
+			<result name="T_CEL_ADMIT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_admit_query.html</result>
+			<result name="T_CEL_ALG2-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_alg2_query.html</result>
+			<result name="T_VLAN-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_vlan_query.html</result>
+			<result name="T_SCTP_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sctp_para_query.html</result>
+			<result name="T_SNTP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sntp_query.html</result>
+		</action>
+		
+		<!-- 跳转至新增EnbBiz -->
+		<action name="turnAddEnbBiz_xw7400"
+			class="com.xinwei.lte.web.enb.xw7400.QueryGenericEnbAction" method="turnAddEnbBiz_xw7400">
+			<!-- xw7400 -->
+			<result name="error" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/error.html</result>
+			<!-- 3.0.8 -->
+			<result name="T_DEVICE-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_device_add.html</result>
+			<result name="T_BOARD-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_board_add.html</result>
+			<result name="T_ENVMON-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_envmon_add.html</result>
+			<result name="T_ETHPARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_ethpara_add.html</result>	
+			<result name="T_IPV4-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_ipv4_add.html</result>	
+			<result name="T_STROUT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_strout_add.html</result>
+			<result name="T_SCTP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sctp_add.html</result>
+			<result name="T_OMC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_omc_add.html</result>
+			<result name="T_SWPKG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_swpkg_add.html</result>
+			<result name="T_SWINFO-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_swinfo_add.html</result>
+			<result name="T_ENB_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_para_add.html</result>	
+			<result name="T_CEL_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_para_add.html</result>
+			<result name="T_CEL_PUCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_puch_add.html</result>	
+			<result name="T_CEL_PDCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_pdch_add.html</result>
+			<result name="T_CEL_PRACH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_prach_add.html</result>			
+			<result name="T_CEL_ULPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_ulpc_add.html</result>			
+			<result name="T_CEL_DLPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_dlpc_add.html</result>						
+			<result name="T_CEL_ALG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_alg_add.html</result>									
+			<result name="T_CEL_NBRCEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_nbrcel_add.html</result>
+			<result name="T_ENB_CTFREQ-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_ctfreq_add.html</result>			
+			<result name="T_ENB_MEASCFG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_meascfg_add.html</result>			
+			<result name="T_ENB_SRVQOS-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvqos_add.html</result>
+			<result name="T_ENB_PDCP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_pdcp_add.html</result>
+			<result name="T_ENB_RLC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_rlc_add.html</result>
+			<result name="T_ENB_CTLTMR-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_ctltmr_add.html</result>						
+			<result name="T_ENB_UEPARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_uepara_add.html</result>
+			<result name="T_ENB_SRVQCI-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvqci_add.html</result>									
+			<result name="T_ENB_SRVPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvpc_add.html</result>			
+			<result name="T_ENB_SRVMAC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvmac_add.html</result>
+			<result name="T_CEL_RESEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_resel_add.html</result>			
+			<result name="T_CEL_SISCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_sisch_add.html</result>			
+			<result name="T_CEL_PTT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_ptt_add.html</result>												
+			<result name="T_CEL_DRX-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_drx_add.html</result>
+			<result name="T_SYS_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sys_para_add.html</result>
+			<result name="T_ALARM_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_alarm_para_add.html</result>
+			<result name="T_CEL_SPS-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_sps_add.html</result>
+			<result name="T_CEL_ADMIT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_admit_add.html</result>
+			<result name="T_CEL_ALG2-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_alg2_add.html</result>
+			<result name="T_VLAN-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_vlan_add.html</result>
+			<result name="T_SCTP_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sctp_para_add.html</result>
+			<result name="T_SNTP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sntp_add.html</result>
+		</action>
+		
+		<!-- 跳转至配置EnbBiz -->
+		<action name="turnConfigEnbBiz_xw7400"
+			class="com.xinwei.lte.web.enb.xw7400.QueryGenericEnbAction" method="turnConfigEnbBiz_xw7400">
+			<!-- xw7400 -->
+			<result name="error" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/error.html</result>
+			<!-- 3.0.8 -->
+			<result name="T_DEVICE-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_device_config.html</result>
+			<result name="T_BOARD-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_board_config.html</result>
+			<result name="T_ENVMON-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_envmon_config.html</result>
+			<result name="T_ETHPARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_ethpara_config.html</result>	
+			<result name="T_IPV4-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_ipv4_config.html</result>	
+			<result name="T_STROUT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_strout_config.html</result>
+			<result name="T_SCTP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sctp_config.html</result>
+			<result name="T_OMC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_omc_config.html</result>
+			<result name="T_SWPKG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_swpkg_config.html</result>
+			<result name="T_SWINFO-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_swinfo_config.html</result>
+			<result name="T_ENB_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_para_config.html</result>	
+			<result name="T_CEL_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_para_config.html</result>
+			<result name="T_CEL_PUCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_puch_config.html</result>	
+			<result name="T_CEL_PDCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_pdch_config.html</result>
+			<result name="T_CEL_PRACH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_prach_config.html</result>			
+			<result name="T_CEL_ULPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_ulpc_config.html</result>			
+			<result name="T_CEL_DLPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_dlpc_config.html</result>						
+			<result name="T_CEL_ALG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_alg_config.html</result>									
+			<result name="T_CEL_NBRCEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_nbrcel_config.html</result>
+			<result name="T_ENB_CTFREQ-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_ctfreq_config.html</result>			
+			<result name="T_ENB_MEASCFG-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_meascfg_config.html</result>			
+			<result name="T_ENB_SRVQOS-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvqos_config.html</result>
+			<result name="T_ENB_PDCP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_pdcp_config.html</result>
+			<result name="T_ENB_RLC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_rlc_config.html</result>
+			<result name="T_ENB_CTLTMR-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_ctltmr_config.html</result>						
+			<result name="T_ENB_UEPARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_uepara_config.html</result>
+			<result name="T_ENB_SRVQCI-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvqci_config.html</result>									
+			<result name="T_ENB_SRVPC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvpc_config.html</result>			
+			<result name="T_ENB_SRVMAC-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_enb_srvmac_config.html</result>
+			<result name="T_CEL_RESEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_resel_config.html</result>			
+			<result name="T_CEL_SISCH-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_sisch_config.html</result>			
+			<result name="T_CEL_PTT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_ptt_config.html</result>												
+			<result name="T_CEL_DRX-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_drx_config.html</result>
+			<result name="T_SYS_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sys_para_config.html</result>
+			<result name="T_ALARM_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_alarm_para_config.html</result>
+			<result name="T_CEL_SPS-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_sps_config.html</result>
+			<result name="T_CEL_ADMIT-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_admit_config.html</result>
+			<result name="T_CEL_ALG2-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_alg2_config.html</result>
+			<result name="T_VLAN-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_vlan_config.html</result>
+			<result name="T_SCTP_PARA-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sctp_para_config.html</result>
+			<result name="T_SNTP-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_sntp_config.html</result>
+		</action>
+		<!-- 查询该网元所有邻区记录 -->
+		<action name="queryNbrcelRecords_xw7400" class="com.xinwei.lte.web.enb.xw7400.NbrcelSimplifyAction"
+			method="queryNbrcelRecords_xw7400">
+			<result name="T_CEL_NBRCEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_nbrcel_query.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/error.html</result>
+		</action>
+		<!-- 查询该网元所有邻区记录 -->
+		<action name="querySingleNbrcelRecord_xw7400" class="com.xinwei.lte.web.enb.xw7400.NbrcelSimplifyAction"
+			method="querySingleNbrcelRecord_xw7400">
+			<result name="T_CEL_NBRCEL-3.0.8" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/xw7400/content/3.0.8/t_cel_nbrcel_config.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/enb/content/enbDetailContent/sharedBase/error.html</result>
+		</action>
+	</package>
+</struts>

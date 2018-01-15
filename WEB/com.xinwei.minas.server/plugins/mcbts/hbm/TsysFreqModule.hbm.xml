@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.mcbts.core.model.layer3.TSysFreqModule" table="t_conf_system_freq">
+  <id name="idx" type="java.lang.Long">
+   <column name="idx" not-null="true"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="freq" type="java.lang.Integer">
+   <column name="freq" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="freqType" type="java.lang.Integer">
+   <column name="freqType" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="doubleType" type="java.lang.Double">
+   <column name="doubleType" not-null="true"/>
+  </property>
+ </class>
+</hibernate-mapping>

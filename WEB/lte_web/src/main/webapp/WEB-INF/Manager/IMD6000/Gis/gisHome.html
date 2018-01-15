@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+<title>gis page</title>
+<script type="text/javascript" src="${base!}/uem_web/gis/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base!}/uem_web/gis/js/gps.js"></script>
+<script type="text/javascript" src="${base!}/uem_web/gis/mapfiles/mapapi.js"></script>
+<script type="text/javascript" src="${base!}/uem_web/gis/js/markerclusterer.js"></script>
+<script type="text/javascript" src="${base!}/uem_web/gis/js/keydragzoom.js"></script>
+<script>
+$(function(){
+	// 获取配置信息
+	/*var config = {
+        flushInterval:30,
+        maxZoom:18,
+        minZoom:5,
+        initZoom:12,
+        initCenterLatitude:22.5431,
+        initCenterLongitude:114.0579,
+        mapType:1,
+        roadMapName:"\u8857\u9053",
+        satelliteName:"\u536b\u661f",
+        maxNodeNum:100
+    };*/
+
+    var myDebug = true;
+
+    // 内部模拟数据控制开关
+    var fakeData =false;
+    var ConstValue = {
+        offline:2,
+        online_normal:1,
+        online_alarm:3,
+		is_ue:10,
+		is_enb:11,
+		enb_normal:0,
+		enb_offline:1
+    }
+
+    var map = null;
+    var markerCluster =null;
+    var ueInMaplist = {};
+	var enbInMaplist={};
+    var  selectedDevices = [];
+	
+	var searchPara={
+				search_type:"all",
+				search_val:""	
+		};
+
+    //var base="/mapTest/webapp";
+	var base ="${base!}";
+	var absPath = base+"/uem_web/gis/";
+	var mapPath = "/map/googlemaps/";
+	
+    //begin 工具函数
+    function Log(logStr)
+    {
+        if(myDebug ==true) {
+            if(typeof console != "undefined")
+			{
+				console.log(logStr);
+			}
+		  }
+    }
+	
+	function GetUeImage(status,isSelected)
+	{
+		var imgPath = null;
+		switch(status)
+		{
+			case ConstValue.offline:
+				if(isSelected == true)
+				{
+					imgPath=absPath+"images/gray-chart-ue-box.png";
+				}
+				else
+				{
+					imgPath=absPath+"images/gray-chart-ue.png";
+				}
+				break;
+			case ConstValue.online_normal:
+				if(isSelected==true)
+				{
+					imgPath=absPath+"images/green-chart-ue-box.png";
+				}
+				else
+				{
+					imgPath=absPath+"images/green-chart-ue.png";
+				}
+				break;
+			case ConstValue.online_alarm:
+				if(isSelected==true)
+				{
+					imgPath=absPath+"images/red-chart-ue-box.png";
+				}
+				else
+				{
+					imgPath=absPath+"images/red-chart-ue.png";
+				}
+				break;
+			default:
+				if(isSelected==true)
+				{
+					imgPath=absPath+"images/green-chart-ue-box.png";
+				}
+				else
+				{
+					imgPath=absPath+"images/green-chart-ue.png";
+				}
+				Log("unknow status "+status);
+				break;
+		}
+		return imgPath;
+	}
+	function GetEnbImage(status,isSelected)
+	{
+		var imgPath = null;
+		switch(status)
+		{
+			case ConstValue.enb_normal:
+				if(isSelected == true)
+				{
+					imgPath=absPath+"images/green-enb-box.png";
+				}
+				else
+				{
+					imgPath=absPath+"images/green-enb.png";
+				}
+				break;
+			default:
+				if(isSelected == true)
+				{
+					imgPath=absPath+"images/red-enb-box.png";
+				}
+				else
+				{
+					imgPath=absPath+"images/red-enb.png";
+				}
+				break;
+		}
+		return imgPath;
+	}
+	function SetSelectedDevice(devList,isSelected)
+	{
+		var imsi ="";
+		var imgPath="";
+		for(var i=0;i<devList.length;i++)
+		{
+			if(devList[i].type == ConstValue.is_ue)
+			{
+			imsi= devList[i].IMSI;
+			if(ueInMaplist.hasOwnProperty(imsi))
+			{
+				imgPath=GetUeImage(ueInMaplist[imsi].ueinfo.Status,isSelected);
+					//Log("imsi "+imsi +" imgPath "+imgPath+" status "+ueInMaplist[imsi].ueinfo.Status);
+				ueInMaplist[imsi].ueMarker.setIcon(imgPath);
+			}
+			else
+			{
+				Log("why imsi "+imsi +" not exists");
+				}
+			}
+			else if(devList[i].type == ConstValue.is_enb)
+			{
+				var devnumber = devList[i].devnumber;
+				if(enbInMaplist.hasOwnProperty(devnumber))
+				{
+					imgPath=GetEnbImage(enbInMaplist[devnumber].enbinfo.Status,isSelected);
+					Log("devnumber "+devnumber +" imgPath "+imgPath+" status "+enbInMaplist[devnumber].enbinfo.Status);
+					enbInMaplist[devnumber].enbMarker.setIcon(imgPath);
+				}
+			}
+        }
+    }
+    function ConstructEnbInfo(enbinfo)
+	{
+		var innerUeInfo = enbinfo;
+        var htmlStr = '<div class="info_box"><ul class="info_list">';
+        for (var key in innerUeInfo) {
+			if(key=="type")
+			{
+				continue;
+			}
+            if (!innerUeInfo.hasOwnProperty(key)) {
+                continue;
+            }
+            if (typeof innerUeInfo[key] == "function") {
+                continue;
+            }
+            htmlStr += '<li id="' + key + '"><label>' + GetEnbShowNameByFiled(key) + ':</label>' + GetEnbFieldValue(innerUeInfo,key) + '</li>';
+        }
+        htmlStr += '</ul></div>';
+        return htmlStr;
+	}
+	function GetEnbShowNameByFiled(filed)
+	{
+	 	var ret="";
+        switch (filed)
+		{
+		 	case  "Latitude":
+                ret="纬度";
+                break;
+            case  "Longitude":
+				ret="经度";
+                break;
+			case "Status":
+				ret="设备状态";
+				break;
+			case "devnumber":
+				ret="设备号";
+				break;
+			case "devname":
+				ret="名称";
+				break;
+			case "devtype":
+				ret="设备类型";
+				break;
+			default:
+				ret=field+"";
+				break;
+		}
+		return ret;
+	}
+	function GetEnbFieldValue(data,filed)
+	{
+		var ret ="";
+		//Log("GetEnbFieldValue filed "+filed+" value "+data[filed]);
+        switch (filed)
+        {
+			case "Latitude":
+				ret=parseFloat(data[filed]).toFixed(5);
+				break;
+			case "Longitude":
+				ret=parseFloat(data[filed]).toFixed(5);
+				break;
+			case "devtype":
+				if(data[filed] == 0)
+				{
+					ret="标准";
+				}
+				else
+				{
+					ret="其它";
+				}
+				break;
+			case "Status":
+				if(data[filed]==ConstValue.enb_normal)
+                {
+                    ret="正常";
+                }
+                else
+                {
+                    ret="离线";
+                }
+				break;
+			default:
+				ret=data[filed];
+				break;
+		}
+		return ret;
+	}
+    function ConstructUeInfoList(ueinfo)
+    {
+        var innerUeInfo = ueinfo;
+        var htmlStr = '<div class="info_box"><ul class="info_list">';
+        for (var key in innerUeInfo) {
+			if(key=="type")
+			{
+				continue;
+			}
+            if (!innerUeInfo.hasOwnProperty(key)) {
+                continue;
+            }
+            if (typeof innerUeInfo[key] == "function") {
+                continue;
+            }
+            htmlStr += '<li id="' + key + '"><label>' + GetShowNameByField(key) + ':</label>' + GetFiledValue(innerUeInfo,key) + '</li>';
+        }
+        htmlStr += '</ul></div>';
+        return htmlStr;
+    }
+
+    function GetShowNameByField(filed)
+    {
+        var ret="";
+        switch (filed)
+        {
+            case "UEID":
+                ret="终端ID";
+                break;
+            case  "IMSI":
+                ret="IMSI";
+                break;
+            case "BussinessType":
+               ret="业务类型";
+                break;
+            case  "Location":
+                ret="终端位置";
+                break;
+            case  "Latitude":
+                ret="终端纬度";
+                break;
+            case  "Longitude":
+				ret="终端经度";
+                break;
+            case "SignalStrength":
+                ret="信号强度";
+                break;
+            case  "IP":
+                ret="终端IP";
+                break;
+            case "PCI":
+                ret="小区PCI";
+                break;
+            case  "Status":
+                ret="终端状态";
+                break;
+            default :
+                ret=filed;
+                break;
+        }
+        return ret;
+    }
+    function GetFiledValue(data,filed)
+    {
+        var ret ="";
+        switch (filed)
+        {
+            case  "Status":
+                if(data[filed]==ConstValue.online_normal)
+                {
+                    ret="正常";
+                }
+                else if(data[filed]==ConstValue.online_alarm)
+                {
+                    ret="故障";
+                }
+                else
+                {
+                    ret="离线";
+                }
+                break;
+			case "Latitude":
+				ret=parseFloat(data[filed]).toFixed(5);
+				break;
+			case "Longitude":
+				ret=parseFloat(data[filed]).toFixed(5);
+				break;
+			case "BussinessType":
+				if(data[filed]==1)
+				{
+					ret ="集抄";
+				}
+				else if(data[filed]==2)
+				{
+					ret="配网自动化";
+				}
+				else if(data[filed]==3)
+				{
+					ret="负控";
+				}
+				else if(data[filed]==4)
+				{
+					ret="视频";
+				}
+				else
+				{
+					ret="其它";
+				}
+				break;
+            default :
+                ret=data[filed];
+                break;
+        }
+		if(ret==null ||　$.trim(ret)=="")
+		{
+			return "";
+		}
+        return ret;
+    }
+    //end 工具函数
+
+    /*
+    * ue 信息显示部分
+    * */
+    // 单击关闭按键则隐藏ue信息
+    $("#close_btn").click(function(){
+        $("#info_container").hide();
+		SetSelectedDevice(selectedDevices,false);
+    });
+
+    $("#refresh").click(function(){
+        queryUeInfo();
+		//queryEnbInfo();
+    });
+
+	// 设置查询时的初使状态
+	$("#search_type option:eq(0)").attr("selected","selected");
+	$("#txtsearch_val").attr("disabled","disabled");
+	$("#txtsearch_val").show();
+	$("#optsearch_val").hide();
+	$("#qostype").hide();
+	$("#txtsearch_val").val("");
+	
+	
+	$("#search_type").change(function(){
+		if($(this).val()=="status")
+		{
+			$("#txtsearch_val").hide();
+			$("#optsearch_val").show();
+			$("#qostype").hide();
+			$("#optsearch_val option:eq(0)").attr("selected","selected");
+		}
+		else if($(this).val()=="all")
+		{
+			$("#txtsearch_val").show();
+			$("#optsearch_val").hide();
+			$("#qostype").hide();
+			$("#txtsearch_val").attr("disabled","disabled");
+		}
+		else if($(this).val()=="bussinesstype")
+		{
+			$("#txtsearch_val").hide();
+			$("#optsearch_val").hide();
+			$("#qostype").show();
+			$("#txtsearch_val").attr("disabled","disabled");
+		}
+		else
+		{
+			$("#txtsearch_val").show();
+			$("#optsearch_val").hide();
+			$("#qostype").hide();
+			$("#txtsearch_val").removeAttr("disabled");
+		}
+		$("#txtsearch_val").val("");
+		
+		
+		
+	});
+	
+	
+	$("#searchAction").click(function(){
+		var filterVal ="";
+		var txtVal=$.trim($("#txtsearch_val").val());
+		Log("txtVal is "+txtVal);
+		var imsi=/\d+/;
+		switch($("#search_type").val())
+		{
+			case "imsi":
+				
+				if(txtVal!="")
+				{
+					if(!imsi.test(txtVal))
+					{
+						alert("imsi 输入不合法，imsi必须是数字");
+						return ;
+					}
+					filterVal = "IMSI="+txtVal;
+				}
+				break;
+			case "bussinesstype":
+					var bussinesstype=$.trim($("#qostype").val());
+					filterVal = "BussinessType="+bussinesstype;
+				break;
+			case "location":
+				if(txtVal!="")
+				{
+					filterVal = "Location="+txtVal;
+				}
+				break;
+			case "pci":
+				if(txtVal!="")
+				{
+					if(!imsi.test(txtVal))
+					{
+						alert("pci 输入不合法,pci必须是数字");
+						return ;
+					}
+					filterVal = "PCI="+txtVal;
+				}
+				break;
+			case "status":
+				var status = $.trim($("#optsearch_val").val());
+				if(status=="online")
+				{
+					filterVal = "Status="+ConstValue.online_normal;
+				}
+				else if(status=="onlineAlarm")
+				{
+					filterVal = "Status="+ConstValue.online_alarm;
+				}
+				else
+				{
+					filterVal = "Status="+ConstValue.offline;
+				}
+				break;
+			default:
+				filterVal="";
+				break;	
+			
+		}
+		/*$.ajax({
+		url:base+"/uem_web/gis/ue/list.do",
+		type:"GET",
+		data:filterVal,
+		dataType:"json",
+		success:function(data){
+			
+			var ueInfoList = new Array();
+			for(var i=0;i<data.DataBody.length;i++)
+			{
+				ueInfoList.push(data.DataBody[i]);
+			}
+			showUe(ueInfoList);
+		},
+		error:function(data){
+            alert("查询失败，请重试");
+        }
+		});*/
+		Log("filterVal  "+filterVal);
+		searchPara.search_type=$("#search_type").val();
+		searchPara.search_val=filterVal;
+		queryUeInfo();
+	});
+
+    /*
+    * 地图显示部分
+    * */
+
+    
+
+
+    function XinWeilMapType(imageFileDir, imageFileExtend, errorImageUrl) {
+        this.imageFileDir = imageFileDir;
+        this.imageFileExtend = imageFileExtend;
+        this.errorImageUrl = errorImageUrl;
+    }
+    XinWeilMapType.prototype.tileSize = new google.maps.Size(256, 256);
+    XinWeilMapType.prototype.setMaxZoom = function(maxZoom) {
+        this.maxZoom = maxZoom;
+    }
+    XinWeilMapType.prototype.setMinZoom = function(minZoom) {
+        this.minZoom = minZoom;
+    }
+    XinWeilMapType.prototype.setName = function(name) {
+        this.name = name;
+    }
+    XinWeilMapType.prototype.setAlt = function(alt) {
+        this.alt = alt;
+    }
+    XinWeilMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+        var img = ownerDocument.createElement("img");
+        img.style.width = this.tileSize.width + "px";
+        img.style.height = this.tileSize.height + "px";
+
+        var strURL = this.imageFileDir + "/" + zoom + "/" + coord.x + "/" + coord.y + this.imageFileExtend;
+        img.src = strURL;
+        var errorImage = this.errorImageUrl;
+        img.onerror = function() {
+            this.src = errorImage
+        };
+        return img;
+    }
+
+	
+    function initialize() {
+        var initLatlng = new google.maps.LatLng(config.initCenterLatitude, config.initCenterLongitude);
+        var initMapTypeControlOptions = {mapTypeIds : [ 'myRoadmap', 'mySatellite' ]};
+        var myOptions = {
+            center : initLatlng,
+            zoom : config.initZoom,
+            mapTypeControlOptions :initMapTypeControlOptions
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        //begin  使能选中
+        map.enableKeyDragZoom({
+            visualEnabled: true,
+            visualPosition: google.maps.ControlPosition.LEFT,
+            visualPositionOffset: new google.maps.Size(35, 0),
+            visualPositionIndex: null,
+            visualSprite:absPath+"images/dragzoom_btn.png",
+            visualSize: new google.maps.Size(20, 20),
+            visualTips: {
+                off: "开启节点选择框",
+                on: "关闭节点选择框"
+            }
+        });
+        var dz = map.getDragZoomObject();
+        /*google.maps.event.addListener(dz, 'activate', function () {
+            log('KeyDragZoom Activated');
+        });
+        google.maps.event.addListener(dz, 'deactivate', function (bnds) {
+            log('KeyDragZoom Deactivated: ' + bnds);
+        });*/
+        google.maps.event.addListener(dz, 'dragstart', function (latlng) {
+            //Log('KeyDragZoom Started: ' + latlng);
+        });
+        /*google.maps.event.addListener(dz, 'drag', function (startPt, endPt, prj) {
+            log('KeyDragZoom Dragging: ' + startPt + endPt);
+        });*/
+
+        google.maps.event.addListener(dz, 'dragend', function (bnds) {
+            //Log('KeyDragZoom Ended: ' + bnds);
+			SetSelectedDevice(selectedDevices,false);
+            selectedDevices.length=0;
+
+            for (var key in ueInMaplist) {
+                if(bnds.contains(ueInMaplist[key].latAndLong))
+                {
+                    selectedDevices.push(ueInMaplist[key].ueinfo);
+                    Log("selected imsi "+key);
+                }
+                //Log(" imsi is "+key);
+            }
+			for(var devnumber in enbInMaplist)
+			{
+				if(bnds.contains(enbInMaplist[devnumber].latAndLong))
+                {
+                    selectedDevices.push(enbInMaplist[devnumber].enbinfo);
+                    Log("selected devnubmer "+devnumber);
+                }
+			}
+			SetSelectedDevice(selectedDevices,true);
+            // 首先清空，再显示新的内容
+            $("#info_box_wraper").empty();
+			var htmlStr = "";
+            for(var i =0;i<selectedDevices.length;i++)
+            {
+				if(selectedDevices[i].type==ConstValue.is_ue)
+				{
+                  	htmlStr=ConstructUeInfoList(selectedDevices[i]);
+				}
+				else
+				{
+					htmlStr=ConstructEnbInfo(selectedDevices[i]);
+				}
+                $("#info_box_wraper").append(htmlStr);
+            }
+            if(selectedDevices.length>0) {
+                $("#info_container").show();
+            }
+            else
+            {
+                $("#info_container").hide();
+            }
+        });
+        //end 使能选中
+
+
+        //begin 点聚合
+        markerCluster = new MarkerClusterer(map,[],{imagePath:absPath+"images/m",maxZoom:config.maxZoom-1});
+        //end 点聚合
+
+        var roadMapType = new XinWeilMapType(mapPath+"roadmap", ".png", absPath+"images/green.png");
+        roadMapType.setMaxZoom(config.maxZoom);
+        roadMapType.setMinZoom(config.minZoom);
+        roadMapType.setName(config.roadMapName);
+        map.mapTypes.set('myRoadmap', roadMapType);
+
+        var satelliteType = new XinWeilMapType(mapPath+"satellite", ".jpg", absPath+"images/green.png");
+        satelliteType.setMaxZoom(config.maxZoom);
+        satelliteType.setMinZoom(config.minZoom);
+        satelliteType.setName(config.satelliteName);
+        map.mapTypes.set('mySatellite', satelliteType);
+
+        var  overlay= new XinWeilMapType(mapPath+"overlay", ".png",absPath+"images/transparent.png");
+
+        switch (config.mapType)
+        {
+            case  1:
+                map.setMapTypeId('myRoadmap');
+                break;
+            case 2:
+                map.overlayMapTypes.insertAt(0, overlay);
+                map.setMapTypeId('mySatellite');
+                break;
+            case 3:
+                break;
+            default :
+                map.setMapTypeId('myRoadmap');
+                break
+        }
+        google.maps.event.addListener(map, 'maptypeid_changed', function() {
+            if (map.getMapTypeId() == 'mySatellite') {
+                map.overlayMapTypes.insertAt(0, overlay);
+            } else {
+                map.overlayMapTypes.clear();
+            }
+        });
+    }
+    
+
+
+
+    function showUe(ueinfoList)
+    {
+        try {
+
+			
+            var maxShowUeNum = ueinfoList.length;
+            var marsGps = {};
+			for (var i = 0; i < maxShowUeNum; i++) {
+				marsGps = GPS.transform2Mars(parseFloat(ueinfoList[i].Latitude),parseFloat(ueinfoList[i].Longitude));
+				ueinfoList[i].Latitude = marsGps.lat;
+				ueinfoList[i].Longitude = marsGps.lon;
+                if(ueInMaplist.hasOwnProperty(ueinfoList[i].IMSI)==false)
+                {
+
+					
+                    var obj = new Object();
+                    obj.ueinfo = ueinfoList[i];
+					
+                    obj.latAndLong = new google.maps.LatLng(ueinfoList[i].Latitude, ueinfoList[i].Longitude);
+                    // 没有告警是绿色否则是红色
+                    if(obj.ueinfo.Status==ConstValue.online_normal)
+                    {
+                        obj.ueMarker = new google.maps.Marker({
+                            position:obj.latAndLong,
+                            icon:absPath+"images/green-chart-ue.png"
+                        });
+                    }
+                    else if(obj.ueinfo.Status==ConstValue.online_alarm)
+                    {
+                        obj.ueMarker = new google.maps.Marker({
+                            position:obj.latAndLong,
+                            icon:absPath+"images/red-chart-ue.png"
+                        });
+                    }
+                    else
+                    {
+                        obj.ueMarker = new google.maps.Marker({
+                            position:obj.latAndLong,
+                            icon:absPath+"images/gray-chart-ue.png"
+                        });
+                    }
+                    //obj.ueMarker.parent_ =obj;
+                    markerCluster.addMarker(obj.ueMarker);
+                    obj.notPresentCount = 0;
+                    ueInMaplist[ueinfoList[i].IMSI] = obj;
+
+                    (function(obj) {
+                        google.maps.event.addListener(obj.ueMarker, 'dblclick', function () {
+                            
+							var marker = obj.ueMarker;
+							var data = obj.ueinfo;
+							// 第一步清空
+							SetSelectedDevice(selectedDevices,false);
+                            $("#info_box_wraper").empty();
+                            selectedDevices.length=0;
+                            var htmlStr = ConstructUeInfoList(data);
+                            $("#info_box_wraper").append(htmlStr);
+                            // 第二步显示信息
+                            selectedDevices.push(data);
+                            //Log("push one "+selectedDevices.length);
+                            $("#info_container").show();
+							
+							//marker.setIcon(GetUeImage(data.Status,true));
+							SetSelectedDevice(selectedDevices,true);
+                            Log("marker dblclick imsi " + data.IMSI);
+                        });
+                    })(obj);
+					
+				Log("add new imsi "+ueinfoList[i].IMSI+" notPresentCount "+ueInMaplist[ueinfoList[i].IMSI].notPresentCount);
+
+                }
+                else
+                {
+
+                    ueInMaplist[ueinfoList[i].IMSI].notPresentCount = 0;
+					//Log("old imsi "+ueinfoList[i].IMSI+" notPresentCount "+ueInMaplist[ueinfoList[i].IMSI].notPresentCount);
+                    var prev = ueInMaplist[ueinfoList[i].IMSI];
+                    Log(" exist imsi "+ueinfoList[i].IMSI+" lat "+ueinfoList[i].Latitude+" lng "+ueinfoList[i].Longitude);
+
+                    // 模拟经纬度数据变动
+                    if(fakeData == true)
+                    {
+                        ueinfoList[i].Latitude =  (ueinfoList[i].Latitude +Math.random()*0.001).toFixed(5);
+                        ueinfoList[i].Longitude =  (ueinfoList[i].Longitude +Math.random()*0.001).toFixed(5);
+                        //Log("new lat "+ueinfoList[i].Latitude+" new lng "+ueinfoList[i].Longitude);
+
+                        if(Math.round(Math.random()*10)%4==0)
+                        {
+                            ueinfoList[i].Status = ConstValue.online_alarm;
+                            //Log("ueid "+ueinfoList[i].UEID+" alarm "+ueinfoList[i].Alarm);
+                        }
+
+                        if(ueInMaplist[ueinfoList[i].IMSI].ueinfo.UEID==7 )
+                        {
+                            ueInMaplist[ueinfoList[i].IMSI].notPresentCount=1;
+                        }
+
+                    }
+
+
+                    if(prev.ueinfo.Status !=ueinfoList[i].Status )
+                    {
+                        //Log("ue alarm  not equal");
+                        if(ueinfoList[i].Status==ConstValue.online_normal)
+                        {
+                            ueInMaplist[ueinfoList[i].IMSI].ueMarker.setIcon(absPath+"images/green-chart-ue.png");
+                        }
+                        else if(ueinfoList[i].Status==ConstValue.online_alarm){
+                            ueInMaplist[ueinfoList[i].IMSI].ueMarker.setIcon(absPath+"images/red-chart-ue.png");
+                        }
+                        else
+                        {
+                            ueInMaplist[ueinfoList[i].IMSI].ueMarker.setIcon(absPath+"images/gray-chart-ue.png");
+                        }
+                    }
+                    ueInMaplist[ueinfoList[i].IMSI].ueinfo = ueinfoList[i];
+                    if (prev.Latitude == ueinfoList[i].Latitude && prev.Longitude == ueinfoList[i].Longitude) {
+                        continue;
+                    }
+                    else {
+                        ueInMaplist[ueinfoList[i].IMSI].latAndLong =  new google.maps.LatLng(ueinfoList[i].Latitude, ueinfoList[i].Longitude);
+                        //ueInMaplist[ueinfoList[i].IMSI].latAndLong = ueinfoList[i].longitude;
+                        ueInMaplist[ueinfoList[i].IMSI].ueMarker.setPosition(ueInMaplist[ueinfoList[i].IMSI].latAndLong);
+                        //Log("ue lat lng not equal");
+
+                    }
+
+                }
+
+            }
+
+
+
+            // 检查 设备是否存在
+            for (var key in ueInMaplist) {
+                if (!ueInMaplist.hasOwnProperty(key)) {
+                    continue;
+                }
+                if (typeof ueInMaplist[key] == "function") {
+                    continue;
+                }
+                if (ueInMaplist[key].notPresentCount == 1) {
+                    // 三次没有收到信息移除
+                    Log("delete "+key);
+                    //ueInMaplist[key].ueMarker.setMap(null);
+                    markerCluster.removeMarker(ueInMaplist[key].ueMarker);
+                    delete  ueInMaplist[key];
+                }
+                else {
+                    ueInMaplist[key].notPresentCount = ueInMaplist[key].notPresentCount + 1;
+                }
+            }
+
+            // 如果设备信息面板已经打开，则要更新其信息
+            var tmpSelectedDevices= selectedDevices;
+            selectedDevices=[];
+			var htmlStr="";
+            //Log("selectedDevices.length "+tmpSelectedDevices.length);
+            if($("#info_container").css("display")=="block") {
+                if(tmpSelectedDevices.length>0) {
+                    $("#info_box_wraper").empty();
+                    for (var i = 0; i < tmpSelectedDevices.length; i++) {
+						if(tmpSelectedDevices[i].type==ConstValue.is_enb)
+						{
+							selectedDevices.push(tmpSelectedDevices[i]);
+							htmlStr = ConstructEnbInfo(tmpSelectedDevices[i]);
+							$("#info_box_wraper").append(htmlStr);
+						}
+						else
+						{
+                        var imsi = tmpSelectedDevices[i].IMSI;
+                        if(ueInMaplist.hasOwnProperty(imsi)==true)
+                        {
+                            selectedDevices.push(ueInMaplist[imsi].ueinfo);
+                            htmlStr = ConstructUeInfoList(ueInMaplist[imsi].ueinfo);
+                            $("#info_box_wraper").append(htmlStr);
+							}
+                        }
+
+                    }
+                }
+                if(selectedDevices.length>0)
+                {
+                    $("#info_container").show();
+                }
+                else
+                {
+                    $("#info_container").hide();
+                }
+            }
+            markerCluster.repaint();
+        }
+        catch(error)
+        {
+            alert(error.message);
+        }
+
+    }
+    //定时查询
+    function queryUeInfo() {
+
+		var filterVal = searchPara.search_val;
+        $.ajax({
+            type:"POST",
+            url:base+"/uem_web/gis/ue/list.do",
+			data:filterVal,
+            dataType:"json",
+            success:function(data){
+				var ueInfoList = new Array();
+				if(data == null)
+				{
+					Log("list.do data is null");
+					return;
+				}
+				else
+				{
+					for(var i=0;i<data.DataBody.length;i++)
+					{
+						data.DataBody[i].type=ConstValue.is_ue;
+						ueInfoList.push(data.DataBody[i]);
+					}
+				}
+                showUe(ueInfoList);
+            },
+            error:function(xhr,status){
+                Log("error "+status);
+                //alert("error  "+status);
+				var ueInfoList = new Array();
+				showUe(ueInfoList);
+            }
+        });
+    }
+	function showEnbInfo(enbInfoList)
+	{
+		 var maxShowUeNum = enbInfoList.length;
+		 Log("enbInfoList.length "+enbInfoList.length);
+            var marsGps = {};
+            for (var i = 0; i < maxShowUeNum; i++) {
+					marsGps = GPS.transform2Mars(parseFloat(enbInfoList[i].Latitude),parseFloat(enbInfoList[i].Longitude));
+					enbInfoList[i].Latitude = marsGps.lat;
+					enbInfoList[i].Longitude = marsGps.lon;
+	
+					var obj = new Object();
+					obj.enbinfo = enbInfoList[i];
+					obj.latAndLong = new google.maps.LatLng(enbInfoList[i].Latitude, enbInfoList[i].Longitude);
+					if(ConstValue.enb_normal==enbInfoList[i].Status)
+					{
+						obj.enbMarker = new google.maps.Marker({
+							position:obj.latAndLong,
+							icon:absPath+"images/green-enb.png"
+						});
+					}
+					else
+					{
+						obj.enbMarker = new google.maps.Marker({
+							position:obj.latAndLong,
+							icon:absPath+"images/red-enb.png"
+						});
+					}
+					enbInMaplist[enbInfoList[i].devnumber] = obj;
+					markerCluster.addMarker(obj.enbMarker);
+					(function(obj) {
+						google.maps.event.addListener(obj.enbMarker, 'dblclick', function () {
+							var marker = obj.enbMarker;
+							var data = obj.enbinfo;
+							// 第一步清空
+							SetSelectedDevice(selectedDevices,false);
+							$("#info_box_wraper").empty();
+							selectedDevices.length=0;
+							var htmlStr = ConstructEnbInfo(data);
+							$("#info_box_wraper").append(htmlStr);
+							// 第二步显示信息
+							selectedDevices.push(data);
+							SetSelectedDevice(selectedDevices,true);
+							$("#info_container").show();
+						});
+					})(obj);
+				}
+	}
+	function queryEnbInfo()
+	{
+		Log("queryEnbInfo ");
+        $.ajax({
+            type:"POST",
+            url:base+"/uem_web/gis/enb/list.json",
+            dataType:"json",
+            success:function(data){
+				var enbInfoList = new Array();
+				if(data == null)
+				{
+					Log("enb list.do data is null");
+					return;
+				}
+				else
+				{
+					for(var i=0;i<data.DataBody.length;i++)
+					{
+						data.DataBody[i].type=ConstValue.is_enb;
+						enbInfoList.push(data.DataBody[i]);
+					}
+					showEnbInfo(enbInfoList);
+				}
+            },
+            error:function(xhr,status){
+                Log("query enbinfolist error "+status);
+			   var enbInfoList = new Array();
+			   showEnbInfo(enbInfoList);
+            }
+        });
+	}
+	var config={};
+	$.ajax({
+		url:base+"/uem_web/gis/init.do",
+		dataType:"json",
+		timeout:3000,
+		success:function(data){
+			config.maxZoom = data.DataBody.maxZoom;
+			config.minZoom = data.DataBody.minZoom;
+            config.initZoom = data.DataBody.initZoom;
+            config.initCenterLatitude = data.DataBody.initCenterLatitude;
+            config.initCenterLongitude = data.DataBody.initCenterLongitude;
+            config.mapType = data.DataBody.mapType;
+            config.roadMapName = data.DataBody.roadMapName;
+            config.satelliteName = data.DataBody.satelliteName;
+            config.flushInterval = data.DataBody.flushInterval;
+            config.maxNodeNum = data.DataBody.maxNodeNum;
+			
+			initialize();
+			//初次直接调用，后续由定时器驱动
+			queryUeInfo();
+	queryEnbInfo();
+			setInterval(queryUeInfo,config.flushInterval);
+		},
+		error:function(data){
+            alert("read init config failed");
+        }
+	});
+	//config.maxZoom = 21;
+	//config.minZoom = 12;
+	//config.initZoom = 13;
+	//config.initCenterLatitude=34.26667;
+	// config.initCenterLongitude=108.95000;
+    /*if(typeof config.maxNodeNum == "undefined")
+    {
+        alert("read init config failed!");
+        return;
+    }*/
+	
+})
+</script>
+<style type="text/css">
+    #info_container {
+        position: absolute;
+        left: 77px;
+        top: 20px;
+        width: 225px;
+        height: 200px;
+        font-family:   sans-serif,Arial, Helvetica;
+        font-size: 12px;
+        margin: 0px;
+        padding: 0px;
+        display: none;
+    }
+
+    #refresh
+    {
+        float: right;
+        background-image: url("${base!}/uem_web/gis/images/refresh.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 40px;
+        height: 24px;
+        background-color: #3385ff;
+        cursor: pointer;
+        border: 0;
+        padding: 0;
+        margin-left: 2px;
+        margin-top: 5px;
+        margin-right: 5px;
+        border-radius: 1px 2px 2px 1px;
+        box-shadow: 0px 1px 1px ;
+    }
+    #close_wrapper{
+        height: 24px;
+        width: 175px;
+        margin: 5px 0px 2px 2px;
+        background-color: white;
+        box-shadow: 0px 1px 3px #171717;
+        border-radius: 1px 2px 2px 1px;
+    }
+
+    #close_btn {
+        background-image: url("${base!}/uem_web/gis/images/info.png");
+        background-repeat: no-repeat;
+        background-position: -10px -45px;
+        float: right;
+        width: 23px;
+        height: 24px;
+        cursor: pointer;
+    }
+
+    #info_box_wraper{
+        clear: both;
+        width: 175px;
+        height: 300px;
+        margin: 0px 0px 0px 2px;
+        padding: 0px 1px 0px 0px;
+        overflow-y: auto;
+
+    }
+    #info_box_wraper::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: #f5f5f5;
+    }
+    #info_box_wraper::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+    }
+    .info_box {
+        margin: 0px;
+        padding: 0px 1px 0px 1px;
+        box-shadow: 0px 1px 3px #171717;
+        border-radius: 1px 2px 2px 1px;
+        background-color: white;
+    }
+    .info_list {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+    }
+    .info_list li
+    {
+        border-bottom: solid;
+        border-width: 1px;
+        border-color: #d6d8d3;
+        padding: 5px;
+        margin: 2px;
+    }
+	
+	#search_container{
+		position:absolute;
+		top: 5px;
+		right:200px;
+		font-family:   sans-serif,Arial, Helvetica;
+        font-size: 12px;
+		
+	}
+	
+	#search_container #searchAction{
+		width:40px;
+		height:24px;
+		float:right;
+		background-image:url(${base!}/uem_web/gis/images/info.png);
+		background-repeat:no-repeat;
+		background-color:#3385ff;
+		background-position:-10px -84px;
+		margin-left:2px;
+		border-radius: 1px 2px 2px 1px;
+        box-shadow: 0px 1px 1px ;
+		cursor:pointer;
+		
+	}
+	
+	#search_container #searchInput{
+		float:right;
+		background-color:#000000;
+		border-radius: 1px 2px 2px 1px;
+        box-shadow: 0px 1px 1px ;
+		
+	}
+	
+	#search_container #searchInput #search_type{
+		margin:0px;
+		margin-right:1px;
+		height:24px;
+		display:block;
+		float:left;
+		border:none;
+	}
+	
+	#search_container #searchInput #txtsearch_val{
+		margin:0px;
+		padding-left:2px;
+		height:22px;
+		float:left;
+		width:140px;
+		border:none;
+	}
+	#search_container #searchInput #optsearch_val{
+		margin:0px;
+		height:24px;
+		display:none;
+		float:left;
+		width:140px;
+		text-align:center;
+		border:none;
+	}
+	#search_container #searchInput #qostype{
+		margin:0px;
+		height:24px;
+		display:none;
+		float:left;
+		width:140px;
+		text-align:center;
+		border:none;
+	}
+    
+</style>
+</head>
+<body>
+	    <div id="map_canvas" style="left: 0; top: 0; width: 100%; height: 100%; position: absolute">
+        </div>
+
+        <div id="info_container">
+            <div id="refresh" title="刷新"></div>
+            <div id="close_wrapper">
+                <div id="close_btn" title="关闭"></div>
+            </div>
+            <div id="info_box_wraper">
+            </div>
+        </div>
+		
+		<div id="search_container">
+			<div id="searchAction" title="过滤"></div>
+			<div id="searchInput">
+				<select id="search_type" title="选择过滤类型">
+					<option value="all">所有终端</option>
+					<option value="imsi" >IMSI</option>
+					<option value="bussinesstype">业务类型</option>
+					<option value="location">终端位置</option>
+					<option value="pci">PCI</option>
+					<option value="status">终端状态</option> 
+				</select>
+				<input type="text" id="txtsearch_val" title="输入过滤条件" ></input>
+				<select   id="optsearch_val" title="选择过滤条件" >
+					<option value="online" >正常</option>
+					<option value="onlineAlarm">故障</option>
+					<option value="offline">离线</option>
+				</select>
+				<select   id="qostype" title="选择过滤条件" >
+					<option value="1" >集抄</option>
+					<option value="2">配网自动化</option>
+					<option value="3">负控</option>
+					<option value="4">视频</option>
+					<option value="5">其它</option>
+				</select>
+			</div>
+			
+		</div>
+
+</body>
+</html>

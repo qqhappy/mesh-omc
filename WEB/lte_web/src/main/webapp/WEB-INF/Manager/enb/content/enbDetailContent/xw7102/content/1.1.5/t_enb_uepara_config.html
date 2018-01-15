@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_enb_uepara.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		//u8T310
+		$("#u8T310 option").each(function(index){
+			if($("#u8T310 option:eq("+index+")").val() == ${record.fieldMap["u8T310"].value}){
+				$("#u8T310 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8T311
+		$("#u8T311 option").each(function(index){
+			if($("#u8T311 option:eq("+index+")").val() == ${record.fieldMap["u8T311"].value}){
+				$("#u8T311 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8T300
+		$("#u8T300 option").each(function(index){
+			if($("#u8T300 option:eq("+index+")").val() == ${record.fieldMap["u8T300"].value}){
+				$("#u8T300 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8T301
+		$("#u8T301 option").each(function(index){
+			if($("#u8T301 option:eq("+index+")").val() == ${record.fieldMap["u8T301"].value}){
+				$("#u8T301 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8T302
+		$("#u8T302 option").each(function(index){
+			if($("#u8T302 option:eq("+index+")").val() == ${record.fieldMap["u8T302"].value}){
+				$("#u8T302 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8T304
+		$("#u8T304 option").each(function(index){ 
+			if($("#u8T304 option:eq("+index+")").val() == ${record.fieldMap["u8T304"].value}){
+				$("#u8T304 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8T320
+		$("#u8T320 option").each(function(index){
+			if($("#u8T320 option:eq("+index+")").val() == ${record.fieldMap["u8T320"].value}){
+				$("#u8T320 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8N310
+		$("#u8N310 option").each(function(index){
+			if($("#u8N310 option:eq("+index+")").val() == ${record.fieldMap["u8N310"].value}){
+				$("#u8N310 option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//u8N311
+		$("#u8N311 option").each(function(index){
+			if($("#u8N311 option:eq("+index+")").val() == ${record.fieldMap["u8N311"].value}){
+				$("#u8N311 option:eq("+index+")").attr("selected",true);
+			}
+		});
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>UE参数配置表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_ENB_UEPARA-1.1.5" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CfgIdx">
+							<td style="width:440px;">配置索引 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="${record.fieldMap['u8CfgIdx'].value}" id="u8CfgIdx" disabled="disabled"/></td>
+							<td class="error"  id="u8CfgIdxError"></td>						
+						</tr>
+						<tr class="u8T310">
+							<td>UE监测无线链路失败的定时器长度(T310)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8T310">
+									<option value="0">0</option>
+									<option value="1">50</option>
+									<option value="2">100</option>
+									<option value="3">200</option>
+									<option value="4">500</option>
+									<option value="5">1000</option>
+									<option value="6">2000</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8T311">
+							<td>UE监测到无线链路失败后转入idle状态的定时器长度(T311)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8T311">
+									<option value="0">1000</option>
+									<option value="1">3000</option>
+									<option value="2">5000</option>
+									<option value="3">10000</option>
+									<option value="4">15000</option>
+									<option value="5">20000</option>
+									<option value="6">30000</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8T300">
+							<td>UE等待RRC连接响应的定时器长度(T300)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8T300">
+									<option value="0">100</option>
+									<option value="1">200</option>
+									<option value="2">300</option>
+									<option value="3">400</option>
+									<option value="4">600</option>
+									<option value="5">1000</option>
+									<option value="6">1500</option>
+									<option value="7">2000</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8T301">
+							<td>UE等待RRC重建响应的定时器长度(T301)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8T301">
+									<option value="0">100</option>
+									<option value="1">200</option>
+									<option value="2">300</option>
+									<option value="3">400</option>
+									<option value="4">600</option>
+									<option value="5">1000</option>
+									<option value="6">1500</option>
+									<option value="7">2000</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8T302">
+							<td>UE收到RRC连接拒绝后等待RRC连接请求重试的定时器长度 (T302)(s) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8T302">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8T304">
+							<td>UE等待切换成功的定时器长度(T304)(ms) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8T304">
+									<option value="0">50</option>
+									<option value="1">100</option>
+									<option value="2">150</option>
+									<option value="3">200</option>
+									<option value="4">500</option>
+									<option value="5">1000</option>
+									<option value="6">2000</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8T320">
+							<td>小区重选优先级定时器长度(T320)(min) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8T320">
+									<option value="0">5</option>
+									<option value="1">10</option>
+									<option value="2">20</option>
+									<option value="3">30</option>
+									<option value="4">60</option>
+									<option value="5">120</option>
+									<option value="6">180</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8N310">
+							<td>UE接收下行失步指示的最大个数(N310_UE) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8N310">
+									<option value="0">1</option>
+									<option value="1">2</option>
+									<option value="2">3</option>
+									<option value="3">4</option>
+									<option value="4">6</option>
+									<option value="5">8</option>
+									<option value="6">10</option>
+									<option value="7">20</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="u8N311">
+							<td>UE接收下行同步指示的最大个数(N311) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8N311">
+									<option value="0">1</option>
+									<option value="1">2</option>
+									<option value="2">3</option>
+									<option value="3">4</option>
+									<option value="4">5</option>
+									<option value="5">6</option>
+									<option value="6">8</option>
+									<option value="7">10</option>
+								</select></div>
+							</td>
+							<td class="error" ></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+							<td class="error" ></td>
+						</tr>		
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

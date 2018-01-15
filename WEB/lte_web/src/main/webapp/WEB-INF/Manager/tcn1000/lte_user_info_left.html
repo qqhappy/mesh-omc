@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+$(function(){
+// 	$(".left_nav dd").click(function(){
+// 			$(".left_nav a").removeClass("selector");
+// 			$(this).children("a").addClass("selector");
+// 	});		
+// 	$(".left_nav dl").each(function() {
+//         var leng=$(this).children("dd").size();		
+// 		if(leng==0){
+// 			$(this).children("dt").addClass("sdt");	
+// 		}		
+//     });
+
+	var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: true,
+				selectedMulti: false
+			},	
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+		var zNode =[
+					{ id:1, pId:0, name:"用户信息",url:"${base}/lte/turntoUserInfo.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:2, pId:0, name:"用户参数模板",url:"${base}/lte/turntoUserTemplate.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:3, pId:0, name:"用户状态",url:"${base}/lte/turntoUserStatus.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:4, pId:0, name:"无线终端IMSI",url:"${base}/lte/turntoImsi.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:5, pId:0, name:"用户IP资源",url:"${base}/lte/turntoIpResource.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:6, pId:0, name:"QoS",url:"${base}/lte/turntoQos.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:7, pId:0, name:"呼叫QoS",url:"${base}/lte/callQos!turntoCallQos.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:8, pId:0, name:"业务IP QoS",url:"${base}/lte/ipQos!turntoIpQos.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:9, pId:0, name:"视频监控设备",url:"${base}/lte/vmgCfg!turntoVmgCfg.do",target:"mainFrame", iconSkin:"icon01"},
+					{ id:10, pId:0, name:"视频监控号码",url:"${base}/lte/vmgNum!turntoVmgNum.do",target:"mainFrame", iconSkin:"icon01"},
+		 		];
+		$.fn.zTree.init($("#treeDemo"), setting, zNode);
+		
+		$("#leftDivOne ul li:eq(0) a").addClass("curSelectedNode");
+		
+
+		$("#leftDivOne ul li").each(function(index){
+			$("#leftDivOne ul li:eq("+index+") a").click(function(){
+				$("#leftDivOne ul li a").removeClass("curSelectedNode");
+				$(this).addClass("curSelectedNode");
+			})
+		})
+	
+});
+</script>
+</head>
+
+<body style="background:#e9f6fe;">
+<div class="left_nav">
+<!-- <div class="title">终端用户管理</div> -->
+<!--   <dl> -->
+<!-- 	<dt style="line-height:10px;">&nbsp;</dt> -->
+<!-- 	<dd><a href="${base}/lte/turntoUserInfo.do" target="mainFrame" class="selector">用户信息</a></dd> -->
+<!--     <dd><a href="${base}/lte/turntoUserTemplate.do" target="mainFrame">用户参数模板</a></dd> -->
+<!-- 	<dd><a href="${base}/lte/turntoUserStatus.do" target="mainFrame">用户状态</a></dd> -->
+<!-- 	<dd><a href="${base}/lte/turntoImsi.do" target="mainFrame">无线终端IMSI</a></dd> -->
+<!-- 	<dd><a href="${base}/lte/turntoQos.do" target="mainFrame">QoS</a></dd> -->
+<!-- 	<dd><a href="${base}/lte/turntoIpResource.do" target="mainFrame">用户IP资源</a></dd> -->
+<!-- 	<dd><a href="${base}/lte/callQos!turntoCallQos.do" target="mainFrame">呼叫QoS</a></dd> -->
+<!-- 	<dd><a href="${base}/lte/ipQos!turntoIpQos.do" target="mainFrame">业务IP QoS</a></dd> -->
+<!--   </dl> -->
+<!-- </div> -->
+
+	<div class="title" style="font-size:12px;">终端用户管理</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7102/1.1.5/t_cel_ulpc.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_cel_ulpc1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CId">小区标识</th>'
+					+'<th scope="col" class="u8PoNominalPuschDynamic">PUSCH动态调度方式下的小区标称功率(dBm)</th>'
+					+'<th scope="col" class="u8PoNominalPuschPersistent">PUSCH半静态调度方式下的小区标称功率(dBm)</th>'
+					+'<th scope="col" class="u8Alpha4PL">上行路损弥补因子</th>'
+					+'<th scope="col" class="u8Pmax">UE最大发射功率(dBm)</th>'
+					+'<th scope="col" class="u8PoNominalPucch">PUCCH物理信道的小区标称功率(dBm)</th>'
+					+'<th scope="col" class="u8dtaPoPucchF1">PUCCH Format 1功率偏置(dB)</th>'
+					+'<th scope="col" class="u8dtaPoPucchF1b">PUCCH Format 1b功率偏置(dB)</th>'
+					+'<th scope="col" class="u8dtaPoPucchF2">PUCCH Format 2功率偏置(dB)</th>'
+					+'<th scope="col" class="u8dtaPoPucchF2a">PUCCH Format 2a功率偏置(dB)</th>'
+					+'<th scope="col" class="u8dtaPoPucchF2b">PUCCH Format 2b功率偏置(dB)</th>'
+					+'<th scope="col" class="u8dtaPrmbMsg3">MSG3相对前导的功率偏置</th>'
+					+'<th scope="col" class="u8SwchPHR">PHR使能开关</th>'
+					+'<th scope="col" class="u8PCFilterCoeffRSRP">上行功控RSRP滤波因子</th>'
+					+'<th scope="col" class="u8PSrsOffset">SRS功率偏移</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+// 					+'<th scope="col" class="justForView" width="60px;">删除</th>' 
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th scope="row" class="justForView"></th>'
+					+'<td class="u8CId">暂无相关数据</td>'
+					+'<td class="u8PoNominalPuschDynamic"></td>'
+					+'<td class="u8PoNominalPuschPersistent"></td>'
+					+'<td class="u8Alpha4PL"></td>'
+					+'<td class="u8Pmax"></td>'
+					+'<td class="u8PoNominalPucch"></td>'
+					+'<td class="u8dtaPoPucchF1"></td>'
+					+'<td class="u8dtaPoPucchF1b"></td>'
+					+'<td class="u8dtaPoPucchF2"></td>'
+					+'<td class="u8dtaPoPucchF2a"></td>'
+					+'<td class="u8dtaPoPucchF2b"></td>'
+					+'<td class="u8dtaPrmbMsg3"></td>'
+					+'<td class="u8SwchPHR"></td>'
+					+'<td class="u8PCFilterCoeffRSRP"></td>'
+					+'<td class="u8PSrsOffset"></td>'
+					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+// 					+'<td class="justForView"  style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_CEL_ULPC-1.1.5&referTable=T_CEL_PARA";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区上行功控参数表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+<!-- 		<li><label></label><input type="button" id="newAdd" value="新增"/></li> -->
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+<!-- 		<li><label></label><input type="button" id="delete" value="批量删除"/></li> -->
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_cel_ulpc_div">  -->
+			<div style="width:2800px; padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_cel_ulpc1" class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" width="50px;" class="justForView">修改</th>  
+					<th scope="col" class="u8CId">小区标识</th>
+					<th scope="col" class="u8PoNominalPuschDynamic">PUSCH动态调度方式下的小区标称功率(dBm)</th>
+					<th scope="col" class="u8PoNominalPuschPersistent">PUSCH半静态调度方式下的小区标称功率(dBm)</th>
+					<th scope="col" class="u8Alpha4PL">上行路损弥补因子</th>
+					<th scope="col" class="u8Pmax">UE最大发射功率(dBm)</th>
+					<th scope="col" class="u8PoNominalPucch">PUCCH物理信道的小区标称功率(dBm)</th>
+					<th scope="col" class="u8dtaPoPucchF1">PUCCH Format 1功率偏置(dB)</th>
+					<th scope="col" class="u8dtaPoPucchF1b">PUCCH Format 1b功率偏置(dB)</th>
+					<th scope="col" class="u8dtaPoPucchF2">PUCCH Format 2功率偏置(dB)</th>
+					<th scope="col" class="u8dtaPoPucchF2a">PUCCH Format 2a功率偏置(dB)</th>
+					<th scope="col" class="u8dtaPoPucchF2b">PUCCH Format 2b功率偏置(dB)</th>
+					<th scope="col" class="u8dtaPrmbMsg3">MSG3相对前导的功率偏置</th>
+					<th scope="col" class="u8SwchPHR">PHR使能开关</th>
+					<th scope="col" class="u8PCFilterCoeffRSRP">上行功控RSRP滤波因子</th>
+					<th scope="col" class="u8PSrsOffset">SRS功率偏移</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 					<th scope="col" class="justForView" width="60px;">删除</th> -->
+				  </tr>
+				<#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CId">${record.fieldMap["u8CId"].value!}</td>
+						<td class="u8PoNominalPuschDynamic">${record.fieldMap["u8PoNominalPuschDynamic"].value!}</td>
+						<td class="u8PoNominalPuschPersistent">${record.fieldMap["u8PoNominalPuschPersistent"].value!}</td>
+						<td class="u8Alpha4PL">${record.fieldMap["u8Alpha4PL"].value!}</td>
+						<td class="u8Pmax">${record.fieldMap["u8Pmax"].value!}</td>
+						<td class="u8PoNominalPucch">${record.fieldMap["u8PoNominalPucch"].value!}</td>
+						<td class="u8dtaPoPucchF1">${record.fieldMap["u8dtaPoPucchF1"].value!}</td>
+						<td class="u8dtaPoPucchF1b">${record.fieldMap["u8dtaPoPucchF1b"].value!}</td>
+						<td class="u8dtaPoPucchF2">${record.fieldMap["u8dtaPoPucchF2"].value!}</td>
+						<td class="u8dtaPoPucchF2a">${record.fieldMap["u8dtaPoPucchF2a"].value!}</td>
+						<td class="u8dtaPoPucchF2b">${record.fieldMap["u8dtaPoPucchF2b"].value!}</td>
+						<td class="u8dtaPrmbMsg3">${record.fieldMap["u8dtaPrmbMsg3"].value!}</td>
+						<td class="u8SwchPHR">${record.fieldMap["u8SwchPHR"].value!}</td>
+						<td class="u8PCFilterCoeffRSRP">${record.fieldMap["u8PCFilterCoeffRSRP"].value!}</td>
+						<td class="u8PSrsOffset">${record.fieldMap["u8PSrsOffset"].value!}</td>
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+<!-- 			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td> -->
+					</tr>
+				</#list>
+				</table>
+			</div>
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_cel_pingopt.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){	
+		$("#u8PingSwitch").val("${record.fieldMap['u8PingSwitch'].value}");
+		$("#u8SubframeAdv").val("${record.fieldMap['u8SubframeAdv'].value}");
+		$("#u8TimerRcvPactet").val("${record.fieldMap['u8TimerRcvPactet'].value}");
+		$("#u8PingCounter").val("${record.fieldMap['u8PingCounter'].value}");
+	})
+</script>
+<title>单板表新增</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>T_CEL_PINGOPT</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;"><div class="title">&nbsp;</div>
+				<div class="content">
+					<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+					<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_PINGOPT-3.0.7" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td>小区标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CId" disabled="disabled">
+									<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+								</select></div>
+							</td>							
+							<td class="error" style="width:250px;" id="u8CIdError"></td>						
+						</tr>
+						<tr class="u8PingSwitch">
+							<td>ping优化开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PingSwitch">
+									<option value="0">off</option>
+									<option value="1">part</option>
+									<option value="2">full</option>
+								</select></div>
+							</td>							
+							<td class="error" style="width:250px;" id="u8PingSwitchError"></td>						
+						</tr>
+						<tr class="u8SubframeAdv">
+							<td>预调度时间提前量(ms) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8SubframeAdv">
+									<option value="0">5</option>
+									<option value="1">10</option>
+									<option value="2">15</option>
+									<option value="3">20</option>
+									<option value="4">25</option>
+									<option value="5">30</option>
+									<option value="6">35</option>
+									<option value="7">40</option>
+								</select></div>
+							</td>							
+							<td class="error" style="width:250px;" id="u8SubframeAdvError"></td>						
+						</tr>	
+						<tr class="u8TimerRcvPactet">
+							<td>ping包接收定时器(ms) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8TimerRcvPactet">
+									<option value="0">1280</option>
+									<option value="1">2560</option>
+									<option value="2">5120</option>
+									<option value="3">8192</option>
+								</select></div>
+							</td>							
+							<td class="error" style="width:250px;" id="u8TimerRcvPactetError"></td>						
+						</tr>	
+						<tr class="u8PingCounter">
+							<td>ping包计数器 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PingCounter">
+									<option value="0">1</option>
+									<option value="1">2</option>
+									<option value="2">4</option>
+								</select></div>
+							</td>							
+							<td class="error" style="width:250px;" id="u8PingCounterError"></td>						
+						</tr>						
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel" onclick = "refresh_sync('${enbVersion}','${base}','${moId}','T_CEL_PINGOPT-3.0.7','')">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+			
+		</form>
+		</div>
+</body>
+</html>

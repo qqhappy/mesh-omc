@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/enb/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		Address("#"tftIpDiv"");
+		
+		
+		var currentPageNum = $("#currentPageNum").val();
+		var totalPages = $("#totalPages").val();
+		
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		
+		$("#submitBtn").click(function(){
+			var basePath = "${base}";
+			var valTest = /^[1-9]\d*$/;
+			var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+			
+			
+			var gdn = $("#gdn").val();
+			var bmQci=$("#bmQci").val();
+			var bmType=$("#bmType").val();
+			var bmUplinkMbr=$("#bmUplinkMbr").val();
+			var bmDownlinkMbr=$("#bmDownlinkMbr").val();
+			var bmUplinkGbr=$("#bmUplinkGbr").val();
+			var bmDownlinkGbr=$("#bmDownlinkGbr").val();
+			var comment=$("#comment").val();
+			var tftIpStr="";
+			$("#tftIpDiv input").each(function(){
+				tftIpStr+=$(this).val()+".";
+			});
+			var tftIp = tftIpStr.substring(0,tftIpStr.length-1);
+			
+			if(!valTest.test(gdn)){
+				alert("数据同播组号码不可为空");
+				return false;
+			}
+			if(!ipTest.test(tftIp)){
+				alert("数据同播组业务IP格式错误");
+				return false;
+			}
+			if(!valTest.test(bmQci)){
+				alert("QCI不可为空");
+				return false;
+			}
+			if(!valTest.test(bmUplinkMbr)){
+				alert("上行最大带宽不可为空");
+				return false;
+			}
+			if(!valTest.test(bmDownlinkMbr)){
+				alert("下行最大带宽不可为空");
+				return false;
+			}
+			if(!valTest.test(bmUplinkGbr)){
+				alert("上行保证带宽不可为空");
+				return false;
+			}
+			
+			if(!valTest.test(bmDownlinkGbr)){
+				alert("下行保证带宽不可为空");
+				return false;
+			}
+			if(!valTest.test(comment)){
+				alert("描述信息不可为空");
+				return false;
+			}
+			$.ajax({
+				type:"post",
+				url:"lte/modifyDataGroupIp!modifyDataGroupIp.do",
+				data:"dataGroupIp.gdn="+gdn+
+				"&dataGroupIp.ipAddr="+tftIp+
+				"&dataGroupIp.bmType="+bmType+
+				"&dataGroupIp.bmQci="+bmQci+
+				"&dataGroupIp.bmUplinkMbr="+bmUplinkMbr+
+				"&dataGroupIp.bmDownlinkMbr="+bmDownlinkMbr+
+				"&dataGroupIp.bmUplinkGbr="+bmUplinkGbr+
+				"&dataGroupIp.bmDownlinkGbr="+bmDownlinkGbr+
+				"&dataGroupIp.comment="+comment,
+				dataType:"json",
+				success:function(data){
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					var status = parseInt(data.errorCode);
+					switch(status){
+						case 0:
+							window.location="lte/showSameRegionConfigInfo!showSameRegionConfigInfo.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+							break;
+						default:
+							alert(data.errorMsg);
+							break;
+							
+					}
+				},
+				error:function(data){
+					alert("操作失败");
+				}
+			});
+		});		
+		
+	})
+		
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>数据同播组IP配置</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>配置</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+							<td>数据同播组号码  :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" id="gdn" value="${dataGroupIp.gdn!}"/>
+							</td>
+							<td class="redColor">*</td>
+							<td class="gdn_peeripJudge"></td>
+						</tr>
+						<tr>
+							<td>数据同播组业务IP :</td>
+							<td class="blankTd"></td>
+							<td>	<div id="tftIpDiv" style="border:1px solid #C6D7E7; width:250px; height:20px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<#list dataGroupIp.tftIp?split(".") as i>
+										<input type="text" size="3" maxlength="3" style="border:none; height:17px;width:17%;" value="${i}"/>
+										<#if i_index! < 3>
+											.
+										</#if>								
+									</#list>
+								</div>
+							</td>
+							<td class="redColor">*</td>
+							<td class="tftIp_enbidJudge"></td>
+						</tr>
+						
+						<tr>
+							<td>业务类型:</td>
+							<td class="blankTd"></td>
+							<td>
+								<select id="bmType" style="width:250px;">
+									<#if dataGroupIp.bmType! == 0>
+										<option value="0">音频</option>
+										<option value="1">视频</option>
+										<option value="2">OTHER</option>
+									<#elseif dataGroupIp.bmType! == 1>
+										<option value="1">视频</option>
+										<option value="0">音频</option>
+										<option value="2">OTHER</option>
+									<#else>
+										<option value="2">OTHER</option>
+										<option value="0">音频</option>
+										<option value="1">视频</option>
+									</#if>
+									
+								</select>
+							</td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						
+						<tr>
+							<td>QCI :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="21" style="width:240px;" id="bmQci" value="${dataGroupIp.bmQci!}" /></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>上行最大带宽 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="21" style="width:240px;" id="bmUplinkMbr" value="${dataGroupIp.bmUplinkMbr!}" /></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>下行最大带宽 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="21" style="width:240px;" id="bmDownlinkMbr" value="${dataGroupIp.bmDownlinkMbr!}"/></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>上行保证带宽 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="21" style="width:240px;" id="bmUplinkGbr" value="${dataGroupIp.bmUplinkGbr!}"/></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>下行保证带宽 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="21" style="width:240px;" id="bmDownlinkGbr" value="${dataGroupIp.bmDownlinkGbr!}"/></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>描述信息 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="21" style="width:240px;" id="comment" value="${dataGroupIp.comment!}"/></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input id="submitBtn" type="button"  value="确定" style="padding:3px 25px;"/>
+								<input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+</body>
+</html>

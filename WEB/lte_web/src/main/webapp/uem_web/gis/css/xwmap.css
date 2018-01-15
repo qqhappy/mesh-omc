@@ -1,0 +1,20 @@
+.xwMarkerLabel {
+     color: white;    
+     font-family: "Lucida Grande", "Arial", sans-serif;
+     font-size: 13px;
+     font-weight: bold;
+     text-align: center;        
+     border: 1px solid #E4CC73;
+     white-space: nowrap;
+     background:#2D91CF;
+    /* background:#49A297;2D91CF */
+    
+     padding:1px 6px;
+     
+}
+
+#xwFontSpan{
+  visibility:hidden
+  white-space:nowrap
+  font-size:13px;
+}

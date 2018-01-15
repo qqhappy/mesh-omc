@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+			
+		
+/* 		//批量删除
+		$("#batchDelete").click(function(){
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var qos_idArray = [];
+			var qos_idArrayIndex = 0;
+			$("input[type='checkbox']:gt(0)").each(function(){
+				qos_idArray[qos_idArrayIndex]=$(this).val();
+				qos_idArrayIndex++;
+			});
+
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/deleteQos.do",
+				data:"qosModel.qos_id="+qos_idArray,
+				dataType:"text",
+				success:function(data){
+					var result = $.trim(data);
+					if(result == "success"){
+						alert("删除成功");
+						window.location=basePath+"/lte/turntoQos.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+					}else{
+						alert("删除失败");
+					}
+				}				
+			});
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var qos_id = $(this).siblings("input").val();
+
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/deleteQos.do",
+				data:"qosModel.qos_id="+qos_id,
+				dataType:"text",
+				success:function(data){
+					var result = $.trim(data);
+					if(result == "success"){
+						alert("删除成功");
+						window.location=basePath+"/lte/turntoQos.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+					}else{
+						alert("删除失败");
+					}
+				}				
+			});
+			
+		});
+		
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var qos_id = $("#qosLevelInput");
+			var qos_type = $("#sourceTypeInput");
+			var qos_priority = $("#priorityInput");
+			
+			window.location=basePath+"/lte/turntoQos.do?qosModel.qos_id="+qos_id+"&onlinePage.totalPages="+totalPages;			
+		}); */
+
+		//跳页
+		/* $("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());
+			if(turnPageInputVal == ""){
+				return false;
+			}
+			
+			var currentPageNum = $("#currentPageNum").val();
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var pageTest = /^[1-9]*$/;
+			if(!pageTest.test(turnPageInputVal)){
+				 alert("跳转页码必须为正整数");
+				 $("#turnPageInput").val("");
+				return false;
+			}
+			if(turnPageInputVal > currentPageNum){
+				alert("请输入页码范围内的数值");
+				$("#turnPageInput").val("");
+				return false;
+			}
+			if(turnPageInputVal == currentPageNum){
+				return false;
+			}
+			
+			var myForm = '<form action="'+basePath+'/lte/turntoQos.do" id="myForm" method="post">'+
+							'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+							'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+						 '</form>';
+
+			$("#hiddenDiv").html(myForm);
+			$("#myForm").submit();
+			$("#hiddenDiv").html("");
+			//window.location=basePath+"/lte/turntoQos.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+		}); */
+	});
+	
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+
+	window.location=basePath+'/lte/turntoQos.do?onlinePage.currentPageNum='+curP+'&onlinePage.totalPages='+totalPages;
+	
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>QoS</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar" style="height:24px;">
+		</div>
+		<table width="100%" class="enbTable changeRowColor">
+		  <tr>
+			<th scope="col"  style="width:50px;">修改</th>
+			<th scope="col" width="12%">QoS级别</th>
+			<th scope="col" width="12%">资源类型</th>
+			<th scope="col" width="12%">优先级</th>
+			<th scope="col" width="12%">上行最大带宽</th>
+			<th scope="col" width="12%">下行最大带宽</th>
+			<th scope="col" width="12%">上行保证带宽</th>
+			<th scope="col">下行保证带宽</th>
+			<th scope="col"  style="width:50px;">修改</th>
+		  </tr>
+		  <#list qosModelList! as qosModel>
+		  	<tr>
+				<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyQos.do?qosModel.qos_id=${qosModel.qos_id!}&qosModel.qos_type=${qosModel.qos_type!}&qosModel.qos_priority=${qosModel.qos_priority!}&qosModel.qos_uplink_mbr=${qosModel.qos_uplink_mbr!}&qosModel.qos_downlink_mbr=${qosModel.qos_downlink_mbr!}&qosModel.qos_uplink_gbr=${qosModel.qos_uplink_gbr!}&qosModel.qos_downlink_gbr=${qosModel.qos_downlink_gbr!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+				<td>${qosModel.qos_id!}</td>
+				<#if qosModel.qos_type! =='0'>
+					<td>NULL</td>
+				<#elseif qosModel.qos_type! =='1'>
+					<td>GBR</td>
+				<#else>
+					<td>NON-GBR</td>
+				</#if>
+				
+				<td>${qosModel.qos_priority!}</td>
+				<td>${qosModel.qos_uplink_mbr!} (Kbps)</td>
+				<td>${qosModel.qos_downlink_mbr!} (Kbps)</td>
+				<td>${qosModel.qos_uplink_gbr!} (Kbps)</td>
+				<td>${qosModel.qos_downlink_gbr!} (Kbps)</td>
+				<td><a href="${base}/lte/toModifyQos.do?qosModel.qos_id=${qosModel.qos_id!}&qosModel.qos_type=${qosModel.qos_type!}&qosModel.qos_priority=${qosModel.qos_priority!}&qosModel.qos_uplink_mbr=${qosModel.qos_uplink_mbr!}&qosModel.qos_downlink_mbr=${qosModel.qos_downlink_mbr!}&qosModel.qos_uplink_gbr=${qosModel.qos_uplink_gbr!}&qosModel.qos_downlink_gbr=${qosModel.qos_downlink_gbr!}&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}">修改</a></td>
+				
+			 </tr>
+		  </#list>
+		  <#if qosModelList?size < 1>
+	  			<tr>
+	  				<td></td>
+	  				<td>${showMessage!}</td>
+		  			<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  			</tr>
+		  </#if>
+		</table>
+		</div>
+	<!-- <div class="fright" style="margin-right:20px;">
+		<span class="fleft"><span style="color:red;">${onlinePage.currentPageNum!}</span>/${onlinePage.totalPages!}</span>&nbsp;
+		<span class="fleft"><a href="#"><img src="${base}/Manager/images/first_page.png" onclick="turnPageFunction('1')"/></a></span>
+		<span class="fleft">
+			<#if onlinePage.currentPageNum! != 1>
+				<a href="#"><img src="${base}/Manager/images/previous_page.png" onclick="turnPageFunction('pre')"/></a>
+			<#else>
+				<a href="#"><img src="${base}/Manager/images/previous_page.png"/></a>
+			</#if>
+		</span>
+		
+		<span class="fleft">
+			<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+				<a href="#"><img src="${base}/Manager/images/next_page.png" onclick="turnPageFunction('next')"/></a>
+			<#else>
+				<a href=""><img src="${base}/Manager/images/next_page.png"/></a>
+			</#if>
+		</span>
+		<span class="fleft"><a href="#"><img src="${base}/Manager/images/end_page.png" onclick="turnPageFunction('max')"/></a></span>		
+		<span class="fleft"><input type="text" style="width:30px;" id="turnPageInput"/></span>
+		<span class="fleft"><a href="#"><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg"/></a></span>
+	</div> -->
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+</body>
+</html>

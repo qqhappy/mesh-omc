@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+
+<script type="text/javascript"> 
+	$(function(){ 
+		var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: true,
+				selectedMulti: false
+			},	
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+var zNode = "";
+		var roleId = ${roleId!};
+		var cFlag = $("#topFrame",parent.document).attr("c_para_ctrl");
+		if(roleId == 1) {
+			if(parseInt(cFlag) > 0){
+				zNode =[
+						{ id:1, pId:0, name:"开站参数", open:true, iconSkin:"pIcon01"},
+						{ id:13, pId:1, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:14, pId:1, name:"以太网参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ETHPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:15, pId:1, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:16, pId:1, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:17, pId:1, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:18, pId:1, name:"开站参数导出",url:"${base}/lte/turnExportActiveData.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon02"},
+						{ id:2, pId:0, name:"系统配置", open:true, iconSkin:"pIcon01"},
+						{ id:21, pId:2, name:"整表配置",url:"${base}/lte/turnCfg.do?moId=${moId}",target:"mainFrame", iconSkin:"icon03"},
+						{ id:23, pId:2, name:"配置数据比较",url:"${base}/lte/turnCompareData.do?moId=${moId}&enbVersion=${enbVersion}",target:"mainFrame", iconSkin:"icon03"},
+						{ id:3, pId:0, name:"版本管理", open:true, iconSkin:"pIcon01"},
+						{ id:31, pId:3, name:"版本文件管理",url:"${base}/lte/queryAllVersion.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon04"},
+						{ id:4, pId:0, name:"告警管理", open:true, iconSkin:"pIcon01"},
+						{ id:41, pId:4, name:"当前告警",url:"${base}/lte/turnSingleCurrentAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon06"},
+						{ id:42, pId:4, name:"历史告警",url:"${base}/lte/turnSingleHistoryAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon07"},
+						{ id:11, pId:0, name:"状态信息管理", open:true, iconSkin:"pIcon01"},
+						{ id:110, pId:11, name:"eNB总体状态",url:"${base}/lte/queryWholeStatus.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:111, pId:11, name:"eNB状态信息",url:"${base}/lte/queryStatus.do?statusFlag=ENB_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:112, pId:11, name:"单板状态信息",url:"${base}/lte/queryStatus.do?statusFlag=BOARD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:113, pId:11, name:"RRU射频状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RF_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:114, pId:11, name:"RRU运行状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RUNNING_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:115, pId:11, name:"RRU光口状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_OPTICAL_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:116, pId:11, name:"RRU门限查询",url:"${base}/lte/queryStatus.do?statusFlag=RRU_THRESHOLD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:116, pId:11, name:"射频开关设置",url:"${base}/lte/configStatus.do?statusFlag=RF_SWITCH&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:5, pId:0, name:"平台表管理", open:true, iconSkin:"pIcon01"},
+						{ id:51, pId:5, name:"设备表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_DEVICE-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:51, pId:5, name:"系统参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SYS_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:54, pId:5, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:56, pId:5, name:"环境监控表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENVMON-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:57, pId:5, name:"以太网参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ETHPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:58, pId:5, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:59, pId:5, name:"静态路由表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_STROUT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:60, pId:5, name:"流控制传输协议表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SCTP-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:62, pId:5, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:63, pId:5, name:"软件包表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SWPKG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:64, pId:5, name:"软件版本信息表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SWINFO-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:7, pId:0, name:"业务表管理", open:true, iconSkin:"pIcon01"},
+						{ id:71, pId:7, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:72, pId:7, name:"小区参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:73, pId:7, name:"小区上行物理信道配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PUCH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:74, pId:7, name:"小区下行物理信道参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PDCH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:75, pId:7, name:"PRACH参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PRACH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:76, pId:7, name:"小区上行功控参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_ULPC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:77, pId:7, name:"小区下行功控参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_DLPC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:78, pId:7, name:"小区算法参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_ALG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:79, pId:7, name:"邻区关系参数配置表",url:"${base}/lte/queryNbrcelRecords.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_NBRCEL-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:80, pId:7, name:"测量配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_MEASCFG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:81, pId:7, name:"QoS参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_SRVQOS-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:82, pId:7, name:"PDCP参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_PDCP-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:83, pId:7, name:"RLC参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_RLC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:84, pId:7, name:"控制面定时器参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_CTLTMR-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:85, pId:7, name:"UE参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_UEPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:86, pId:7, name:"业务QCI配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_SRVQCI-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:87, pId:7, name:"业务功控参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_SRVPC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:88, pId:7, name:"业务的MAC配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_SRVMAC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:89, pId:7, name:"小区重选参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_RESEL-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:90, pId:7, name:"SI调度配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_SISCH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:90, pId:7, name:"中心频点配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_CTFREQ-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:90, pId:7, name:"小区集群配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PTT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:90, pId:7, name:"DRX配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_DRX-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+			 		];
+			}else{
+				zNode =[
+						{ id:1, pId:0, name:"开站参数", open:true, iconSkin:"pIcon01"},
+						{ id:13, pId:1, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:14, pId:1, name:"以太网参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ETHPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:15, pId:1, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:16, pId:1, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:17, pId:1, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:18, pId:1, name:"开站参数导出",url:"${base}/lte/turnExportActiveData.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon02"},
+						{ id:2, pId:0, name:"系统配置", open:true, iconSkin:"pIcon01"},
+						{ id:21, pId:2, name:"整表配置",url:"${base}/lte/turnCfg.do?moId=${moId}",target:"mainFrame", iconSkin:"icon03"},
+						{ id:23, pId:2, name:"配置数据比较",url:"${base}/lte/turnCompareData.do?moId=${moId}&enbVersion=${enbVersion}",target:"mainFrame", iconSkin:"icon03"},
+						{ id:3, pId:0, name:"版本管理", open:true, iconSkin:"pIcon01"},
+						{ id:31, pId:3, name:"版本文件管理",url:"${base}/lte/queryAllVersion.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon04"},
+						{ id:4, pId:0, name:"告警管理", open:true, iconSkin:"pIcon01"},
+						{ id:41, pId:4, name:"当前告警",url:"${base}/lte/turnSingleCurrentAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon06"},
+						{ id:42, pId:4, name:"历史告警",url:"${base}/lte/turnSingleHistoryAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon07"},
+						{ id:11, pId:0, name:"状态信息管理", open:true, iconSkin:"pIcon01"},
+						{ id:110, pId:11, name:"eNB总体状态",url:"${base}/lte/queryWholeStatus.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:111, pId:11, name:"eNB状态信息",url:"${base}/lte/queryStatus.do?statusFlag=ENB_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:112, pId:11, name:"单板状态信息",url:"${base}/lte/queryStatus.do?statusFlag=BOARD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:113, pId:11, name:"RRU射频状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RF_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:114, pId:11, name:"RRU运行状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RUNNING_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:115, pId:11, name:"RRU光口状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_OPTICAL_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:116, pId:11, name:"RRU门限查询",url:"${base}/lte/queryStatus.do?statusFlag=RRU_THRESHOLD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:116, pId:11, name:"射频开关设置",url:"${base}/lte/configStatus.do?statusFlag=RF_SWITCH&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+						{ id:5, pId:0, name:"平台表管理", open:true, iconSkin:"pIcon01"},
+						{ id:51, pId:5, name:"设备表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_DEVICE-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:54, pId:5, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:56, pId:5, name:"环境监控表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENVMON-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:57, pId:5, name:"以太网参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ETHPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:58, pId:5, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:59, pId:5, name:"静态路由表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_STROUT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:60, pId:5, name:"流控制传输协议表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SCTP-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:62, pId:5, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:63, pId:5, name:"软件包表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SWPKG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:64, pId:5, name:"软件版本信息表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SWINFO-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:7, pId:0, name:"业务表管理", open:true, iconSkin:"pIcon01"},
+						{ id:71, pId:7, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:72, pId:7, name:"小区参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:75, pId:7, name:"PRACH参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PRACH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:77, pId:7, name:"小区下行功控参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_DLPC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:79, pId:7, name:"邻区关系参数配置表",url:"${base}/lte/queryNbrcelRecords.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_NBRCEL-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:80, pId:7, name:"测量配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_MEASCFG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:89, pId:7, name:"小区重选参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_RESEL-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:90, pId:7, name:"中心频点配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_CTFREQ-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+						{ id:90, pId:7, name:"小区集群配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PTT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+			 		];
+			}
+			
+		}
+		
+		if(roleId == 20){
+			zNode =[
+					{ id:1, pId:0, name:"开站参数", open:true, iconSkin:"pIcon01"},
+					{ id:13, pId:1, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:14, pId:1, name:"以太网参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ETHPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:15, pId:1, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:16, pId:1, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:17, pId:1, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:18, pId:1, name:"开站参数导出",url:"${base}/lte/turnExportActiveData.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon02"},
+					{ id:2, pId:0, name:"系统配置", open:true, iconSkin:"pIcon01"},
+					{ id:21, pId:2, name:"整表配置",url:"${base}/lte/turnCfg.do?moId=${moId}",target:"mainFrame", iconSkin:"icon03"},
+					{ id:23, pId:2, name:"配置数据比较",url:"${base}/lte/turnCompareData.do?moId=${moId}&enbVersion=${enbVersion}",target:"mainFrame", iconSkin:"icon03"},
+					{ id:3, pId:0, name:"版本管理", open:true, iconSkin:"pIcon01"},
+					{ id:31, pId:3, name:"版本文件管理",url:"${base}/lte/queryAllVersion.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon04"},
+					{ id:4, pId:0, name:"告警管理", open:true, iconSkin:"pIcon01"},
+					{ id:41, pId:4, name:"当前告警",url:"${base}/lte/turnSingleCurrentAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon06"},
+					{ id:42, pId:4, name:"历史告警",url:"${base}/lte/turnSingleHistoryAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon07"},
+					{ id:11, pId:0, name:"状态信息管理", open:true, iconSkin:"pIcon01"},
+					{ id:110, pId:11, name:"eNB总体状态",url:"${base}/lte/queryWholeStatus.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:111, pId:11, name:"eNB状态信息",url:"${base}/lte/queryStatus.do?statusFlag=ENB_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:112, pId:11, name:"单板状态信息",url:"${base}/lte/queryStatus.do?statusFlag=BOARD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:113, pId:11, name:"RRU射频状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RF_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:114, pId:11, name:"RRU运行状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RUNNING_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:115, pId:11, name:"RRU光口状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_OPTICAL_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:116, pId:11, name:"RRU门限查询",url:"${base}/lte/queryStatus.do?statusFlag=RRU_THRESHOLD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:116, pId:11, name:"射频开关设置",url:"${base}/lte/configStatus.do?statusFlag=RF_SWITCH&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:5, pId:0, name:"平台表管理", open:true, iconSkin:"pIcon01"},
+					{ id:51, pId:5, name:"设备表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_DEVICE-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:54, pId:5, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:56, pId:5, name:"环境监控表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENVMON-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:57, pId:5, name:"以太网参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ETHPARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:58, pId:5, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:59, pId:5, name:"静态路由表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_STROUT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:60, pId:5, name:"流控制传输协议表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SCTP-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:62, pId:5, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:63, pId:5, name:"软件包表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SWPKG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:64, pId:5, name:"软件版本信息表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SWINFO-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:7, pId:0, name:"业务表管理", open:true, iconSkin:"pIcon01"},
+					{ id:71, pId:7, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:72, pId:7, name:"小区参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:75, pId:7, name:"PRACH参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PRACH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:77, pId:7, name:"小区下行功控参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_DLPC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:79, pId:7, name:"邻区关系参数配置表",url:"${base}/lte/queryNbrcelRecords.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_NBRCEL-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:80, pId:7, name:"测量配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_MEASCFG-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:89, pId:7, name:"小区重选参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_RESEL-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:90, pId:7, name:"中心频点配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_ENB_CTFREQ-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:90, pId:7, name:"小区集群配置参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PTT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+		 		];
+		}
+		
+		if(roleId == 30 || roleId == 40){
+			zNode =[
+					{ id:1, pId:0, name:"开站参数", open:true, iconSkin:"pIcon01"},
+					{ id:13, pId:1, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:15, pId:1, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:16, pId:1, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:17, pId:1, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=1&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:18, pId:1, name:"开站参数导出",url:"${base}/lte/turnExportActiveData.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon02"},
+					{ id:2, pId:0, name:"系统配置", open:true, iconSkin:"pIcon01"}, 
+					{ id:23, pId:2, name:"配置数据比较",url:"${base}/lte/turnCompareData.do?moId=${moId}&enbVersion=${enbVersion}",target:"mainFrame", iconSkin:"icon03"},
+					{ id:3, pId:0, name:"版本管理", open:true, iconSkin:"pIcon01"},
+					{ id:31, pId:3, name:"版本文件管理",url:"${base}/lte/queryAllVersion.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon04"},
+					{ id:4, pId:0, name:"告警管理", open:true, iconSkin:"pIcon01"},
+					{ id:41, pId:4, name:"当前告警",url:"${base}/lte/turnSingleCurrentAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon06"},
+					{ id:42, pId:4, name:"历史告警",url:"${base}/lte/turnSingleHistoryAlarm.do?enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon07"},
+					{ id:11, pId:0, name:"状态信息管理", open:true, iconSkin:"pIcon01"},
+					{ id:110, pId:11, name:"eNB总体状态",url:"${base}/lte/queryWholeStatus.do?moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:111, pId:11, name:"eNB状态信息",url:"${base}/lte/queryStatus.do?statusFlag=ENB_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:112, pId:11, name:"单板状态信息",url:"${base}/lte/queryStatus.do?statusFlag=BOARD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:113, pId:11, name:"RRU射频状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RF_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:114, pId:11, name:"RRU运行状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_RUNNING_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:115, pId:11, name:"RRU光口状态",url:"${base}/lte/queryStatus.do?statusFlag=RRU_OPTICAL_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:116, pId:11, name:"RRU门限查询",url:"${base}/lte/queryStatus.do?statusFlag=RRU_THRESHOLD_STATUS&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:116, pId:11, name:"射频开关设置",url:"${base}/lte/configStatus.do?statusFlag=RF_SWITCH&moId=${moId}&enbHexId=${enbHexId}",target:"mainFrame", iconSkin:"icon01"},
+					{ id:5, pId:0, name:"平台表管理", open:true, iconSkin:"pIcon01"},
+					{ id:54, pId:5, name:"单板表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_BOARD-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:58, pId:5, name:"IPv4协议栈表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_IPV4-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:59, pId:5, name:"静态路由表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_STROUT-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:60, pId:5, name:"流控制传输协议表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_SCTP-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:62, pId:5, name:"网管表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_OMC-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:7, pId:0, name:"业务表管理", open:true, iconSkin:"pIcon01"},
+					{ id:71, pId:7, name:"eNB参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&isActiveEnbTable=0&tableName=T_ENB_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:72, pId:7, name:"小区参数表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PARA-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+					{ id:75, pId:7, name:"PRACH参数配置表",url:"${base}/lte/queryEnbBiz.do?moId=${moId}&operType=select&enbHexId=${enbHexId}&enbVersion=${enbVersion}&tableName=T_CEL_PRACH-2.1.5",target:"mainFrame", iconSkin:"icon01"},
+				];						
+		}
+		
+		$.fn.zTree.init($("#treeDemo"), setting, zNode);
+		
+		if(roleId == 30 || roleId == 40){
+			if(${fromAlarm} == 0){
+	 			$("#leftDivOne ul li:eq(13) a").addClass("curSelectedNode");	
+			}else{
+	 			$("#leftDivOne ul li:eq(10) a").addClass("curSelectedNode");				
+			}
+		}else{
+			if(${fromAlarm} == 0){
+	 			$("#leftDivOne ul li:eq(16) a").addClass("curSelectedNode");	
+			}else{
+	 			$("#leftDivOne ul li:eq(13) a").addClass("curSelectedNode");				
+			}
+		}
+					
+
+		$("#leftDivOne ul li a").click(function(event){
+			$("#leftDivOne ul li a").removeClass("curSelectedNode");
+			$(this).addClass("curSelectedNode");
+			event.preventDefault();
+			var href = $(this).attr("href");
+			if(href != "" && href != null && typeof(href) != "undefined"){
+				var myHref = href + "&browseTime="+getBrowseTime();
+				window.parent.mainFrame.location.href=myHref;
+			}	
+		});		
+	});
+</script>
+</head>
+
+<body style="background:#e9f6fe;">	
+	<div class="left_nav">	
+		<div class="title" style="font-size:12px;">eNB : ${enbHexId}</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+
+	</div>
+</body>
+</html>

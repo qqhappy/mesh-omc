@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-10-10 15:53:37 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class
+  name="com.xinwei.minas.mcbts.core.model.layer3.McBtsNeighborFailed" table="mcbts_neighbor_failed">
+  <id name="idx" type="long">
+   <column name="idx"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="moId" type="long">
+   <column name="moId"/>
+  </property>
+  <property name="updateTime" type="java.util.Date">
+   <column name="updateTime" />
+  </property>
+ </class>
+</hibernate-mapping>

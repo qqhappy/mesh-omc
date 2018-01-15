@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer3.TConfLoadBalance"
+		table="mcbts_load_balance">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property generated="never" lazy="false" name="algorithm_switch"
+			type="int">
+			<column name="algorithm_switch" />
+		</property>
+		<property generated="never" lazy="false" name="load_high_threshold"
+			type="int">
+			<column name="load_high_threshold" />
+		</property>
+		<property generated="never" lazy="false" name="load_msg_send_period"
+			type="int">
+			<column name="load_msg_send_period" />
+		</property>
+		<property generated="never" lazy="false" name="load_diff_threshold"
+			type="int">
+			<column name="load_diff_threshold" />
+		</property>
+		<property generated="never" lazy="false"
+			name="neighbor_bts_power_over_num" type="int">
+			<column name="neighbor_bts_power_over_num" />
+		</property>
+		<property generated="never" lazy="false"
+			name="load_balance_signal_remains" type="int">
+			<column name="load_balance_signal_remains" />
+		</property>
+		<property generated="never" lazy="false" name="ut_load_balance_period"
+			type="int">
+			<column name="ut_load_balance_period" />
+		</property>
+		<property generated="never" lazy="false" name="user_algorithm_param"
+			type="int">
+			<column name="user_algorithm_param" />
+		</property>
+		<property generated="never" lazy="false" name="arithmetic_switch"
+			type="int">
+			<column name="arithmetic_switch" />
+		</property>
+	</class>
+</hibernate-mapping>

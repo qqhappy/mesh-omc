@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_enb_ctltmr.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_enb_ctltmr1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'  
+					+'<th scope="col" class="u8CfgIdx">配置索引</th>'
+					+'<th scope="col" class="u16RrcSetupTimer">RRC建立完成定时器(ms)</th>'
+					+'<th scope="col" class="u16RrcReCfgTimer">RRC重配完成定时器(ms)</th>'
+					+'<th scope="col" class="u16RrcReEstTimer">RRC重建完成定时器(ms)</th>'
+					+'<th scope="col" class="u16RrcCnntRlsTimer">RRC连接释放定时器(ms)</th>'
+					+'<th scope="col" class="u16UeCapTimer">UE能力查询等待定时器(ms)</th>'
+					+'<th scope="col" class="u16HoDataGuardTimer">数据反传保证定时器(ms)</th>'
+					+'<th scope="col" class="u16InitialUETimer">发送初始UE后等待定时器(ms)</th>'
+					+'<th scope="col" class="u32S1SetupRspTimer">S1建立响应定时器(ms)</th>'
+					+'<th scope="col" class="u16UeSetupFailTimer">UE上下文建立失败等待MME释放定时器(ms)</th>'
+					+'<th scope="col" class="u16UeCtxRelReqTimer">发送S1连接释放请求后等待定时器(ms)</th>'
+					+'<th scope="col" class="u16S1HoPrepareTimer">S1切换准备定时器(ms)</th>'
+					+'<th scope="col" class="u16S1HoCompleteTimer">S1切换成功后源侧等待MME释放定时器(ms)</th>'
+					+'<th scope="col" class="u32CmmCellCfgTimer">CMM小区配置等待定时器(ms)</th>'
+					+'<th scope="col" class="u32S1ResetAckTimer">S1等待Reset Ack定时器(ms)</th>'
+					+'<th scope="col" class="u32S1UptAckTimer">S1等待Update Ack定时器(ms)</th>'
+					+'<th scope="col" class="u16PingpongHoTimer">乒乓切换定时器(ms)</th>'
+					+'<th scope="col" class="u16A3RelInactTimer">A3触发的用户不活动释放定时器(s)</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				  +'<tr>'
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th class="justForView" scope="row"></th>'
+					+'<td class="u8CfgIdx">暂无相关数据</td>'
+					+'<td class="u16RrcSetupTimer"></td>'
+					+'<td class="u16RrcReCfgTimer"></td>'
+					+'<td class="u16RrcReEstTimer"></td>'
+					+'<td class="u16RrcCnntRlsTimer"></td>'
+					+'<td class="u16UeCapTimer"></td>'
+					+'<td class="u16HoDataGuardTimer"></td>'
+					+'<td class="u16InitialUETimer"></td>'
+					+'<td class="u32S1SetupRspTimer"></td>'
+					+'<td class="u16UeSetupFailTimer"></td>'
+					+'<td class="u16UeCtxRelReqTimer"></td>'
+					+'<td class="u16S1HoPrepareTimer"></td>'
+					+'<td class="u16S1HoCompleteTimer"></td>'
+					+'<td class="u32CmmCellCfgTimer"></td>'	
+					+'<td class="u32S1ResetAckTimer"></td>'
+					+'<td class="u32S1UptAckTimer"></td>'
+					+'<td class="u16PingpongHoTimer"></td>'
+					+'<td class="u16A3RelInactTimer"></td>'
+					+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+					+'<td  class="justForView" style="cursor:pointer;">&nbsp;</td>'
+				+'</tr>'
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_ENB_CTLTMR-3.0.6";
+		});
+		checkLevelLen();
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>控制面定时器参数表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button" id="delete" value="批量删除"/></li>
+		<li><label style="margin-left:10px;color:#1185de">注：此表只可新增一条记录，最大记录数为1</label></li>
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_enb_ctltmr_div">  -->
+			<div style="width:3700px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_enb_ctltmr1" class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th> 
+					<th scope="col" class="u8CfgIdx">配置索引</th>
+					<th scope="col" class="u16RrcSetupTimer">RRC建立完成定时器(ms)</th>
+					<th scope="col" class="u16RrcReCfgTimer">RRC重配完成定时器(ms)</th>
+					<th scope="col" class="u16RrcReEstTimer">RRC重建完成定时器(ms)</th>
+					<th scope="col" class="u16RrcCnntRlsTimer">RRC连接释放定时器(ms)</th>
+					<th scope="col" class="u16UeCapTimer">UE能力查询等待定时器(ms)</th>
+					<th scope="col" class="u16HoDataGuardTimer">数据反传保证定时器(ms)</th>
+					<th scope="col" class="u16InitialUETimer">发送初始UE后等待定时器(ms)</th>
+					<th scope="col" class="u32S1SetupRspTimer">S1建立响应定时器(ms)</th>
+					<th scope="col" class="u16UeSetupFailTimer">UE上下文建立失败等待MME释放定时器(ms)</th>
+					<th scope="col" class="u16UeCtxRelReqTimer">发送S1连接释放请求后等待定时器(ms)</th>
+					<th scope="col" class="u16S1HoPrepareTimer">S1切换准备定时器(ms)</th>
+					<th scope="col" class="u16S1HoCompleteTimer">S1切换成功后源侧等待MME释放定时器(ms)</th>
+					<th scope="col" class="u32CmmCellCfgTimer">CMM小区配置等待定时器(ms)</th>
+					<th scope="col" class="u32S1ResetAckTimer">S1等待Reset Ack定时器(ms)</th>
+					<th scope="col" class="u32S1UptAckTimer">S1等待Update Ack定时器(ms)</th>
+					<th scope="col" class="u16PingpongHoTimer">乒乓切换定时器(ms)</th>
+					<th scope="col" class="u16A3RelInactTimer">A3触发的用户不活动释放定时器(s)</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+					<th scope="col" class="justForView" width="60px;">删除</th>
+				  </tr>
+				   <#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u8CfgIdx">${record.fieldMap["u8CfgIdx"].value!}</td>
+						<td class="u16RrcSetupTimer">${record.fieldMap["u16RrcSetupTimer"].value!}</td>
+						<td class="u16RrcReCfgTimer">${record.fieldMap["u16RrcReCfgTimer"].value!}</td>
+						<td class="u16RrcReEstTimer">${record.fieldMap["u16RrcReEstTimer"].value!}</td>
+						<td class="u16RrcCnntRlsTimer">${record.fieldMap["u16RrcCnntRlsTimer"].value!}</td>
+						<td class="u16UeCapTimer">${record.fieldMap["u16UeCapTimer"].value!}</td>
+						<td class="u16HoDataGuardTimer">${record.fieldMap["u16HoDataGuardTimer"].value!}</td>
+						<td class="u16InitialUETimer">${record.fieldMap["u16InitialUETimer"].value!}</td>
+						<td class="u32S1SetupRspTimer">${record.fieldMap["u32S1SetupRspTimer"].value!}</td>
+						<td class="u16UeSetupFailTimer">${record.fieldMap["u16UeSetupFailTimer"].value!}</td>
+						<td class="u16UeCtxRelReqTimer">${record.fieldMap["u16UeCtxRelReqTimer"].value!}</td>
+						<td class="u16S1HoPrepareTimer">${record.fieldMap["u16S1HoPrepareTimer"].value!}</td>
+						<td class="u16S1HoCompleteTimer">${record.fieldMap["u16S1HoCompleteTimer"].value!}</td>
+						<td class="u32CmmCellCfgTimer">${record.fieldMap["u32CmmCellCfgTimer"].value!}</td>
+						<td class="u32S1ResetAckTimer">${record.fieldMap["u32S1ResetAckTimer"].value!}</td>
+						<td class="u32S1UptAckTimer">${record.fieldMap["u32S1UptAckTimer"].value!}</td>	
+						<td class="u16PingpongHoTimer">${record.fieldMap["u16PingpongHoTimer"].value!}</td>
+						<td class="u16A3RelInactTimer">${record.fieldMap["u16A3RelInactTimer"].value!}</td>	
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td>
+					</tr>
+					</#list>
+				</table>
+			</div>
+			
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

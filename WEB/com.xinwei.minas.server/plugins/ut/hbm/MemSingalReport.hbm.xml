@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.ut.core.model.MemSingalReport" table="mcbts_ut_debug_upload">
+  <id name="idx" type="java.lang.Long">
+   <column name="idx" not-null="true"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="pid" type="long">
+   <column name="pid" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="switchFlag" type="int">
+   <column name="switchFlag" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="distance" type="long">
+   <column name="distance" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="lastStartTime" type="java.util.Date">
+   <column name="lastStartTime" not-null="true"/>
+  </property>
+ </class>
+</hibernate-mapping>

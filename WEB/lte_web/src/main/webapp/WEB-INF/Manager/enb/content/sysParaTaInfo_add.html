@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	var basePath = "${base}";
+	$(function(){
+		var isNumRegex = /^[0-9]+$/,
+			regex=/^[A-Za-z0-9\u4e00-\u9fa5_]+$/;
+		$("#submitBtn").click(function(){
+			$(".error").text("");
+			$("#resultError").html("");
+			var mmeta_id = $("#mmeta_id").val();
+			var mmeta_tai = $("#mmeta_tai").val();
+			var mmeta_comment = $("#mmeta_comment").val();
+			var errorIndex = 0;
+			if(  !( isNumRegex.test(mmeta_id) && parseInt(mmeta_id)>= 1 && parseInt(mmeta_id) <= 200)   ){
+				errorIndex ++;
+				$("#mmeta_id_error").text("请输入1~200之间的整数");
+			}
+			if(  !( isNumRegex.test(mmeta_tai) && parseInt(mmeta_tai)>= 0 && parseInt(mmeta_tai) <= 65535)   ){
+				errorIndex ++;
+				$("#mmeta_tai_error").text("请输入0~65535之间的整数");
+			}
+			if($.trim(mmeta_comment) == "" || $.trim(mmeta_comment) == null){
+				errorIndex ++;
+				$("#mmeta_comment_error").text("备注不可为空");
+			}else if(!regex.test(mmeta_comment)){
+				errorIndex ++;
+				$("#mmeta_comment_error").text("只能输入汉字、数字、字母或下划线");
+			}
+			if(errorIndex != 0){
+				return ;
+			}
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/addSysParaTa.do",
+				data:"ta.id="+mmeta_id+
+					"&ta.code="+mmeta_tai+
+					"&ta.remark="+mmeta_comment,
+				dataType:"json",
+				success:function(data){					
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0: 
+							var currentPage = "${currentPage!}";
+							if(currentPage == "0" || currentPage == "" || typeof(currentPage) == "undefined"){
+								currentPage =1;
+							}
+							window.location=basePath+"/lte/htmlDispactcher.do?htmlFileName=sysParaTaInfo&currentPage="+currentPage;
+							break;
+						default:
+							$("#resultError").html("error: "+data.error);
+							break;
+					}
+					
+				}
+			});
+		});	
+		
+		$("#cancel").click(function(){
+			var currentPage = "${currentPage!}";
+			if(currentPage == "0" || currentPage == "" || typeof(currentPage) == "undefined"){
+				currentPage =1;
+			}
+			window.location=basePath+"/lte/htmlDispactcher.do?htmlFileName=sysParaTaInfo&currentPage="+currentPage;
+		});
+
+	})
+</script>
+<title>无标题文档</title>
+</head>
+<body>
+	<div style="margin-left:20px;margin-top:20px;">
+		<div><span style="color:#0088cc">新增</span></div>
+		<table class="McWillTable" style="line-height:35px;">
+			<tr>
+				<td>ID(1~200) :</td>
+				<td class="blankTd"></td>
+				<td><input type="text"  style="width:240px;" id="mmeta_id"/></td>
+				<td style="color:red">*</td>
+				<td class="error" id="mmeta_id_error"></td>
+			</tr>
+			<tr>
+				<td>跟踪区码(0~65535) :</td>
+				<td class="blankTd"></td>
+				<td><input type="text"  style="width:240px;" id="mmeta_tai"/></td>
+				<td style="color:red">*</td>
+				<td class="error" id="mmeta_tai_error"></td>
+			</tr>
+			<tr>
+				<td>备注 :</td>
+				<td class="blankTd"></td>
+				<td><input type="text"  style="width:240px;" id="mmeta_comment"/></td>
+				<td style="color:red">*</td>
+				<td class="error" id="mmeta_comment_error"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td>
+					<input id="submitBtn" type="button"  value="确定" style="padding:3px 25px;"/>
+					<input type="button"  id="cancel"  value="返回"  style="padding:3px 25px;"/>
+				</td>
+			</tr>
+		</table>
+		<span id="resultError" style="color:red"></span>
+	</div> 
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="20 seconds" debug="false">
+	<substitutionProperty name="log.base" value="../logs/logback" />
+	<jmxConfigurator />
+	
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<appender name="logfile-service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>${log.base}_lte_web.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}.%d{yyyy-MM-dd}_lte_web.log.zip</FileNamePattern>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<logger name="com.xinwei">
+		<level value="DEBUG" />
+	</logger>
+	
+	<root>
+		<level value="WARN" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="logfile-service" />
+	</root>
+</configuration>

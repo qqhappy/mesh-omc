@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		
+		Address("#addrDiv");
+		
+		//修改
+		$("#submitBtn").click(function(){
+
+			var valTest = /^[0-9]\d*$/;
+			var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+			//var addr = $("#addr").val();
+			var addrStr="";
+			$("#addrDiv input").each(function(){
+				addrStr+=$(this).val()+".";
+			});
+			var addr = addrStr.substring(0,addrStr.length-1);
+			var port = $("#port").val();
+			var status = $("#status").val();
+			if(!ipTest.test(addr)){
+				alert("地址格式错误");
+				return false;
+			}
+			
+			if(port == null || port == ''){
+				alert("端口不可为空");
+				return false;
+			}
+			if(!valTest.test(port) || port > 65535){
+				alert("端口格式或取值错误");
+				return false;
+			}
+			var basePath = "${base}";
+			if(confirm("连接服务器需要一定时间，确认修改?")){
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/modifyWebMaster.do",
+					data:"webMasterModel.addr="+addr+
+						"&webMasterModel.port="+port,
+					dataType:"json",
+					async:false,
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0:					
+								window.location.href=basePath+"/lte/turntoWebMaster.do";
+								break;
+							default:
+								alert("设备连接超时");
+							
+						}
+					},
+					error:function(data){
+						alert("连接失败");
+					}
+				});
+			}			
+		});		
+		
+		/* //重连
+		$("#reLink").click(function(){
+			var valTest = /^[1-9][0-9]*$/;
+			var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+			var addr = $("#addr").val();
+			var port = $("#port").val();
+
+			if(!ipTest.test(addr)){
+				return false;
+			}
+			if(!valTest.test(port)){
+				return false;
+			}
+			
+			$.ajax({
+				type:"post",
+				url:"lte/relinkWebMaster.do",
+				data:"webMasterModel.addr="+addr+
+					"&webMasterModel.port="+port,
+				dataType:"text",
+				success:function(data){
+					alert(data);
+					var result = $.trim(data);
+					if(result == "success"){
+						alert("重连成功");
+
+						//window.location="lte/turntoSysAddress.do?querysystemAddressModel.ip_id="+queryip_id+"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+					}else{
+						alert("重连失败");
+					}
+				}
+			});
+		});*/
+		
+		//验证端口 
+		$("#port").blur(function(){
+			var valTest = /^[0-9]\d*$/;
+			var ip_id = $.trim($(this).val());
+			if((!valTest.test(ip_id)) || ip_id > 65535){
+				$(".portJudge").html("取值范围0~65535");
+				$(".portJudge").css("color","red");
+				//$(this).val("");
+			}else{
+				$(".portJudge").html("");
+				//$(".judgeImsi").css("color","");
+			}
+			
+		});
+		
+		//验证地址
+		$("#addr").blur(function(){
+			var ip_addr = $.trim($(this).val());
+			ipTest(ip_addr,"IP地址格式错误","addrJudge");
+		});
+		
+	})
+
+
+function reload(){
+	window.location.reload();
+}
+function ipTest(testVal,content,td){
+	var valTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;	
+	if(!valTest.test(testVal)){
+		$("."+td+"").html(content);
+		$("."+td+"").css("color","red");
+	}else{
+		$("."+td+"").html("");
+		//$(".judgeImsi").css("color","");
+	}
+}
+	
+function Address(divid){
+	var perinput = divid+" input";
+	$(perinput).each(function(index){
+		$(this).keyup(function(e){
+			e=e||window.event;
+			
+			var num = $(this).val().replace(/[^\d]/g,'');
+	
+			if(!((e.keyCode>=96&&e.keyCode<=105)||(e.keyCode>=48&&e.keyCode<=57)||e.keyCode==8||e.keyCode==9 ||e.keyCode==39||e.keyCode==37)){
+				$(this).val(num);
+				$(this).focus();
+				return false;
+			}
+			if(parseInt(num)>=256 || parseInt(num)<0){
+				alert(parseInt($(this).val())+"不是有效值，请输入一个介于0和255之间的数值！");
+				$(this).val("");
+				$(this).focus();
+				return false;
+			}
+			
+			var myval = $(this).val().length;
+			if(myval==3 && e.keyCode !=9 ||e.keyCode==39){
+				$(perinput).eq(index+1).focus();
+				return false;
+			}
+			if(myval==0 && e.keyCode !=9 ||e.keyCode==37){
+				if(index!=0){
+					$(perinput).eq(index-1).select();
+					return false;
+				}
+			}
+		 });  
+	}); 
+} 	
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>配置</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="#" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>地址 :</td>
+							<td class="blankTd"></td>
+							<td><!-- <input type="text"  style="width:200px;" id="addr" value="${webMasterModel.addr!}"/> -->
+								<div id="addrDiv" style="border:1px solid #C6D7E7; width:250px; height:20px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<#list webMasterModel.addr?split(".") as i>
+										<input type="text" size="3" maxlength="3" style="border:none; height:17px; width:17%;" value="${i}"/>
+										<#if i_index! < 3>
+											.
+										</#if>								
+									</#list>
+								</div>
+							</td>
+							<td class="addrJudge"></td>
+						</tr>
+						<tr>
+							<td>端口 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="5" style="width:240px;" id="port" value="${webMasterModel.port!}" title="取值范围0~65535"/></td>
+							<td class="portJudge"></td>
+						</tr>
+						<tr>
+							<td>状态 :</td>
+							<td class="blankTd"></td>
+							<td>							
+								<#if webMasterModel.status == "0">
+									<input type="text" style="width:240px;" value="未连接"  disabled="disabled"/>
+								<#else>
+									<input type="text" style="width:240px;" value="已连接"  disabled="disabled"/>
+								</#if>	
+							</td>
+							<td class="ip_maskJudge"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input id="submitBtn" type="button"  value="确定" style="padding:3px 25px;"/>
+								<input id="reLink" type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+</body>
+</html>

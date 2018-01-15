@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<operations type="0" remark="V5基站">
+
+		<operation name="mcbts_gpsData" desc="mcbts_gpsData">
+			<table name="mcbts_gpsdata" />
+		</operation>
+		<operation name="mcbts_perfLog" desc="mcbts_perfLog">
+			<table name="mcbts_perflog" />
+		</operation>
+		<operation name="mcbts_tempWatch" desc="mcbts_tempWatch">
+			<table name="mcbts_tempwatch" />
+		</operation>
+		<operation name="mcbts_telnet" desc="mcbts_telnet">
+			<table name="mcbts_telnet" />
+		</operation>
+
+		<operation name="mcbts_l1general" desc="mcbts_l1general">
+			<table name="mcbts_l1general" />
+		</operation>
+		<operation name="mcbts_calibtype" desc="mcbts_calibtype">
+			<table name="mcbts_calibrationtype" />
+		</operation>
+		<operation name="mcbts_calibdata" desc="mcbts_calibdata">
+			<table name="mcbts_rfconfig" />
+			<table name="mcbts_rfconfig_subps" />
+			<table name="mcbts_calibgenconfig" />
+			<table name="mcbts_calibgenconfig_subitem" />
+			<table name="mcbts_calibantdataconfig" />
+		</operation>
+
+		<operation name="mcbts_airlink" desc="mcbts_airlink">
+			<table name="mcbts_airlink" />
+			<table name="mcbts_airlink_subscgchannel" />
+			<table name="mcbts_airlink_subscgscale" />
+			<table name="mcbts_airlink_subw0" />
+			<table name="mcbts_airlink_pecch" />
+		</operation>
+		<operation name="res_management" desc="res_management">
+			<table name="t_conf_resmanagement" />
+		</operation>
+		<operation name="mcbts_n1config" desc="mcbts_n1config">
+			<table name="mcbts_n1config" />
+		</operation>
+		<operation name="alg_param_config" desc="alg_param_config">
+			<table name="t_conf_alg_param" />
+		</operation>
+		<operation name="mcbts_rangingConfig" desc="mcbts_rangingConfig">
+			<table name="mcbts_rangingconfig" />
+		</operation>
+		<operation name="mcbts_load_balance" desc="mcbts_load_balance">
+			<table name="mcbts_load_balance" />
+		</operation>
+		<operation name="sdma" desc="SDMA_genericInfo">
+			<table name="mcbts_sdma" />
+		</operation>
+
+		<operation name="mcbts_dataoperation" desc="mcbts_dataoperation">
+			<table name="mcbts_dataoperation" />
+			<table name="mcbts_ipv6operation" />
+			<table name="mcbts_ethernet2opration" />
+		</operation>
+		<operation name="mcbts_trunkConfig" desc="mcbts_trunkConfig">
+			<table name="mcbts_trunkconfig" />
+		</operation>
+		<operation name="mcbts_weak_fault" desc="mcbts_weak_fault">
+			<table name="t_conf_fault_switch" />
+			<table name="t_conf_weak_voice_fault" />
+		</operation>
+		<operation name="mcbts_chargeParamConfig" desc="mcbts_chargeParamConfig">
+			<table name="mcbts_chargeParamConfig" />
+		</operation>
+		<operation name="mcbts_backup_sag" desc="mcbts_backup_sag">
+			<table name="t_conf_backup_sag" />
+		</operation>
+		<operation name="mcbts_wcpe" desc="mcbts_wcpe">
+			<table name="t_conf_wcpe" />
+		</operation>
+		<operation name="mcbts_rcpe" desc="mcbts_rcpe">
+			<table name="t_conf_rcpe" />
+		</operation>
+		<operation name="mcbts_DBSServer" desc="mcbts_DBSServer">
+			<table name="mcbts_dbsserver" />
+		</operation>
+		<operation name="mcbts_GPSClock" desc="mcbts_GPSClock">
+			<table name="mcbts_gpsclock" />
+		</operation>
+		<operation name="mcbts_PoticalFrequ" desc="mcbts_PoticalFrequ">
+			<table name="mcbts_poticalfrequ" />
+		</operation>
+		<operation name="mcbts_remote_bts" desc="mcbts_remote_bts">
+			<table name="t_conf_remote_bts" />
+		</operation>
+		<operation name="mcbts_mbms_bts" desc="mcbts_mbms_bts">
+			<table name="t_conf_mbms_bts" />
+		</operation>
+
+	</operations>
+
+	<operations type="20" remark="微蜂窝基站">
+
+		<operation name="mcbts_gpsData" desc="mcbts_gpsData">
+			<table name="mcbts_gpsdata" />
+		</operation>
+		<operation name="mcbts_perfLog" desc="mcbts_perfLog">
+			<table name="mcbts_perflog" />
+		</operation>
+		<operation name="mcbts_tempWatch" desc="mcbts_tempWatch">
+			<table name="mcbts_tempwatch" />
+		</operation>
+		<operation name="mcbts_telnet" desc="mcbts_telnet">
+			<table name="mcbts_telnet" />
+		</operation>
+
+		<operation name="mcbts_l1general" desc="mcbts_l1general">
+			<table name="mcbts_l1general" />
+			<table name="microbts_signal_send" />
+		</operation>
+		<operation name="mcbts_calibtype" desc="mcbts_calibtype">
+			<table name="mcbts_calibrationtype" />
+		</operation>
+		<operation name="mcbts_calibdata" desc="mcbts_calibdata">
+			<table name="mcbts_rfconfig" />
+			<table name="mcbts_rfconfig_subps" />
+			<table name="mcbts_calibgenconfig" />
+			<table name="mcbts_calibgenconfig_subitem" />
+			<table name="mcbts_calibantdataconfig" />
+		</operation>
+		<operation name="mcbts_antenna_lock" desc="mcbts_antenna_lock">
+			<table name="mcbts_antenna_lock" />
+		</operation>
+
+		<operation name="mcbts_airlink_Micro" desc="mcbts_airlink">
+			<table name="mcbts_airlink" />
+			<table name="mcbts_airlink_subscgchannel" />
+			<table name="mcbts_airlink_subscgscale" />
+			<table name="mcbts_airlink_subw0" />
+			<table name="microbts_signal_send" />
+			<table name="mcbts_airlink_pecch" />
+		</operation>
+		<operation name="res_management" desc="res_management">
+			<table name="t_conf_resmanagement" />
+		</operation>
+		<operation name="mcbts_n1config" desc="mcbts_n1config">
+			<table name="mcbts_n1config" />
+		</operation>
+		<operation name="alg_param_config" desc="alg_param_config">
+			<table name="t_conf_alg_param" />
+		</operation>
+		<operation name="mcbts_rangingConfig" desc="mcbts_rangingConfig">
+			<table name="mcbts_rangingconfig" />
+		</operation>
+		<operation name="mcbts_load_balance" desc="mcbts_load_balance">
+			<table name="mcbts_load_balance" />
+		</operation>
+		<operation name="sdma" desc="SDMA_genericInfo">
+			<table name="mcbts_sdma" />
+		</operation>
+
+		<operation name="mcbts_dataoperation" desc="mcbts_dataoperation">
+			<table name="mcbts_dataoperation" />
+			<table name="mcbts_ipv6operation" />
+			<table name="mcbts_ethernet2opration" />
+		</operation>
+		<operation name="mcbts_trunkConfig" desc="mcbts_trunkConfig">
+			<table name="mcbts_trunkconfig" />
+		</operation>
+		<operation name="mcbts_weak_fault" desc="mcbts_weak_fault">
+			<table name="t_conf_fault_switch" />
+			<table name="t_conf_weak_voice_fault" />
+		</operation>
+		<operation name="mcbts_chargeParamConfig" desc="mcbts_chargeParamConfig">
+			<table name="mcbts_chargeParamConfig" />
+		</operation>
+		<operation name="mcbts_backup_sag" desc="mcbts_backup_sag">
+			<table name="t_conf_backup_sag" />
+		</operation>
+		<operation name="mcbts_wcpe" desc="mcbts_wcpe">
+			<table name="t_conf_wcpe" />
+		</operation>
+		<operation name="mcbts_rcpe" desc="mcbts_rcpe">
+			<table name="t_conf_rcpe" />
+		</operation>
+		<operation name="mcbts_DBSServer" desc="mcbts_DBSServer">
+			<table name="mcbts_dbsserver" />
+		</operation>
+		<operation name="mcbts_GPSClock" desc="mcbts_GPSClock">
+			<table name="mcbts_gpsclock" />
+		</operation>
+		<operation name="mcbts_PoticalFrequ" desc="mcbts_PoticalFrequ">
+			<table name="mcbts_poticalfrequ" />
+		</operation>
+		<operation name="mcbts_remote_bts" desc="mcbts_remote_bts">
+			<table name="t_conf_remote_bts" />
+		</operation>
+		<operation name="mcbts_mbms_bts" desc="mcbts_mbms_bts">
+			<table name="t_conf_mbms_bts" />
+		</operation>
+
+	</operations>
+
+	<operations type="30" remark="光纤拉远基站">
+
+		<operation name="mcbts_gpsData" desc="mcbts_gpsData">
+			<table name="mcbts_gpsdata" />
+		</operation>
+		<operation name="mcbts_perfLog" desc="mcbts_perfLog">
+			<table name="mcbts_perflog" />
+		</operation>
+		<operation name="mcbts_tempWatch" desc="mcbts_tempWatch">
+			<table name="mcbts_tempwatch" />
+		</operation>
+		<operation name="mcbts_telnet" desc="mcbts_telnet">
+			<table name="mcbts_telnet" />
+		</operation>
+
+		<operation name="mcbts_l1general" desc="mcbts_l1general">
+			<table name="mcbts_l1general" />
+		</operation>
+		<operation name="mcbts_calibtype" desc="mcbts_calibtype">
+			<table name="mcbts_calibrationtype" />
+		</operation>
+		<operation name="mcbts_calibdata" desc="mcbts_calibdata">
+			<table name="mcbts_rfconfig" />
+			<table name="mcbts_rfconfig_subps" />
+			<table name="mcbts_calibgenconfig" />
+			<table name="mcbts_calibgenconfig_subitem" />
+			<table name="mcbts_calibantdataconfig" />
+		</operation>
+
+		<operation name="mcbts_airlink" desc="mcbts_airlink">
+			<table name="mcbts_airlink" />
+			<table name="mcbts_airlink_subscgchannel" />
+			<table name="mcbts_airlink_subscgscale" />
+			<table name="mcbts_airlink_subw0" />
+			<table name="mcbts_airlink_pecch" />
+		</operation>
+		<operation name="res_management" desc="res_management">
+			<table name="t_conf_resmanagement" />
+		</operation>
+		<operation name="mcbts_n1config" desc="mcbts_n1config">
+			<table name="mcbts_n1config" />
+		</operation>
+		<operation name="alg_param_config" desc="alg_param_config">
+			<table name="t_conf_alg_param" />
+		</operation>
+		<operation name="mcbts_rangingConfig" desc="mcbts_rangingConfig">
+			<table name="mcbts_rangingconfig" />
+		</operation>
+		<operation name="mcbts_load_balance" desc="mcbts_load_balance">
+			<table name="mcbts_load_balance" />
+		</operation>
+		<operation name="sdma" desc="SDMA_genericInfo">
+			<table name="mcbts_sdma" />
+		</operation>
+
+		<operation name="mcbts_dataoperation" desc="mcbts_dataoperation">
+			<table name="mcbts_dataoperation" />
+			<table name="mcbts_ipv6operation" />
+			<table name="mcbts_ethernet2opration" />
+		</operation>
+		<operation name="mcbts_trunkConfig" desc="mcbts_trunkConfig">
+			<table name="mcbts_trunkconfig" />
+		</operation>
+		<operation name="mcbts_weak_fault" desc="mcbts_weak_fault">
+			<table name="t_conf_fault_switch" />
+			<table name="t_conf_weak_voice_fault" />
+		</operation>
+		<operation name="mcbts_chargeParamConfig" desc="mcbts_chargeParamConfig">
+			<table name="mcbts_chargeParamConfig" />
+		</operation>
+		<operation name="mcbts_backup_sag" desc="mcbts_backup_sag">
+			<table name="t_conf_backup_sag" />
+		</operation>
+		<operation name="mcbts_wcpe" desc="mcbts_wcpe">
+			<table name="t_conf_wcpe" />
+		</operation>
+		<operation name="mcbts_rcpe" desc="mcbts_rcpe">
+			<table name="t_conf_rcpe" />
+		</operation>
+		<operation name="mcbts_DBSServer" desc="mcbts_DBSServer">
+			<table name="mcbts_dbsserver" />
+		</operation>
+		<operation name="mcbts_GPSClock" desc="mcbts_GPSClock">
+			<table name="mcbts_gpsclock" />
+		</operation>
+		<operation name="mcbts_remote_bts" desc="mcbts_remote_bts">
+			<table name="t_conf_remote_bts" />
+		</operation>
+		<operation name="mcbts_mbms_bts" desc="mcbts_mbms_bts">
+			<table name="t_conf_mbms_bts" />
+		</operation>
+		<operation name="mcbts_PoticalFrequ" desc="mcbts_PoticalFrequ">
+			<table name="mcbts_poticalfrequ" />
+		</operation>
+
+		<operation name="mcbts_rruEnvParamConfig" desc="mcbts_rruEnvParamConfig">
+			<table name="mcbts_rruenvparamconfig" />
+		</operation>
+		<operation name="mcbts_lightAlarmConfig" desc="mcbts_lightAlarmConfig">
+			<table name="mcbts_lightalarmconfig" />
+		</operation>
+
+	</operations>
+</template>

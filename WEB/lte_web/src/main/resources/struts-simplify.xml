@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 网管易用性 -->
+	<package name="simplify" extends="struts-base" namespace="/lte">
+		
+		<!-- 登陆拦截器 -->
+		<default-interceptor-ref name="loginInterceptorStack" />
+		
+		<!-- 页面跳转action总集 -->
+		<action name="htmlDispactcher" class="com.xinwei.lte.web.enb.action.simplify.HtmlDispatcherAction"
+			method="htmlDispactcher">
+			<result name="sysParaConfig" type="freemarker">/WEB-INF/Manager/enb/content/sysParaConfig.html</result>
+			<result name="sysParaTaInfo" type="freemarker">/WEB-INF/Manager/enb/content/sysParaTaInfo.html</result>
+			<result name="sysParaTaInfo_add" type="freemarker">/WEB-INF/Manager/enb/content/sysParaTaInfo_add.html</result>
+			<result name="cel_info_add" type="freemarker">/WEB-INF/Manager/enb/content/weblmt/content/cel_info_add.html</result>
+			<result name="currentAsset" type="freemarker">/WEB-INF/Manager/enb/content/currentAsset.html</result>
+			<result name="historyAsset" type="freemarker">/WEB-INF/Manager/enb/content/historyAsset.html</result>
+		</action>
+		
+		<!-- 查询系统参数 -->
+		<action name="querySysPara" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="querySysPara">
+		</action>	
+		<!-- 查询是否具备修改MNC和MCC的条件 -->
+		<action name="checkModifyCondition" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="checkModifyCondition">
+		</action>		
+		<!-- 修改TCN1000系统参数 -->
+		<action name="modifyTcnSysPara" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="modifyTcnSysPara">
+		</action>	
+		<!-- 修改enb系统参数 -->
+		<action name="modifyEnbSysPara" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="modifyEnbSysPara">
+		</action>
+		<!-- 修改视频会议系统参数 -->
+		<action name="modifyVideoSysPara" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="modifyVideoSysPara">
+		</action>	
+		<!-- 查询vsc视频用户 -->
+		<action name="queryVscUser" class="com.xinwei.lte.web.lte.action.VscUserManageAction" method="queryVscUser">
+		</action>
+		<!-- 增加vsc视频用户 -->
+		<action name="addVscUser" class="com.xinwei.lte.web.lte.action.VscUserManageAction" method="addVscUser">
+		</action>
+		<!-- 删除vsc视频用户 -->
+		<action name="deleteVscUser" class="com.xinwei.lte.web.lte.action.VscUserManageAction" method="deleteVscUser">
+		</action>	
+		
+		<!-- 查询所有跟踪区码  -->
+		<action name="queryAllTa" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="queryAllTa">
+		</action>	
+		<!-- 查询跟踪区码列表  -->
+		<action name="queryTaList" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="queryTaList">
+		</action>	
+		<!-- 新增跟踪区码  -->
+		<action name="addSysParaTa" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="addSysParaTa">
+		</action>	
+		<!-- 跳转至修改跟踪区码列表  -->
+		<action name="turnToModifyTaHtml" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="turnToModifyTaHtml">
+			<result name="success" type="freemarker">/WEB-INF/Manager/enb/content/sysParaTaInfo_modify.html</result>
+		</action>
+		<!-- 修改跟踪区码  -->
+		<action name="modifySysParaTa" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="modifySysParaTa">
+		</action>	
+		<!-- 删除跟踪区码 -->
+		<action name="deleteSysParaTa" class="com.xinwei.lte.web.enb.action.simplify.QuerySysParaAction"
+			method="deleteSysParaTa">
+		</action>				
+		
+		<!-- 查询网管表的IP标识所代表的详细IP地址 -->
+		<action name="queryIpDetail" class="com.xinwei.lte.web.enb.action.simplify.QueryIpDetailAction"
+			method="queryIpDetail">
+		</action>
+		
+		<!-- 查询单板表每条记录对应的光口号 -->
+		<action name="queryU8FiberPort" class="com.xinwei.lte.web.enb.action.simplify.QueryU8FiberPortForBoardAction"
+			method="queryU8FiberPort">
+		</action>		
+		
+		<!-- 判断某个基站是否在系统内已存在 0:否 1：是 -->
+		<action name="isExistingInSystem" class="com.xinwei.lte.web.enb.action.simplify.NbrcelSimplifyAction"
+			method="isExistingInSystem">
+		</action>
+		<!-- 根据enbHexId获取该网元小区列表 -->
+		<action name="getCellListByEnbHexId" class="com.xinwei.lte.web.enb.action.simplify.NbrcelSimplifyAction"
+			method="getCellListByEnbHexId">
+		</action>	
+		<!-- 根据cellId获取小区数据 -->
+		<action name="getCellDataByCellId" class="com.xinwei.lte.web.enb.action.simplify.NbrcelSimplifyAction"
+			method="getCellDataByCellId">
+		</action>
+		<!-- 根据moId获取enbHexId-->
+		<action name="getEnbHexIdAsync" class="com.xinwei.lte.web.enb.action.simplify.NbrcelSimplifyAction"
+			method="getEnbHexIdAsync">
+		</action>	
+		
+		<!-- 获取核心网类型-->
+		<action name="queryCoreNetType" class="com.xinwei.lte.web.enb.action.simplify.QueryCoreNetTypeAction"
+			method="queryCoreNetType">
+		</action>
+				
+		<!-- 根据enbHexId从对应的IPV4表查询ip列表-->
+		<action name="getIpListFromIpv4" class="com.xinwei.lte.web.enb.action.simplify.SysConfigS1SimplifyAction"
+			method="getIpListFromIpv4">
+		</action>					
+	</package>
+</struts>

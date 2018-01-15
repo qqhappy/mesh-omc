@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/s1PackageTimeTest.js"></script>
+
+<script type="text/javascript">
+	var interval_1,
+		interval_2;
+	function percent_1(){
+		var d5 = document.getElementById("d5");
+			percent = d5.style.width || "0";
+			array = percent.split("%");
+		percent = parseFloat(array[0]) + 0.16;
+		d5.style.width = percent + "%"
+		if(percent >=100){
+			clearInterval(interval_1);
+		}
+		document.getElementById("d6").innerHTML = parseInt(percent)+"%";
+	}
+	function percent_2(){
+		var d9 = document.getElementById("d9");
+			percent = d9.style.width || "0";
+			array = percent.split("%");
+		percent = parseFloat(array[0]) + 2;
+		d9.style.width = percent + "%"
+		if(percent >=100){
+			clearInterval(interval_2);
+		}
+		document.getElementById("d10").innerHTML = parseInt(percent)+"%";
+	}
+	window.onload = function(){	
+
+	}
+</script>
+<style>
+	#d1{border:solid 1px #ccc;margin:10px;padding:20px 0 30px 30px;position:relative;}
+	#d2{border:solid 1px #ccc;padding:20px 0 30px 30px;margin:10px;position:relative;}
+	#d3,#d7{position:absolute;border:solid 0px #ccc;width:260px;height:30px;left:60px;top:100px;float:left;display:none;}
+	#d4,#d8{width:218px;height:15px;border:1px solid #ccc;float:left;}
+	#d5,#d9{background:#c6d7ff;height:15px;width:0;}
+	#d6,#d10{float:left;color:#0088cc;margin-left:3px;}	
+	ul li {float:left;padding:0 30px;}
+	table td{border:solid 1px #ccc;width:150px;text-align:center;color:#595757;}
+	p{font-size:13px;font-weight:bold;font-family:"Arial";}
+</style>
+<title>eNB状态信息</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>S1-u传输质量检测</a>
+	</div>
+	<div style="overflow:auto;" class="add_div" id="d">
+		<div id="d1" class="clearfix">
+			<p>丢包率测量</p>
+			<ul>
+				<li><input type="button" value="开始" onclick="beginPackageTest()"  id="btn1"></input></li>
+				<li><input type="button" value="结果查询" onclick="queryPackageTest()"  id="btn2"></input></li> 
+				<li>
+					<table id="plt">
+						<tr><td>近端丢包率</td><td>远端丢包率</td></tr>
+						<tbody id="tbody1">
+						<tr><td>--</td><td>--</td></tr>
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			<div id="d3">
+				<div id="d4">
+					<div id="d5"></div>
+				</div>
+				<div id = "d6"></div>
+			</div>
+		</div>
+		<div id="d2" class="clearfix">
+			<p>时延测量</p>
+			<ul>
+				<li><input type="button" value="开始" onclick="beginTimeTest()" id="btn3"></input></li>
+				<li><input type="button" value="结果查询" onclick="queryTimeTest()" id="btn4"></input></li>
+				<li>
+					<table id="tdt">
+						<tr><td>时延</td></tr>
+						<tbody id="tbody2">
+						<tr><td>--</td></tr>
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			<div id="d7">
+				<div id="d8">
+					<div id="d9"></div>
+				</div>
+				<div id = "d10"></div>
+			</div>
+		</div>
+		<input type="hidden" id="moId" value="${moId}"/>
+		<input type="hidden" id="enbHexId" value="${enbHexId}"/>
+	</div>
+</body>
+</html>

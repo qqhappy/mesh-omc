@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+	var deviceTypeHidden = $("#deviceTypeHidden").val();
+	$("#queryType option").each(function() {
+		if ($(this).val() == deviceTypeHidden) {
+			$(this).attr("selected", true);
+		}
+	});
+	var basePath = $("#basePath").val();
+	$("#queryType").change(function(){
+		var deviceType = $(this).val();
+		window.location=basePath+"/lte/queryLicense!queryLicense.do?deviceType="+deviceType;
+	});
+	
+	
+	$("#newAdd").click(function(){
+		window.location=basePath+"/lte/toImportLicense!toImportLicense.do";
+	});
+})
+
+
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>license配置</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="newAdd" value="导入"/></li>
+			</ul>
+			<div class="fright">
+				<form action="" method="post" id="queryform">
+				    <label for="na_prefix_input">设备类型 : </label> 
+					<select style="width:100px;height:21px;font-size:13px;margin-top:1px;"  id="queryType">
+						<option value="0">主设备</option>
+						<option value="1">备设备</option>
+					</select>
+				</form>				
+			</div>
+		</div>
+		
+		<table width="100%"  class="enbTable changeRowColor">
+				<thead>
+					<tr>
+						<th >设备类型</th>
+						<th >设备硬件标识</th>
+						<th >版本类型</th>
+						<th >当前用户数</th>
+						<th >最大用户数</th>
+						<th >到期时间</th>
+						<th >授权码</th>
+						<th >授权描述信息</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if licenseModel??>
+					<tr>
+						<td>${licenseModel.deviceType!} </td>
+						<td>${licenseModel.hardwareSignature!}</td>
+						
+						<td>${licenseModel.versionType!}
+						<#if licenseModel.versionType! == 0>主设备
+						<#else> 备设备
+						</#if>
+						</td>
+						<td>${licenseModel.curUserNum!}</td>
+						<td>${licenseModel.maxUserNum!}</td>
+						<td>${licenseModel.expire!}</td>
+						<td>${licenseModel.authCode!}</td>
+						<td>${licenseModel.descrition!}</td>
+					</tr>
+	  			<#else>
+	  			<tr>
+			  		<td >${failedReason!}<input type="hidden" value="0" id="noRecordInput"/></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  			</tr>
+		  </#if>
+				</tbody>
+			</table>
+	</div>	
+	<input type="hidden" value="${base!}" id="basePath"/>
+	<input type="hidden" value="${deviceType!}" id="deviceTypeHidden"/> 
+</body>
+</html>

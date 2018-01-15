@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet"
+	type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript"
+	src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/status.js"></script>
+
+<title>xGW地址对查询</title>
+</head>
+<body style="overflow: hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" />
+		</span> <a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" /> <a>基站设备</a><img
+			src="${base}/Manager/images/tnc/arrow.png" /> <a>状态信息管理</a><img
+			src="${base}/Manager/images/tnc/arrow.png" /> <a>xGW地址对查询</a>
+	</div>
+
+	<div style="overflow: auto">
+		<div class="clearfix wrap">
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding: 10px;">
+				<div style="height: 10px; overflow: hidden; padding-left: 100px;">
+					<table width="100%" style="line-height: 35px;">
+						<tr>
+
+							<td><input type="hidden" value="${moId}" id="moId" /> <input
+								type="hidden" value="${enbHexId}" id="enbHexId" /> <input
+								type="hidden" value="${statusFlag}" id="statusFlag" /> <input
+								type="hidden" value="${error}" id="error" /></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="tableHeight">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新" />
+							</li>
+						</ul>
+					</div>
+					<table width="100%" class="newTabStyle">
+						<tr>
+							<th scope="col">本端IP</th>
+							<th scope="col">对端IP</th>
+							<th scope="col">Vlan 索引</th>
+						</tr>
+					 <#if enbxGWAddressList?size lt 1>
+						<tr>
+							<td>暂无相关数据</td>
+							<td><a style="cursor: pointer;"></a>
+							</td>
+							<td><a style="cursor: pointer;"></a>
+							</td>
+						</tr>
+						<#else> <#list enbxGWAddressList! as enbxGWAddress>
+						<tr>
+							<td>${enbxGWAddress.localIp}</td>
+							<td>${enbxGWAddress.desIp}</td>
+							<td>${enbxGWAddress.vlanIndex}</td>
+						</tr>
+						</#list> </#if>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: true,
+				selectedMulti: false
+			},	
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+		var zNode =[
+					{ id:9, pId:100000, name:"性能监控", open:true, iconSkin:"pIcon01"},
+					{ id:91, pId:9, name:"实时性能监控",url:"${base}/lte/turnToMonitoringInfoHtml.do",target:"mainFrame", iconSkin:"icon10"}, 
+			 	
+					{ id:0, pId:100000, name:"话务统计", open:true, iconSkin:"pIcon01"},
+					{ id:1, pId:0, name:"Counter", open:true, iconSkin:"pIcon01"},						
+					{ id:12, pId:1, name:"基站", open:true, iconSkin:"pIcon02"},
+					{ id:121, pId:12, name:"平台子系统", open:true, iconSkin:"pIcon04"},
+					{ id:1211, pId:121, name:"硬件资源",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.ENB.REPORT_SYSTEM_PLATFORM.MEASURE_TYPE_HARDWARE",target:"mainFrame", iconSkin:"icon10"},					
+					
+					{ id:122, pId:12, name:"L3子系统", open:true, iconSkin:"pIcon04"},
+					{ id:1221, pId:122, name:"集群相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.ENB.REPORT_SYSTEM_L3.MEASURE_TYPE_PTT",target:"mainFrame", iconSkin:"icon10"},
+
+					{ id:123, pId:12, name:"用户面子系统", open:true, iconSkin:"pIcon04"},
+					{ id:1231, pId:123, name:"集群相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.ENB.REPORT_SYSTEM_USER.MEASURE_TYPE_PTT",target:"mainFrame", iconSkin:"icon10"},
+					{ id:1232, pId:123, name:"流量相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.ENB.REPORT_SYSTEM_USER.MEASURE_TYPE_THROUGHPUT",target:"mainFrame", iconSkin:"icon10"},
+					
+					{ id:11, pId:1, name:"小区", open:true, iconSkin:"pIcon03"},
+					{ id:111, pId:11, name:"L3子系统", open:true, iconSkin:"pIcon04"},
+					{ id:1111, pId:111, name:"RRC连接",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.CELL.REPORT_SYSTEM_L3.MEASURE_TYPE_RRC",target:"mainFrame", iconSkin:"icon10"},
+					{ id:1113, pId:111, name:"Context相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.CELL.REPORT_SYSTEM_L3.MEASURE_TYPE_CONTEXT",target:"mainFrame", iconSkin:"icon10"},
+					{ id:1114, pId:111, name:"切换相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.CELL.REPORT_SYSTEM_L3.MEASURE_TYPE_SWITCH",target:"mainFrame", iconSkin:"icon10"},
+					
+					{ id:112, pId:11, name:"用户面子系统", open:true, iconSkin:"pIcon04"},
+					{ id:1121, pId:112, name:"QCI相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.CELL.REPORT_SYSTEM_USER.MEASURE_TYPE_QCI",target:"mainFrame", iconSkin:"icon10"},
+					{ id:1122, pId:112, name:"集群相关",url:"${base}/lte/queryPropertyCounter.do?counterKey=COUNTER.CELL.REPORT_SYSTEM_USER.MEASURE_TYPE_PTT",target:"mainFrame", iconSkin:"icon10"},
+
+					{ id:2, pId:0, name:"KPI", open:true, iconSkin:"pIcon01"},					
+					{ id:22, pId:2, name:"基站", open:true, iconSkin:"pIcon02"},
+					{ id:221, pId:22, name:"资源类",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.ENB.PERF_TYPE_RESOURCE",target:"mainFrame", iconSkin:"icon10"},					
+					{ id:222, pId:22, name:"接入性",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.ENB.PERF_TYPE_ACCESS",target:"mainFrame", iconSkin:"icon10"},
+					{ id:223, pId:22, name:"稳定性",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.ENB.PERF_TYPE_STABLITY",target:"mainFrame", iconSkin:"icon10"},
+					{ id:224, pId:22, name:"用户面集群类",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.ENB.PERF_TYPE_USER_PTT",target:"mainFrame", iconSkin:"icon10"},
+					{ id:224, pId:22, name:"业务统计",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.ENB.PERF_TYPE_OPER_STAT",target:"mainFrame", iconSkin:"icon10"},
+			 		
+					{ id:21, pId:2, name:"小区", open:true, iconSkin:"pIcon03"},
+					{ id:211, pId:21, name:"接入性",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.CELL.PERF_TYPE_ACCESS",target:"mainFrame", iconSkin:"icon10"},
+					{ id:212, pId:21, name:"稳定性",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.CELL.PERF_TYPE_STABLITY",target:"mainFrame", iconSkin:"icon10"},
+					{ id:213, pId:21, name:"移动性",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.CELL.PERF_TYPE_MOBILITY",target:"mainFrame", iconSkin:"icon10"},
+					{ id:214, pId:21, name:"业务量",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.CELL.PERF_TYPE_OPERATION",target:"mainFrame", iconSkin:"icon10"},
+					{ id:216, pId:21, name:"用户面集群类",url:"${base}/lte/queryPropertyKpi.do?kpiKey=KPI.CELL.PERF_TYPE_USER_PTT",target:"mainFrame", iconSkin:"icon10"}
+		 		];
+		$.fn.zTree.init($("#treeDemo"), setting, zNode);
+		
+		$("#leftDivOne ul li:eq(0) ul li:eq(0) a").addClass("curSelectedNode");
+		
+		$("#leftDivOne ul li a").click(function(event){
+			$("#leftDivOne ul li a").removeClass("curSelectedNode");
+			$(this).addClass("curSelectedNode");
+			event.preventDefault();
+			var href = $(this).attr("href");
+			var myHref = "";
+			if(href != "" && href != null && typeof(href) != "undefined"){
+				var myHref = "";
+				if(href.indexOf("?") == -1){
+					myHref = href + "?browseTime="+getBrowseTime();
+				}else{
+					myHref = href + "&browseTime="+getBrowseTime();
+				}
+				window.parent.mainFrame.location.href=myHref;
+			}
+		});
+	});
+</script>
+
+</head>
+<body style="background:#e9f6fe;">	
+	<div class="left_nav">
+ 		<div class="title" style="font-size:12px;">性能管理</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+	</div>
+</body>
+</html>

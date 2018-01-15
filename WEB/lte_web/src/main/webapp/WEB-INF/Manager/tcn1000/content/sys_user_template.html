@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});	
+		
+		//批量删除
+		$("#batchDelete").click(function(){
+			var checkCount = 0;
+			$(".tbody_template input[type='checkbox']:checked").each(function(){
+				checkCount++;
+			})
+			
+			if(checkCount == 0){
+				alert("您并未选中任何记录...");
+				return false;
+			}
+			
+			if(confirm("确定要删除所有选择的记录?")){
+				
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				
+				var tmp_idArray = [];
+				var tmp_idArrayIndex = 0;
+				$(".tbody_template input[type='checkbox']:checked").each(function(){
+					tmp_idArray[tmp_idArrayIndex]=$(this).val();
+					tmp_idArrayIndex++;
+				});
+
+				
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteUserTemplate.do",
+					data:"userTemplateModel.tmp_id="+tmp_idArray,
+					dataType:"json",
+					success:function(data){
+						if(data == null){
+							alert("消息未返回");
+							return;
+						}
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+currentPageNum+									
+										"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}			
+			
+		});
+		
+		//单个删除
+		$(".deleteOne").click(function(){
+			if(confirm("确定要删除该条记录?")){
+
+				var currentPageNum = $("#currentPageNum").val();
+				var totalPages = $("#totalPages").val();
+				var basePath = $("#basePath").val();
+				var tmp_id = $(this).siblings("input").val();
+
+				$.ajax({
+					type:"post",
+					url:basePath+"/lte/deleteUserTemplate.do",
+					data:"userTemplateModel.tmp_id="+tmp_id,
+					dataType:"json",
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						
+						var status = data.status;
+
+						switch(status){
+							case 0: 
+								window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+currentPageNum+									
+										"&onlinePage.totalPages="+totalPages;
+								break;
+							default:
+								alert(data.message);
+								break;
+						}
+					},
+					error:function(data){
+						alert("删除操作失败");
+					}				
+				});
+			}			
+			
+		});
+				
+
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoUserTemplate.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		
+		$("#queryType").change(function(){
+			var val = $(this).val();
+			$("#query_value").val("");
+			
+			if(val == '1'){
+				$("#templateId").show();
+				$("#templateName").hide();
+				$("#templateMark").hide();		
+			}else if(val == '2'){
+				$("#templateId").hide();
+				$("#templateName").show();
+				$("#templateMark").hide();	
+			}else{
+				$("#templateId").hide();
+				$("#templateName").hide();
+				$("#templateMark").show();		
+			}
+		});
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turntoUserTemplateAdd.do?onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+	});
+	
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+	var myForm = '<form action="'+basePath+'/lte/turntoUserTemplate.do" id="myForm" method="post">'+
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+				 '</form>';
+	 $("#hiddenDiv").html(myForm);
+	 $("#myForm").submit();
+	 $("#hiddenDiv").html("");
+	
+}
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>用户参数模板</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar">
+			<ul>
+				<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+				<li><label></label><input type="button" id="batchDelete" value="批量删除"/></li>
+			</ul>
+			<!-- <div class="fright">				
+				<form action="" method="post" id="queryform">
+					<select class="system_config_select" id="queryType">
+						<option value="1">模板ID</option>
+						<option value="2">模板名</option>
+						<option value="3">默认模板标识</option>
+					</select>
+					<input type="text" id="templateId" class="sys_user_info_input" title="取值范围1~100"/>
+					<input type="text" id="templateName" style="display:none;" class="sys_user_info_input"/>
+					<select style="display:none; width:112px;" id="templateMark">
+						<option value="0">NO</option>
+						<option value="1">YES</option>
+					</select>
+					<label for="templateId">模板ID:</label><input type="text" id="templateId" class="sys_user_info_input"/>
+					<label for="templateName">模板名:</label><input type="text" id="templateName" class="sys_user_info_input"/>
+					默认模板标识:
+					<select class="system_config_select" id="templateMark">
+						<option></option>
+						<option value="0">NO</option>
+						<option value="1">YES</option>
+					</select>
+					<a class="btn" href="#" id="searchBtn">查询</a>
+				</form>				
+			</div>  -->
+		</div>
+		<table id="table_template" class="enbTable changeRowColor" width="100%">
+		  <thead>
+			<tr>
+				<th scope="col" class="checkWidth"> <input id="checkfather" type="checkbox" name="checkbox" value="checkbox" /></th>  
+				<th scope="col" style="width:50px;">修改</th>
+				<th scope="col" style="width:80px;">模板ID</th>
+				<th scope="col">模板名</th>
+				<th scope="col">最大上行带宽</th>
+				<th scope="col">最大下行带宽</th>
+				<th scope="col">PDN类型</th>
+				<th scope="col">APN最大上行带宽</th>
+				<th scope="col">APN最大下行带宽</th>
+				<th scope="col">QoS等级</th>
+				<th scope="col">ARP优先级</th>
+				<th scope="col">ARP抢占能力</th>
+				<th scope="col">ARP被抢占能力</th>
+				<th scope="col">默认模板标识</th>
+				<th scope="col" style="width:50px;">修改</th>
+				<th scope="col" style="width:50px;">删除</th>
+			  </tr>
+		  </thead>
+		  <tbody class="tbody_template">
+			  <#list userTemplateModelList! as userTemplateModel>
+			  	<tr>
+					<th scope="row"><input type="checkbox" name="checkson" value="${userTemplateModel.tmp_id!}" /></th>
+					<th scope="row" style="cursor:pointer;" onclick='window.location.href="${base}/lte/toModifyUserTemplate.do?userTemplateModel.tmp_id=${userTemplateModel.tmp_id!}	&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}"'><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"/></th>
+					<td>${userTemplateModel.tmp_id!}<input type="hidden" value="1" id="noRecordInput"/></td>
+					<td>${userTemplateModel.tmp_name!}</td>
+					<td>${userTemplateModel.tmp_ul_bw!} (Kbps)</td>
+					<td>${userTemplateModel.temp_dl_bw!} (Kbps)</td>
+					<#if userTemplateModel.tmp_pdn_cat! == "0">
+						<td>Invalid</td>
+					<#elseif userTemplateModel.tmp_pdn_cat! == "1">	
+						<td>IPv4</td>
+					<#elseif userTemplateModel.tmp_pdn_cat! == "2">		
+						<td>IPv6</td>
+					<#else>		
+						<td>IPv4v6</td>				
+					</#if>
+					<td>${userTemplateModel.tmp_apn_ulbw!} (Kbps)</td>
+					<td>${userTemplateModel.tmp_apn_dlbw!} (Kbps)</td>
+					<td>${userTemplateModel.tmp_qci!}</td>
+					<td>${userTemplateModel.tmp_arp_pri!}</td>
+					
+					<#if userTemplateModel.tmp_arp_reave! == "0">
+						<td>NO</td>
+					<#else>
+						<td>YES</td>
+					</#if>
+					
+					<#if userTemplateModel.tmp_arp_reaved! == "0">
+						<td>NO</td>
+					<#else>
+						<td>YES</td>
+					</#if>					
+					
+					<#if userTemplateModel.tmp_default! == "0">
+						<td>NO</td>
+					<#else>
+						<td>YES</td>
+					</#if>
+					<td><a href="${base}/lte/toModifyUserTemplate.do?userTemplateModel.tmp_id=${userTemplateModel.tmp_id!}	&onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}">修改</a></td>
+					<td><a class="deleteOne" style="cursor:pointer;">删除</a><input type="hidden" value="${userTemplateModel.tmp_id!}"/></td>
+				 </tr>
+			  </#list>
+			 <#if userTemplateModelList?size < 1>
+	
+			  			<tr>
+			  				<th scope="row"><input type="checkbox" value="checkbox" name="checkson" disabled="disabled"/></th>
+			  				<td></td>
+			  				<td>${showMessage!}<input type="hidden" value="0" id="noRecordInput"/></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  				<td></td>
+			  			</tr>
+			  		
+			  </#if>
+		  </tbody>
+		  
+		  
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+<!-- 	<div class="fright" style="margin-right:20px;"> -->
+<!-- 		<span class="fleft"><span style="color:red;">${onlinePage.currentPageNum!}</span>/${onlinePage.totalPages!}</span>&nbsp; -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/first_page.png" onclick="turnPageFunction('1')"/></a></span> -->
+<!-- 		<span class="fleft"> -->
+<!-- 			<#if onlinePage.currentPageNum! != 1> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/previous_page.png" onclick="turnPageFunction('pre')"/></a> -->
+<!-- 			<#else> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/previous_page.png"/></a> -->
+<!-- 			</#if> -->
+<!-- 		</span> -->
+		
+<!-- 		<span class="fleft"> -->
+<!-- 			<#if onlinePage.currentPageNum! != onlinePage.totalPages!> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/next_page.png" onclick="turnPageFunction('next')"/></a> -->
+<!-- 			<#else> -->
+<!-- 				<a href="#"><img src="${base}/Manager/images/next_page.png"/></a> -->
+<!-- 			</#if>	 -->
+<!-- 		</span>	 -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/end_page.png" onclick="turnPageFunction('max')"/></a></span>		 -->
+<!-- 		<span class="fleft"><input type="text" style="width:30px;" id="turnPageInput"/></span> -->
+<!-- 		<span class="fleft"><a href="#"><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg"/></a></span> -->
+<!-- 	</div> -->
+	<div id="hiddenDiv" style="display:none">	
+	</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+</body>
+</html>

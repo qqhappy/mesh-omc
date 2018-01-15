@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){	
+		if($("#noRecordInput").val() == 0){
+			$("#checkfather").attr("disabled",true);
+		}else{
+			$("#checkfather").attr("disabled",false);
+		}
+		//登出
+		$("#logout").click(function(){
+			if(confirm("确定退出当前用户?")){
+				window.top.location.href="${base}/login/logout.do?browseTime="+getBrowseTime();
+			}
+		});
+		//跳至新增
+		$("#newAdd").click(function(){
+			var canAddAdm = $("#canAddAdm").val();
+			window.location.href="${base}/lte/turnAddUser.do?canAddAdm="+canAddAdm+"&browseTime="+getBrowseTime();
+		});
+		//跳转至配置
+		$("#modify").click(function(){
+			var checkedUserName = "";
+			var loginUserName = $("#loginUserName").html();
+			$("#userListTable input[type=radio]").each(function(index){
+				if($("#userListTable input[type=radio]:eq("+index+")").attr("checked")){
+					var s = index + 1;
+					checkedUserName = $("#userListTable tr:eq("+s+") td:eq(0)").text();					
+				}
+			});	
+			if(checkedUserName == ""){
+				alert("请选择一个用户");
+			}else{
+				$.ajax({
+					type:"post",
+					url:"checkPrivilege.do",
+					data:"userName="+loginUserName+
+						"&operatedUserName="+checkedUserName+
+						"&browseTime="+getBrowseTime(),
+					dataType:"json",
+					async:false,
+					success:function(data){
+						if(data.hasPrivilege == 0){
+							alert("您无权修改("+checkedUserName+")用户的信息");
+						}else{
+							window.location.href="${base}/lte/querySingleUser.do?operatedUserName="+checkedUserName+"&userName="+loginUserName+"&browseTime="+getBrowseTime();
+						}
+					}
+				});
+			}
+		});
+		//修改密码
+		$("#modifyPassword").click(function(){
+			var checkedUserName = "";
+			var loginUserName = $("#loginUserName").html();
+			$("#userListTable input[type=radio]").each(function(index){
+				if($("#userListTable input[type=radio]:eq("+index+")").attr("checked")){
+					var s = index + 1;
+					checkedUserName = $("#userListTable tr:eq("+s+") td:eq(0)").text();					
+				}
+			});	
+			if(checkedUserName == "" || checkedUserName == loginUserName){
+				window.location.href="${base}/lte/turnModifyPassWord.do?modifiedUserName="+loginUserName+"&browseTime="+getBrowseTime();
+			}else{
+				$.ajax({
+					type:"post",
+					url:"checkPrivilege.do",
+					data:"userName="+loginUserName+
+						"&operatedUserName="+checkedUserName+
+						"&browseTime="+getBrowseTime(),
+					dataType:"json",
+					async:false,
+					success:function(data){
+						if(data.hasPrivilege == 0){
+							alert("您无权修改("+checkedUserName+")用户的密码");
+						}else{
+							window.location.href="${base}/lte/turnModifyPassWord.do?modifiedUserName="+checkedUserName+"&browseTime="+getBrowseTime();;
+						}
+					}
+				});
+			}
+		});
+		//删除
+		$("#delete").click(function(){
+			var checkedUserName = "";
+			var loginUserName = $("#loginUserName").html();
+			$("#userListTable input[type=radio]").each(function(index){
+				if($("#userListTable input[type=radio]:eq("+index+")").attr("checked")){
+					var s = index + 1;
+					checkedUserName = $("#userListTable tr:eq("+s+") td:eq(0)").text();					
+				}
+			});	
+			if(checkedUserName == ""){
+				alert("请选择一个用户");
+			}else{
+				$.ajax({
+					type:"post",
+					url:"checkPrivilege.do",
+					data:"userName="+loginUserName+
+						"&operatedUserName="+checkedUserName+
+						"&browseTime="+getBrowseTime(),
+					dataType:"json",
+					async:false,
+					success:function(data){
+						if(data.hasPrivilege == 0){
+							alert("您无权删除("+checkedUserName+")用户");
+						}else{
+							if(confirm("确定删除用户"+checkedUserName+"?")){
+								window.location.href="${base}/lte/queryAllUser.do?operatedUserName="+checkedUserName+"&isDeleted=1"+"&browseTime="+getBrowseTime();
+							}							
+						}
+					}
+				});
+			}
+		});
+		//踢下线
+		$("#kick").click(function(){
+			var kickedUserName = "";
+			$("#userListTable input[type=radio]").each(function(index){
+				if($("#userListTable input[type=radio]:eq("+index+")").attr("checked")){
+					var s = index + 1;
+					kickedUserName = $("#userListTable tr:eq("+s+") td:eq(0)").text();					
+				}
+			});	
+			if(kickedUserName == ""){
+				alert("请选择一个用户");
+			}else{
+				if(confirm("确定注销该在线用户?")){
+					$.ajax({
+						type:"post",
+						url:"kickUser.do",
+						data:"operatedUserName="+kickedUserName+
+							"&browseTime="+getBrowseTime(),
+						dataType:"json",
+						async:false,
+						success:function(data){
+							if(data.error != "" && data.error != null){
+								alert(data.error);
+							}else{
+								window.location.href="${base}/lte/queryAllUser.do?browseTime="+getBrowseTime();						
+							}
+						}
+					});
+				}				
+			}
+		});
+		$("#fresh").click(function(){
+			window.location.href="${base}/lte/queryAllUser.do?browseTime="+getBrowseTime();
+		});
+		
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>安全管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>操作员管理</a>
+		</div>
+		<div class="enbPage">
+		<div class="toolBar">
+			<div>
+				<ul>
+				<#if loginUser.roleId! == 1  && loginUser.username! == "admin">
+				<li><label></label><input type="button" id="newAdd" value="新增"/><input type="hidden" value="1" id="canAddAdm"></li>
+				<#elseif loginUser.roleId! == 1 && loginUser.username! != "admin">
+				<li><label></label><input type="button" id="newAdd" value="新增"/><input type="hidden" value="0" id="canAddAdm"></li>
+				<#else>				
+				</#if>
+				<#if loginUser.roleId! == 1>
+				<li><label></label><input type="button" id="modify" value="修改"/></li>
+				</#if>
+				<li><label></label><input type="button" id="modifyPassword" value="修改密码"/></li>
+				<#if loginUser.roleId! == 1>
+				<li><label></label><input type="button" id="delete" value="删除"/></li>
+				</#if>
+				<#if loginUser.roleId! == 1>
+ 				<li><label></label><input type="button" id="kick" value="注销用户"/></li>
+				</#if>
+				<li><label></label><input type="button" id="fresh" value="刷新"/></li>	
+							
+				</ul>
+			</div>
+			<div style="float:right;display:none;">
+				<span style="color:red;margin-left:5px;" id="loginUserName">${loginUser.username!}</span>
+				<span style="color:#0088cc;margin-left:10px;cursor:pointer;" id="logout">登出</span>
+			</div>
+		</div>
+		
+		<table width="100%" class="enbTable changeRowColor" id="userListTable">
+		  <tr>
+		  	<th scope="col" class="checkWidth"></th>
+			<th scope="col">用户名</th>
+			<th scope="col">角色名</th>
+			<th scope="col">暂停使用</th>
+			<th scope="col">登录状态</th>
+			<th scope="col">有效日期</th>
+		  </tr>
+		  <#list loginUserList! as userModel>
+			<tr>
+				<th scope="row"><input type="radio" name="userRadio"/></th>
+				<td>${userModel.user.username!}<input type="hidden" value="1" id="noRecordInput"/></td>
+				<#if userModel.user.roleId! == 1 && userModel.user.username! == "admin">
+				<td>超级管理员</td>
+				<#elseif userModel.user.roleId! == 1 && userModel.user.username! != "admin">
+				<td>管理员</td>
+				<#elseif userModel.user.roleId! == 20>
+				<td>高级操作员</td>
+				<#elseif userModel.user.roleId! == 30>
+				<td>初级操作员</td>
+				<#else>
+				<td>监视员</td>
+				</#if>
+				<#if userModel.user.canuse! == 1>
+				<td>是</td>
+				<#else>
+				<td>否</td>
+				</#if>
+				<#if userModel.isOnline! == 1>
+				<td>在线</td>
+				<#else>
+				<td>不在线</td>
+				</#if>
+				<#if userModel.user.ispermanentuser! == 0>
+					<td>永久有效</td>
+				<#else>
+					<td>${userModel.validtimeString!}</td>
+				</#if>		
+			</tr>
+		   </#list>
+		   <#if loginUserList?size < 1>
+  			<tr>
+  				<td></td>
+  				<td>暂无相关记录</td>
+  				<td></td>
+  				<td></td>
+  				<td></td>
+  			</tr>
+		  </#if>
+		</table>
+		</div>
+	</div>
+</body>
+</html>

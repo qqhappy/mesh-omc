@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/enbStatus.js"></script>
+
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript">
+	function document.onkeydown(){
+		if(event.keyCode == 8){
+			if(document.activeElement.type.toLowerCase() == "textarea" || document.activeElement.type.toLowerCase() == "text"){
+				if(document.activeElement.readOnly == false){
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+</script>
+<title>eNB状态信息</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>eNB状态信息</a>
+	</div>
+	
+	<!-- 
+	eNB状态信息：包含查询基站状态、查询基站时间、查询系统时钟状态、卫星资源信息、基站平均功耗、
+		基站运行时间、风扇转速
+	字段：基站状态、基站时间、时钟类型和状态信息、
+		可视卫星数量和追踪卫星数量、平均功耗、运行时间、风扇转速 
+		-->
+		
+	<div style="overflow:auto" class="add_div">
+		<div class="clearfix wrap">
+			<div class="title"></div>
+			<div class="content" style="width:500px;float:left; padding:10px; margin-left:100px;">
+				<div class="toolBar">
+					<ul>
+						<li><input type="button" id="fresh" value="刷新" /></li>
+					</ul>
+				</div>
+				<table  width="100%" style="line-height:35px;">				
+					<tr>
+						<td>基站状态 :</td>
+						<td>
+							<input type="hidden" value="${moId}" id="moId"/>
+							<input type="hidden" value="${enbHexId}" id="enbHexId"/>
+							<input type="hidden" value="${enbVersion}" id="enbVersion"/>
+							<input type="hidden" value="${enbStatus.enbTime}" id="enbTimeHidden"/>
+							<input type="text" style="width:240px;" readonly="readonly" id="enbStatus" value="${enbStatus.enbStatus}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>基站时间 :</td>
+						<td>
+							<input type="text" style="width:240px;" class="ui_timepicker" readonly="readonly" name="enbTime"  readonly="readonly" />
+						</td>
+						<td>
+							<input type="button" style="width:50px;" id="changeEnbTime" value="修改"/>
+						</td>
+					</tr>
+					<tr>
+						<td>运行时间 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" id="runningTime" value="${enbStatus.runningTime}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>时钟类型 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" id="clockType" value="${enbStatus.clockType}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>时钟状态 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" id="clockStatus" value="${enbStatus.clockStatus}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>可视卫星数量 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.visibleSatelliteNum}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>追踪卫星数量 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.trackSatelliteNum}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>基站温度(℃) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.temperature}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>BBU即时功率(瓦) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.power}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					
+					<!-- 版本兼容性处理 -->
+					<#if enbStatus.portWorkMode??>
+					<tr>
+						<td>光电模式 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" id="portWorkMode" value="${enbStatus.portWorkMode}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>速率(Mbps) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" id="portRate" value="${enbStatus.portRate}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>双工模式 :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" id="portDuplexMode" value="${enbStatus.portDuplexMode}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					</#if>
+					
+					<tr>
+						<td>风扇转速</td>
+						<td class="blankTd"></td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>风扇1(RPM) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.fanSpeeds[0]}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>风扇2(RPM) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.fanSpeeds[1]}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>风扇3(RPM) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.fanSpeeds[2]}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					<tr>
+						<td>风扇4(RPM) :</td>
+						<td>
+							<input type="text" style="width:240px;" readonly="readonly" value="${enbStatus.fanSpeeds[3]}"/>
+						</td>
+						<td class="blankTd"></td>
+					</tr>
+					
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

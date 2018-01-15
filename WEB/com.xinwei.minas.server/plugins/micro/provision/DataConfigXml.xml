@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tables>
+	<table name="RRU型号">
+		<field RRU类型天线数="RRU8A10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8A10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8A10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8B10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8B10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8B10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8C10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8C10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8C10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8D10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8D10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8D10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8E10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8E10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8E10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8F10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8F10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8F10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8G10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8G10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8G10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8H10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8H10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8H10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8I10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8I10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8I10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8J10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8J10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8J10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8K10&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU8K10&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU8K10&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU4B10_FF&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU4B10_FF&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU4B10_FF&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU4B30_CF&amp;an1" RRU额定功率="450" 实际最大发射功率="450"/>
+		<field RRU类型天线数="RRU4B30_CF&amp;an2" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4B30_CF&amp;an4" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4D30_CF&amp;an1" RRU额定功率="450" 实际最大发射功率="450"/>
+		<field RRU类型天线数="RRU4D30_CF&amp;an2" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4D30_CF&amp;an4" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4E10_FF&amp;an1" RRU额定功率="400" 实际最大发射功率="400"/>
+		<field RRU类型天线数="RRU4E10_FF&amp;an2" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU4E10_FF&amp;an4" RRU额定功率="430" 实际最大发射功率="430"/>
+		<field RRU类型天线数="RRU4E30_CF&amp;an1" RRU额定功率="450" 实际最大发射功率="450"/>
+		<field RRU类型天线数="RRU4E30_CF&amp;an2" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4E30_CF&amp;an4" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU2J30_CC&amp;an1" RRU额定功率="450" 实际最大发射功率="450"/>
+		<field RRU类型天线数="RRU2J30_CC&amp;an2" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4K30_CF&amp;an1" RRU额定功率="450" 实际最大发射功率="450"/>
+		<field RRU类型天线数="RRU4K31_CF&amp;an2" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4K31_CF&amp;an4" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4J30_CF&amp;an1" RRU额定功率="450" 实际最大发射功率="450"/>
+		<field RRU类型天线数="RRU4J30_CF&amp;an2" RRU额定功率="480" 实际最大发射功率="480"/>
+		<field RRU类型天线数="RRU4J30_CF&amp;an4" RRU额定功率="480" 实际最大发射功率="480"/>
+	</table>
+	<table name="FreqBand">
+		<field 表名="T_CEL_PARA" 字段名="u8FreqBandInd" 频段38="38" 频段39="39" 频段40="40" 频段53="53" 频段58="58" 频段61="61" 频段62="62" 频段63="63"/>
+	</table>
+	<table name="BandWidth">
+		<field 表名="T_CEL_PARA" 字段名="u8SysBandWidth" 带宽5M="2" 带宽10M="3" 带宽15M="4" 带宽20M="5"/>
+		<field 表名="T_CEL_PUCH" 字段名="u8SrsBwCfgIndex" 带宽5M="2" 带宽10M="0" 带宽15M="0" 带宽20M="0"/>
+		<field 表名="T_CEL_PUCH" 字段名="u8SrsUeInitBw" 带宽5M="0" 带宽10M="2" 带宽15M="2" 带宽20M="2"/>
+	</table>
+	<table name="SFCfg">
+		<field 表名="T_CEL_PARA" 字段名="u8UlDlSlotAlloc" 配比0="0" 配比1="1" 配比2="2"/>
+		<field 表名="T_CEL_PUCH" 字段名="u8RptCqiPrd" 配比0="2" 配比1="3" 配比2="4"/>
+		<field 表名="T_CEL_PUCH" 字段名="u8N_RB2" 配比0="2" 配比1="2" 配比2="2"/>
+		<field 表名="T_CEL_PUCH" 字段名="u8SRITransPrd" 配比0="1" 配比1="2" 配比2="2"/>
+		<field 表名="T_CEL_PUCH" 字段名="u16N_SrChn" 配比0="72" 配比1="72" 配比2="108"/>
+		<field 表名="T_CEL_PUCH" 字段名="u16SrsUePeriod" 配比0="2" 配比1="2" 配比2="2"/>
+		<field 表名="T_CEL_PRACH" 字段名="u8PrachFreqOffset" 配比0="3" 配比1="4" 配比2="4"/>
+		<field 表名="T_CEL_DRX" 字段名="u8OnDurationTimer" 配比0="3" 配比1="5" 配比2="6"/>
+	</table>
+	<table name="应用场景">
+		<field 表名="T_CEL_PARA" 字段名="u8SpecSubFramePat" 市区覆盖="7" 郊区覆盖="7" 超远覆盖="5" 上行流量="7" 下行流量="7"/>
+		<field 表名="T_CEL_PDCH" 字段名="u8Ng" 市区覆盖="1" 郊区覆盖="1" 超远覆盖="1" 上行流量="0" 下行流量="0"/>
+		<field 表名="T_CEL_PRACH" 字段名="u8PrachCfgIndex" 市区覆盖="0" 郊区覆盖="0" 超远覆盖="22" 上行流量="0" 下行流量="0"/>
+		<field 表名="T_CEL_PRACH" 字段名="u8NcsCfg" 市区覆盖="6" 郊区覆盖="10" 超远覆盖="14" 上行流量="10" 下行流量="10"/>
+		<field 表名="T_CEL_DLPC" 字段名="u8PAForDTCH" 市区覆盖="2" 郊区覆盖="2" 超远覆盖="2" 上行流量="2" 下行流量="2"/>
+		<field 表名="T_CEL_RESEL" 字段名="u8SelQrxLevMin" 市区覆盖="12" 郊区覆盖="9" 超远覆盖="9" 上行流量="9" 下行流量="9"/>
+		<field 表名="T_CEL_RESEL" 字段名="u8Qhyst" 市区覆盖="2" 郊区覆盖="3" 超远覆盖="4" 上行流量="4" 下行流量="4"/>
+	</table>
+</tables>

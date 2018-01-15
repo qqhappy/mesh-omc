@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_sctp_para.js"></script>
+<script type="text/javascript">
+	$(function(){
+		if(${listLength}<1){
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		checkLevel();
+	});
+</script>
+<title>单板表</title>
+</head>
+<body style="overflow:hidden;">
+<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>SCTP参数表</a>
+		</div>
+		<div class="ltePage">
+			<div class="toolBar">			
+				<ul>
+<!-- 					<li><label></label><input type="button" id="newAdd" value="新增" onclick = "turnToAddData('${enbVersion}','${base}','${moId}','T_SCTP_PARA-3.0.6','','')"/></li> -->
+					<li><label></label><input type="button" id="fresh" value="刷新" onclick = "refresh_sync('${enbVersion}','${base}','${moId}','T_SCTP_PARA-3.0.6','')"/></li>
+<!-- 					<li><label></label><input type="button" id="delete" value="批量删除" onclick="multiDelete_sync('t_sctp_para','u8Id','${enbVersion}','${base}','${moId}','T_SCTP_PARA-3.0.6','')"/></li> -->
+				
+				</ul>
+			</div>
+		<div class="tableHeight">
+		<table width="100%"  id="t_sctp_para" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>
+			<th scope="col" class="u8Id">索引</th>
+			<th scope="col" class="u32Hb_interval">心跳间隔(ms)</th>
+			<th scope="col" class="u32Assoc_maxretrans">偶联最大重传次数</th>
+			<th scope="col" class="u32Path_maxretrans">路径最大重传次数</th>
+			<th scope="col" class="u32Rto_initial">初始重新传输超时时间(ms)</th>
+			<th scope="col" class="u32Rto_max">最大重新传输超时时间(ms)</th>
+			<th scope="col" class="u32Rto_min">最小重新传输超时时间(ms)</th>
+			<th scope="col" class="u32Assoc_closetype">偶联关闭方式</th>
+			<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 			<th scope="col" class="justForView" width="60px;">删除</th> -->
+		  </tr>
+		  <#if records?size < 1>
+		  	<tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView"></th>
+			<td class="u8Id">暂无相关数据</td>
+			<td class="u32Hb_interval"></td>
+			<td class="u32Assoc_maxretrans"></td>
+			<td class="u32Path_maxretrans"></td>
+			<td class="u32Rto_initial"></td>
+			<td class="u32Rto_max"></td>
+			<td class="u32Rto_min"></td>
+			<td class="u32Assoc_closetype"></td>
+			<td class="justForView"></td>
+<!-- 			<td class="justForView"></td> -->
+		  </tr>
+		  </#if>
+		 <#list records! as record>
+		  <tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;" onclick="turnToModifyData_bySinglePK(this,'u8Id','${enbVersion}','${base}','${moId}','T_SCTP_PARA-3.0.6','','')"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+			<td class="u8Id">${record.fieldMap["u8Id"].value!}</td>
+			<td class="u32Hb_interval">${record.fieldMap["u32Hb_interval"].value!}</td>
+			<td class="u32Assoc_maxretrans">${record.fieldMap["u32Assoc_maxretrans"].value!}</td>
+			<td class="u32Path_maxretrans">${record.fieldMap["u32Path_maxretrans"].value!}</td>
+			<td class="u32Rto_initial">${record.fieldMap["u32Rto_initial"].value!}</td>
+			<td class="u32Rto_max">${record.fieldMap["u32Rto_max"].value!}</td>
+			<td class="u32Rto_min">${record.fieldMap["u32Rto_min"].value!}</td>
+			<td class="u32Assoc_closetype">${record.fieldMap["u32Assoc_closetype"].value!}</td>
+			<td class="justForView"  style="cursor:pointer;"  onclick="turnToModifyData_bySinglePK(this,'u8Id','${enbVersion}','${base}','${moId}','T_SCTP_PARA-3.0.6','','')"><a>修改</a></td>
+<!-- 			<td class="justForView"  style="cursor:pointer;" onclick="delete_sync(this,'u8Id','${enbVersion}','${base}','${moId}','T_SCTP_PARA-3.0.6','')"><a>删除</a></td> -->
+		  </tr>
+		 </#list>
+		</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

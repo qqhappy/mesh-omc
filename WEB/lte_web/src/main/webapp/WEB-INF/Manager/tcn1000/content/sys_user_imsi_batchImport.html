@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+
+	//查询导入进度任务
+	var queryImsiPercentTask;
+	
+ 	$(function(){			
+ 		var csvRegex = /.+\.[Cc]{1}[Ss]{1}[Vv]{1}/;
+ 		$("#upload").click(function(){
+ 			if($("#importFile").val() == "" || $("#importFile").val() == null){
+				alert("请选择一个文件");
+			}else if(!csvRegex.test($("#importFile").val())){
+				alert("文件类型必须是*.csv格式.");
+			}else{
+				if(confirm("确定导入该文件?")){
+					$.ajaxFileUpload({
+						url:'${base}/lte/batchAddImsi.do',
+						secureuri:false,
+						async:false,
+						fileElementId:'importFile',
+						dataType: 'json',
+						success: function (data){
+							if(data.status == 0){
+								queryImsiPercentTask = setInterval(queryUploadPercent,1000);								
+							}else{
+								$(".infoDiv").css("display","none");
+								$("#uploaderror").css("display","block");
+								$("#upError").html(data.message);
+							}
+						}
+					});
+				}			
+			}	
+ 		});
+		//返回
+		$("#return").click(function(){
+			window.location.href="${base}/lte/turntoImsi.do";
+		});
+ 	});
+ 	//查询上传进度
+ 	function queryUploadPercent(){
+ 		$.ajax({
+ 			type:"post",
+ 			url:"queryBatchAddImsiResult.do",
+ 			dataType:"json",
+ 			success:function(data){
+ 				if(data.status == 0){
+ 					$(".infoDiv").css("display","none");
+ 					$("#uploading").css("display","block");
+ 					$("#upInfo").html("正在导入...")
+ 					$("#downLoadLog").html("");
+ 					$("#bar").css("width",data.batchAddImsiPercent+"%");
+ 					$("#percent").html(data.batchAddImsiPercent+"%");
+ 					if(data.batchAddImsiPercent == 100){
+ 						clearInterval(queryImsiPercentTask);
+						$("#upInfo").html("导入成功");
+						var resultFileName = data.batchAddImsiResultFile;
+						$("#downLoadLog").html('<a style="cursor:pointer;" href="${base}/lte/obtainResultFile.do?resultFileName='+resultFileName+'">(点此获取批量增加IMSI结果日志文件)</a>');
+ 					}
+ 				}else if(data.status == -1){
+ 					$(".infoDiv").css("display","none");
+ 					$("#uploaderror").css("display","block");
+					$("#upError").html("error :"+data.error);
+					clearInterval(queryImsiPercentTask);
+ 				}else{
+ 					$(".infoDiv").css("display","none");
+ 					$("#uploaderror").css("display","block");
+					$("#upError").html("error :"+data.message);
+					clearInterval(queryImsiPercentTask);
+ 				}
+ 			}
+ 		});
+ 	}
+</script>
+<style type="text/css">
+	.graph{width:150px;border:1px solid #ccc;height:10px;float:left;margin-left:3px;margin-top:8px;}
+	#bar{display:block;background:#c6d7ff;float:left;height:100%;}
+	#percent{float:left;line-height:12px;font-size:13px;margin-left:5px;margin-top:8px;}     
+</style>
+<title>无标题文档</title>
+</head>
+<body  style="overflow:hidden;">
+	<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>无线终端IMSI</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>批量导入</a>
+		</div>
+	<div style="overflow:auto;" class="add_div">
+	<div class="clearfix wrap ad_Input" style="width:900px;">
+		<div class="title">&nbsp;</div>	
+		<div class="content">	
+			<!--下载按钮-->	
+			<div>
+				<form action="${base}/lte/*******.do"  id="form_batchImport" enctype="multipart/form-data"  method="post">		
+					<span  style="color:#0099FF;font-size:12px;">请选择导入文件 :</span>			
+					<input type="file"  name="file" style="margin-left:10px; height:23px; color:#595757" id="importFile"/>
+					<input type="button"  value="添加" style="margin-left:5px;" id="upload"/>
+					<input type="button"  value="返回" style="margin-left:5px;" id="return"/>			
+				</form>	
+			</div>
+			<div style="margin-left:101px; display:none;" id="uploading" class="infoDiv">				
+				<div class="graph">
+						<strong id="bar" style="width:0%"></strong>
+				</div>
+				<span id="percent">0%</span>	
+				<span style="color:#0099FF;float:left;margin-left:5px;margin-top:8px;line-height:12px;font-size:12px;" id="upInfo"></span>
+				<span style="color:#0099FF;float:left;margin-left:5px;margin-top:8px;line-height:12px;font-size:12px;" id="downLoadLog"></span>				
+			</div>	
+			<div style="margin-left:101px; display:none;" id="uploaderror" class="infoDiv">
+				<img src="${base}/Manager/images/clos.png"/>
+				<span style="color:#0099FF;font-size:12px;">导入失败:</span>
+				<span style="color:#0099FF;font-size:12px;" id="upError"></span>
+			</div>
+		</div>	
+
+	</div>
+	</div>			
+</body>
+</html>

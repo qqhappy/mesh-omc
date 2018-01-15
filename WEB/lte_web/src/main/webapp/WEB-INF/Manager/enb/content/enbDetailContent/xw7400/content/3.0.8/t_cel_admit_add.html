@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/t_cel_admit.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/fieldLevel_modify.js"></script>
+<title>单板表新增</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>接纳拥塞控制表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz_xw7400.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;"><div class="title">&nbsp;</div>
+				<div class="content">
+					<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+					<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_ADMIT-3.0.8" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CellId">
+							<td>小区标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CellId">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							
+							<td class="error" style="width:250px;" id="u8CellIdError"></td>						
+						</tr>
+						<tr class="b8AdmitSwitch">
+							<td>接纳控制开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="b8AdmitSwitch" value="0">关</input>
+								<input type="radio" name="b8AdmitSwitch" value="1"  checked="checked" style="margin-left:80px;">开</input>
+							</td>
+							<td id="b8AdmitSwitchError" class="error"></td>
+						</tr>
+						<tr class="b8CongestSwitch">
+							<td>拥塞控制开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="b8CongestSwitch" value="0" checked="checked">关</input>
+								<input type="radio" name="b8CongestSwitch" value="1" style="margin-left:80px;">开</input>
+							</td>
+							<td id="b8CongestSwitchError" class="error"></td>
+						</tr>
+						<tr class="u8CongestPrmtType">
+							<td>拥塞抢占方式 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff;" id="u8CongestPrmtType">
+									<option value="0" selected="selected">不选择本UE作为强拆对象</option>
+									<option value="1">优先选择本UE作为强拆对象</option>
+								</select></div>
+							</td>
+							<td id="u8CongestPrmtTypeError" class="error"></td>
+						</tr>
+						<tr class="u8MaxPrmtErabNum">
+							<td>拥塞最大抢占业务个数(1~5) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="2"  id="u8MaxPrmtErabNum"/>
+							</td>
+							<td id="u8MaxPrmtErabNumError" class="error"></td>
+						</tr>
+						<tr class="u16AdmitMaxUeNum">
+							<td>小区支持最大UE数(1~3600) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="128"  id="u16AdmitMaxUeNum"/>
+							</td>
+							<td id="u16AdmitMaxUeNumError" class="error"></td>
+						</tr>
+						<tr class="u8AdmitUeMaxErabNum">
+							<td>UE支持的最大ERAB数(1~8) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="6"  id="u8AdmitUeMaxErabNum"/>
+							</td>
+							<td id="u8AdmitUeMaxErabNumError" class="error"></td>
+						</tr>
+						<tr class="u16AdmitMaxErabNum">
+							<td>小区支持的最大ERAB数(1~5400) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" value="192"  id="u16AdmitMaxErabNum"/>
+							</td>
+							<td id="u16AdmitMaxErabNumError" class="error"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel" onclick = "refresh_sync('${enbVersion}','${base}','${moId}','T_CEL_ADMIT-3.0.8','')">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+			
+		</form>
+		</div>
+</body>
+</html>

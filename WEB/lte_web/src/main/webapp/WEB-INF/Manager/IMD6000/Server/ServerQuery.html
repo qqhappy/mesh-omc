@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet"
+          type="text/css"/>
+    <script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+    <link type="text/css"
+          href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css"
+          rel="stylesheet"/>
+    <script type="text/javascript"
+            src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript"
+            src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+
+    <script type="text/javascript" src="${base}/Manager/js/IMD6000/Server/ServerQuery.js"></script>
+    <title>服务器配置</title>
+</head>
+<body style="overflow: auto;">
+<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png"/>
+		</span> <a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png"/> <a>电力终端设备</a><img
+        src="${base}/Manager/images/tnc/arrow.png"/> <a>服务器配置</a>
+</div>
+
+<div class="enbPage" style="overflow:auto">
+    <div class="clearfix wrap">
+        <div class="title"></div>
+        <div class="content"
+             style="width: 500px; float: left; padding: 10px; margin-left: 100px;">
+
+            <div class="toolBar">
+                <ul>
+                    <li><input type="button" id="fresh" value="刷新"/>
+                    </li>
+                </ul>
+            </div>
+
+            <table width="100%" class="enbTable">
+                <tr>
+                    <td>ftp服务器：</td>
+                    <td>
+                        <#if !FtpServer?exists>
+                            查询失败!
+                            <#else>
+                                <div class="toolBar">
+                                    <ul>
+                                        <li>
+                                            <label></label>
+                                            <input type="button"  id="FtpServer" name="Modify" value="修改"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th width="8%">IP地址</th>
+                                        <th width="10%">端口号</th>
+                                        <th width="10%">用户名</th>
+                                        <th width="10%">密码</th>
+                                        <th width="10%">文件夹路径</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>${FtpServer["FtpIPAddress"]}</td>
+                                        <td>${FtpServer["FtpPort"]}</td>
+                                        <td>${FtpServer["UserName"]}</td>
+                                        <td>${FtpServer["Password"]}</td>
+                                        <td>${FtpServer["FilePathName"]}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        </#if>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>ntp服务器：</td>
+                    <td>
+                        <#if !NtpServer?exists>
+                            查询失败!
+                            <#else>
+                                <div class="toolBar">
+                                    <ul>
+                                        <li><label></label>
+                                            <input type="button"  id="NtpServer" name="Modify" value="修改"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th width="8%">IP地址</th>
+                                        <th width="10%">端口号</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>${NtpServer["NTP_Server_IP"]}</td>
+                                        <td>${NtpServer["NTP_Server_Port"]}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        </#if>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>数据服务器：</td>
+                    <td>
+                        <#if !DataServerList?exists>
+                           	 查询失败!
+                            <#else>
+                                <div class="toolBar">
+                                    <ul>
+                                        <li><label></label><input type="button" id="DataServer" name="Modify" value="修改"/>
+                                        </li>
+                                        <li><label></label><input type="button" id="AddDataServer" name="Add" value="新增"/>
+                                        </li>
+                                        <li><label></label><input type="button" id="DelDataServer" name="Del" value="删除"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                   		<th scope="col" class="checkWidth" width="10%"><input type="checkbox" value="checkbox" id="DataServercheckfather"></th>
+                                        <th width="30%">IP地址</th>
+                                        <th width="30%">端口号</th>
+                                        <th width="30%">协议模式</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <#list DataServerList as DataServer>
+	                                    <tr id="${DataServer['DataServerID']}">
+	                                    	<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="DataServercheckson"/></th>
+	                                        <td>${DataServer["IPAddress"]}</td>
+	                                        <td>${DataServer["Port"]}</td>
+	                                        <#if DataServer["Protocolmode"].equals("0")>
+	                                        	<td>TCP Client</td>
+	                                        <#elseif DataServer["Protocolmode"].equals("1")>
+	                                        	<td>UDP</td>
+	                                        <#elseif DataServer["Protocolmode"].equals("2")>
+	                                        	<td>TCP Server</td>
+	                                        <#elseif DataServer["Protocolmode"].equals("3")>
+	                                        	<td>TCP Auto</td>		
+	                                        </#if>
+	                                    </tr>
+                                    </#list>
+                                    </tbody>
+                                </table>
+                        </#if>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Gis初始配置：</td>
+                    <td>
+                        <#if !GisInit?exists>
+                            查询失败!
+                            <#else>
+                                <div class="toolBar">
+                                    <ul>
+                                        <li><label></label><input type="button" id="GisInit" name="Modify" value="修改"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th width="8%">中心经度</th>
+                                        <th width="10%">中心纬度</th>
+                                        <th width="10%">地图类型</th>
+                                        <th width="10%">路标名称</th>
+                                        <th width="10%">卫星名称</th>
+                                        <th width="10%">初始缩放</th>
+                                        <th width="10%">最大缩放</th>
+                                        <th width="10%">最小缩放</th>
+                                        <th width="10%">刷新周期</th>
+                                        <th width="10%">最大节点数</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>${GisInit["initCenterLongitude"]}</td>
+                                        <td>${GisInit["initCenterLatitude"]}</td>
+                                        <td>${GisInit["mapType"]}</td>
+                                        <td>${GisInit["roadMapName"]}</td>
+                                        <td>${GisInit["satelliteName"]}</td>
+                                        <td>${GisInit["initZoom"]}</td>
+                                        <td>${GisInit["maxZoom"]}</td>
+                                        <td>${GisInit["minZoom"]}</td>
+                                        <td>${GisInit["flushInterval"]}</td>
+                                        <td>${GisInit["maxNodeNum"]}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        </#if>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

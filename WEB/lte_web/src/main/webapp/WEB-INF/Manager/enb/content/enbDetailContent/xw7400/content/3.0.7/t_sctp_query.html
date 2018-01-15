@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/t_sctp.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.7/simplify.js"></script>
+<title>无标题文档</title>
+<script type="text/javascript">
+	$(function(){
+		//$("body select").selectStyle();
+		if(${listLength}<1){
+			$("#t_sctp1").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col" class="justForView" width="50px;">修改</th>'
+					+'<th scope="col" class="u16AssID">偶联序号</th>'
+					+'<th scope="col" class="u8SrcIPID1">源IP地址1</th>'
+					+'<th scope="col" class="u8SrcIPID2">源IP地址2</th>'
+					+'<th scope="col" class="u8SrcIPID3">源IP地址3</th>'
+					+'<th scope="col" class="u8SrcIPID4">源IP地址4</th>'
+					+'<th scope="col" class="au8DstIP1">目的IP地址1</th>'
+					+'<th scope="col" class="au8DstIP2">目的IP地址2</th>'
+					+'<th scope="col" class="au8DstIP3">目的IP地址3</th>'
+					+'<th scope="col" class="au8DstIP4">目的IP地址4</th>'
+					+'<th scope="col" class="u16LocPort">本地端口号</th>'
+					+'<th scope="col" class="u16RemotPort">目的端口号</th>'
+					+'<th scope="col" class="u8InOutStream">输入输出流个数</th>'
+					+'<th scope="col" class="u8ManualOP">管理状态</th>'
+					+'<th scope="col" class="u32Status">偶联状态</th>'
+					+'<th scope="col" class="justForView" width="60px;">修改</th>'
+					+'<th scope="col" class="justForView" width="60px;">删除</th>'
+				  +'</tr>'
+				+'<tr>'	
+					+'<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+			+'<th class="justForView" scope="row"></th>'
+					+'<td class="u16AssID">暂无相关数据</td>'
+					+'<td class="u8SrcIPID1"></td>'
+					+'<td class="u8SrcIPID2"></td>'
+					+'<td class="u8SrcIPID3"></td>'
+					+'<td class="u8SrcIPID4"></td>'
+					+'<td class="au8DstIP1"></td>'
+					+'<td class="au8DstIP2"></td>'
+					+'<td class="au8DstIP3"></td>'
+					+'<td class="au8DstIP4"></td>'
+					+'<td class="u16LocPort"></td>'
+					+'<td class="u16RemotPort"></td>'
+					+'<td class="u8InOutStream"></td>'
+					+'<td class="u8ManualOP"></td>'
+					+'<td class="u32Status"></td>'
+					+'<td class="justForView"></td>'
+					+'<td class="justForView"></td>'
+				+'</tr>'				
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			var browseTime = getBrowseTime();
+			window.location.href="${base}/lte/turnAddEnbBiz.do?moId=${moId}&enbVersion=${enbVersion}"+"&browseTime="+browseTime+"&tableName=T_SCTP-3.0.7&referTable=T_IPV4";
+		});
+		checkLevelLen();
+	});
+</script>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>平台表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>流控制传输协议表</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="fresh" value="刷新"/></li>
+		<li><label></label><input type="button" id="delete" value="批量删除"/></li>
+		
+		</ul>
+		</div>
+<!-- 		<div style="overflow:auto;" id="t_sctp_div">  -->
+			<div style="width:2000px;padding-right:20px;" class="dynamicLengthDiv">
+				<table width="100%" id="t_sctp1" class="changeRowColor">
+				  <tr>
+					<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>   
+					<th scope="col" class="u16AssID">偶联序号</th>
+					<th scope="col" class="u8SrcIPID1">源IP地址1</th>
+					<th scope="col" class="u8SrcIPID2">源IP地址2</th>
+					<th scope="col" class="u8SrcIPID3">源IP地址3</th>
+					<th scope="col" class="u8SrcIPID4">源IP地址4</th>
+					<th scope="col" class="au8DstIP1">目的IP地址1</th>
+					<th scope="col" class="au8DstIP2">目的IP地址2</th>
+					<th scope="col" class="au8DstIP3">目的IP地址3</th>
+					<th scope="col" class="au8DstIP4">目的IP地址4</th>
+					<th scope="col" class="u16LocPort">本地端口号</th>
+					<th scope="col" class="u16RemotPort">目的端口号</th>
+					<th scope="col" class="u8InOutStream">输入输出流个数</th>
+					<th scope="col" class="u8ManualOP">管理状态</th>
+					<th scope="col" class="u32Status">偶联状态</th>
+					<th scope="col" class="justForView" width="60px;">修改</th>
+					<th scope="col" class="justForView" width="60px;">删除</th>
+				  </tr>
+				 <#list records! as record>
+					<tr>
+						<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+						<td class="u16AssID">${record.fieldMap["u16AssID"].value!}</td>
+						<td class="u8SrcIPID1">${record.fieldMap["u8SrcIPID1"].value!}</td>
+						<td class="u8SrcIPID2">${record.fieldMap["u8SrcIPID2"].value!}</td>
+						<td class="u8SrcIPID3">${record.fieldMap["u8SrcIPID3"].value!}</td>
+						<td class="u8SrcIPID4">${record.fieldMap["u8SrcIPID4"].value!}</td>
+						<td class="au8DstIP1">${record.fieldMap["au8DstIP1"].value!}</td>
+						<td class="au8DstIP2">${record.fieldMap["au8DstIP2"].value!}</td>
+						<td class="au8DstIP3">${record.fieldMap["au8DstIP3"].value!}</td>
+						<td class="au8DstIP4">${record.fieldMap["au8DstIP4"].value!}</td>
+						<td class="u16LocPort">${record.fieldMap["u16LocPort"].value!}</td>
+						<td class="u16RemotPort">${record.fieldMap["u16RemotPort"].value!}</td>
+						<td class="u8InOutStream">${record.fieldMap["u8InOutStream"].value!}</td>
+						<td class="u8ManualOP">${record.fieldMap["u8ManualOP"].value!}</td>
+						<td class="u32Status">${record.fieldMap["u32Status"].value!}</td>
+						<td class="justForView"  style="cursor:pointer;"><a>修改</a></td>
+			<td class="justForView"  style="cursor:pointer;"><a>删除</a></td>
+					</tr>
+					</#list>
+				</table>
+			</div>
+			
+		</div>
+		</div>
+<!-- 	</div> -->
+</body>
+</html>

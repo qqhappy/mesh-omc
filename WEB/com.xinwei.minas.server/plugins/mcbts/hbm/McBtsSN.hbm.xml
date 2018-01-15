@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.mcbts.core.model.common.McBtsSN" table="mcbts_sn">
+  <id name="idx" type="java.lang.Long">
+   <column name="idx" not-null="true"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="moId" type="java.lang.Long">
+   <column name="moId" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="dsbPanel" type="java.lang.String">
+   <column name="dsbPanel" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="bbPanel" type="java.lang.String">
+   <column name="bbPanel" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="synPanel" type="java.lang.String">
+   <column name="synPanel" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel1" type="java.lang.String">
+   <column name="rfPanel1" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel2" type="java.lang.String">
+   <column name="rfPanel2" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel3" type="java.lang.String">
+   <column name="rfPanel3" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel4" type="java.lang.String">
+   <column name="rfPanel4" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel5" type="java.lang.String">
+   <column name="rfPanel5" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel6" type="java.lang.String">
+   <column name="rfPanel6" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel7" type="java.lang.String">
+   <column name="rfPanel7" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="rfPanel8" type="java.lang.String">
+   <column name="rfPanel8" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="timeStamp" type="java.util.Date">
+   <column name="timeStamp" not-null="true"/>
+  </property>
+ </class>
+</hibernate-mapping>

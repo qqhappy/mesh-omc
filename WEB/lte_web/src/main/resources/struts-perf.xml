@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 性能管理 -->
+	<package name="perf" extends="struts-base" namespace="/lte">
+		
+		<!-- 登陆拦截器 -->
+		<default-interceptor-ref name="loginInterceptorStack" />
+
+		<!-- 跳转至性能管理菜单 -->
+		<action name="turnPropertyLeft" class="com.xinwei.lte.web.enb.action.TurnToHtmlAction"
+			method="turnPropertyLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/propertyLeft.html</result>
+		</action>
+		
+		<!-- 查询counter统计项 -->
+		<action name="queryPropertyCounter" class="com.xinwei.lte.web.enb.action.QueryStatAction"
+			method="queryPropertyCounter">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/content/propertyCounter.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/property/content/proError.html</result>
+		</action>
+		
+		<!-- 查询KPI统计项 -->
+		<action name="queryPropertyKpi" class="com.xinwei.lte.web.enb.action.QueryStatAction"
+			method="queryPropertyKpi">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/content/propertyKPI.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/property/content/proError.html</result>
+		</action>
+		
+		<!-- 查询统计项(空) -->
+		<action name="queryPropertyNONE" class="com.xinwei.lte.web.enb.action.QueryStatAction"
+			method="queryPropertyNONE">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/content/propertyNone.html</result>
+			<result name="error" type="freemarker">/WEB-INF/Manager/property/content/proError.html</result>
+		</action>
+		
+		<!-- 导出统计项数据 -->
+		<action name="exportStatData"
+			class="com.xinwei.lte.web.enb.action.ExportStatDataAction" method="exportStatData">
+		</action>
+		
+		<!-- 跳转至基站监控列表查询界面 -->
+		<action name="turnToMonitoringInfoHtml" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="turnToMonitoringInfoHtml">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/content/monitoringEnbList.html</result>
+		</action>
+		<!-- 查询基站监控列表 -->
+		<action name="queryMonitoringEnbList" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="queryMonitoringEnbList">
+		</action>
+		<!-- 停止监控 -->
+		<action name="stopMonitor" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="stopMonitor">
+		</action>
+		<!-- 开始监控 -->
+		<action name="beginMonitor" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="beginMonitor">
+		</action>
+		<!-- 监控详情 -->
+		<action name="toMonitorDetailhtml" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="toMonitorDetailhtml">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/content/monitorDetail.html</result>
+		</action>
+		<!-- 异步查询小区集 -->
+		<action name="queryCellList" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="queryCellList">
+		</action>
+		<!-- 异步查询数据-->
+		<action name="queryStatData" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="queryStatData">
+		</action>	
+		<!-- 导出eNB实时性能数据 -->
+		<action name="exportRealtimeData" class="com.xinwei.lte.web.enb.action.ExportRealtimeDataAction"
+			method="exportRealtimeData">
+		</action>	
+			
+		<action name="turnToMoniDetailInfo" class="com.xinwei.lte.web.enb.action.QueryEnbMonitoringInfoAction"
+			method="turnToMoniDetailInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/property/content/monitorDetailInfo.html</result>
+		</action>
+	</package>
+</struts>

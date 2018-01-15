@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/airflowtest.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<title>空口流量测试</title>
+</head>
+<body style="overflow: hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" />
+		</span> <a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" /> <a>基站设备</a><img
+			src="${base}/Manager/images/tnc/arrow.png" /> <a>状态信息管理</a><img
+			src="${base}/Manager/images/tnc/arrow.png" /> <a>空口流量测试</a>
+	</div>
+
+	<div style="overflow: auto">
+		<div class="clearfix wrap">
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding: 10px;">
+				<div style="height: 10px; overflow: hidden; padding-left: 100px;">
+					<table width="100%" style="line-height: 35px;">
+						<tr>
+
+							<td><input type="hidden" value="${moId}" id="moId" /> <input
+								type="hidden" value="${enbHexId}" id="enbHexId" /> <input
+								type="hidden" value="${statusFlag}" id="statusFlag" /> <input
+								type="hidden" value="${error}" id="error" /></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="tableHeight">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新" />
+							</li>
+						</ul>
+					</div>
+					<table width="100%" class="newTabStyle">
+						<tr>
+							<th scope="col">IP地址</th>
+							<th scope="col">IP报文字节长度(单位：字节)</th>
+							<th scope="col">IP报文流量(单位：Mbit/s)</th>
+						</tr>
+						<#if airFlowTest??>
+                        <tr>
+							<td>${airFlowTest.ipAddress!}</td>
+							<td>${airFlowTest.packetLength!}</td>
+							<td>${airFlowTest.flowRate!}</td>
+						</tr>
+						
+						<#else>
+						<tr>
+						<td>没有灌包业务</td>
+						<td></td>
+						<td></td>
+						</tr>
+						</#if>
+					</table>
+				</div>
+			 <div class="toolBar">
+			 <table class="McWillTable" style="line-height:35px;">
+				<tr>
+							<td>IP地址 :</td>
+							<td>&nbsp &nbsp</td>
+							<td >
+								<div  id="ip_addrDiv" style="border:1px solid #C6D7E7; width:250px; height:20px; line-height: 19px;"  title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:18%;"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:18%;"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:18%;"/>.
+									<input type="text" size="3" maxlength="3" style="border:none;height:17px; width:18%;"/>
+								</div>
+							</td>
+							<td><input style="margin-left: 5px" type="button" value="开始" id="begintest" onclick="beginAirFlowTest()"></input></td>
+				            <td><input style="margin-left: 5px" type="button" value="停止" id="endtest" onclick="endAirFlowTest()"></input></td>
+				</tr>
+				</table>
+			</div>
+			
+			</div>
+		</div>
+	</div>
+</body>
+</html>

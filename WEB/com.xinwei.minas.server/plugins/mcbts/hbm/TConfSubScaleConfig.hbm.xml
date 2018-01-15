@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.SCGScaleConfigItem"
+		table="mcbts_airlink_subscgscale">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="tsIndex" type="int">
+			<column name="tsIndex" not-null="true"/>
+		</property>
+		<property name="bchScale" type="int">
+			<column name="bchScale" not-null="true"/>
+		</property>
+		<property name="tchScale" type="int">
+			<column name="tchScale" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

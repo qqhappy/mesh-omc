@@ -1,0 +1,12 @@
+// \u4fee\u6539\u9879
+history_time_max = 600;//unit:second  \u5386\u53f2\u8f68\u8ff9\u65f6\uff0c\u8d85\u8fc7\u8be5\u65f6\u95f4\u65f6\u4ece\u65b0\u753b\u7ebf\uff0c\u5355\u4f4d\u662f\u79d2
+history_distance_max = 600;//unit:meter \u5386\u53f2\u8f68\u8ff9\u65f6\uff0c\u8d85\u8fc7\u8be5\u8ddd\u79bb\u65f6\u4ece\u65b0\u753b\u7ebf\uff0c\u5355\u4f4d\u662f\u7c73
+
+maxZoom=18;//    map max zoom   \u5730\u56fe\u7f29\u653e\u6700\u5927\u7ea7\u522b
+minZoom=5;//     map min zoom   \u5730\u56fe\u7f29\u653e\u6700\u5c0f\u7ea7\u522b
+initZoom=12;//   map init zoom  \u5730\u56fe\u7f29\u653e\u521d\u59cb\u7ea7\u522b
+initCenterLatitude=22.5431;  // map init center lat   \u5730\u56fe\u7f29\u653e\u521d\u59cb\u4e2d\u5fc3\u7684\u7eac\u5ea6
+initCenterLongitude=114.0579;// map init center lng    \u5730\u56fe\u7f29\u653e\u521d\u59cb\u4e2d\u5fc3\u7684\u7ecf\u5ea6
+mapType=3;// map type,1:road map;2:satellite map;3:both. 1\u3001\u8857\u9053 2\u3001\u536b\u661f 3\u3001roadmap\u548c\u536b\u661f
+roadMapName="\u8857\u9053";//road display name,character encoding:UTF-8     \u8857\u9053
+satelliteName="\u536b\u661f";//satellite display name,character encoding:UTF-8 \u536b\u661f

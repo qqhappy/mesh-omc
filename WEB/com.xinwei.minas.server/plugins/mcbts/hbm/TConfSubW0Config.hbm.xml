@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.W0ConfigItem"
+		table="mcbts_airlink_subw0">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="antennaIndex" type="int">
+			<column name="antennaIndex" not-null="true"/>
+		</property>
+		<property name="w0I" type="java.lang.Double">
+			<column name="w0I" not-null="true"/>
+		</property>
+		<property name="w0Q" type="java.lang.Double">
+			<column name="w0Q" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

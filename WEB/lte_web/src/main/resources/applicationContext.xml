@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+	default-lazy-init="false">
+	<!-- enable component scanning (beware that this does not enable mapper 
+		scanning!) -->
+	<context:component-scan base-package="com.xinwei" />
+	
+	<aop:aspectj-autoproxy />
+	<!-- enable autowire
+	<context:annotation-config /> -->
+
+	<!-- load Redis properties <context:property-placeholder location="classpath:redis.properties" 
+		ignore-unresolvable="true"/> -->
+
+	<!-- load Hessian properties <context:property-placeholder location="classpath:hessian.properties" 
+		ignore-unresolvable="true"/> -->
+
+	<!-- redis <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
+		p:hostName = "${redis.host}" p:port = "${redis.port}"/> <besan id="stringRedisTemplate" 
+		class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="redisConnectionFactory" 
+		/> -->
+	
+	<context:property-placeholder location="classpath:conf/minas/minas-config.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:conf/oss/oss-config.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:version/ems/ems_version.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:version/tcn1000/tcn1000_version.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:version/xw7102/xw7102_version.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:version/xw7400/xw7400_version.properties" ignore-unresolvable="true" />
+	
+  	<bean id="ossAdapter" class="com.xinwei.oss.adapter.OssAdapter" />
+	<bean id="ossAdapter.init"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="ossAdapter" />
+		</property>
+		<property name="targetMethod">
+			<value>initialize</value>
+		</property>
+
+	</bean>  
+	
+   <bean id="enbRealTimeDataCache" class="com.xinwei.lte.web.enb.cache.EnbRealTimeDataCache" factory-method="getInstance" />
+	<bean id="enbRealTimeDataCache.setDataOvertime" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="enbRealTimeDataCache" />
+		</property>
+		<property name="targetMethod">
+			<value>setDataOvertime</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${enb.realtime.dataOverTime}</value>
+			</list>
+		</property>
+	</bean>
+	
+
+   <bean id="minasSession" class="com.xinwei.lte.web.MinasSession" factory-method="getInstance" />
+	<bean id="minasSession.init" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="minasSession" />
+		</property>
+		<property name="targetMethod">
+			<value>initialize</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${minas.ip}</value>
+				<value>${minas.port}</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="enbRealtimeDataDecoder" class="com.xinwei.lte.web.enb.net.EnbRealtimeDataDecoderImpl" />
+	
+	<bean id="enbRealtimeDataSender" class="com.xinwei.lte.web.enb.net.EnbRealtimeDataReceiver">
+		<constructor-arg name="listeningPort" value="${enb.realtime.listeningPort}" />
+	    <property name="enbRealtimeDataDecoder" ref="enbRealtimeDataDecoder" />
+	</bean>
+	
+	<bean id="enbCheckService" class="com.xinwei.lte.web.enb.service.impl.EnbCheckServiceImpl" >
+	</bean>
+	
+	<bean id="rruStatusExportFreqManager" class="com.xinwei.lte.web.enb.service.impl.RruStatusExportFreqManager" factory-method="getInstance" />
+	<bean id="rruStatusExportFreqManager.init" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="rruStatusExportFreqManager" />
+		</property>
+		<property name="targetMethod">
+			<value>initialize</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${rruExportSwitch}</value>
+				<value>${rruExportFreq}</value>
+				<value>${repeatTimes}</value>
+			</list>
+		</property>
+	</bean>
+	<import resource="spring-ue.xml" />	
+</beans>

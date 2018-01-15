@@ -1,0 +1,758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http ://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http ://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function() {
+		/* $(".cancel").click(function(){
+			window.history.back();
+		}); */
+		var sysconf_dns_ipHidden = $("#sysconf_dns_ipHidden").val();
+		checkRadio("config_dns",sysconf_dns_ipHidden);
+
+		Address("#sysconf_dns_ipDiv");
+
+		var sysconf_sipip_idHidden = $("#sysconf_sipip_idHidden").val();
+		$("#sysconf_sipip_id option").each(function() {
+			if ($(this).val() == sysconf_sipip_idHidden) {
+				$(this).attr("selected", true);
+			}
+		});
+
+		var sysconf_ranip_idHidden = $("#sysconf_ranip_idHidden").val();
+		var sysconf_pdnip_idHidden = $("#sysconf_pdnip_idHidden").val();
+		$("#sysconf_ranip_id option").each(function() {
+			if ($(this).val() == sysconf_ranip_idHidden) {
+				$(this).attr("selected", true);
+			}
+		});
+		$("#sysconf_pdnip_id option").each(function() {
+			if ($(this).val() == sysconf_pdnip_idHidden) {
+				$(this).attr("selected", true);
+			}
+		});
+
+		
+		if (sysconf_dns_ipHidden.split != '') {
+			var sysconf_dns_ipArray = sysconf_dns_ipHidden.split('.');
+			$("#sysconf_dns_ipDiv input:eq(0)").val(sysconf_dns_ipArray[0]);
+			$("#sysconf_dns_ipDiv input:eq(1)").val(sysconf_dns_ipArray[1]);
+			$("#sysconf_dns_ipDiv input:eq(2)").val(sysconf_dns_ipArray[2]);
+			$("#sysconf_dns_ipDiv input:eq(3)").val(sysconf_dns_ipArray[3]);
+		}
+
+		//修改
+		$("#modifyBtn")
+				.click(
+						function() {
+
+							var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+
+							var basePath = $("#basePath").val();
+							var sysconf_sdcId = $("#sysconf_sdcId").val();
+							var sysconf_sipip_id = $("#sysconf_sipip_id").val();
+							var sysconf_plmn = $("#sysconf_plmn").val();
+							var sysconf_groupid = $("#sysconf_groupid").val();
+							var sysconf_mmecode = $("#sysconf_mmecode").val();
+							var sysconf_ranip_id = $("#sysconf_ranip_id").val();
+							var sysconf_pdnip_id = $("#sysconf_pdnip_id").val();
+							var sysconf_apn = $("#sysconf_apn").val();
+							/* var sysconf_mmes1_port = $("#sysconf_mmes1_port").val(); */
+							var sysconf_master_key = $("#sysconf_master_key")
+									.val();
+							var sysconf_maxduration = $("#sysconf_maxduration")
+									.val();
+							var sysconf_decordaudio = $("#sysconf_decordaudio")
+									.val();
+							var sysconf_decordvedio = $("#sysconf_decordvedio")
+									.val();
+							var sysconf_decordim = $("#sysconf_decordim").val();
+							var sysconf_dns_ip = '';
+							if ($("input[name='config_dns']:checked").val() == "1") {
+								var sysconf_dns_ipStr = "";
+								$("#sysconf_dns_ipDiv input").each(function() {
+									sysconf_dns_ipStr += $(this).val() + ".";
+								});
+								sysconf_dns_ip = sysconf_dns_ipStr.substring(0,
+										sysconf_dns_ipStr.length - 1);
+								
+								if (!ipTest.test(sysconf_dns_ip)) {
+									alert("DNS服务器格式错误");
+									return false;
+								}
+
+								if (!checkIP_style(sysconf_dns_ip)) {
+									alert("DNS服务器不合法");
+									return false;
+								}
+							}
+							var sysconf_sdcIdTest = /^\d{1,6}$/;
+							if (sysconf_sdcId == null || sysconf_sdcId == '') {
+								alert("SDC标识不可为空");
+								return false;
+							}
+							if (!sysconf_sdcIdTest.test(sysconf_sdcId)) {
+								alert("SDC标识格式或取值范围错误");
+								return false;
+							}
+
+							var pdtport = $("#pdtport").val();
+
+							var isNum = /^[0-9]+$/;
+							if (pdtport == null || pdtport == '') {
+								alert("PDT端口不可为空");
+								return false;
+							}
+							if (!isNum.test(pdtport)) {
+								alert("PDT端口格式或取值范围错误");
+								return false;
+							}
+
+							if (sysconf_sipip_id == null) {
+								alert("SDC系统地址不可为空，请先配置系统地址。");
+								return false;
+							}
+
+							var valTest = /^[1-9]\d*$/;
+
+							var plmnTest = /^\w{5,6}$/;
+							if (sysconf_plmn == null || sysconf_plmn == ''
+									|| typeof (sysconf_plmn) == "undefined") {
+								alert("网络标识不可为空");
+								return false;
+							}
+							// 				if(!plmnTest.test(sysconf_plmn)){
+							// 					alert("网络标识格式或取值范围错误");
+							// 					return false;
+							// 				}
+
+							var sysconf_groupidTest = /^\d{1,6}$/;
+							if (sysconf_groupidTest == null
+									|| sysconf_groupidTest == '') {
+								alert("MME组ID不可为空");
+								return false;
+							}
+							if (!sysconf_groupidTest.test(sysconf_groupid)) {
+								alert("MME组ID格式或取值范围错误");
+								return false;
+							}
+							var sysconf_mmecodeTest = /^\d{1,3}$/;
+							if (sysconf_mmecodeTest == null
+									|| sysconf_mmecodeTest == '') {
+								alert("MME组编码不可为空");
+								return false;
+							}
+							if (!sysconf_mmecodeTest.test(sysconf_mmecode)) {
+								alert("MME组编码格式或取值范围错误");
+								return false;
+							}
+							if (sysconf_pdnip_id != sysconf_pdnip_idHidden
+									|| sysconf_ranip_id != sysconf_ranip_idHidden) {
+								confirm("请确认修改信息，设备重启后生效");
+							}
+
+							if (sysconf_apn == '') {
+								alert("APN不可为空");
+								return false;
+							}
+
+							var apnTest = /^\w*$/;
+
+							var apnArray = sysconf_apn.split(".");
+
+							for ( var i = 0; i < apnArray.length; i++) {
+								if (!apnTest.test(apnArray[i])) {
+									alert("APN格式错误");
+									return false;
+								}
+							}
+
+							var hexTest = /^[0-9a-fA-F]*$/;
+							if (sysconf_master_key == null
+									|| sysconf_master_key == '') {
+								alert("运营商主密钥不可为空");
+								return false;
+							}
+							if ((!hexTest.test(sysconf_master_key))) {
+								alert("运营商主密钥格式错误");
+								return false;
+							}
+							var sysconf_maxdurationHidden = $(
+									"#sysconf_maxdurationHidden").val();
+
+							if (sysconf_maxduration == null
+									|| sysconf_maxduration == '') {
+								alert("最大通话时长不可为空");
+								return false;
+							}
+							if (!valTest.test(sysconf_maxduration)
+									|| sysconf_maxduration > 86400
+									|| sysconf_maxduration < 10) {
+								alert("最大通话时长格式或取值范围错误");
+								return false;
+							}
+
+					
+
+							sysconf_master_key = sysconf_master_key.replace(
+									/[ ]/g, "");
+
+							if (!(sysconf_sipip_id == sysconf_sipip_idHidden
+									&& sysconf_ranip_id == sysconf_ranip_idHidden && sysconf_pdnip_id == sysconf_pdnip_idHidden)) {
+
+								$
+										.ajax({
+											type : "post",
+											url : basePath
+													+ "/lte/modifyWholeConfig.do",
+											data : "sysAllConfigModel.sysconf_sipip_id="
+													+ sysconf_sipip_id
+													+ "&sysAllConfigModel.sdcId="
+													+ sysconf_sdcId
+													+ "&sysAllConfigModel.sysconf_plmn="
+													+ sysconf_plmn
+													+ "&sysAllConfigModel.sysconf_groupid="
+													+ sysconf_groupid
+													+ "&sysAllConfigModel.sysconf_mmecode="
+													+ sysconf_mmecode
+													+ "&sysAllConfigModel.sysconf_ranip_id="
+													+ sysconf_ranip_id
+													+ "&sysAllConfigModel.sysconf_pdnip_id="
+													+ sysconf_pdnip_id
+													+ "&sysAllConfigModel.sysconf_apn="
+													+ sysconf_apn
+													+ "&sysAllConfigModel.sysconf_master_key="
+													+ sysconf_master_key
+													+ "&sysAllConfigModel.sysconf_maxduration="
+													+ sysconf_maxduration
+													+ "&sysAllConfigModel.sysconf_decordaudio="
+													+ sysconf_decordaudio
+													+ "&sysAllConfigModel.sysconf_decordvedio="
+													+ sysconf_decordvedio
+													+ "&sysAllConfigModel.sysconf_decordim="
+													+ sysconf_decordim
+													+ "&sysAllConfigModel.sysconf_dns_ip="
+													+ sysconf_dns_ip
+													+ "&sysAllConfigModel.pdt_sip_port="
+													+ pdtport,
+											dataType : "json",
+											success : function(data) {
+
+												if (data == null) {
+													alert("消息未返回");
+													return;
+												}
+												if (!sessionsCheck(data,
+														basePath)) {
+													return;
+												}
+												var status = data.status;
+
+												switch (status) {
+												case 0:
+													alert("修改成功");
+													window.location.reload();
+													break;
+												default:
+													alert(data.message);
+													break;
+												}
+
+											},
+											error : function(data) {
+												alert("操作失败");
+											}
+										});
+
+							} else {
+
+								$
+										.ajax({
+											type : "post",
+											url : basePath
+													+ "/lte/modifyWholeConfig.do",
+											data : "sysAllConfigModel.sysconf_sipip_id="
+													+ sysconf_sipip_id
+													+ "&sysAllConfigModel.sdcId="
+													+ sysconf_sdcId
+													+ "&sysAllConfigModel.sysconf_plmn="
+													+ sysconf_plmn
+													+ "&sysAllConfigModel.sysconf_groupid="
+													+ sysconf_groupid
+													+ "&sysAllConfigModel.sysconf_mmecode="
+													+ sysconf_mmecode
+													+ "&sysAllConfigModel.sysconf_ranip_id="
+													+ sysconf_ranip_id
+													+ "&sysAllConfigModel.sysconf_pdnip_id="
+													+ sysconf_pdnip_id
+													+ "&sysAllConfigModel.sysconf_apn="
+													+ sysconf_apn
+													+ "&sysAllConfigModel.sysconf_master_key="
+													+ sysconf_master_key
+													+ "&sysAllConfigModel.sysconf_maxduration="
+													+ sysconf_maxduration
+													+ "&sysAllConfigModel.sysconf_decordaudio="
+													+ sysconf_decordaudio
+													+ "&sysAllConfigModel.sysconf_decordvedio="
+													+ sysconf_decordvedio
+													+ "&sysAllConfigModel.sysconf_decordim="
+													+ sysconf_decordim
+													+ "&sysAllConfigModel.sysconf_dns_ip="
+													+ sysconf_dns_ip
+													+ "&sysAllConfigModel.pdt_sip_port="
+													+ pdtport,
+											dataType : "json",
+											success : function(data) {
+
+												if (!sessionsCheck(data,
+														basePath)) {
+													return;
+												}
+												var status = data.status;
+
+												switch (status) {
+
+												case 0:
+													alert("修改成功");
+													window.location.reload();
+													break;
+												default:
+													alert(data.message);
+													break;
+												}
+
+											},
+											error : function(data) {
+												alert("操作失败");
+											}
+										});
+							}
+
+						});
+		//验证SDCID
+		$("#sysconf_sdcId").blur(function() {
+			var valTest = /^\d{1,6}$/;
+			var sysconf_sdcId = $.trim($(this).val());
+			if (!valTest.test(sysconf_sdcId) || sysconf_sdcId > 65535) {
+				$(this).val("取值范围0~65535");
+				$(this).css("color", "red");
+			} else {
+				$(this).css("color", "black");
+			}
+		});
+		$("#sysconf_sdcId").focus(function() {
+			var valTest = /^\d{1,6}$/;
+			var sysconf_sdcId = $(this).val();
+			if ((!valTest.test(sysconf_sdcId))) {
+				$(this).val("");
+			}
+		});
+
+		//验证SDCID
+		$("#pdtport").blur(function() {
+			var valTest = /^[0-9]+$/;
+			var pdtport = $.trim($(this).val());
+			if (!valTest.test(pdtport) || pdtport > 65535) {
+				$(this).val("取值范围0~65535");
+				$(this).css("color", "red");
+			} else {
+				$(this).css("color", "black");
+			}
+		});
+		$("#pdtport").focus(function() {
+			var valTest = /^[0-9]+$/;
+			var pdtport = $(this).val();
+			if ((!valTest.test(pdtport))) {
+				$(this).val("");
+			}
+		});
+		//验证网络标识
+		// 		$("#sysconf_plmn").blur(function(){
+		// 			var valTest = /^\w{5,6}$/;			
+		// 			var sysconf_plmn = $.trim($(this).val());
+		// 			if(!valTest.test(sysconf_plmn)){
+		// 				$(this).val("取值范围5~6个字符");
+		// 				$(this).css("color","red");
+		// 			}else{
+		// 				$(this).css("color","black");
+		// 			}
+		// 		});
+		// 		$("#sysconf_plmn").focus(function(){
+		// 			var valTest = /^\w{5,6}$/;
+		// 			var sysconf_plmn = $(this).val();
+		// 			if((!valTest.test(sysconf_plmn))){
+		// 				$(this).val("");
+		// 			}
+		// 		});
+
+		//验证MME组ID
+		$("#sysconf_groupid").blur(function() {
+			var valTest = /^\d{1,6}$/;
+			var sysconf_groupid = $.trim($(this).val());
+			if (!valTest.test(sysconf_groupid) || sysconf_groupid > 65535) {
+				$(this).val("取值范围0~65535");
+				$(this).css("color", "red");
+			} else {
+				$(this).css("color", "black");
+			}
+		});
+		$("#sysconf_groupid").focus(function() {
+			var valTest = /^\d{1,6}$/;
+			var sysconf_groupid = $(this).val();
+			if ((!valTest.test(sysconf_groupid))) {
+				$(this).val("");
+			}
+		});
+
+		//验证MME组编码
+		$("#sysconf_mmecode").blur(function() {
+			var valTest = /^\d{1,3}$/;
+			var sysconf_mmecode = $.trim($(this).val());
+			if (!valTest.test(sysconf_mmecode) || sysconf_mmecode > 255) {
+				$(this).val("取值范围0~255");
+				$(this).css("color", "red");
+			} else {
+				$(this).css("color", "black");
+			}
+		});
+		$("#sysconf_mmecode").focus(function() {
+			var valTest = /^\d{1,3}$/;
+			var sysconf_mmecode = $(this).val();
+			if ((!valTest.test(sysconf_mmecode))) {
+				$(this).val("");
+			}
+		});
+
+		//验证最大通话时长
+		$("#sysconf_maxduration").blur(
+				function() {
+					var sysconf_maxduration = $(this).val();
+					myNoTest("sysconf_maxduration", sysconf_maxduration,
+							"取值范围为10~86400", 86400, 10);
+				});
+		$("#sysconf_maxduration").focus(
+				function() {
+					var valTest = /^[1-9]\d*$/;
+					var sysconf_maxduration = $.trim($(this).val());
+					if ((!valTest.test(sysconf_maxduration))
+							|| sysconf_maxduration > 86400
+							|| sysconf_maxduration < 10) {
+						$(this).val("");
+					}
+				});
+
+		//验证运营商主密钥
+		$("#sysconf_master_key").blur(function() {
+			var valTest = /^[0-9a-fA-F]*$/;
+			var sysconf_master_key = $.trim($(this).val());
+			if ((!valTest.test(sysconf_master_key))) {
+				$(this).val("密钥取值为32位十六进制");
+				$(this).css("color", "red");
+				return false;
+			}
+
+			if (sysconf_master_key.length != 32) {
+				var kLength = 32 - sysconf_master_key.length;
+				var endVal = "";
+				for ( var i = 0; i < kLength; i++) {
+					endVal += "0";
+				}
+				$(this).val(sysconf_master_key + endVal);
+				//$(".judgeImsiK").html("根密钥取值必须为32位");
+				$(this).css("color", "black");
+			}
+		});
+		$("#sysconf_master_key").focus(function() {
+			var valTest = /^[0-9a-fA-F]*$/;
+			var sysconf_master_key = $(this).val();
+			if ((!valTest.test(sysconf_master_key))) {
+				$(this).val("");
+			}
+		});
+
+		$("input[name='config_dns']").click(function() {
+			if ($(this).val() == "0.0.0.0") {
+				$("#sysconf_dns_ipDiv input").attr("disabled", true);
+			} else {
+				$("#sysconf_dns_ipDiv input").attr("disabled", false);
+			}
+		});
+	})
+
+	function myNoTest(id, val, content, compareBigVal, compareSmallVal) {
+		var valTest = /^[1-9]\d*$/;
+		if ((!valTest.test(val)) || val > compareBigVal
+				|| val < compareSmallVal) {
+			$("#" + id + "").val(content);
+			$("#" + id + "").css("font-style", "italic");
+			$("#" + id + "").css("color", "red");
+		} else {
+			$("#" + id + "").css("font-style", "normal");
+			$("#" + id + "").css("color", "");
+		}
+	}
+	//根据字段名和字段值选中单选框
+	function checkRadio(name,value){
+		$("input[name='"+name+"']").each(function(){
+			
+			var thisValue = $(this).val();
+			if(value == "0.0.0.0" && thisValue == "0.0.0.0"){
+				$(this).attr("checked","checked");
+				$("#sysconf_dns_ipDiv input").attr("disabled", true);
+				
+			}
+			if(value != "0.0.0.0" && thisValue =="1"){
+				$(this).attr("checked","checked");
+			}
+			
+		});
+	}
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow: hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /> </span>
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" /> <a>TCN1000设备</a><img
+			src="${base}/Manager/images/tnc/arrow.png" /> <a>系统全局配置</a>
+	</div>
+	<div style="overflow: auto" class="add_div">
+		<form action="***********">
+			<div class="clearfix wrap ad_Input" style="width: 900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height: 35px;">
+						<tr>
+							<td>SDC 标识 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="5" style="width: 240px;"
+								value="${sysAllConfigModel.sdcId!}" id="sysconf_sdcId"
+								title="取值范围0~65535" />
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>PDT端口 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="6" style="width: 240px;"
+								value="${sysAllConfigModel.pdt_sip_port!}" id="pdtport"
+								title="取值范围0~65535" /></td>
+						</tr>
+						<tr>
+							<td>SDC 系统地址 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select style="width: 251px; border: 1px solid #fff"
+										id="sysconf_sipip_id"> <#list systemAddressModelList!
+										as systemAddressModel>
+										<option value="${systemAddressModel.ip_id!}">${systemAddressModel.ip_id!}
+											( ${systemAddressModel.ip_addr!} )</option> </#list>
+									</select>
+								</div>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>SIP端口 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="6" style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_sipport!}"
+								disabled="disabled" /></td>
+							<td class=""></td>
+						</tr>
+						<tr>
+							<td>网络标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select style="width: 251px; border: 1px solid #fff"
+										id="sysconf_plmn">
+										<option value="${sysAllConfigModel.sysconf_plmn!}">${sysAllConfigModel.sysconf_plmn!}</option>
+									</select>
+								</div>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>MME组ID :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="5" style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_groupid!}"
+								id="sysconf_groupid" title="取值范围0~65535" /></td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+						</tr>
+						<tr>
+							<td>MME组编码 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="3" style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_mmecode!}"
+								id="sysconf_mmecode" title="取值范围0~255" /></td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>RAN地址 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<!-- <input type="text"  style="width :240px;" value="${sysAllConfigModel.sysconf_ranip_id!}" id="sysconf_ranip_id"/> -->
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select style="width: 251px; border: 1px solid #fff"
+										id="sysconf_ranip_id"> <#list systemAddressModelList!
+										as systemAddressModel>
+										<option value="${systemAddressModel.ip_id!}">${systemAddressModel.ip_id!}
+											( ${systemAddressModel.ip_addr!} )</option> </#list>
+									</select>
+								</div>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+						</tr>
+
+						<tr>
+							<td>PDN地址 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<!-- <input type="text"  style="width :240px;" value="${sysAllConfigModel.sysconf_pdnip_id!}" id="sysconf_pdnip_id"/> -->
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select style="width: 251px; border: 1px solid #fff"
+										id="sysconf_pdnip_id"> <#list systemAddressModelList!
+										as systemAddressModel>
+										<option value="${systemAddressModel.ip_id!}">${systemAddressModel.ip_id!}
+											( ${systemAddressModel.ip_addr!} )</option> </#list>
+									</select>
+								</div> <span class=""></span>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>APN :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="128" style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_apn!}" id="sysconf_apn" /></td>
+
+							<td class="blankTd"><span class="redColor">*</span></td>
+						</tr>
+						<tr>
+							<td>S1端口号 :</td>
+							<td class="blankTd1"></td>
+							<td><input disabled="disabled" type="text"
+								style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_mmes1_port!}"
+								id="sysconf_mmes1_port" /></td>
+							<td class="blankTd"></td>
+							<td>运营商主密钥 :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" maxlength="32" style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_master_key!}"
+								id="sysconf_master_key" title="取值为32位16进制数" /></td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+						</tr>
+						<tr>
+							<td>最大通话时长(秒) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text" style="width: 240px;"
+								value="${sysAllConfigModel.sysconf_maxduration!}"
+								id="sysconf_maxduration" title="取值范围为10~86400" /></td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>是否记录音频 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select id="sysconf_decordaudio"
+										style="width: 251px; border: 1px solid #fff"> <#if
+										sysAllConfigModel.sysconf_decordaudio! == 0>
+										<option value="0">NO</option>
+										<option value="1">YES</option> <#else>
+										<option value="1">YES</option>
+										<option value="0">NO</option> </#if>
+									</select>
+								</div>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+						</tr>
+						<tr>
+							<td>是否记录视频 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select id="sysconf_decordvedio"
+										style="width: 251px; border: 1px solid #fff"> <#if
+										sysAllConfigModel.sysconf_decordvedio! == 0>
+										<option value="0">NO</option>
+										<option value="1">YES</option> <#else>
+										<option value="1">YES</option>
+										<option value="0">NO</option> </#if>
+									</select>
+								</div>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+							<td>是否保存IM消息 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div
+									style="border: 1px solid #C6D7E7; overflow: hidden; width: 251px;">
+									<select id="sysconf_decordim"
+										style="width: 251px; border: 1px solid #fff"> <#if
+										sysAllConfigModel.sysconf_decordim! == 0>
+										<option value="0">NO</option>
+										<option value="1">YES</option> <#else>
+										<option value="1">YES</option>
+										<option value="0">NO</option> </#if>
+									</select>
+								</div>
+							</td>
+							<td class="blankTd"><span class="redColor">*</span></td>
+						</tr>
+						<tr>
+							<td>是否配置DNS :</td>
+							<td class="blankTd1"></td>
+							<td><input type="radio" name="config_dns"
+								value="1" id="config_dns_yes" /><label for="config_dns_yes">是</label>
+								&nbsp;<input type="radio" style="margin-left: 70px;"
+								name="config_dns" value="0.0.0.0" id="config_dns_no"/><label
+								for="config_dns_no">否</label></td>
+							<td class="blankTd"></td>
+							<td>DNS服务器 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div id="sysconf_dns_ipDiv"
+									style="border: 1px solid #C6D7E7; width: 250px; height: 20px; line-height: 19px;"
+									title="格式 :“xxx.xxx.xxx.xxx” 取值范围 :每个“xxx”为0~255 类型 :每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3"
+										style="border: none; height: 17px; width: 18%;" />. <input
+										type="text" size="3" maxlength="3"
+										style="border: none; height: 17px; width: 18%;" />. <input
+										type="text" size="3" maxlength="3"
+										style="border: none; height: 17px; width: 18%;" />. <input
+										type="text" size="3" maxlength="3"
+										style="border: none; height: 17px; width: 18%;" />
+								</div>
+							</td>
+							<td class=""></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><input id="modifyBtn" type="button" value="修改"
+								style="padding: 3px 25px;" /></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</form>
+	</div>
+	<input type="hidden" value="${base!}" id="basePath" />
+	<input type="hidden" value="${sysAllConfigModel.sysconf_sipip_id!}"
+		id="sysconf_sipip_idHidden" />
+	<input type="hidden" value="${sysAllConfigModel.sysconf_ranip_id!}"
+		id="sysconf_ranip_idHidden" />
+	<input type="hidden" value="${sysAllConfigModel.sysconf_pdnip_id!}"
+		id="sysconf_pdnip_idHidden" />
+	<input type="hidden" value="${sysAllConfigModel.sysconf_dns_ip!}"
+		id="sysconf_dns_ipHidden" />
+	<input type="hidden" value="${sysAllConfigModel.sysconf_maxduration!}"
+		id="sysconf_maxdurationHidden" />
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer1.CalibrationType"
+		table="mcbts_calibrationtype">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property name="calibPeriod" type="int">
+			<column name="calibPeriod" not-null="true"/>
+		</property>
+		<property name="calibType" type="int">
+			<column name="calibType" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

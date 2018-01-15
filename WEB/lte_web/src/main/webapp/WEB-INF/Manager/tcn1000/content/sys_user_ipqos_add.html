@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+
+	$(function() {
+		$(".cancel").click(function() {
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			window.location="lte/ipQos!turntoIpQos.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+			
+		});
+
+		Address("#ipqos_ipDiv");
+
+		$("#submitBtn")
+				.click(
+						function() {
+							var valTest = /^[1-9]\d*$/;
+							var gbrTest = /^[0-9]\d*$/;
+							var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+							var currentPageNum = $("#currentPageNum").val();
+							var totalPages = $("#totalPages").val();
+							var basePath = $("#basePath").val();
+
+							/* 	var ipqos_ip = $("#ipqos_ip").val(); */
+							var ipqos_ipStr = "";
+							$("#ipqos_ipDiv input").each(function() {
+								ipqos_ipStr += $(this).val() + ".";
+							});
+							var ipqos_ip = ipqos_ipStr.substring(0,
+									ipqos_ipStr.length - 1);
+							var ipqos_max_port = $("#ipqos_max_port").val();
+							var ipqos_min_port = $("#ipqos_min_port").val();
+							var ipqos_qci = $("#ipqos_qci").val();
+							var ipqos_uplink_mbr = $("#ipqos_uplink_mbr").val();
+							var ipqos_downlink_mbr = $("#ipqos_downlink_mbr")
+									.val();
+							var ipqos_uplink_gbr = $("#ipqos_uplink_gbr").val();
+							var ipqos_downlink_gbr = $("#ipqos_downlink_gbr")
+									.val();
+
+														
+							if (!ipTest.test(ipqos_ip)) {
+								alert("业务IP格式错误");
+								return false;
+							}
+							
+							if(!checkIP_style(ipqos_ip)){
+								alert("IP不合法");
+								return false;
+							}
+
+							if(ipqos_max_port == null || ipqos_max_port == ''){
+								alert("业务端口上限不可为空");
+								return false;
+							}
+							if (!gbrTest.test(ipqos_max_port) ||　ipqos_max_port > 65535){
+								alert("业务端口上限格式或取值范围错误");
+								return false;
+							}
+							
+							if(ipqos_min_port == null || ipqos_min_port == ''){
+								alert("业务端口下限不可为空");
+								return false;
+							}
+							if (!gbrTest.test(ipqos_min_port) || ipqos_min_port > 65535){
+								alert("业务端口下限格式或取值范围错误");
+								return false;
+							}
+							
+							if(ipqos_uplink_mbr == null || ipqos_uplink_mbr == ''){
+								alert("上行最大带宽不可为空");
+								return false;
+							}
+							if (!valTest.test(ipqos_uplink_mbr) ||ipqos_uplink_mbr > 4000000){
+								alert("上行最大带宽格式或取值错误");
+								return false;
+							}
+							
+							if(ipqos_downlink_mbr == null || ipqos_downlink_mbr == ''){
+								alert("下行最大带宽不可为空");
+								return false;
+							}
+							if (!valTest.test(ipqos_downlink_mbr) ||ipqos_downlink_mbr > 4000000){
+								alert("下行最大带宽格式或取值错误");
+								return false;
+							}
+							
+							if(ipqos_uplink_gbr == null || ipqos_uplink_gbr == ''){
+								alert("上行保证带宽不可为空");
+								return false;
+							}
+							if (!gbrTest.test(ipqos_uplink_gbr) ||ipqos_uplink_gbr > 4000000){
+								alert("上行保证带宽格式或取值错误");
+								return false;
+							}
+							
+							if(ipqos_downlink_gbr == null || ipqos_downlink_gbr == ''){
+								alert("下行保证带宽不可为空");
+								return false;
+							}
+							if (!gbrTest.test(ipqos_downlink_gbr) ||ipqos_downlink_gbr > 4000000){
+								alert("下行保证带宽格式或取值错误");
+								return false;
+							}	
+
+							if(parseInt(ipqos_max_port) < parseInt(ipqos_min_port)){
+								alert("业务端口上限需大于等于业务端口下限");
+								return false;
+							}
+							
+							if(parseInt(ipqos_uplink_mbr) < parseInt(ipqos_uplink_gbr)){
+								alert("上行最大带宽需大于等于上行保证带宽");
+								return false;
+							}
+							
+							if(parseInt(ipqos_downlink_mbr) < parseInt(ipqos_downlink_gbr)){
+								alert("下行最大带宽需大于等于下行保证带宽");
+								return false;
+							}
+							
+							
+								$
+										.ajax({
+											type : "post",
+											url : basePath
+													+ "/lte/ipQos!addIpQos.do",
+											data : "ipQos.ipqos_ip="
+													+ ipqos_ip
+													+ "&ipQos.ipqos_max_port="
+													+ ipqos_max_port
+													+ "&ipQos.ipqos_min_port="
+													+ ipqos_min_port
+													+ "&ipQos.ipqos_qci="
+													+ ipqos_qci
+													+ "&ipQos.ipqos_uplink_mbr="
+													+ ipqos_uplink_mbr
+													+ "&ipQos.ipqos_downlink_mbr="
+													+ ipqos_downlink_mbr
+													+ "&ipQos.ipqos_uplink_gbr="
+													+ ipqos_uplink_gbr
+													+ "&ipQos.ipqos_downlink_gbr="
+													+ ipqos_downlink_gbr,
+											dataType : "json",
+											success : function(data) {
+												
+												if(data == null){
+													alert("消息未返回");
+													return;
+												}
+												
+												if(!sessionsCheck(data,basePath)){
+													return ;
+												}
+												
+												var status = data.status;
+
+												
+												switch(status){
+													case 0: 
+														if (currentPageNum == 0) {
+															currentPageNum = 1;
+															totalPages = 1;
+														}
+														window.location = basePath
+																+ "/lte/ipQos!turntoIpQos.do?onlinePage.currentPageNum="
+																+ currentPageNum
+																+ "&onlinePage.totalPages="
+																+ totalPages;
+														break;
+													default:
+														alert(data.message);
+														break;
+												}
+											},
+											error:function(data){
+												alert("操作失败");
+											}
+										});
+						});
+
+		$("#ipqos_max_port").blur(function() {
+			var valTest = /^\d*$/;
+			var qos_uplink_mbr = $(this).val();
+			if (!valTest.test(qos_uplink_mbr) || qos_uplink_mbr > 65535) {
+				$(".ipqos_max_portJudge").html("业务端口上限 取值范围0~65535");
+				$(".ipqos_max_portJudge").css("color", "red");
+				$(this).val("");
+			} else {
+				$(".ipqos_max_portJudge").html("");
+			}
+		});
+
+		$("#ipqos_min_port").blur(function() {
+			var valTest = /^\d*$/;
+			var qos_uplink_mbr = $(this).val();
+			if (!valTest.test(qos_uplink_mbr) || qos_uplink_mbr > 65535) {
+				$(".ipqos_min_portJudge").html("业务端口下限取值范围0~65535");
+				$(".ipqos_min_portJudge").css("color", "red");
+				$(this).val("");
+			} else {
+				$(".ipqos_min_portJudge").html("");
+			}
+		});
+
+		$("#ipqos_uplink_mbr").blur(function() {
+			var valTest = /^[1-9]\d*$/;
+			var qos_uplink_mbr = $(this).val();
+			if (!valTest.test(qos_uplink_mbr) ||qos_uplink_mbr > 4000000) {
+				$(".ipqos_uplink_mbrJudge").html("上行最大带宽取值范围1~4000000");
+				$(".ipqos_uplink_mbrJudge").css("color", "red");
+				$(this).val("");
+			} else {
+				$(".ipqos_uplink_mbrJudge").html("");
+			}
+		});
+
+		$("#ipqos_downlink_mbr").blur(function() {
+			var valTest = /^[1-9]\d*$/;
+			var qos_uplink_mbr = $(this).val();
+			if (!valTest.test(qos_uplink_mbr) ||qos_uplink_mbr > 4000000) {
+				$(".ipqos_downlink_mbrJudge").html("下行最大带宽取值范围1~4000000");
+				$(".ipqos_downlink_mbrJudge").css("color", "red");
+				$(this).val("");
+			} else {
+				$(".ipqos_downlink_mbrJudge").html("");
+			}
+		});
+
+		$("#ipqos_uplink_gbr").blur(function() {
+			var valTest = /^[0-9]\d*$/;
+			var qos_uplink_mbr = $(this).val();
+			if (!valTest.test(qos_uplink_mbr) ||qos_uplink_mbr > 4000000 ) {
+				$(".ipqos_uplink_gbrJudge").html("上行保证带宽取值范围0~4000000");
+				$(".ipqos_uplink_gbrJudge").css("color", "red");
+				$(this).val("");
+			} else {
+				$(".ipqos_uplink_gbrJudge").html("");
+			}
+		});
+
+		$("#ipqos_downlink_gbr").blur(function() {
+			var valTest = /^[0-9]\d*$/;
+			var qos_uplink_mbr = $(this).val();
+			if (!valTest.test(qos_uplink_mbr) ||qos_uplink_mbr > 4000000) {
+				$(".ipqos_downlink_gbrJudge").html("下行保证带宽取值范围0~4000000");
+				$(".ipqos_downlink_gbrJudge").css("color", "red");
+				$(this).val("");
+			} else {
+				$(".ipqos_downlink_gbrJudge").html("");
+			}
+		});
+		
+		$("#ipqos_qci").change(function(){
+			var val = $(this).val();
+			if(val >= 5){
+				$("#ipqos_uplink_gbr").val("0");
+				$("#ipqos_uplink_gbr").attr("disabled",true);
+				
+				$("#ipqos_downlink_gbr").val("0");
+				$("#ipqos_downlink_gbr").attr("disabled",true);
+			}else{
+				$("#ipqos_uplink_gbr").val("");
+				$("#ipqos_uplink_gbr").attr("disabled",false);
+				
+				$("#ipqos_downlink_gbr").val("");
+				$("#ipqos_downlink_gbr").attr("disabled",false);
+			}
+		});
+	})
+
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务IP QoS</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+	<div style="overflow:auto" class="add_div">
+		<form action="***********">
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height: 35px;">
+						<tr>
+							<td>业务IP :</td>
+							<td class="blankTd"></td>
+							<td>
+								<!-- <input type="text"  style="width:160px;" id="ipqos_ip"/> -->
+								<div id="ipqos_ipDiv" 
+									style="border:1px solid #C6D7E7; width:250px; height:20px; line-height: 19px;" 
+									title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字">
+									<input type="text" size="3" maxlength="3" style="border: none; height:17px; width:18%;" />. 
+									<input type="text" size="3" maxlength="3" style="border: none; height:17px; width:18%;" />.
+									<input type="text" size="3" maxlength="3" style="border: none; height:17px; width:18%;" />. 
+									<input type="text" size="3" maxlength="3" style="border: none; height:17px; width:18%;" />
+								</div>
+							</td>
+							<td class="redColor">*</td>
+							<td class=""></td>
+						</tr>
+						<tr>
+							<td>业务端口上限 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" style="width: 240px;"
+								id="ipqos_max_port" title="取值范围0~65535" maxlength="5"/>
+							</td>
+							<td class="redColor">*</td>
+							<td class="ipqos_max_portJudge"></td>
+						</tr>
+						<tr>
+							<td>业务端口下限 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" style="width: 240px;"
+								id="ipqos_min_port"  title="取值范围0~65535" maxlength="5"/></td>
+							<td class="redColor">*</td>
+							<td class="ipqos_min_portJudge"></td>
+						</tr>
+						<tr>
+							<td>QoS级别ID :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select style="width:251px;border:1px solid #fff" id="ipqos_qci">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+								</select></div>
+							</td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>上行最大带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  maxlength="7" style="width: 240px;"
+								id="ipqos_uplink_mbr"  title="取值范围1~4000000"/></td>
+							<td class="redColor">*</td>
+							<td class="ipqos_uplink_mbrJudge"></td>
+						</tr>
+						<tr>
+							<td>下行最大带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  maxlength="7" style="width: 240px;"
+								id="ipqos_downlink_mbr"  title="取值范围1~4000000"/></td>
+							<td class="redColor">*</td>
+							<td class="ipqos_downlink_mbrJudge"></td>
+						</tr>
+						<tr>
+							<td>上行保证带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  maxlength="7" style="width: 240px;"
+								id="ipqos_uplink_gbr" title="取值范围0~4000000"/></td>
+							<td class="redColor">*</td>
+							<td class="ipqos_uplink_gbrJudge"></td>
+						</tr>
+						<tr>
+							<td>下行保证带宽(Kbps) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  maxlength="7" style="width: 240px;"
+								id="ipqos_downlink_gbr" title="取值范围0~4000000"/></td>
+							<td class="redColor">*</td>
+							<td class="ipqos_downlink_gbrJudge"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input id="submitBtn" type="button"  value="确定" style="padding: 3px 25px;" />
+								<input type="button" class="cancel" value="返回" style="padding: 3px 25px;" />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</form>
+	</div>
+	<input type="hidden" value="${onlinePage.currentPageNum!}"
+		id="currentPageNum" />
+	<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages" />
+	<input type="hidden" value="${base!}" id="basePath" />
+</body>
+</html>

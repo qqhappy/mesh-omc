@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: com.xinwei.omp.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: XINWEI
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.xinwei.omp.core.facade,
+ com.xinwei.omp.core.model.biz,
+ com.xinwei.omp.core.model.generic,
+ com.xinwei.omp.core.model.meta,
+ com.xinwei.omp.core.model.tree,
+ com.xinwei.omp.core.utils

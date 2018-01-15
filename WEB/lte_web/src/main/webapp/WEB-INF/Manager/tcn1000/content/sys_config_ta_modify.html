@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".cancel").click(function(){
+			window.history.back();
+		});
+		
+		//修改
+		$("#modifyBtn").click(function(){
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var mmeta_id = $("#mmeta_id").val();
+			var mmeta_tai = $("#mmeta_tai").val();
+			var mmeta_comment = $("#mmeta_comment").val();		
+			
+			var taiTest = /^[0-9]\d*$/;
+			if(mmeta_tai == null || mmeta_tai == ''){
+				alert("跟踪区码不可为空");
+				return false;
+			}
+			if(!taiTest.test(mmeta_tai) || mmeta_tai > 65535){
+				alert("跟踪区码格式或取值范围错误");
+				return false;
+			}
+			
+			if(mmeta_comment == ''){
+				alert("备注不可为空");
+				return false;
+			}
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/modifyTa.do",
+				data:"mmeTaModel.mmeta_id="+mmeta_id+
+					"&mmeTaModel.mmeta_tai="+mmeta_tai+
+					"&mmeTaModel.mmeta_comment="+mmeta_comment,
+				dataType:"json",
+				success:function(data){
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0:
+							window.location=basePath+"/lte/turntoTa.do?onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+							break;
+						default:
+							alert(data.message);
+							break;
+					}
+				},
+				error:function(data){
+					alert("操作失败");
+				}
+			});
+		});
+		
+		//验证标识		
+		$("#mmeta_tai").blur(function(){
+			var mmeta_tai = $(this).val();
+			var valTest = /^[0-9]\d*$/;
+			if(!valTest.test(mmeta_tai) || mmeta_tai > 65535){
+				$(".mmeta_taiJudge").html("跟踪区码取值范围0~65535");	
+				$(".mmeta_taiJudge").css("color","red");
+			}else{
+				$(".mmeta_taiJudge").html("");
+			}			
+		});
+	})
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>TCN1000设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>MME TA 列表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>配置</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>ID :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" value="${mmeTaModel.mmeta_id!}" id="mmeta_id" disabled="disabled"  maxlength="3"/></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>跟踪区码 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" value="${mmeTaModel.mmeta_tai!}" id="mmeta_tai" title="取值范围0~65535" maxlength="5"/></td>
+							<td class="redColor">*</td>
+							<td class="mmeta_taiJudge"></td>
+						</tr>
+						<tr>
+							<td>备注 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" maxlength="40" style="width:240px;" value="${mmeTaModel.mmeta_comment!}" id="mmeta_comment"/></td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								<input id="modifyBtn" type="button" value="确定" style="padding:3px 25px;"/>
+								<input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+</body>
+</html>

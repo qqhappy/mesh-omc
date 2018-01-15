@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.action.extension" value="do"/>
+    <constant name="struts.serve.static.browserCache" value="false"/>
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    <!-- 开发模式，如果修改了配置文件，struts能自动检测配置文件的更改并重新加载，不需重新部署 -->
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.objectFactory" value="spring" />
+   
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>    
+	<package name="struts-base" extends="struts-default">
+		<!-- 登录拦截器 -->
+		<interceptors>		
+ 			<interceptor name="loginInterceptor" class="com.xinwei.lte.web.enb.interceptor.LoginInterceptor" />			
+			<interceptor-stack name="loginInterceptorStack">					
+				<interceptor-ref name="loginInterceptor"/>					
+				<interceptor-ref name="defaultStack"/>				
+			</interceptor-stack>
+		</interceptors>		
+		<global-results>
+			<result name="sys_login" type="freemarker">/WEB-INF/Manager/sys/newLogin.html</result>
+			<result name="login" type="freemarker">/WEB-INF/Manager/sys/newLogin.html</result>
+		</global-results>
+    </package>
+	<include file="struts-login.xml"/>
+	<include file="struts-enb.xml"/>
+	<include file="struts-ue.xml"/>
+	<include file="struts-gis.xml"/>
+	<include file="struts-tcn-conf.xml"/>
+	<include file="struts-tcn-user.xml"/>
+	<include file="struts-alarm.xml"/>
+	<include file="struts-secu.xml"/>
+	<include file="struts-perf.xml"/>
+	<include file="struts-simplify.xml"/> 
+	<include file="struts-xw7400.xml"/> 
+	<include file="struts-xw7102.xml"/>
+	<include file="struts-serverConfig.xml"/>
+	<include file="struts-UEAlarm.xml"/>
+	
+</struts>

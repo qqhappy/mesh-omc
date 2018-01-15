@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<style>
+
+</style>
+<script type="text/javascript">
+	$(function(){
+		var error = $("#error").val();
+		if(error != undefined && error != "") {
+			alert("查询失败! 原因：" + error);
+		}
+		
+		$("#fresh").click(function(){
+			var moId = $("#moId").val();
+			var enbHexId = $("#enbHexId").val();
+			window.location.href = "${base}/lte/queryWholeStatus.do?&moId="+moId+"&enbHexId="+enbHexId+"";
+		});
+	});
+</script>
+<title>eNB总体状态</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>eNB总体状态</a>
+	</div>
+	
+	<!-- 
+	eNB总体状态信息：包含单板状态、S1状态、小区状态、时钟类型和时钟状态（eNB状态信息）
+		-->
+		
+	<div class="enbPage">
+		<div class="clearfix wrap">
+			<div class="title"></div>
+			<div class="content" style="width:500px;float:left; padding:10px; margin-left:100px;">
+			
+				<div class="toolBar">
+					<ul>
+						<li><input type="button" id="fresh" value="刷新" /></li>
+					</ul>
+					<input type="hidden" id="moId" value="${moId}" />
+					<input type="hidden" id="enbHexId" value="${enbHexId}" />
+					<input type="hidden" id="error" value="${error!}" />
+				</div>
+				
+				<table width="100%" class="enbTable">
+				
+					<tr>
+						<td>
+							基站状态：
+						</td>
+						<td>
+							<#if manageStateCode! == 1>
+								在线管理 - 
+							<#elseif manageStateCode! == 2>
+								离线管理 - 
+							<#else>
+								未知 - 
+							</#if>
+							
+							<#if isActive! == 0>
+								未开站
+							<#else>
+								<#if registerState! == 0>
+									未连接
+								<#elseif registerState! == 10>
+									注册中
+								<#elseif registerState! == 20>
+									已连接
+								<#elseif registerState! == 30>
+									已删除
+								<#else>
+									未知
+								</#if>
+							</#if>
+							<#list boardStatusList! as boardStatus>
+								<#if registerState! != 20>
+									<img src="${base}/Manager/images/tnc/alarm-1.png" style="margin-left:20px;"/><span>&nbsp;</span><span>不正常</span>
+								<#else>
+									<#if boardStatus.status == 0>
+										<img src="${base}/Manager/images/tnc/alarm0.png" style="margin-left:20px;"/><span>&nbsp;</span><span>正常</span>
+									<#else>
+										<img src="${base}/Manager/images/tnc/alarm1.png" style="margin-left:20px;"/><span>&nbsp;</span><span>不正常</span>
+									</#if>
+								</#if>
+							</#list>
+						</td>
+					</tr>
+					<tr>
+						<td>小区状态：</td>
+						<td>
+							<table class="cellStatusTable">
+								<thead>
+									<tr>
+										<th width="8%">小区ID</th>
+										<th width="10%">小区名称</th>
+										<th width="10%">小区状态</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#list cellStatusList! as cellStatus>
+									<tr>
+										<td>${cellStatus.cellId}</td>
+										<td>${cellStatus.cellName}</td>
+										
+										
+										<#if registerState! != 20>
+											<td>
+												<img src="${base}/Manager/images/tnc/alarm-1.png"/><span>&nbsp;</span><span>不正常</span>
+											</td>
+										<#else>
+											<#if cellStatus.status == 0>
+												<td>
+													<img src="${base}/Manager/images/tnc/alarm0.png"/><span>&nbsp;</span><span>正常</span>
+												</td>
+											<#else>
+												<td>
+													<img src="${base}/Manager/images/tnc/alarm1.png"/><span>&nbsp;</span><span>不正常</span>
+												</td>
+											</#if>
+										</#if>									
+									</tr>
+									</#list>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							S1链路状态：
+						</td>
+						<td>
+						
+							<#if registerState! != 20>
+								
+									<img src="${base}/Manager/images/tnc/alarm-1.png"/><span>&nbsp;</span><span>不正常</span>
+								
+							<#else>
+								<#if s1LinkStatus == 0>
+									<img src="${base}/Manager/images/tnc/alarm0.png"/><span>&nbsp;</span><span>正常</span>
+								<#elseif s1LinkStatus == 1>
+									<img src="${base}/Manager/images/tnc/alarm1.png"/><span>&nbsp;</span><span>不正常</span>
+								<#else>
+									<img src="${base}/Manager/images/tnc/alarm-1.png"/><span>&nbsp;</span><span>未知</span>
+								</#if>
+							</#if>			
+							
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							时钟类型：
+						</td>
+						<td>
+							<#if clockType == 0>
+								GPS
+							<#elseif clockType == 1>
+								本板时钟
+							<#else>
+								未知
+							</#if>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							时钟状态：
+						</td>
+						<td>
+							<#if clockType != 0 && clockType != 1>
+								未知
+							<#else>
+								<#if clockStatus < 3>
+									自由振荡
+								<#elseif clockStatus == 3>
+									同步
+								<#elseif clockStatus == 4>
+									保持
+								<#elseif clockStatus == 5>
+									保持超时
+								<#elseif clockStatus == 6>
+									异常
+								</#if>
+							</#if>
+						</td>
+					</tr>
+					
+				</table>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

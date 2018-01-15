@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+	$(function(){		
+// 		$(".left_nav dd").click(function(){
+// 			$(".left_nav a").removeClass("selector");
+// 			$(this).children("a").addClass("selector");
+// 		});		
+// 		$(".left_nav dl").each(function() {
+// 	        var leng=$(this).children("dd").size();		
+// 			if(leng==0){
+// 				$(this).children("dt").addClass("sdt");	
+// 			}		
+// 	    });
+
+		var setting = {
+				view: {
+					dblClickExpand: false,
+					showLine: true,
+					selectedMulti: false
+				},	
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			};
+			var zNode =[
+						{ id:1, pId:0, name:"系统地址",url:"${base}/lte/turntoSysAddress.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:2, pId:0, name:"系统全局配置",url:"${base}/lte/toModifyWholeConfig.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:3, pId:0, name:"MME S1 链路",url:"${base}/lte/turntoS1.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:4, pId:0, name:"MME TA 列表",url:"${base}/lte/turntoTa.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:5, pId:0, name:"系统紧急呼叫",url:"${base}/lte/sysEmgcfg!turntoSysEmgcfg.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:6, pId:0, name:"SIP路由",url:"${base}/lte/turntoSip.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:7, pId:0, name:"静态路由",url:"${base}/lte/sroute!turntoSRoute.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:8, pId:0, name:"号码分析",url:"${base}/lte/turntoNumAnalyse.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:9, pId:0, name:"系统全局信息",url:"${base}/lte/turntoWholeInfo.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:10, pId:0, name:"网管配置",url:"${base}/lte/turntoWebMaster.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:11, pId:0, name:"数据备份及恢复",url:"${base}/lte/queryBackupFiles.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:12, pId:0, name:"全局漫游信息",url:"${base}/lte/queryTcnGlobalRoamInfoList.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:13, pId:0, name:"录音服务器配置",url:"${base}/lte/queryTcnVmrLink.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:14, pId:0, name:"PDT配置信息",url:"${base}/lte/pdtConfig!showConfigInfo.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:15, pId:0, name:"HA信息",url:"${base}/lte/haInfo!showConfigInfo.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:16, pId:0, name:"CPU门限配置",url:"${base}/lte/queryCpuThreshold.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:17, pId:0, name:"短信中心信息设置",url:"${base}/lte/querySmscCenter.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:12, pId:0, name:"漫游组网数据同步",url:"${base}/lte/roamDataSyncQuery.do",target:"mainFrame", iconSkin:"icon01"},
+						{ id:12, pId:0, name:"license配置",url:"${base}/lte/queryLicense.do?",target:"mainFrame", iconSkin:"icon01"},
+						{ id:12, pId:0, name:"企业短信平台信息",url:"${base}/lte/queryOaSms.do?",target:"mainFrame", iconSkin:"icon01"},
+						{ id:12, pId:0, name:"APP白名单",url:"${base}/lte/queryWhiteAppNameList.do?",target:"mainFrame", iconSkin:"icon01"},
+				//		{ id:12, pId:0, name:"同播区域配置",url:"${base}/lte/showSameRegionConfigInfo.do?",target:"mainFrame", iconSkin:"icon01"},
+				//		{ id:12, pId:0, name:"数据同播组IP配置",url:"${base}/lte/showDataGroupIp.do?",target:"mainFrame", iconSkin:"icon01"},
+				//		{ id:12, pId:0, name:"同步周期和序列配置",url:"${base}/lte/querySync.do?",target:"mainFrame", iconSkin:"icon01"},
+						{ id:12, pId:0, name:"PGIS服务器信息",url:"${base}/lte/queryPgis.do?",target:"mainFrame", iconSkin:"icon01"},
+						{ id:3, pId:0, name:"白名单",url:"${base}/lte/turntoBaiName.do",target:"mainFrame", iconSkin:"icon01"}
+						
+			 		];
+			$.fn.zTree.init($("#treeDemo"), setting, zNode);
+			
+			$("#leftDivOne ul li:eq(0) a").addClass("curSelectedNode");
+			
+
+			$("#leftDivOne ul li").each(function(index){
+				$("#leftDivOne ul li:eq("+index+") a").click(function(){
+					$("#leftDivOne ul li a").removeClass("curSelectedNode");
+					$(this).addClass("curSelectedNode");
+				})
+			})
+	});
+</script>
+</head>
+
+<body style="background: #e9f6fe;">
+	<div class="left_nav">
+		<!--   <div class="title">TCN1000设备</div> -->
+		<!--   <dl> -->
+		<!--     <dt style="line-height:10px;">&nbsp;</dt> -->
+		<!--     <dd><a href="${base}/lte/turntoSysAddress.do" class="selector" target="mainFrame" id="sysAddressHref">系统地址</a></dd> -->
+		<!--     <dd><a href="${base}/lte/toModifyWholeConfig.do" target="mainFrame">系统全局配置</a></dd> -->
+		<!--     <dd><a href="${base}/lte/turntoS1.do" target="mainFrame">MME S1 链路</a></dd> -->
+		<!-- 	<dd><a href="${base}/lte/turntoTa.do" target="mainFrame">MME TA 列表</a></dd> -->
+		<!-- 	<dd><a href="${base}/lte/sysEmgcfg!turntoSysEmgcfg.do" target="mainFrame">系统紧急呼叫</a></dd> -->
+		<!-- 	<dd><a href="${base}/lte/turntoSip.do" target="mainFrame">SIP路由</a></dd> -->
+		<!-- 	<dd><a href="${base}/lte/sroute!turntoSRoute.do" target="mainFrame">静态路由</a></dd> -->
+		<!--     <dd><a href="${base}/lte/turntoNumAnalyse.do" target="mainFrame">号码分析</a></dd>	 -->
+		<!-- 	<dd><a href="${base}/lte/turntoWholeInfo.do" target="mainFrame">系统全局信息</a></dd> -->
+		<!-- 	<dd><a href="${base}/lte/turntoWebMaster.do" target="mainFrame" >网管配置</a></dd> -->
+		<!--   </dl> -->
+		<div class="title" style="font-size: 12px;">TCN1000设备</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+	</div>
+</body>
+</html>

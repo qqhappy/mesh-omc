@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<bean id="mcBtsBizProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.impl.McBtsBizProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="calibDataProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer1.impl.CalibDataProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="airlinkProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer2.impl.AirlinkProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="calibResultProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer1.impl.CalibResultProxyImpl">
+	</bean>
+
+	<bean id="weakFaultProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.WeakFaultProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="sagParamProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.SAGParamProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="rcpeProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.RCPEProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="freqSetProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer2.impl.FreqSetProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="tosConfProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.TosConfProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+		<property name="mcBtsBasicService" ref="mcBtsBasicService" />
+	</bean>
+
+	<bean id="terminalParamProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.TerminalParamProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+		<property name="mcBtsBasicService" ref="mcBtsBasicService" />
+	</bean>
+
+	<bean id="aCLProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.ACLProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+		<property name="mcBtsBasicService" ref="mcBtsBasicService" />
+	</bean>
+
+	<bean id="sysFreqProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.SysFreqProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="repeaterProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.RepeaterProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="vlanProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.VlanProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="qinQProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.QinQProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="neighbourProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.NeighborProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="rruResetProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.rruManage.impl.RRUResetProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="mcBtsSNProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.common.impl.McBtsSNProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="mcBtsStateQueryProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.oammanager.impl.McBtsStateQueryProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="mcBtsRfPanelStatusProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.oammanager.impl.McBtsRfPanelStatusProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="mcBtsUserCountsQueryProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.oammanager.impl.McBtsUserCountsQueryProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+	<bean id="mcBtsOnlineTerminalListProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.oammanager.impl.McBtsOnlineTerminalListProxyImpl">
+		<property name="connector" ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="terminalDetectiveProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.sysManage.impl.TerminalDetectiveProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="dataPackageFilterProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.layer3.impl.DataPackageFilterProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+	<bean id="realTimePerfProxy"
+		class="com.xinwei.minas.server.mcbts.proxy.common.impl.RealTimePerfProxyImpl">
+		<constructor-arg ref="mcBtsConnector" />
+	</bean>
+
+</beans>

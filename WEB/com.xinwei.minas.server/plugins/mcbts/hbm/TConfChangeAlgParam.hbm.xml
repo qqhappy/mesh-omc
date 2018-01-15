@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                 
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.TConfChangeAlgParam"
+		table="t_conf_alg_param">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property generated="never" lazy="false" name="m_ho_pwr_thd"
+			type="int">
+			<column name="m_ho_pwr_thd" />
+		</property>
+		<property generated="never" lazy="false" name="m_ho_pwr_offset1"
+			type="int">
+			<column name="m_ho_pwr_offset1" />
+		</property>
+		<property generated="never" lazy="false" name="m_ho_pwr_offset2"
+			type="int">
+			<column name="m_ho_pwr_offset2" />
+		</property>
+		<property generated="never" lazy="false" name="m_cpe_cm_ho_period"
+			type="int">
+			<column name="m_cpe_cm_ho_period" />
+		</property>
+		<property generated="never" lazy="false" name="m_ho_pwr_filtercoef_stat"
+			type="int">
+			<column name="m_ho_pwr_filtercoef_stat" />
+		</property>
+		<property generated="never" lazy="false" name="m_ho_pwr_filtercoef_mobile"
+			type="int">
+			<column name="m_ho_pwr_filtercoef_mobile" />
+		</property>
+		<property generated="never" lazy="false" name="time_to_trigger"
+			type="int">
+			<column name="time_to_trigger" />
+		</property>
+		<property generated="never" lazy="false" name="strictArea_pwr_thd"
+			type="int">
+			<column name="StrictArea_pwr_thd" />
+		</property>
+		<property generated="never" lazy="false" name="strictArea_time_to_trigger"
+			type="int">
+			<column name="StrictArea_time_to_trigger" />
+		</property>
+		<property generated="never" lazy="false" name="strictArea_ho_pwr_offset"
+			type="int">
+			<column name="StrictArea_ho_pwr_offset" />
+		</property>
+		<property generated="never" lazy="false" name="strictArea_2_normal_pwr_thres"
+			type="int">
+			<column name="StrictArea_2_normal_pwr_thres" />
+		</property>
+	</class>
+</hibernate-mapping>

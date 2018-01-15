@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/status/status.js"></script>
+
+<title>RRU光口状态</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>状态信息管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>RRU光口状态</a>
+	</div>
+	
+	<!-- 
+	收功率 单位0.1uW
+	发功率 单位0.1 uW
+	在位信息 
+	1：在位；0：不在位
+	光模块厂商 ASCII
+	光模块传输bit速率 单位 Mbit/s
+	温度 单位 C摄氏度
+	电压 单位 mV
+	电流 单位 mA
+		-->
+		
+	<div style="overflow:auto">
+		<div class="clearfix wrap">
+			<div class="title hide">&nbsp;</div>
+			<div class="content" style="padding:10px;">
+				<div style=" height:80px; overflow:hidden; padding-left:100px;">
+					<table width="100%" style="line-height:35px;">
+						<tr>
+							<td style="width:100px;">选择RRU单板 :</td>
+							<td>
+								<input type="hidden" value="${moId}" id="moId"/>
+								<input type="hidden" value="${enbHexId}" id="enbHexId"/>
+								<input type="hidden" value="${statusFlag}" id="statusFlag"/>
+								<input type="hidden" value="${error}" id="error"/>
+								<select style="margin-left:39px; width:251px;" id="boardFlag" name="boardFlag">
+									<#list boardList! as board>
+										<#if board == boardFlag>
+											<option value="${board}" selected="selected">${board}</option>
+										<#else>
+											<option value="${board}">${board}</option>
+										</#if>
+									</#list>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>选择光模块 :</td>
+							<td>
+								<div>
+								<select style="width:251px;margin-left:39px; " id="moduleNo" name="moduleNo">
+									<#if moduleNo == 0>
+										<option value="0" selected="selected">光模块1</option>
+									<#else>
+										<option value="0">光模块1</option>
+									</#if>
+									<#if moduleNo == 1>
+										<option value="1" selected="selected">光模块2</option>
+									<#else>
+										<option value="1">光模块2</option>
+									</#if>
+									<#if moduleNo == 2>
+										<option value="2" selected="selected">全部</option>
+									<#else>
+										<option value="2">全部</option>
+									</#if>
+								</select></div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="tableHeight">
+					<div class="toolBar">
+						<ul>
+							<li><input type="button" id="fresh" value="刷新" /></li>
+						</ul>
+					</div>
+					<table width="100%" class="newTabStyle">
+					  <tr>
+						<th scope="col">光口号</th>
+						<th scope="col">在位信息</th>
+						<th scope="col">收功率(uW)</th>
+						<th scope="col">发功率(uW)</th>
+						<th scope="col">电压(mV)</th>
+						<th scope="col">电流(mA)</th>
+						<th scope="col">温度(℃)</th>
+						<th scope="col">光模块厂商</th>
+						<th scope="col">光模块传输bit速率(Mbit/s)</th>
+					  </tr>
+					  <#list rruOpticalStatusList! as rruOpticalStatus>
+						  <tr>
+						  	<td>${rruOpticalStatus.moduleNo+1}</td>
+						  	<td><#if rruOpticalStatus.inPlaceFlag==1>在位<#else>不在位</#if></td>
+						  	<td>${rruOpticalStatus.receivePower*0.1}</td>
+						  	<td>${rruOpticalStatus.sendPower*0.1}</td>
+						  	<td>${rruOpticalStatus.voltage}</td>
+						  	<td>${rruOpticalStatus.current}</td>
+						  	<td>${rruOpticalStatus.temperature}</td>
+						  	<td>${rruOpticalStatus.manufacture}</td>
+						  	<td>${rruOpticalStatus.transBitRate}</td>
+						  </tr>
+					  </#list>	
+					</table>
+					<!-- <div class="clearfix wrap" style="text-align:left;"><a href="javascript:reloadPage();" class="reloadPage">刷新数据</a></div> -->
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

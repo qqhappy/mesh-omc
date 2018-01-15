@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer3.TConfWCPE"
+		table="t_conf_wcpe">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true" />
+		</property>
+		<property generated="never" lazy="false" name="workMode" type="int">
+			<column name="work_mode" />
+		</property>
+		<property generated="never" lazy="false" name="primaryWCPE" type="java.lang.String">
+			<column name="primary_wcpe" />
+		</property>
+		<property generated="never" lazy="false" name="standbyWCPE" type="java.lang.String">
+			<column name="standby_wcpe" />
+		</property>
+		<property generated="never" lazy="false" name="sacMac" type="java.lang.String">
+			<column name="sac_mac" />
+		</property>
+		<property generated="never" lazy="false" name="sacMac2" type="java.lang.String">
+			<column name="sac_mac2" />
+		</property>
+		<property generated="never" lazy="false" name="sacMac3" type="java.lang.String">
+			<column name="sac_mac3" />
+		</property>
+		<property generated="never" lazy="false" name="sacMac4" type="java.lang.String">
+			<column name="sac_mac4" />
+		</property>
+		<property generated="never" lazy="false" name="sacMac5" type="java.lang.String">
+			<column name="sac_mac5" />
+		</property>
+	</class>
+</hibernate-mapping>

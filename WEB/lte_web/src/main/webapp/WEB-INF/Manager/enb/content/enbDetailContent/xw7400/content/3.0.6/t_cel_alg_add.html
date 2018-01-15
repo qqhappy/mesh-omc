@@ -1,0 +1,823 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_alg.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+
+	$(function(){
+		//初始化au8UlCebBitmap
+		var ulBitMapIndex = 0;	
+		var ulBitMapLi = ""
+		for(var i = 0 ;i<13;i++){
+			var li = "";
+			for(var j = 0;j<8;j++){
+				li = li+"<input type='checkbox' id='ulBitMapId"+ulBitMapIndex+"' value='"+i+"' class='ulBitMapSon'> </input>"
+				ulBitMapIndex++;
+			}
+			li = "<li>"+li+"<input type = 'checkbox' style='margin-left:20px;' value='"+i+"' class='ulBitMapFather'>全选</li>"
+			ulBitMapLi = ulBitMapLi + li
+		}
+		$("#au8UlCebBitmapUL").html(ulBitMapLi);
+		//控制au8UlCebBitmap有效位数
+		for(var i = 100 ;i<104;i++){
+			$("#ulBitMapId"+i).attr("disabled",true);
+		}
+		//控制au8UlCebBitmap全选
+		$(".ulBitMapFather").live("click",function(){
+			var flag = this.checked;
+			var value = $(this).val();
+			$(".ulBitMapSon").each(function(){
+				var sonVal = $(this).val();
+				var isEnable = $(this).attr("disabled");
+				if(value == sonVal && !isEnable){
+					$(this).attr("checked",flag);
+				}
+			})
+		});
+		$(".ulBitMapSon").live("click",function(){
+			var flag=true;
+			var sonVal = $(this).val();
+			$(".ulBitMapSon").each(function(){
+				var sonValTwo = $(this).val();
+				var isEnable = $(this).attr("disabled");
+				if(sonValTwo == sonVal && !isEnable){
+					if(!this.checked){
+						flag=false;
+					}
+				}				
+			})
+			$(".ulBitMapFather").each(function(){
+				var value = $(this).val();
+				if(sonVal == value){
+					$(this).attr("checked",flag);
+				}
+			});
+		});
+		
+		
+		//初始化au8DlCebBitmap
+		var dlBitMapIndex = 0;	
+		var dlBitMapLi = ""
+		for(var i = 0 ;i<4;i++){
+			var li = "";
+			for(var j = 0;j<8;j++){
+				li = li+"<input type='checkbox' id='dlBitMapId"+dlBitMapIndex+"' value='"+i+"' class='dlBitMapSon'> </input>"
+				dlBitMapIndex++;
+			}
+			li = "<li>"+li+"<input type = 'checkbox' style='margin-left:20px;' value='"+i+"' class='dlBitMapFather'>全选</li>"
+			dlBitMapLi = dlBitMapLi + li
+		}
+		$("#au8DlCebBitmapUL").html(dlBitMapLi);
+		//控制au8DlCebBitmap有效位数
+		for(var i = 25 ;i<32;i++){
+			$("#dlBitMapId"+i).attr("disabled",true);
+		}
+		//控制au8DlCebBitmap全选
+		$(".dlBitMapFather").live("click",function(){
+			var flag = this.checked;
+			var value = $(this).val();
+			$(".dlBitMapSon").each(function(){
+				var sonVal = $(this).val();
+				var isEnable = $(this).attr("disabled");
+				if(value == sonVal && !isEnable){
+					$(this).attr("checked",flag);
+				}
+			})
+		});
+		$(".dlBitMapSon").live("click",function(){
+			var flag=true;
+			var sonVal = $(this).val();
+			$(".dlBitMapSon").each(function(){
+				var sonValTwo = $(this).val();
+				var isEnable = $(this).attr("disabled");
+				if(sonValTwo == sonVal && !isEnable){
+					if(!this.checked){
+						flag=false;
+					}
+				}				
+			})
+			$(".dlBitMapFather").each(function(){
+				var value = $(this).val();
+				if(sonVal == value){
+					$(this).attr("checked",flag);
+				}
+			});
+		});
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区算法参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>新增</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_ALG-3.0.6" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td style="width:300px;">小区标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CId">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+									 </#list> 
+								</select></div>
+							</td>
+							<td id="u8CIdError" class="error"></td>
+						</tr>
+						<tr class="b8RlfEnable">
+							<td>RLF功能开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8RlfEnable" value="0" id="radioRF1" >关</input>
+								<input type="radio" name="b8RlfEnable" value="1" id="radioRF2"  style="margin-left:80px;" checked="checked">开</input>
+							</td>
+							<td class="error" style="width:230px;" id="b8RlfEnableError"></td>						
+						</tr>
+						<tr class="b8UlPreSchEnable">
+							<td>上行预调度开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8UlPreSchEnable" value="0" id="radio1" checked="checked">关</input>
+								<input type="radio" name="b8UlPreSchEnable" value="1" id="radio2"  style="margin-left:80px;">开</input>
+							</td>
+							<td class="error" style="width:230px;" id="b8UlPreSchEnableError"></td>						
+						</tr>
+						<tr class="u8UlRbNum">
+							<td>上行预调度RB数(1~<span class="bandWidth">100</span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlRbNum" value="8"/></td>
+							<td id="u8UlRbNumError" class="error"></td>
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>上行预调度子帧开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关0 :
+								<input type="radio" name="ab8UlSubfrmFlag1" value="0" id="radioOne1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag1" value="1" id="radioOne2"  style="margin-left:80px;">开</input>
+							</td>
+							<td id="ab8UlSubfrmFlagError" class="error"></td>			
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关1 :
+								<input type="radio" name="ab8UlSubfrmFlag2" value="0" id="radioTwo1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag2" value="1" id="radioTwo2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关2 :
+								<input type="radio" name="ab8UlSubfrmFlag3" value="0" id="radioThree1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag3" value="1" id="radioThree2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关3 :
+								<input type="radio" name="ab8UlSubfrmFlag4" value="0" id="radioFour1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag4" value="1" id="radioFour2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关4 :
+								<input type="radio" name="ab8UlSubfrmFlag5" value="0" id="radioFive1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag5" value="1" id="radioFive2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关5 :
+								<input type="radio" name="ab8UlSubfrmFlag6" value="0" id="radioSix1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag6" value="1" id="radioSix2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关6 :
+								<input type="radio" name="ab8UlSubfrmFlag7" value="0" id="radioSeven1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag7" value="1" id="radioSeven2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关7 :
+								<input type="radio" name="ab8UlSubfrmFlag8" value="0" id="radioEight1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag8" value="1" id="radioEight2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关8 :
+								<input type="radio" name="ab8UlSubfrmFlag9" value="0" id="radioNine1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag9" value="1" id="radioNine2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8UlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关9 :
+								<input type="radio" name="ab8UlSubfrmFlag10" value="0" id="radioTen1" checked="checked">关</input>
+								<input type="radio" name="ab8UlSubfrmFlag10" value="1" id="radioTen2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8DlPreSchEnable">
+							<td>下行预调度开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8DlPreSchEnable" value="0" id="radioZ1" checked="checked">关</input>
+								<input type="radio" name="b8DlPreSchEnable" value="1" id="radioZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td class="error" style="width:230px;" id="b8DlPreSchEnableError"></td>						
+						</tr>
+						<tr class="u8DlRbNum">
+							<td>下行预调度RB数(1~<span class="bandWidth">100</span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8DlRbNum" value="8"/></td>
+							<td id="u8DlRbNumError" class="error"></td>
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>下行预调度子帧开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关0 :
+								<input type="radio" name="ab8DlSubfrmFlag1" value="0" id="radioOneZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag1" value="1" id="radioOneZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td id="ab8DlSubfrmFlagError" class="error"></td>
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关1 :
+								<input type="radio" name="ab8DlSubfrmFlag2" value="0" id="radioTwoZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag2" value="1" id="radioTwoZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关2 :
+								<input type="radio" name="ab8DlSubfrmFlag3" value="0" id="radioThreeZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag3" value="1" id="radioThreeZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关3 :
+								<input type="radio" name="ab8DlSubfrmFlag4" value="0" id="radioFourZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag4" value="1" id="radioFourZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关4 :
+								<input type="radio" name="ab8DlSubfrmFlag5" value="0" id="radioFiveZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag5" value="1" id="radioFiveZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关5 :
+								<input type="radio" name="ab8DlSubfrmFlag6" value="0" id="radioSixZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag6" value="1" id="radioSixZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关6 :
+								<input type="radio" name="ab8DlSubfrmFlag7" value="0" id="radioSevenZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag7" value="1" id="radioSevenZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关7 :
+								<input type="radio" name="ab8DlSubfrmFlag8" value="0" id="radioEightZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag8" value="1" id="radioEightZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关8 :
+								<input type="radio" name="ab8DlSubfrmFlag9" value="0" id="radioNineZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag9" value="1" id="radioNineZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="ab8DlSubfrmFlag">
+							<td>&nbsp;</td>
+							<td class="blankTd1"></td>
+							<td>
+								开关9 :
+								<input type="radio" name="ab8DlSubfrmFlag10" value="0" id="radioTenZ1" checked="checked">关</input>
+								<input type="radio" name="ab8DlSubfrmFlag10" value="1" id="radioTenZ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8UlAmcEnable">
+							<td>上行MCS限制开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8UlAmcEnable" value="0" id="radioD1" checked="checked">关</input>
+								<input type="radio" name="b8UlAmcEnable" value="1" id="radioD2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8UlMaxMcs" >
+							<td>上行最大MCS(0~28) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlMaxMcs" value="28"/></td>
+							<td id="u8UlMaxMcsError" class="error"></td>
+						</tr>
+						<tr class="u8UlMinMcs">
+							<td>上行最小MCS(0~28) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlMinMcs" value="0"/></td>
+							<td id="u8UlMinMcsError" class="error"></td>
+						</tr>
+						<tr class="u8UlAmcTargetBler">
+							<td>ULAMC目标bler :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8UlAmcTargetBler">
+									<option value="0">0.05</option>
+									<option value="1" selected="selected">0.1</option>
+									<option value="2">0.15</option>
+									<option value="3">0.2</option>
+									<option value="4">0.25</option>
+									<option value="5">0.3</option>
+									<option value="6">0.35</option>
+									<option value="7">0.4</option>
+									<option value="8">0.45</option>
+									<option value="9">0.5</option>
+									<option value="10">0.55</option>
+									<option value="11">0.6</option>
+									<option value="12">0.65</option>
+									<option value="13">0.7</option>
+									<option value="14">0.75</option>
+									<option value="15">0.8</option>
+									<option value="16">0.85</option>
+									<option value="17">0.9</option>
+									<option value="18">0.95</option>
+									<option value="19">1</option>
+								</select></div>
+							</td>
+						</tr>				
+						<tr class="b8DlAmcEnable">
+							<td>下行传输方案及MCS限制开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8DlAmcEnable" value="0" id="radioA1" checked="checked">关</input>
+								<input type="radio" name="b8DlAmcEnable" value="1" id="radioA2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8TS">
+							<td>传输方案 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8TS">
+									<option value="0">单天线</option>
+									<option value="1">发分集</option>
+									<option value="2">CDD</option>
+									<option value="3" selected="selected">自适应</option>
+								</select></div>
+							</td>
+							<td id="u8TSError" class="error"></td>	
+						</tr>
+						<tr class="u8DlMaxMcs">
+							<td>下行最大MCS(0~28) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;" id="u8DlMaxMcs" value="28"/></td>
+							<td id="u8DlMaxMcsError" class="error"></td>
+						</tr>
+						<tr class="u8DlMinMcs">
+							<td>下行最小MCS(0~28) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8DlMinMcs" value="0"/></td>
+							<td id="u8DlMinMcsError" class="error"></td>
+						</tr>
+						<tr class="u8DlAmcTargetBler">
+							<td>DLAMC目标bler :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8DlAmcTargetBler">
+									<option value="0">0.05</option>
+									<option value="1" selected="selected">0.1</option>
+									<option value="2">0.15</option>
+									<option value="3">0.2</option>
+									<option value="4">0.25</option>
+									<option value="5">0.3</option>
+									<option value="6">0.35</option>
+									<option value="7">0.4</option>
+									<option value="8">0.45</option>
+									<option value="9">0.5</option>
+									<option value="10">0.55</option>
+									<option value="11">0.6</option>
+									<option value="12">0.65</option>
+									<option value="13">0.7</option>
+									<option value="14">0.75</option>
+									<option value="15">0.8</option>
+									<option value="16">0.85</option>
+									<option value="17">0.9</option>
+									<option value="18">0.95</option>
+									<option value="19">1</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="b8UlRbEnable">
+							<td>上行RB分配限制开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8UlRbEnable" value="0" id="radioB1" checked="checked">关</input>
+								<input type="radio" name="b8UlRbEnable" value="1" id="radioB2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8UlMaxRbNum" >
+							<td>上行最大分配RB数(0~<span class="bandWidth">100</span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlMaxRbNum" value="0"/></td>
+							<td id="u8UlMaxRbNumError" class="error"></td>
+						</tr>
+						<tr class="u8UlMinRbNum" >
+							<td>上行最小分配RB数(0~<span class="bandWidth">100</span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlMinRbNum" value="0"/></td>
+							<td id="u8UlMinRbNumError" class="error"></td>
+						</tr>
+						<tr class="b8DlRbEnable">
+							<td>下行RB分配限制开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8DlRbEnable" value="0" id="radioC1" checked="checked">关</input>
+								<input type="radio" name="b8DlRbEnable" value="1" id="radioC2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8DlMaxRbNum">
+							<td>下行最大分配RB数(0~<span class="bandWidth">100</span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8DlMaxRbNum" value="0"/></td>
+							<td id="u8DlMaxRbNumError" class="error"></td>
+						</tr>
+						<tr class="u8DlMinRbNum">
+							<td>下行最小分配RB数(0~<span class="bandWidth">100</span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8DlMinRbNum" value="0"/></td>
+							<td id="u8DlMinRbNumError" class="error"></td>
+						</tr>
+						<tr class="u8Cfi">
+							<td>CFI配置 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8Cfi">
+									<option value="0">自适应</option>
+									<option value="1">1</option>
+									<option value="2" selected="selected">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+								</select></div>
+							</td>
+							<td id="u8CfiError" class="error"></td>
+						</tr>
+						<tr  class="u8CceNum">
+							<td>CCE聚合度 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8CceNum">
+									<option value="0">聚合度1</option>
+									<option value="1">聚合度2</option>
+									<option value="2" selected="selected">聚合度4</option>
+									<option value="3">聚合度8</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="b8SingleEnable">
+							<td>单UE模式开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8SingleEnable" value="0" id="radioUE1" checked="checked">关</input>
+								<input type="radio" name="b8SingleEnable" value="1" id="radioUE2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8PucchPcAlgSwitch">
+							<td>PUCCH闭环功控开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8PucchPcAlgSwitch" value="0" id="radioPU1">关</input> 
+								<input type="radio" name="b8PucchPcAlgSwitch" value="1" id="radioPU2" checked="checked"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8TAAlgoSwitch">
+							<td>TA调整开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8TAAlgoSwitch" value="0" id="radioTA1" >关</input>
+								<input type="radio" name="b8TAAlgoSwitch" value="1" id="radioTA2"  style="margin-left:80px;" checked="checked">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8SibRandSwitch">
+							<td>SIB随机化开关</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8SibRandSwitch" value="0" id="radioSB1"  checked="checked">关</input>
+								<input type="radio" name="b8SibRandSwitch" value="1" id="radioSB2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8DlIcicSwitch">
+							<td>DL ICIC算法开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8DlIcicSwitch" value="0" id="radioDlIcic1" checked="checked">关</input>
+								<input type="radio" name="b8DlIcicSwitch" value="1" id="radioDlIcic2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8SinrUJSwitch">
+							<td>DL ICIC基于SINR的用户属性判断开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8SinrUJSwitch" value="0" id="radioSinrUJ1" checked="checked">关</input>
+								<input type="radio" name="b8SinrUJSwitch" value="1" id="radioSinrUJ2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8T0">
+							<td>DL ICIC基于SINR的用户属性判断周期 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"   id="u8T0">
+									<option value="1">1s</option>
+									<option value="2">2s</option>
+									<option value="3">3s</option>
+									<option value="4">4s</option>
+									<option value="5" selected="selected">5s</option>
+									<option value="6">6s</option>
+									<option value="7">7s</option>
+									<option value="8">8s</option>
+									<option value="9">9s</option>
+									<option value="10">10s</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="au8DlCebBitmap">
+							<td>DL小区边缘频带bitmap :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="hidden"  id="au8DlCebBitmap"/>
+								<ul id="au8DlCebBitmapUL">
+									
+								</ul>
+							</td>
+							<td class="error" style="width:230px;" id="au8DlCebBitmapError"></td>						
+						</tr>
+						<tr class="u8PAForCEU">
+							<td>DL ICIC边缘用户PA值(dB) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"   id="u8PAForCEU">
+									<option value="0">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2">-3</option>
+									<option value="3" selected="selected">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8PAForCCU">
+							<td>DL ICIC中心用户PA值(dB) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PAForCCU">
+									<option value="0" selected="selected">-6</option>
+									<option value="1">-4.77</option>
+									<option value="2">-3</option>
+									<option value="3">-1.77</option>
+									<option value="4">0</option>
+									<option value="5">1</option>
+									<option value="6">2</option>
+									<option value="7">3</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="b8UlIcicSwitch">
+							<td>UL ICIC算法开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8UlIcicSwitch" value="0" id="radioIcicSwitch1" checked="checked">关</input>
+								<input type="radio" name="b8UlIcicSwitch" value="1" id="radioIcicSwitch2"  style="margin-left:80px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="au8UlCebBitmap">
+							<td>UL小区边缘频带bitmap :</td>
+							<td class="blankTd"></td>
+							<td style="width:260px;">
+								<input type="hidden"  id="au8UlCebBitmap"/>
+								<ul id="au8UlCebBitmapUL">
+									
+								</ul>
+							</td>
+							<td class="error" style="width:230px;" id="au8UlCebBitmapError"></td>						
+						</tr>
+						<tr class="u16RbNiThresh">
+							<td>频选门限(-600~420)(dBm) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u16RbNiThresh" value="0"/></td>
+							<td id="u16RbNiThreshError" class="error"></td>
+						</tr>
+						<tr class="u32AlgReserved">
+							<td>基带算法预留配置参数(0~4294967295) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u32AlgReserved" value="0"/></td>
+							<td id="u32AlgReservedError" class="error"></td>
+						</tr>
+						
+						<tr class="u8UlHarqComb">
+							<td>UL HARQ合并方式 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8UlHarqComb" value="0" id="radioU8UlHarqComb1" >CC</input>
+								<input type="radio" name="u8UlHarqComb" value="1" id="radioU8UlHarqComb2" checked="checked"  style="margin-left:80px;">IR</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8DlHarqComb">
+							<td>DL HARQ合并方式 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8DlHarqComb" value="0" id="radioU8DlHarqComb1" >CC</input>
+								<input type="radio" name="u8DlHarqComb" value="1" id="radioU8DlHarqComb2" checked="checked"  style="margin-left:80px;">IR</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8UlSchedAlg">
+							<td>上行调度算法 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"   id="u8UlSchedAlg">
+									<option value="0">E_PRIO_MAXTB</option>
+									<option value="1">E_PRIO_RR</option>
+									<option value="2" selected="selected">E_PRIO_PF</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8DlSchedAlg">
+							<td>下行调度算法 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"   id="u8DlSchedAlg">
+									<option value="0">E_PRIO_MAXTB</option>
+									<option value="1">E_PRIO_RR</option>
+									<option value="2" selected="selected">E_PRIO_PF</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8CommSchdCCEAggre">
+							<td>公共调度CCE聚合度 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8CommSchdCCEAggre" value="0" id="radioU8CommSchdCCEAggre1" checked="checked" >聚合度4</input>
+								<input type="radio" name="u8CommSchdCCEAggre" value="1" id="radioU8CommSchdCCEAggre2"  style="margin-left:50px;">聚合度8</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="b8DvrbEnable">
+							<td>DVRB功能开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="b8DvrbEnable" value="0" id="radioB8DvrbEnable1" checked="checked">关</input>
+								<input type="radio" name="b8DvrbEnable" value="1" id="radioB8DvrbEnable2"  style="margin-left:83px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8UlMumimoEnable">
+							<td>UL MU-MIMO使能开关 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8UlMumimoEnable" value="0"  checked="checked">关</input>
+								<input type="radio" name="u8UlMumimoEnable" value="1"  style="margin-left:83px;">开</input>
+							</td>
+							<td></td>						
+						</tr>
+						<tr class="u8UlMumimoOrthThresh">
+							<td>UL MU-MIMO 正交性门限(0~1,步长0.01) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlMumimoOrthThresh" value="0.8"/></td>
+							<td id="u8UlMumimoOrthThreshError" class="error"></td>
+						</tr>
+						<tr class="u8UlMumimoSinrThresh">
+							<td>UL MU-MIMO SINR门限(0~20) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8UlMumimoSinrThresh" value="5"/></td>
+							<td id="u8UlMumimoSinrThreshError" class="error"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+			
+		</form>
+		</div>
+</body>
+</html>

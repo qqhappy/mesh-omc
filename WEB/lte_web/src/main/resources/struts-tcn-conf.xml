@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- tcn系统配置 -->
+	<package name="tcn-conf" extends="struts-base" namespace="/lte">
+		
+		<!-- 登陆拦截-->
+		<default-interceptor-ref name="loginInterceptorStack" />
+
+		<!-- 加载左侧系统配置页面 -->
+		<action name="showSysConfigLeft" class="com.xinwei.lte.web.lte.action.LteTurnAction"
+			method="showSysConfigLeft">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/lte_system_config_left.html</result>
+		</action>
+
+		<!-- 跳转至系统地址页面 -->
+		<action name="turntoSysAddress"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="turntoSysAddress">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_address.html</result>
+		</action>
+		
+		<!-- 查询系统地址信息 -->
+		<action name="searchSysAddressInfo"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="searchSysAddressInfo">
+		</action>
+
+		<!-- 跳转至系统地址配置页面 -->
+		<action name="turntoSysAddressAdd"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="turntoSysAddressAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_address_add.html</result>
+		</action>
+
+		<!-- 增加系统地址 -->
+		<action name="addSysAddress"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="addSysAddress">
+		</action>
+		
+		<!-- 跳转到修改系统地址 -->
+		<action name="toModifySysAddress"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="toModifySysAddress">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_address_modify.html</result>
+		</action>
+
+		<!-- 修改系统地址 -->
+		<action name="modifySysAddress"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="modifySysAddress">
+		</action>
+		
+		<!-- 删除系统地址 -->
+		<action name="deleteSysAddress"
+			class="com.xinwei.lte.web.lte.action.SysConfigAddrAction" method="deleteSysAddress">
+		</action>
+		
+		<!-- 跳转至系统全局配置修改页面 -->
+		<action name="toModifyWholeConfig"
+			class="com.xinwei.lte.web.lte.action.SysConfigAllConfAction" method="toModifyWholeConfig">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_conf_modify.html</result>
+		</action>
+
+		<!-- 修改系统全局配置修改页面 -->
+		<action name="modifyWholeConfig"
+			class="com.xinwei.lte.web.lte.action.SysConfigAllConfAction" method="modifyWholeConfig">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_conf_modify.html</result>
+		</action>
+		<!-- 获取核心网ran地址-->
+		<action name="queryRanIp" class="com.xinwei.lte.web.enb.action.simplify.QueryRanIpAction"
+			method="queryRanIp">
+		</action>
+
+		<!-- 跳转至MME S1链路页面 -->
+		<action name="turntoS1" class="com.xinwei.lte.web.lte.action.SysConfigS1Action"
+			method="turntoS1">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_s1.html</result>
+		</action>
+
+		<!-- 跳转至MME S1链路配置页面 -->
+		<action name="turntoS1Add" class="com.xinwei.lte.web.lte.action.SysConfigS1Action"
+			method="turntoS1Add">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_s1_add.html</result>
+		</action>
+
+		<!-- 增加MME S1链路 -->
+		<action name="addS1" class="com.xinwei.lte.web.lte.action.SysConfigS1Action"
+			method="addS1">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_s1_add.html</result>
+		</action>
+
+		<!-- 跳转到修改MME S1链路 -->
+		<action name="toModifyS1" class="com.xinwei.lte.web.lte.action.SysConfigS1Action"
+			method="toModifyS1">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_s1_modify.html</result>
+		</action>
+
+		<!-- 修改MME S1链路 -->
+		<action name="modifyS1" class="com.xinwei.lte.web.lte.action.SysConfigS1Action"
+			method="modifyS1">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_s1_modify.html</result>
+		</action>
+
+		<!-- 删除MME S1链路 -->
+		<action name="deleteS1" class="com.xinwei.lte.web.lte.action.SysConfigS1Action"
+			method="deleteS1">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_s1_modify.html</result>
+		</action>
+
+		<!-- 跳转至MME TA列表页面 -->
+		<action name="turntoTa" class="com.xinwei.lte.web.lte.action.SysConfigTaAction"
+			method="turntoTa">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_ta.html</result>
+		</action>
+
+		<!-- 跳转至MME TA列表增加页面 -->
+		<action name="turntoTaAdd" class="com.xinwei.lte.web.lte.action.SysConfigTaAction"
+			method="turntoTaAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_ta_add.html</result>
+		</action>
+
+		<!-- 同步跟踪区码 -->
+		<action name="syncTa" class="com.xinwei.lte.web.lte.action.SyncTaAction" method="syncTa">
+		</action>
+
+		<!-- 增加MME TA列表 -->
+		<action name="addTa" class="com.xinwei.lte.web.lte.action.SysConfigTaAction"
+			method="addTa">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_ta_add.html</result>
+		</action>
+
+		<!-- 跳转至修改MME TA列表页面 -->
+		<action name="toModifyTa" class="com.xinwei.lte.web.lte.action.SysConfigTaAction"
+			method="toModifyTa">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_ta_modify.html</result>
+		</action>
+
+		<!-- 修改MME TA列表 -->
+		<action name="modifyTa" class="com.xinwei.lte.web.lte.action.SysConfigTaAction"
+			method="modifyTa">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_ta_modify.html</result>
+		</action>
+
+		<!-- 删除MME TA列表 -->
+		<action name="deleteTa" class="com.xinwei.lte.web.lte.action.SysConfigTaAction"
+			method="deleteTa">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_ta_modify.html</result>
+		</action>
+		
+		<!-- 系统紧急呼叫-->
+		<action name="sysEmgcfg" class="com.xinwei.lte.web.lte.action.SysEmgcfgAction">
+			<result name="toSysEmgcfg" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_emgcfg.html</result>
+			<result name="toSysEmgcfgAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_emgcfg_add.html</result>
+			<result name="toSysEmgcfgModify" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_emgcfg_modify.html</result>
+		</action>
+		
+		<!-- 跳转至SIP路由页面 -->
+		<action name="turntoSip" class="com.xinwei.lte.web.lte.action.SysConfigSipAction"
+			method="turntoSip">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sip.html</result>
+		</action>
+
+		<!-- 跳转至SIP路由配置页面 -->
+		<action name="turntoSipAdd" class="com.xinwei.lte.web.lte.action.SysConfigSipAction"
+			method="turntoSipAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sip_add.html</result>
+		</action>
+
+		<!-- 添加SIP路由 -->
+		<action name="addSip" class="com.xinwei.lte.web.lte.action.SysConfigSipAction"
+			method="addSip">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sip_add.html</result>
+		</action>
+		
+		<!-- 跳转到修改SIP路由 -->
+		<action name="toModifySip" class="com.xinwei.lte.web.lte.action.SysConfigSipAction"
+			method="toModifySip">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sip_modify.html</result>
+		</action>
+		
+		<!-- 修改SIP路由 -->
+		<action name="modifySip" class="com.xinwei.lte.web.lte.action.SysConfigSipAction"
+			method="modifySip">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sip_modify.html</result>
+		</action>
+
+		<!-- 删除SIP路由 -->
+		<action name="deleteSip" class="com.xinwei.lte.web.lte.action.SysConfigSipAction"
+			method="deleteSip">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sip_modify.html</result>
+		</action>
+		
+		<!-- 静态路由-->
+		<action name="sroute"
+			class="com.xinwei.lte.web.lte.action.SysConfigSrouteAction">
+			<result name="toSroute" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sroute.html</result>
+			<result name="toSrouteAdd" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sroute_add.html</result>
+		</action>
+		
+		<!-- 跳转至号码分析页面-->
+		<action name="turntoNumAnalyse" class="com.xinwei.lte.web.lte.action.SysConfigNumAction"
+			method="turntoNumAnalyse">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_num.html</result>
+		</action>
+
+		<!-- 跳转至号码分析配置页面-->
+		<action name="turntoNumAnalyseAdd" class="com.xinwei.lte.web.lte.action.SysConfigNumAction"
+			method="turntoNumAnalyseAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_num_add.html</result>
+		</action>
+
+		<!-- 增加号码分析 -->
+		<action name="addNumAnalyse" class="com.xinwei.lte.web.lte.action.SysConfigNumAction"
+			method="addNumAnalyse">
+		</action>
+
+		<!-- 跳转至号码分析修改页面-->
+		<action name="toModifyNumAnalyse" class="com.xinwei.lte.web.lte.action.SysConfigNumAction"
+			method="toModifyNumAnalyse">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_num_modify.html</result>
+		</action>
+
+		<!-- 修改号码分析 -->
+		<action name="modifyNumAnalyse" class="com.xinwei.lte.web.lte.action.SysConfigNumAction"
+			method="modifyNumAnalyse">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_num_modify.html</result>
+		</action>
+
+		<!-- 删除号码分析 -->
+		<action name="deleteNumAnalyse" class="com.xinwei.lte.web.lte.action.SysConfigNumAction"
+			method="deleteNumAnalyse">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_num_modify.html</result>
+		</action>
+
+		<!-- 跳转至系统全局信息页面 -->
+		<action name="turntoWholeInfo"
+			class="com.xinwei.lte.web.lte.action.SysConfigAllInfoAction" method="turntoWholeInfo">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_info.html</result>
+		</action>
+		
+		<!-- 显示网管配置管理主界面-->
+		<action name="turntoWebMaster" class="com.xinwei.lte.web.lte.action.WebMasterAction"
+			method="turntoWebMaster">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/web_master.html</result>
+		</action>
+		
+		<!-- 跳转到网管配置管理修改界面-->
+		<action name="turntoWebMasterModify" class="com.xinwei.lte.web.lte.action.WebMasterAction"
+			method="turntoWebMasterModify">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/web_master_modify.html</result>
+		</action>
+		
+		<!--修改网管配置 -->
+		<action name="modifyWebMaster" class="com.xinwei.lte.web.lte.action.WebMasterAction"
+			method="modifyWebMaster">
+		</action>
+		
+		<!-- 重连 -->
+		<action name="relinkWebMaster" class="com.xinwei.lte.web.lte.action.WebMasterAction"
+			method="relinkWebMaster">
+		</action>
+		
+		<!-- 查询目录下备份的文件  -->
+		<action name="queryBackupFiles" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="queryBackupFiles">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/backupAndRestore.html</result>
+		</action>
+		
+		<!-- 跳转至新增备份文件-->
+		<action name="toAddRestoreHtml" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="toAddRestoreHtml">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/backupAndRestore_add.html</result>
+		</action>
+		
+		<!-- 新增备份文件  -->
+		<action name="uploadBackupFile" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="uploadBackupFile">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/backupAndRestore_add.html</result>
+		</action>
+		
+		<!-- 校验是否有重名文件-->
+		<action name="checkRepetitiveName" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="checkRepetitiveName">
+		</action>
+		
+		<!-- 删除文件  -->
+		<action name="deleteBackupFile" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="deleteBackupFile">
+		</action>
+		
+		<!-- 下载文件  -->
+		<action name="downloadBackupFile" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="downloadBackupFile">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/backupAndRestore.html</result>
+		</action>
+		
+		<!-- 备份  -->
+		<action name="backup" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="backup">
+		</action>
+		
+		<!-- 恢复  -->
+		<action name="restore" class="com.xinwei.lte.web.lte.action.TcnBackupAndRestoreAction" method="restore">
+		</action>
+		
+		<!-- TCN1000漫游组网数据同步查询 -->
+		<action name="roamDataSyncQuery"
+			class="com.xinwei.lte.web.lte.action.TcnRoamDataSyncAction" method="query">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/roam_data_sync_conf.html</result>
+		</action>
+		
+		<!-- TCN1000漫游组网数据同步配置 -->
+		<action name="roamDataSyncConfig"
+			class="com.xinwei.lte.web.lte.action.TcnRoamDataSyncAction" method="config">			
+		</action>
+			<!--license查询-->
+		<action name="queryLicense"
+			class="com.xinwei.lte.web.lte.action.LicenseAction" method="queryLicense">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_license.html</result>
+		</action>
+		<!--license导入-->
+			<action name="toImportLicense"
+			class="com.xinwei.lte.web.lte.action.LicenseAction" method="toImportLicense">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_license_add.html</result>
+		</action>
+			<action name="importLicense"
+			class="com.xinwei.lte.web.lte.action.LicenseAction" method="importLicense">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_license.html</result>
+			<result name="SYS_CONFIG_LICENSE_ADD" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_license_add.html</result>
+		</action>
+		<!-- 全局漫游信息 -->
+		<!-- 查询 -->
+		<action name="queryTcnGlobalRoamInfoList"
+			class="com.xinwei.lte.web.lte.action.TcnGlobalRoamInfoAction" method="queryTcnGlobalRoamInfoList">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_RoamInfo.html</result>
+		</action>
+		<!-- 跳转到新页面-->
+		<action name="turnToAddRoamInfoHtml"
+			class="com.xinwei.lte.web.lte.action.TcnGlobalRoamInfoAction" method="turnToAddRoamInfoHtml">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_Raom_add.html</result>
+		</action>
+		<!-- 新增 -->
+		<action name="addTcnGlobalRoamInfo"
+			class="com.xinwei.lte.web.lte.action.TcnGlobalRoamInfoAction" method="addTcnGlobalRoamInfo">
+		</action>
+		<!-- 跳转到修改-->
+		<action name="turnToModifyRoamInfoHtml"
+			class="com.xinwei.lte.web.lte.action.TcnGlobalRoamInfoAction" method="turnToModifyRoamInfoHtml">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_Raom_modify.html</result>
+		</action>
+		<!-- 修改 -->
+		<action name="modifyTcnGlobalRoamInfo"
+			class="com.xinwei.lte.web.lte.action.TcnGlobalRoamInfoAction" method="modifyTcnGlobalRoamInfo">
+		</action>
+		<!-- 删除 -->
+		<action name="deleteTcnGlobalRoamInfo"
+			class="com.xinwei.lte.web.lte.action.TcnGlobalRoamInfoAction" method="deleteTcnGlobalRoamInfo">
+		</action>
+		
+		
+		<!-- 录音 -->
+		<!-- 查询 -->
+		<action name="queryTcnVmrLink"
+			class="com.xinwei.lte.web.lte.action.TcnVmrLinkAction" method="query">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_tcnVmrLink.html</result>
+		</action>
+		<action name="configTcnVmrLink"
+			class="com.xinwei.lte.web.lte.action.TcnVmrLinkAction" method="config">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_tcnVmrLink.html</result>
+		</action>
+		<!--cpu门限查询-->
+		<action name="queryCpuThreshold"
+			class="com.xinwei.lte.web.lte.action.CupThresholdAction" method="queryCpuThreshold">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_cpuThreshold.html</result>
+		</action>
+		
+		<action name="querySmscCenter"
+			class="com.xinwei.lte.web.lte.action.SmscCenterAction" method="query">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_smscCenter.html</result>
+		</action>
+		
+		<action name="configSmscCenter"
+			class="com.xinwei.lte.web.lte.action.SmscCenterAction" method="config">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_smscCenter.html</result>
+		</action>
+		
+		<action name="configCpuThreshold"
+			class="com.xinwei.lte.web.lte.action.CupThresholdAction" method="config">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_cpuThreshold.html</result>
+		</action>
+		
+		<!-- PDT配置信息-->
+		<action name="pdtConfig" class="com.xinwei.lte.web.lte.action.PdtConfigInfoAction">
+			<result name="SHOW_CONFIG_INFO" type="freemarker">/WEB-INF/Manager/tcn1000/content/pdt_config_info.html</result>
+			<result name="TO_ADD_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/pdt_config_into_add.html</result>
+			<result name="TO_MODIFY_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/pdt_config_info_modify.html</result>
+		</action>
+		
+		<!-- HA信息-->
+		<action name="haInfo" class="com.xinwei.lte.web.lte.action.HaInfoAction">
+			<result name="SHOW_CONFIG_INFO" type="freemarker">/WEB-INF/Manager/tcn1000/content/ha_info.html</result>
+			<result name="TO_MODIFY_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/ha_info_modify.html</result>
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/ha_info.html</result>
+		</action>
+		
+			<!-- 同播区域配置-->
+		<action name="showSameRegionConfigInfo" class="com.xinwei.lte.web.lte.action.SameRegionAction" method="showSameRegionConfigInfo">
+			<result name="SHOW_CONFIG_INFO" type="freemarker">/WEB-INF/Manager/tcn1000/content/same_region_info.html</result>
+		</action>
+		<action name="toAddPage" class="com.xinwei.lte.web.lte.action.SameRegionAction" method="toAddPage">
+			<result name="TO_ADD_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/same_region_info_add.html</result>
+		</action>
+		<action name="addSameRegion" class="com.xinwei.lte.web.lte.action.SameRegionAction" method="addSameRegion">
+		</action>
+		<action name="deleteSameRegions" class="com.xinwei.lte.web.lte.action.SameRegionAction" method="deleteSameRegions">
+		</action>
+		<action name="toSaveRegionModifyPage" class="com.xinwei.lte.web.lte.action.SameRegionAction" method="toSaveRegionModifyPage">
+			<result name="TO_ADD_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/same_region_info_modify.html</result>
+		</action>
+		<action name="modifySameRegion" class="com.xinwei.lte.web.lte.action.SameRegionAction" method="modifySameRegion">
+		</action>
+		<!--数据同播组IP配置表-->
+		<action name="showDataGroupIp" class="com.xinwei.lte.web.lte.action.DataGroupIpAction" method="showDataGroupIp">
+			<result name="SHOW_CONFIG_INFO" type="freemarker">/WEB-INF/Manager/tcn1000/content/data_groupIp_info.html</result>
+		</action>
+		<action name="toDataGroupIpAddPage" class="com.xinwei.lte.web.lte.action.DataGroupIpAction" method="toDataGroupIpAddPage">
+			<result name="TO_ADD_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/data_groupIp_info_add.html</result>
+		</action>
+		<action name="deleteDataGroupIps" class="com.xinwei.lte.web.lte.action.DataGroupIpAction" method="deleteDataGroupIps">
+		</action>
+		
+		<action name="toDataGroupIpModifyPage" class="com.xinwei.lte.web.lte.action.DataGroupIpAction" method="toDataGroupIpModifyPage">
+			<result name="TO_MODIFY_PAGE" type="freemarker">/WEB-INF/Manager/tcn1000/content/data_groupIp_info_modify.html</result>
+		</action>
+		<action name="modifyDataGroupIp" class="com.xinwei.lte.web.lte.action.DataGroupIpAction" method="modifyDataGroupIp">
+		</action>
+			<!--企业短信平台-->
+		<action name="queryOaSms" class="com.xinwei.lte.web.lte.action.OaSmsAction" method="queryOaSms">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_oaSms.html</result>
+		</action>
+		<action name="configOASms" class="com.xinwei.lte.web.lte.action.OaSmsAction" method="configOASms">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_oaSms.html</result>
+		</action>
+		
+		<!--APP白名单-->
+		<action name="queryWhiteAppNameList" class="com.xinwei.lte.web.lte.action.WhiteAppNameAction" method="queryWhiteAppNameList">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_whitename.html</result>
+		</action>
+		<action name="deleteWhiteAppName" class="com.xinwei.lte.web.lte.action.WhiteAppNameAction" method="deleteWhiteAppName">
+		</action>
+		<action name="turnToAddWhiteAppName" class="com.xinwei.lte.web.lte.action.WhiteAppNameAction" method="turnToAddWhiteAppName">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_whiteappname_add.html</result>
+		</action>
+		
+		<action name="toWhiteAppNameModify" class="com.xinwei.lte.web.lte.action.WhiteAppNameAction" method="toWhiteAppNameModify">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_whiteAppName_modify.html</result>
+		</action>
+		<action name="addWhiteAppName" class="com.xinwei.lte.web.lte.action.WhiteAppNameAction" method="addWhiteAppName">
+		</action>
+		<action name="modifyWhiteAppName" class="com.xinwei.lte.web.lte.action.WhiteAppNameAction" method="modifyWhiteAppName">
+		</action>
+			
+			<!--同步周期和同步序列-->
+		<action name="querySync" class="com.xinwei.lte.web.lte.action.SysSyncAction" method="querySync">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sync.html</result>
+		</action>
+		<action name="configSync" class="com.xinwei.lte.web.lte.action.SysSyncAction" method="configSync">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_sync.html</result>
+		</action>	
+		
+		
+			<!--PGIS服务器信息-->
+		<action name="queryPgis" class="com.xinwei.lte.web.lte.action.PgisAction" method="queryPgis">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_pgis.html</result>
+		</action>
+		<action name="configPgis" class="com.xinwei.lte.web.lte.action.PgisAction" method="configPgis">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_pgis.html</result>
+		</action>	
+			<!-- 跳转至白名单页面 -->
+		<action name="turntoBaiName" class="com.xinwei.lte.web.lte.action.BaiNameAction"
+			method="turntoBaiName">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_baiName.html</result>
+		</action>
+		<action name="turntoBaiNameAdd" class="com.xinwei.lte.web.lte.action.BaiNameAction"
+			method="turntoBaiNameAdd">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_bai_add.html</result>
+		</action>
+		
+		<action name="addBaiName" class="com.xinwei.lte.web.lte.action.BaiNameAction"
+			method="addBaiName">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_bai_add.html</result>
+		</action>
+		
+		<action name="toModifyBaiName" class="com.xinwei.lte.web.lte.action.BaiNameAction"
+			method="toModifyBaiName">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_baiName_modify.html</result>
+		</action>
+		<action name="modifyBaiName" class="com.xinwei.lte.web.lte.action.BaiNameAction"
+			method="modifyBaiName">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_baiName_modify.html</result>
+		</action>
+		
+		<action name="deleteBaiName" class="com.xinwei.lte.web.lte.action.BaiNameAction"
+			method="deleteBaiName">
+			<result name="success" type="freemarker">/WEB-INF/Manager/tcn1000/content/sys_config_baiName.html</result>
+		</action>
+		
+	</package>
+</struts>

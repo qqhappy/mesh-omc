@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class
+		name="com.xinwei.minas.mcbts.core.model.sysManage.McBtsVersionHistory"
+		table="mcbts_version_dl_history">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="btsId" type="java.lang.Long">
+			<column name="btsId" not-null="true" />
+		</property>
+		<property name="btsType" type="java.lang.Integer">
+			<column name="btsType" not-null="true" />
+		</property>
+		<property name="version" type="java.lang.String">
+			<column name="version" not-null="true" />
+		</property>
+		<property name="actionResult" type="java.lang.Integer">
+			<column name="actionResult" not-null="true" />
+		</property>
+		<property name="startTime" type="java.util.Date">
+			<column name="startTime" not-null="true" />
+		</property>
+		<property name="endTime" type="java.util.Date">
+			<column name="endTime" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

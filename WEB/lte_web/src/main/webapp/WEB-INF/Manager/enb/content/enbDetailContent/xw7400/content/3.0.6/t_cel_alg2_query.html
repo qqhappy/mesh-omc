@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/i18n.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.6/t_cel_alg2.js"></script>
+<script type="text/javascript">
+	$(function(){
+		if(${listLength}<1){
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		checkLevelLen();
+	});
+</script>
+<title>单板表</title>
+</head>
+<body style="overflow:hidden;">
+<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>小区算法参数表2</a>
+		</div>
+		<div class="ltePage"> 
+			<div class="toolBar">			
+				<ul>
+<!-- 					<li><label></label><input type="button" id="newAdd" value="新增" onclick = "turnToAddData('${enbVersion}','${base}','${moId}','T_CEL_ALG2-3.0.6','T_CEL_PARA','')"/></li> -->
+					<li><label></label><input type="button" id="fresh" value="刷新" onclick = "refresh_sync('${enbVersion}','${base}','${moId}','T_CEL_ALG2-3.0.6','')"/></li>
+<!-- 					<li><label></label><input type="button" id="delete" value="批量删除" onclick="multiDelete_sync('t_cel_alg2','u8CId','${enbVersion}','${base}','${moId}','T_CEL_ALG2-3.0.6','')"/></li> -->
+				
+				</ul>
+			</div>
+		<div style="width:1500px;padding-right:20px;" class="dynamicLengthDiv">
+<!-- 		<div class="tableHeight"> -->
+		<table width="100%"  id="t_cel_alg2" class="changeRowColor">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col" class="justForView" width="50px;">修改</th>
+			<th scope="col" class="u8CId">小区标识</th>
+			<th scope="col" class="u8CceAdapMode">CCE自适应模式</th>
+			<th scope="col" class="u16PdcchPowerOffset">Pdcch自适应基准功率偏移</th>
+			<th scope="col" class="u8MatrixType">接收天线合并类型</th>
+			<th scope="col" class="u8UlMuMimoPwrThresh">UL MU-MIMO 功率门限(dBm)</th>
+			<th scope="col" class="u8UlMuMimoRbRatio">UL MU-MIMO 正交性RB比例</th>
+			<th scope="col" class="u8UlMuMimoTbsizeGama">UL MU-MIMO 配对后Tbsize增益</th>
+			<th scope="col" class="u8McsForHoRrcCfg">切换重配消息的MCS</th>
+			<th scope="col" class="u8GapPatternId">测量GAP的模式索引</th>
+			<th scope="col" class="justForView" width="60px;">修改</th>
+<!-- 			<th scope="col" class="justForView" width="60px;">删除</th> -->
+		  </tr>
+		  <#if records?size < 1>
+		  	<tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView"></th>
+			<td class="u8CId">暂无相关记录</td>
+			<td class="u8CceAdapMode"></td>
+			<td class="u16PdcchPowerOffset"></td>
+			<td class="u8MatrixType"></td>
+			<td class="u8UlMuMimoPwrThresh"></td>
+			<td class="u8UlMuMimoRbRatio"></td>
+			<td class="u8UlMuMimoTbsizeGama"></td>
+			<td class="u8McsForHoRrcCfg"></td>
+			<td class="u8GapPatternId"></td>
+			<td class="justForView"></td>
+<!-- 			<td class="justForView"></td> -->
+		  </tr>
+		  </#if>
+		 <#list records! as record>
+		  <tr>
+			<th scope="row" class="justForView"><input type="checkbox" value="checkbox" name="checkson"/></th>
+			<th scope="row" class="justForView" style="cursor:pointer;" onclick="turnToModifyData_bySinglePK(this,'u8CId','${enbVersion}','${base}','${moId}','T_CEL_ALG2-3.0.6','','')"><img src="${base}/Manager/js/tree/css/zTreeStyle/img/diy/2.png"></th>
+			<td class="u8CId">${record.fieldMap["u8CId"].value!}</td>
+			<td class="u8CceAdapMode">${record.fieldMap["u8CceAdapMode"].value!}</td>
+			<td class="u16PdcchPowerOffset">${record.fieldMap["u16PdcchPowerOffset"].value!}</td>
+			<td class="u8MatrixType">${record.fieldMap["u8MatrixType"].value!}</td>
+			<td class="u8UlMuMimoPwrThresh">${record.fieldMap["u8UlMuMimoPwrThresh"].value!}</td>
+			<td class="u8UlMuMimoRbRatio">${record.fieldMap["u8UlMuMimoRbRatio"].value!}</td>
+			<td class="u8UlMuMimoTbsizeGama">${record.fieldMap["u8UlMuMimoTbsizeGama"].value!}</td>
+			<td class="u8McsForHoRrcCfg">${record.fieldMap["u8McsForHoRrcCfg"].value!}</td>
+			<td class="u8GapPatternId">${record.fieldMap["u8GapPatternId"].value!}</td>
+			<td class="justForView"  style="cursor:pointer;"  onclick="turnToModifyData_bySinglePK(this,'u8CId','${enbVersion}','${base}','${moId}','T_CEL_ALG2-3.0.6','','')"><a>修改</a></td>
+<!-- 			<td class="justForView"  style="cursor:pointer;" onclick="delete_sync(this,'u8CId','${enbVersion}','${base}','${moId}','T_CEL_ALG2-3.0.6','')"><a>删除</a></td> -->
+		  </tr>
+		 </#list>
+		</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

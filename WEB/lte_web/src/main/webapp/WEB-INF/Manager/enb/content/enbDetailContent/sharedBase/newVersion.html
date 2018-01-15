@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		var percentTaskId = 0;
+		
+		if(${isdownloading} == 1){
+			queryPercent();
+			percentTaskId = setInterval(queryPercent,3000);
+		}
+		//异步请求下载进度
+		function queryPercent(){
+			$.ajax({
+				type:"post",
+				url:"queryPercent.do",
+				data:"enbHexId=${enbHexId!}"+
+					"&browseTime="+getBrowseTime(),
+				dataType:"json",
+				async:false,
+				success:function(data){
+					var basePath = $("#basePath").val();
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					var error = data.model.error;
+					if(error != ""){
+						clearInterval(percentTaskId);
+						var versionName=data.model.versionName;
+						$("#t_version tr").each(function(index){
+							if($("#t_version tr:eq("+index+") td:eq(1)").text() == versionName){
+								$("#t_version tr:eq("+index+") td:eq(4)").html("<span style='color:red'>"+data.model.error+"</span><a style='cursor:pointer'>(重新下载)</a>");
+								$("#t_version tr:eq("+index+") td:eq(4) a").live("click",function(){
+									var fileFileName = $("#t_version tr:eq("+index+") td:eq(2)").text();
+									var versionName = $("#t_version tr:eq("+index+") td:eq(1)").text();
+									var basePath = $("#basePath").val();
+									var moId = $("#moId").val();
+									var enbHexId = $("#enbHexId").val();
+									$.ajax({
+										type:"post",
+										url:"downloadEnbVersion.do",
+										data:"fileFileName="+fileFileName+
+										"&versionName="+versionName+
+										"&moId="+moId+
+										"&enbHexId="+enbHexId+
+										"&browseTime="+getBrowseTime(),
+										dataType:"json",
+										async:false,
+										success:function(data){
+											var basePath = $("#basePath").val();
+											if(!sessionsCheck(data,basePath)){
+												return ;
+											}
+											if(data.para.error != ""){
+												alert(data.para.error);
+											}else if(data.para.downLoadPara == 1){
+												alert("当前有正在下载任务，请勿下载!");
+											}else{
+												$("#t_version tr").each(function(index){
+													if($("#t_version tr:eq("+index+") td:eq(1)").text() == data.para.versionName){
+														$("#t_version tr:eq("+index+") td:eq(4)").text("下载进度: 0%");
+													}				   
+												});
+												percentTaskId = setInterval(queryPercent,3000);
+											}
+										}
+									});	
+								});
+							}				   
+						});	
+					}else{
+						var percent = data.model.percent;
+						var versionName=data.model.versionName;
+						if(data.model.downloadSuccess == 1){
+							$("#t_version tr").each(function(index){
+								if($("#t_version tr:eq("+index+") td:eq(1)").text() == versionName){
+									$("#t_version tr:eq("+index+") td:eq(4)").text("下载完成");
+								}				   
+							});	
+						}else{
+							$("#t_version tr").each(function(index){
+								if($("#t_version tr:eq("+index+") td:eq(1)").text() == versionName){
+									$("#t_version tr:eq("+index+") td:eq(4)").text("下载进度: "+percent+"%");
+								}				   
+							});	
+						}	
+					}
+				}
+			});	
+		}
+		
+		if(${listLength}<1){
+			$("#t_version").html(
+				 '<tr>'
+					+'<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>'
+					+'<th scope="col">基站类型</th>'
+					+'<th scope="col">版本</th>'
+					+'<th scope="col">版本文件名称</th>'
+					+'<th scope="col">版本文件类型</th>'
+					+'<th scope="col" style="width:150px;">下载到eNB</th>'
+// 					+'<th scope="col" style="width:150px;">升级至此版本</th>' 
+				  +'</tr>'
+				+'<tr>'	
+					+'<th scope="row"><input type="checkbox" value="checkbox" name="checkson"/></th>'
+					+'<td>暂无相关数据</td>'
+					+'<td></td>'
+					+'<td></td>'
+					+'<td></td>'
+					+'<td></td>'
+// 					+'<td></td>'
+				+'</tr>'				
+			);
+			$("input[type=checkbox]").attr("disabled",true);
+		}	
+		$("#newAdd").click(function(){
+			window.location.href="${base}/lte/turnAddVersion.do?moId=${moId}&enbHexId=${enbHexId}&enbType=${enbType}&browseTime="+getBrowseTime();
+		});
+		//全选
+		$("#checkfather").live("click",function(){
+			$("[name=checkson]:checkbox").attr("checked",this.checked);
+		});
+		$("[name=checkson]:checkbox").live("click",function(){
+			var flag=true;
+			$("[name=checkson]:checkbox").each(function(){
+				if(!this.checked){
+					flag=false;
+				}
+			});
+			$("#checkfather").attr("checked",flag);
+		});
+		//下载
+		$("#t_version tr").each(function(index){
+			$("#t_version tr:eq("+index+") td:eq(4) a").click(function(){
+				if(confirm("确定进行下载？")){
+					var fileFileName = $("#t_version tr:eq("+index+") td:eq(2)").text();
+					var versionName = $("#t_version tr:eq("+index+") td:eq(1)").text();
+					var basePath = $("#basePath").val();
+					var moId = $("#moId").val();
+					var enbHexId = $("#enbHexId").val();
+					$.ajax({
+						type:"post",
+						url:"downloadEnbVersion.do",
+						data:"fileFileName="+fileFileName+
+						"&versionName="+versionName+
+						"&moId="+moId+
+						"&enbHexId="+enbHexId+
+						"&browseTime="+getBrowseTime(),
+						dataType:"json",
+						async:false,
+						success:function(data){
+							var basePath = $("#basePath").val();
+							if(!sessionsCheck(data,basePath)){
+								return ;
+							}
+							if(data.para.error != ""){
+								alert(data.para.error);
+							}else if(data.para.downLoadPara == 1){
+								alert("当前有正在下载任务，请勿下载!");
+							}else{
+								$("#t_version tr").each(function(index){
+									if($("#t_version tr:eq("+index+") td:eq(1)").text() == data.para.versionName){
+										$("#t_version tr:eq("+index+") td:eq(4)").text("下载进度: 0%");
+									}				   
+								});
+								percentTaskId = setInterval(queryPercent,3000);
+							}
+						}
+					});	
+				}
+			});					   
+		});	
+		//升级
+		$("#t_version tr").each(function(index){
+			$("#t_version tr:eq("+index+") td:eq(5) a").click(function(){
+				var moId = $("#moId").val();
+				$.ajax({
+					type:"post",
+					url:"upGrade.do",
+					data:"moId="+moId+
+						"&browseTime="+getBrowseTime(),
+					dataType:"json",
+					async:false,
+					success:function(data){
+						var basePath = $("#basePath").val();
+						if(!sessionsCheck(data,basePath)){
+							return ;
+						}
+						if(data.error != ""){
+							alert(data.error);
+						}else{
+							alert("升级指令已成功下发");
+						}
+					}
+				});	
+			});					   
+		});	
+		
+		//删除
+		$("#delete").click(function(){
+			$.ajax({
+				type:"post",
+				url:"queryExsitDownloading.do",
+				data:"browseTime="+getBrowseTime(),
+				dataType:"json",
+				async:false,
+				success:function(data){
+					var basePath = $("#basePath").val();
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					if(data.exsitDownloading == 1 ){
+						alert("当前有基站正在进行下载，请勿删除版本文件");
+					}else{
+						var str1=[];
+						var str2=[];
+						$("#t_version input[type=checkbox]").each(function(index){
+							if($("#t_version input[type=checkbox]:eq("+index+")").attr("checked")){
+								var temp1 = $("#t_version tr:eq("+index+") td:eq(1)").text();
+								str1.push(temp1);
+								var temp2 = $("#t_version tr:eq("+index+") td:eq(2)").text();
+								str2.push(temp2);
+							}
+						});	
+						for(var i=0;i<str1.length;i++){
+							if(str1[i]== "" || str1[i]== null){
+								str1.splice(i,1);
+							}
+						}
+						for(var i=0;i<str2.length;i++){
+							if(str2[i]== "" || str2[i]== null){
+								str2.splice(i,1);
+							}
+						}
+						var para = "";
+						for(var i=0;i<str1.length;i++){
+							var s = "versionName"+"="+str1[i]+","
+										+"fileName"+"="+str2[i]+";";
+							para += s;
+						}
+						if(str1.length < 1){
+							alert("您并未选中任何记录...");
+						}else{
+							if(confirm("确定要删除所有选择的记录?")){
+								window.location.href="${base}/lte/queryAllVersion.do?enbType=${enbType}&moId=${moId}&enbHexId=${enbHexId}&isDeleted=1&parameters="+para+"&browseTime="+getBrowseTime();
+							}
+						}
+					}
+				}
+			});	
+				
+		});
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body  style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="parameters" name="parameters"/>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" id="enbType" name="enbType" value="${enbType}"/>
+		<input type="hidden" id="enbHexId" name="enbHexId" value="${enbHexId}"/>
+		<input type="hidden" id="versionName" name="versionName" value="${versionName!}"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>版本管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>版本文件管理</a>
+		</div>
+		<div class="ltePage">
+		<div class="toolBar">
+		
+		<ul>
+		<li><label></label><input type="button" id="newAdd" value="新增"/></li>
+		<li><label></label><input type="button" id="delete" value="删除"/></li>
+		</ul>
+		</div>
+		<div class="tableHeight">
+		<table width="100%" id="t_version">
+		  <tr>
+			<th scope="col"  class="checkWidth"> <input type="checkbox" value="checkbox" id="checkfather"/></th>
+			<th scope="col">基站类型</th>
+			<th scope="col">版本</th>
+			<th scope="col">版本文件名称</th>
+			<th scope="col">版本文件类型</th>
+			<th scope="col" style="width:150px;">下载到eNB</th>
+<!-- 			<th scope="col" style="width:150px;">升级至此版本</th> -->
+		  </tr>
+		  <#list versionList! as version>
+			<tr>
+				<th scope="row"><input type="checkbox" name="checkson" value="checkbox" /></th>			
+				<td>${version.btsTypeName!}</td>
+				<td>${version.versionName!}</td>
+				<td>${version.fileName!}</td>
+				<td>${version.fileType!}</td>
+				<td><a style="cursor:pointer;">下载到eNB</a></td>
+<!-- 				<td><a style="cursor:pointer;">升级至此版本</a></td> -->
+			</tr>
+		   </#list>
+		</table>
+		</div>
+		</div>
+	</div>
+</body>
+</html>

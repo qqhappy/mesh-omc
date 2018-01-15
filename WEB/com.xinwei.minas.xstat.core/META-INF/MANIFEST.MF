@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: com.xinwei.minas.xstat.core
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: XINWEI
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.xinwei.minas.xstat.core.model,
+ com.xinwei.minas.xstat.core.util

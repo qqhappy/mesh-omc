@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-3-9 16:30:01 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.enb.core.model.xstat.CounterItemConfig"
+		table="enb_counter_config">
+		<id name="counterId" type="int">
+			<column name="counterId" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="statObject" type="java.lang.String">
+			<column name="statObject" not-null="true" />
+		</property>
+		<property name="reportSystem" type="java.lang.String">
+			<column name="reportSystem" not-null="true" />
+		</property>
+		<property name="measureType" type="java.lang.String">
+			<column name="measureType" not-null="true" />
+		</property>
+		<property name="measureEvent" type="java.lang.String">
+			<column name="measureEvent" not-null="true" />
+		</property>
+		<property name="counterName_zh" type="java.lang.String">
+			<column name="counterName_zh" not-null="true" />
+		</property>
+		<property name="counterName_en" type="java.lang.String">
+			<column name="counterName_en" not-null="true" />
+		</property>
+		<property name="counterDesc_zh" type="java.lang.String">
+			<column name="counterDesc_zh" not-null="true" />
+		</property>
+		<property name="counterDesc_en" type="java.lang.String">
+			<column name="counterDesc_en" not-null="true" />
+		</property>
+		<property name="unit" type="java.lang.String">
+			<column name="unit" not-null="true" />
+		</property>
+		<property name="dataType" type="java.lang.String">
+			<column name="dataType" not-null="true" />
+		</property>
+		<property name="timeType" type="java.lang.String">
+			<column name="timeType" not-null="true" />
+		</property>
+		<property name="spaceType" type="java.lang.String">
+			<column name="spaceType" not-null="true" />
+		</property>
+		<property name="exp" type="java.lang.String">
+			<column name="exp" not-null="false" />
+		</property>
+		<property name="remark" type="int">
+			<column name="remark" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

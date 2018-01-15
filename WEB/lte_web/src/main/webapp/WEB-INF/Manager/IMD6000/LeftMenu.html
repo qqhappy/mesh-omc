@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公共头部</title>
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/tree.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/demo.css" type="text/css" />
+<link rel="stylesheet" href="${base}/Manager/js/tree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/tree/js/jquery.ztree.core-3.5.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: true,
+				selectedMulti: false
+			},	
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+		var zNode = [
+			{ id:1, pId:0, name:"终端管理",url:"${base}/uem_web/UE/QueryUE.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:2, pId:0, name:"服务器配置",url:"${base}/uem_web/QueryServer.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:3, pId:0, name:"终端用户注册",open:true,iconSkin:"pIcon05"},
+			{ id:31, pId:3, name:"用户信息",url:"${base}/lte/turntoUserInfo.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:32, pId:3, name:"用户参数模板",url:"${base}/lte/turntoUserTemplate.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:33, pId:3, name:"用户状态",url:"${base}/lte/turntoUserStatus.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:34, pId:3, name:"无线终端IMSI",url:"${base}/lte/turntoImsi.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:35, pId:3, name:"用户IP资源",url:"${base}/lte/turntoIpResource.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:36, pId:3, name:"QoS",url:"${base}/lte/turntoQos.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:37, pId:3, name:"呼叫QoS",url:"${base}/lte/callQos!turntoCallQos.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:38, pId:3, name:"业务IP QoS",url:"${base}/lte/ipQos!turntoIpQos.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:39, pId:3, name:"视频监控设备",url:"${base}/lte/vmgCfg!turntoVmgCfg.do",target:"mainFrame", iconSkin:"icon01"},
+			{ id:39, pId:3, name:"视频监控号码",url:"${base}/lte/vmgNum!turntoVmgNum.do",target:"mainFrame", iconSkin:"icon01"}
+			
+		];
+		 
+		$.fn.zTree.init($("#treeDemo"), setting, zNode);
+			
+ 		$("#leftDivOne ul li:eq(0) a").addClass("curSelectedNode");
+
+		$("#leftDivOne ul li").delegate("a","click",function(e){
+			$("#leftDivOne ul li a.curSelectedNode").removeClass("curSelectedNode");
+			$(this).addClass("curSelectedNode");
+		});
+
+	});
+</script>
+</head>
+<body style="background:#e9f6fe;">
+<div class="left_nav">
+		<div class="title" style="font-size:12px;">终端管理</div>
+		<div id="leftDivOne">
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+</div>
+</body>
+</html>

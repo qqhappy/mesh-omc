@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.layer2.TConfAntijammingParam"
+		table="t_conf_antijamming_param">
+		<id name="idx" type="long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="moId" type="long">
+			<column name="moId" not-null="true"/>
+		</property>
+		<property generated="never" lazy="false" name="jumpFreqSwitch"
+			type="int">
+			<column name="jumpFreqSwitch" />
+		</property>
+		<property generated="never" lazy="false" name="jumpFreqCIMaxThreshold"
+			type="int">
+			<column name="jumpFreqCIMaxThreshold" />
+		</property>
+		<property generated="never" lazy="false" name="jumpFreqCIAvgThreshold"
+			type="int">
+			<column name="jumpFreqCIAvgThreshold" />
+		</property>
+		<property generated="never" lazy="false" name="jumpFreqOverThresholdTime"
+			type="int">
+			<column name="jumpFreqOverThresholdTime" />
+		</property>
+		<property generated="never" lazy="false" name="fallLevelSwitch"
+			type="int">
+			<column name="fallLevelSwitch" />
+		</property>
+		<property generated="never" lazy="false" name="fallLevelMaxThreshold"
+			type="int">
+			<column name="fallLevelMaxThreshold" />
+		</property>
+		<property generated="never" lazy="false" name="fallLevelCIAvgThreshold"
+			type="int">
+			<column name="fallLevelCIAvgThreshold" />
+		</property>
+		<property generated="never" lazy="false" name="fallLevelOverThresholdTime"
+			type="int">
+			<column name="fallLevelOverThresholdTime" />
+		</property>
+		<property generated="never" lazy="false" name="lowestLevel"
+			type="int">
+			<column name="lowestLevel" />
+		</property>
+	</class>
+</hibernate-mapping>                                

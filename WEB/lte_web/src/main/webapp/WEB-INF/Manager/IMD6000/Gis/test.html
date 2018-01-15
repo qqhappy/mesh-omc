@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+<title>gdc gis test</title>
+<script type="text/javascript" src="conf.txt"></script>
+<script type="text/javascript" src="mapfiles/mapapi.js"></script>
+<script type="text/javascript">
+
+// 西安 经度 108.87 纬度 34.228
+	var map = null;
+
+	function XinWeilMapType(imageFileDir, imageFileExtend, errorImageUrl) {
+		this.imageFileDir = imageFileDir;
+		this.imageFileExtend = imageFileExtend;
+		this.errorImageUrl = errorImageUrl;
+	}
+	XinWeilMapType.prototype.tileSize = new google.maps.Size(256, 256);
+	XinWeilMapType.prototype.setMaxZoom = function(maxZoom) {
+		this.maxZoom = maxZoom;
+	}
+	XinWeilMapType.prototype.setMinZoom = function(minZoom) {
+		this.minZoom = minZoom;
+	}
+	XinWeilMapType.prototype.setName = function(name) {
+		this.name = name;
+	}
+	XinWeilMapType.prototype.setAlt = function(alt) {
+		this.alt = alt;
+	}
+	XinWeilMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+		var img = ownerDocument.createElement("img");
+		img.style.width = this.tileSize.width + "px";
+		img.style.height = this.tileSize.height + "px";
+
+		var strURL = this.imageFileDir + "/" + zoom + "/" + coord.x + "/" + coord.y + this.imageFileExtend;
+
+		//console.log("x "+coord.x +" y "+coord.y +" imageFileExtend "+this.imageFileExtend);
+		//console.log(" strURL "+strURL);
+		img.src = strURL;
+		var errorImage = this.errorImageUrl;
+		img.onerror = function() {
+			this.src = errorImage
+		};
+		return img;
+	}
+
+	function XinWeilOverlayMapType(imageFileDir, imageFileExtend) {
+		this.imageFileDir = imageFileDir;
+		this.imageFileExtend = imageFileExtend;
+	}
+	XinWeilOverlayMapType.prototype.tileSize = new google.maps.Size(256, 256);
+	XinWeilOverlayMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+
+		//ǵͼ·
+		var strURL = this.imageFileDir + "/" + zoom + "/" + coord.x + "/" + coord.y + this.imageFileExtend;
+
+		var img = ownerDocument.createElement("img");
+		img.style.width = this.tileSize.width + "px";
+		img.style.height = this.tileSize.height + "px";
+
+		img.src = strURL;
+		var errorImage = this.errorImageUrl;
+		img.onerror = function() {
+			//this.src = "images\\transparent.png"
+			this.parentNode.removeChild(this);
+		};
+
+		//var div = ownerDocument.createElement('DIV');
+		
+		//div.style.width = this.tileSize.width + "px";
+		//div.style.height = this.tileSize.height + "px";
+		//div.appendChild(img);
+		return img;
+	};
+
+	function initialize() {
+		var initLatlng = new google.maps.LatLng(initCenterLatitude, initCenterLongitude);
+		var initMapTypeControlOptions = {mapTypeIds : [ 'mySatellite', 'myRoadmap' ]};
+	  var initMapTypeControl = false;
+   switch (mapType) {
+	 case 1:// Զroadmapͼ
+	  initMapTypeControlOptions = {mapTypeIds : ['myRoadmap' ]};
+	  initMapTypeControl = false;
+		break;
+	 case 2:// Զǵͼ
+		initMapTypeControlOptions = {mapTypeIds : ['mySatellite']};
+		initMapTypeControl = false;
+		break;
+	 case 3:
+    initMapTypeControlOptions = {mapTypeIds : [ 'mySatellite', 'myRoadmap' ]};
+    initMapTypeControl=true;
+		break;
+	 default:
+		break;
+	}
+
+		var myOptions = {
+			center : initLatlng,
+			zoom : initZoom,
+			streetViewControl : false,
+			mapTypeControl : initMapTypeControl,
+			mapTypeControlOptions :initMapTypeControlOptions
+		};
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		
+		new google.maps.Marker({
+    	position:initLatlng,
+    	map:map,
+    	icon:"images/green-ue.png"
+    });
+		
+		// ιȸͼԭ
+		this.map.mapTypes.set(google.maps.MapTypeId.ROADMAP, null);
+		this.map.mapTypes.set(google.maps.MapTypeId.SATELLITE, null);
+
+		switch (mapType) {
+		case 1:// Զroadmapͼ
+			var roadMapType = new XinWeilMapType("roadmap", ".png", "images/green.png");
+			roadMapType.setMaxZoom(maxZoom);// ͼʾ󼶱
+			roadMapType.setMinZoom(minZoom);// ͼʾС
+			roadMapType.setName(roadMapName);
+			map.mapTypes.set('myRoadmap', roadMapType); // 󶨱ͨͼ
+			map.setMapTypeId('myRoadmap'); // ָʾͨͼ
+			break;
+		case 2:// Զǵͼ
+			var satelliteType = new XinWeilMapType("satellite", ".jpg", "images/green.png");
+			satelliteType.setMaxZoom(maxZoom);// ͼʾ󼶱
+			satelliteType.setMinZoom(minZoom);// ͼʾС
+			satelliteType.setName(satelliteName);
+			map.mapTypes.set('mySatellite', satelliteType); // 󶨱صͼ
+			map.setMapTypeId('mySatellite'); // ָʾصͼ
+			map.overlayMapTypes.insertAt(0, new XinWeilOverlayMapType("overlay", ".png"));
+			break;
+		case 3:
+			// Զroadmapͼ
+			var roadMapType = new XinWeilMapType("roadmap", ".png", "images/green.png");
+			roadMapType.setMaxZoom(maxZoom);// ͼʾ󼶱
+			roadMapType.setMinZoom(minZoom);// ͼʾС
+			roadMapType.setName(roadMapName);
+			map.mapTypes.set('myRoadmap', roadMapType); // 󶨱ͨͼ
+			//map.setMapTypeId('myRoadmap'); // ָʾͨͼ
+			
+			
+			// Զǵͼ
+			var satelliteType = new XinWeilMapType("satellite", ".jpg", "images/green.png");
+			satelliteType.setMaxZoom(maxZoom);// ͼʾ󼶱
+			satelliteType.setMinZoom(minZoom);// ͼʾС
+			satelliteType.setName(satelliteName);
+			map.mapTypes.set('mySatellite', satelliteType); // 󶨱صͼ
+			map.setMapTypeId('mySatellite'); // ָʾصͼ
+			map.overlayMapTypes.insertAt(0, new XinWeilOverlayMapType("overlay", ".png"));
+			
+			
+			
+			// MapTypeIdͷֱ仯ʱ
+			google.maps.event.addListener(map, 'maptypeid_changed', function() {
+				if (map.getMapTypeId() == 'mySatellite') { // Ǳصͼ
+					map.overlayMapTypes.insertAt(0, new XinWeilOverlayMapType("overlay", ".png"));
+				} else {
+					map.overlayMapTypes.clear();
+				}
+			});
+			break;
+		default:
+			break;
+		}
+	}
+</script>
+</head>
+<body onLoad="initialize()">
+	<div id="map_canvas"
+		style="left: 0; top: 0; width: 100%; height: 100%; position: absolute;">
+
+	</div>
+</body>
+</html>

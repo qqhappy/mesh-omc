@@ -1,0 +1,137 @@
+@charset "utf-8";
+/* CSS Document */
+/*一级*/
+.ztree li span.button.pIcon01_ico_open,.ztree li span.button.pIcon01_ico_close
+	{
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/9.png)
+		no-repeat scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*基站、小区*/
+.ztree li span.button.pIcon02_ico_open,.ztree li span.button.pIcon02_ico_close
+	{
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a19.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+
+.ztree li span.button.pIcon03_ico_open,.ztree li span.button.pIcon03_ico_close
+	{
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a17.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*系统*/
+.ztree li span.button.pIcon04_ico_open,.ztree li span.button.pIcon04_ico_close
+	{
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/8.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+
+.ztree li span.button.pIcon05_ico_open,.ztree li span.button.pIcon05_ico_close
+	{
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a9.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+
+
+.ztree li span.button.icon011_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/9.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*表*/
+.ztree li span.button.icon01_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a14.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*开站参数导出*/
+.ztree li span.button.icon02_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/6.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*整表配置*/
+.ztree li span.button.icon03_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a2.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*版本文件管理*/
+.ztree li span.button.icon04_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/3.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*基站、TCN1000*/
+.ztree li span.button.icon05_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a9.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*当前告警*/
+.ztree li span.button.icon06_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/rr.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*历史告警*/
+.ztree li span.button.icon07_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/tt.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*user*/
+.ztree li span.button.icon08_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/a1.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+/*userLog*/
+.ztree li span.button.icon09_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/4.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+.ztree li span.button.icon10_ico_docu {
+	margin-right: 2px;
+	background: url(../../js/tree/css/zTreeStyle/img/diy/7.png) no-repeat
+		scroll 0 0 transparent;
+	vertical-align: top;
+	*vertical-align: middle
+}
+
+

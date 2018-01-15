@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/t_cel_resel.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/2.1.5/fieldLevel_modify.js"></script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<script type="text/javascript">
+	$(function(){ 
+		//$("body select").selectStyle();
+	});
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>小区重选参数配置表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>新增</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_RESEL-2.1.5" name="tableName"/>
+					<input type="hidden" value="add" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td style="width:330px;">小区标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8CId">
+									 <#list referRecords! as record>
+										<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+									 </#list>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="u8CIdError"></td>						
+						</tr>
+						<tr class="u8CellBarred">
+							<td>小区禁止接入指示 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8CellBarred" value="0"  id="radio1" >禁止</input>
+								<input type="radio" name="u8CellBarred" value="1"  id="radio2" checked="checked" style="margin-left:70px;">允许</input>
+							</td>
+							<td class="error" style="width:250px;" id="u8CellBarredError"></td>						
+						</tr>
+						<tr class="u8IntraFReselInd">
+							<td>同频小区重选指示 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8IntraFReselInd" value="0"  id="radioOne1" checked="checked">是</input>
+								<input type="radio" name="u8IntraFReselInd" value="1"  id="radioOne2"  style="margin-left:83px;">否</input>
+							</td>
+							<td class="error" style="width:250px;" id="u8IntraFReselIndError"></td>						
+						</tr>
+						<tr class="u8SelQrxLevMin">
+							<td>小区选择最小RSRP(-140~-44,步长为2)(dBm) :</td> 
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="-122" id="u8SelQrxLevMin"/></td>
+							<td class="error" style="width:250px;" id="u8SelQrxLevMinError"></td>						
+						</tr>
+						<tr class="u8QrxLevMinOfst">
+							<td>小区选择最小RSRP偏移(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8QrxLevMinOfst">
+									<option value="1" selected="selected">2</option>
+									<option value="2">4</option>
+									<option value="3">6</option>
+									<option value="4">8</option>
+									<option value="5">10</option>
+									<option value="6">12</option>
+									<option value="7">14</option>
+									<option value="8">16</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8AcBarEmerCall">
+							<td>紧急呼叫的接入参数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8AcBarEmerCall" value="1"  id="radioTwo1" >是</input>
+								<input type="radio" name="u8AcBarEmerCall" value="0"  id="radioTwo2"  checked="checked" style="margin-left:83px;">否</input>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8AcProbFactorSig">
+							<td>信令接入概率因子 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8AcProbFactorSig">
+									<option value="0">0</option>
+									<option value="1">0.05</option>
+									<option value="2">0.1</option>
+									<option value="3">0.15</option>
+									<option value="4">0.2</option>
+									<option value="5">0.25</option>
+									<option value="6">0.3</option>
+									<option value="7">0.4</option>
+									<option value="8">0.5</option>
+									<option value="9">0.6</option>
+									<option value="10">0.7</option>
+									<option value="11">0.75</option>
+									<option value="12">0.8</option>
+									<option value="13">0.85</option>
+									<option value="14">0.9</option>
+									<option value="15" selected="selected">0.95</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8AcBarTimeSig">
+							<td>信令禁止接入时间(s) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8AcBarTimeSig">
+									<option value="0" selected="selected">4</option>
+									<option value="1">8</option>
+									<option value="2">16</option>
+									<option value="3">32</option>
+									<option value="4">64</option>
+									<option value="5">128</option>
+									<option value="6">256</option>
+									<option value="7">512</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="au8AcBarListSig">
+							<td>信令接入等级的接入参数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden" id="au8AcBarListSig"/>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListSig1">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListSig2">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListSig3">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListSig4">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListSig5">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="au8AcBarListSigError"></td>						
+						</tr>
+						<tr class="u8AcProbFactOrig">
+							<td>呼叫接入概率因子 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8AcProbFactOrig">
+									<option value="0">0</option>
+									<option value="1">0.05</option>
+									<option value="2">0.1</option>
+									<option value="3">0.15</option>
+									<option value="4">0.2</option>
+									<option value="5">0.25</option>
+									<option value="6">0.3</option>
+									<option value="7">0.4</option>
+									<option value="8">0.5</option>
+									<option value="9">0.6</option>
+									<option value="10">0.7</option>
+									<option value="11">0.75</option>
+									<option value="12">0.8</option>
+									<option value="13">0.85</option>
+									<option value="14">0.9</option>
+									<option value="15" selected="selected">0.95</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8AcBarTimeOrig">
+							<td>呼叫禁止接入时间(s) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8AcBarTimeOrig">
+									<option value="0" selected="selected">4</option>
+									<option value="1">8</option>
+									<option value="2">16</option>
+									<option value="3">32</option>
+									<option value="4">64</option>
+									<option value="5">128</option>
+									<option value="6">256</option>
+									<option value="7">512</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="au8AcBarListOrig">
+							<td>呼叫接入等级的接入参数 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="hidden" id="au8AcBarListOrig" />
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListOrig1">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListOrig2">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListOrig3">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListOrig4">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:45px;margin-top:3px;float:left;margin-left:4px;">
+								<select  style="width:47px;height:21px;margin:-1px;font-size:13px;" id="au8AcBarListOrig5">
+									<option value="0">否</option>
+									<option value="1">是</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="au8AcBarListOrigError"></td>						
+						</tr>
+						<tr class="u8Qhyst">
+							<td>服务小区重选迟滞(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8Qhyst">
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4" selected="selected">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">8</option>
+									<option value="8">10</option>
+									<option value="9">12</option>
+									<option value="10">14</option>
+									<option value="11">16</option>
+									<option value="12">18</option>
+									<option value="13">20</option>
+									<option value="14">22</option>
+									<option value="15">24</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8SNintraSrchPre">
+							<td>Snonintrasearch参数配置标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8SNintraSrchPre" value="1" checked="checked"  id="radioFive1" >是</input>
+								<input type="radio" name="u8SNintraSrchPre" value="0"  id="radioFive2" style="margin-left:83px;">否</input>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8SNintraSrch">
+							<td>异频同/低优先级Srxlev测量判决门限(0~62,步长为2)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="20" id="u8SNintraSrch"/></td>
+							<td class="error" style="width:250px;" id="u8SNintraSrchError"></td>						
+						</tr>
+						<tr class="u8ThreshSvrLow">
+							<td>重选至低优先级频点的服务小区Srxlev判决门限(0~62,步长为2)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="4" id="u8ThreshSvrLow"/></td>
+							<td class="error" style="width:250px;" id="u8ThreshSvrLowError"></td>						
+						</tr>
+						<tr class="u8IntraPmax">
+							<td>频内重选UE最大可用发射功率(-30~33)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="23" id="u8IntraPmax"/></td>
+							<td class="error" style="width:250px;" id="u8IntraPmaxError"></td>						
+						</tr>
+						<tr class="u8IntraReselPrio">
+							<td>频内小区重选优先级 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8IntraReselPrio">
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7" selected="selected">7</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8IntraQrxLevMin">
+							<td>频内小区重选最小RSRP(-140~-44,步长为2)(dBm) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   value="-122" id="u8IntraQrxLevMin"/></td>
+							<td class="error" style="width:250px;" id="u8IntraQrxLevMinError"></td>						
+						</tr>
+						<tr class="u8SIntraSrchPre">
+							<td>Sintrasearch配置标识 :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<input type="radio" name="u8SIntraSrchPre" value="1" checked="checked"  id="radioSix1" >是</input>
+								<input type="radio" name="u8SIntraSrchPre" value="0"  id="radioSix2" style="margin-left:83px;">否</input>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8SIntraSrch">
+							<td>同频Srxlev测量判决门限(0~62,步长为2)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   value="40" id="u8SIntraSrch"/></td>
+							<td class="error" style="width:250px;" id="u8SIntraSrchError"></td>						
+						</tr>
+						<tr class="u8tRslIntraEutra">
+							<td>频内小区重选判决定时器长度(s) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select   style="width:251px;border:1px solid #fff"   id="u8tRslIntraEutra">
+									<option value="0">0</option>
+									<option value="1" selected="selected">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8CellSelQqualMin">
+							<td>小区选择最小RSRQ(-34~-3)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   value="-25" id="u8CellSelQqualMin"/></td>
+							<td class="error" style="width:250px;" id="u8CellSelQqualMinError"></td>						
+						</tr>
+						<tr class="u8Qqualminoffset">
+							<td>小区选择最小RSRQ偏移(dB) :</td>
+							<td class="blankTd1"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select   style="width:251px;border:1px solid #fff"  id="u8Qqualminoffset">
+									<option value="1" selected="selected">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+								</select></div>
+							</td>
+							<td class="error" style="width:250px;" id="Error"></td>						
+						</tr>
+						<tr class="u8SIntraSrchQ">
+							<td>同频Squal测量判决门限(0~31)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   value="4" id="u8SIntraSrchQ"/></td>
+							<td class="error" style="width:250px;" id="u8SIntraSrchQError"></td>						
+						</tr>
+						<tr class="u8SNintraSrchQ">
+							<td>异频同/低优先级Squal测量判决门限	(0~31)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"  value="1" id="u8SNintraSrchQ"/></td>
+							<td class="error" style="width:250px;" id="u8SNintraSrchQError"></td>					
+						</tr>
+						<tr class="u8IntraFreqQqualMin">
+							<td>频内小区重选最小RSRQ(-34~-3)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   value="-19" id="u8IntraFreqQqualMin"/></td>
+							<td class="error" style="width:250px;" id="u8IntraFreqQqualMinError"></td>						
+						</tr>
+						<tr class="u8ThreshSrvLowQ">
+							<td>重选至低优先级频点的服务小区Squal判决门限(0~31)(dB) :</td>
+							<td class="blankTd1"></td>
+							<td><input type="text"  style="width:240px;"   value="0" id="u8ThreshSrvLowQ"/></td>
+							<td class="error" style="width:250px;" id="u8ThreshSrvLowQError"></td>						
+						</tr>
+						
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								<input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								<input type="button"  value="取消"  style="padding:3px 25px;" id="cancel">
+							</td>
+							<td class="error" style="width:250px;"></td>
+						</tr>		
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

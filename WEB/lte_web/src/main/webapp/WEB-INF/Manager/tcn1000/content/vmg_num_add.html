@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		/**
+		*查询视频设备供选择
+		**/
+		$("#device_name_div").css("display","none"); 
+		$("#monitor_name").focus(function(){
+			$("#device_name_div").css("display","block"); 
+			$("#monitor_name").css("margin-top","6px");
+			queryMonitorName($.trim($("#device_name_key").val()),1,1);
+		});	
+
+		var init_queryValue = "";
+		$("#device_name_key").bind("keyup",function(){
+			var queryValue = $.trim($(this).val());
+			if(queryValue != init_queryValue){
+				init_queryValue = queryValue;
+				queryMonitorName(queryValue,1,1);
+			}
+		});
+		
+		
+		$("#previous_img").click(function(){
+			if($("#currentPage_span").html() != "1"){
+				var previous_pageNum = parseInt($("#currentPage_span").html())-1,
+					queryValue = $.trim($("#device_name_key").val()),
+					totalPages = parseInt($("#totalPages_span").html());
+				queryMonitorName(queryValue,previous_pageNum,totalPages);
+			}
+		});
+		$("#next_img").click(function(){
+			if($("#currentPage_span").html() != $("#totalPages_span").html()){
+				var previous_pageNum = parseInt($("#currentPage_span").html())+1,
+					queryValue = $.trim($("#device_name_key").val()),
+					totalPages = parseInt($("#totalPages_span").html());
+				queryMonitorName(queryValue,previous_pageNum,totalPages);
+			}
+		});
+		$("#search_img").click(function(){
+			var previous_pageNum = parseInt($("#currentPage_span").html()),
+				queryValue = $.trim($("#device_name_key").val()),
+				totalPages = parseInt($("#totalPages_span").html());
+			queryMonitorName(queryValue,previous_pageNum,totalPages);
+		});
+		$("input[type='radio']").live("change",function(){
+			if($(this).attr("checked") == "checked"){
+				$("#monitor_name").val($(this).attr("moni"));
+				$("#device_name_div").css("display","none"); 
+				$("#monitor_name").css("margin-top","0");
+			}
+		});
+		$("#call_number,#auth_password,#channel_id,#comment").focus(function(){
+			$("#device_name_div").css("display","none"); 
+			$("#monitor_name").css("margin-top","0");
+		});
+		function queryMonitorName(value,currentPage,totalPages){
+			$.ajax({
+				type:"post",
+				url:"queryMonitorName.do",
+				data:"queryVmgCfgModel.first=1"+
+					"&queryVmgCfgModel.queryValue="+value+
+					"&onlinePage.currentPageNum="+currentPage+
+					"&onlinePage.totalPages="+totalPages,
+				dataType:"json",
+				async:false,
+				success:function(data){
+					if(!sessionsCheck(data,"${base}")){
+						return ;
+					}
+					if(data.status == 0){
+						var i = 0,
+							len,
+							li = "";
+						for(i = 0,len = data.vmgCfgModelList.length;i<len;i++){
+							li = li +  '<li><input type="radio" name="device_name" moni="'+data.vmgCfgModelList[i].monitor_name+'" id="device_name_'+i+'"/><label for="device_name_'+i+'">'+data.vmgCfgModelList[i].monitor_name+'</label></li>';
+						}	
+						$("#device_name_ul").html(li);
+						$("#currentPage_span").html(data.onlinePage.currentPageNum);
+						$("#totalPages_span").html(data.onlinePage.totalPages);
+					}else{
+						$("#device_name_ul").html('');
+						$("#currentPage_span").html(1);
+						$("#totalPages_span").html(1);
+					}
+				}
+			});
+		}
+		//返回按钮
+		$(".cancel").click(function(){
+			window.location.href="${base}/lte/vmgNum!turntoVmgNum.do?onlinePage.currentPageNum=${onlinePage.currentPageNum!}&onlinePage.totalPages=${onlinePage.totalPages!}";
+		});
+		Address("#monitor_ipDiv");
+		$("#submitBtn").click(function(){
+			$("#device_name_div").css("display","none"); 
+			$("#monitor_name").css("margin-top","0");
+			var basePath = "${base}";
+			var passwordTest = /^\w+$/;
+			var valTest = /^[0-9]\d*$/;
+			var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+			var currentPageNum = $("#currentPageNum").val();
+			var totalPages = $("#totalPages").val();
+			var first = $("#firstHidden").val();
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+			
+			var call_number = $("#call_number").val();
+			
+			var auth_password = $("#auth_password").val();
+
+			var monitor_name = $("#monitor_name").val();
+			
+			var channel_id = $("#channel_id").val();
+			
+			var comment = $("#comment").val();
+			
+			if(call_number == null || call_number == ''){
+				alert("视频监控号码不可为空");
+				return false;
+			}
+
+			if(auth_password == null || auth_password == ''){
+				alert("密码不可为空");
+				return false;
+			}
+
+			if(!passwordTest.test(auth_password)){
+				alert("密码只能输入由数字和26个英文字母或者下划线组成的字符串");
+				return false;
+			}
+
+			if(monitor_name == null || monitor_name == ''){
+				alert("视频监控设备不可为空");
+				return false;
+			}
+
+			if(channel_id == null || channel_id == ''){
+				alert("监控通道号不可为空");
+				return false;
+			}
+			if((!valTest.test(channel_id)) || parseInt(channel_id) > 65535){
+				alert("监控通道号取值范围0~65535");
+				return false;
+			}
+
+			if(comment == null || comment == ''){
+				alert("描述信息不可为空");
+				return false;
+			}
+
+			$.ajax({
+				type:"post",
+				url:basePath+"/lte/vmgNum!addVmgNum.do",
+				data:"vmgNumModel.call_number="+call_number+
+					"&vmgNumModel.auth_password="+auth_password+
+					"&vmgNumModel.monitor_name="+monitor_name+
+					"&vmgNumModel.channel_id="+channel_id+
+					"&vmgNumModel.comment="+comment,
+				dataType:"json",
+				success:function(data){
+
+					if(data == null){
+						alert("消息未返回");
+						return;
+					}
+					
+					if(!sessionsCheck(data,basePath)){
+						return ;
+					}
+					
+					var status = data.status;
+
+					switch(status){
+						case 0: 
+							if(currentPageNum == 0){
+								currentPageNum = 1;
+								totalPages = 1;
+							}
+							window.location=basePath+"/lte/vmgNum!turntoVmgNum.do?queryVmgNumModel.first="+first+
+							"&queryVmgNumModel.queryType="+queryType+
+							"&queryVmgNumModel.queryValue="+queryValue+
+							"&onlinePage.currentPageNum="+currentPageNum+"&onlinePage.totalPages="+totalPages;
+							break;
+						default:
+							alert(data.message);
+							break;
+					}
+					
+				},
+				error:function(data){
+					alert("操作失败");
+				}
+			});
+		});		
+		
+		//验证监控通道ID
+		$("#channel_id").blur(function(){
+			var valTest = /^[0-9]\d*$/;
+			var channel_id = $.trim($(this).val());
+			if((!valTest.test(channel_id)) || parseInt(channel_id) > 65535){
+				$(".channel_idJudge").html("监控通道号取值范围为0~65535");
+				$(".channel_idJudge").css("color","red");
+			}else{
+				$(".channel_idJudge").html("");
+			}
+			
+		});
+		
+// 		$("#monitor_name").blur(function(){
+// 			var basePath = "${base}";
+// 			var monitor_name = $.trim($(this).val());
+// 			$.ajax({
+// 				type:"post",
+// 				url:basePath+"/lte/vmgNum!checkMonitorNameExist.do",
+// 				data:"vmgNumModel.monitor_name="+monitor_name,
+// 				dataType:"json",
+// 				success:function(data){
+// 					if(data == null){
+// 						alert("消息未返回");
+// 						return;
+// 					}
+					
+// 					if(!sessionsCheck(data,basePath)){
+// 						return ;
+// 					}
+					
+// 					var status = data.status;
+
+// 					if(status != 0){
+// 						$(".monitor_nameJudge").html("");
+// 					}else{
+// 						$(".monitor_nameJudge").html("");
+// 					}
+// 				},
+// 				error:function(data){
+// 					$(".monitor_nameJudge").html("");
+// 				}
+				
+// 			});
+// 		});
+
+		//验证密码
+		$("#auth_password").blur(function(){
+			
+			var valTest = /^\w+$/;
+			var monitor_port = $.trim($(this).val());
+			if((!valTest.test(monitor_port))){
+				$(".auth_passwordJudge").html("只能输入由数字和26个英文字母或者下划线组成的字符串");
+				$(".auth_passwordJudge").css("color","red");
+			}else{
+				$(".auth_passwordJudge").html("");
+			}
+			
+		});	
+		
+	
+	});
+
+function ipTest(testVal,content,td){
+	var valTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;	
+	if(!valTest.test(testVal)){
+		$("."+td+"").html(content);
+		$("."+td+"").css("color","red");
+	}else{
+		$("."+td+"").html("");
+		//$(".judgeImsi").css("color","");
+	}
+}
+
+</script>
+<style>
+	#device_name_page_ul{padding:0;margin:0;}
+	#device_name_page_ul li{float:left;padding:0 5px;}
+	#device_name_page_ul img{cursor:pointer}
+	input[type='radio']{margin:0 2px;}
+</style>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>视频监控号码</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>新增</a>
+		</div>
+		<div style="overflow:auto" class="add_div">
+		<input type="hidden" value="${base}" id="basePath"/>
+		<form action="***********" >
+			<div class="clearfix wrap ad_Input" style="width:900px;">
+				<div class="title">&nbsp;</div>
+				<div class="content">
+					<table class="McWillTable" style="line-height:35px;">
+						<tr>
+							<td>视频监控号码 :</td>
+							<td class="blankTd"></td>
+							<td><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" style="width:230px;" id="call_number" maxlength="16" onkeyup="this.value=this.value.replace(/\D/g,'')"/></td>
+							<td class="redColor">*</td>
+							<td class="call_numberJudge"></td>
+						</tr>
+						<tr>
+							<td>密码 :</td>
+							<td class="blankTd"></td>
+							<td><input type="password"  style="width:230px;" id="auth_password" maxlength="64"/></td>
+							<td class="redColor">*</td>
+							<td class="auth_passwordJudge"></td>
+						</tr>
+						
+						<tr>
+							<td style="vertical-align:top;">视频监控设备 :</td>
+							
+							<td class="blankTd"></td>
+							<td>
+<!-- 								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;"> -->
+<!-- 								<select style="width:251px;border:1px solid #fff" id="monitor_name"> -->
+<!-- 									<#list vmgCfgModelList! as vmgCfgModel> -->
+<!-- 									<option value="${vmgCfgModel.monitor_name!}">${vmgCfgModel.monitor_name!}</option> -->
+<!-- 									</#list> -->
+<!-- 								</select></div> -->
+								<input type="text"  style="width:230px;display:block" readonly="readonly" id="monitor_name"/>
+								<div style="border:dashed 1px #709cc1;height:220px;width:233px;margin-top:5px;padding:3px;" id="device_name_div">
+									<div>
+										<span>名称关键字:</span>
+										<input type="text" style="width:130px;" id="device_name_key"/>
+										<img style="cursor:pointer;" src="${base}/Manager/images/icons/magnifier.png" id="search_img"/>
+									</div>
+									<div style="border:dashed 1px #709cc1;height:165px;overflow:auto;" >
+										<ul id="device_name_ul">
+																												
+										</ul>
+									</div>
+									<div>
+										<div style="width:120px;margin:0 auto;" class="clearfix">
+											<ul id="device_name_page_ul">
+												<li><img src="${base}/Manager/images/icons/arrow_left.gif" id="previous_img"/></li>
+												<li style="width:50px;text-align:center;"><span id="currentPage_span"></span><span>/</span><span id="totalPages_span"></span></li>
+												<li><img src="${base}/Manager/images/icons/arrow_right.gif" id="next_img"/></li>
+											</ul>	
+										</div>
+									</div>
+								</div>	
+							</td>
+							
+							
+							<td class="redColor" style="vertical-align:top;">*</td>
+							<td class="monitor_nameJudge redColor"  style="vertical-align:top;"></td>
+						</tr>
+						<tr>
+							<td>监控通道号 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"  style="width:230px;" id="channel_id" maxlength="5" title="取值范围0~65535"/> 
+							</td>
+							<td class="redColor">*</td>
+							<td class="channel_idJudge"></td>
+						</tr>
+						<tr>
+							<td>描述信息 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:230px;" id="comment"  maxlength="80"/> 
+							</td>
+							<td class="redColor">*</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>
+								 <input id="submitBtn" type="button" value="确定" style="padding:3px 25px;"/>
+								 <input type="button" class="cancel" value="返回"  style="padding:3px 25px;"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 
+		</form>
+		</div>
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+
+<input type="hidden" value="${queryVmgNumModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${queryVmgNumModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${queryVmgNumModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

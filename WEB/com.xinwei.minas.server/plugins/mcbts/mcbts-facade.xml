@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="mcBtsTypeDDFacade"
+		class="com.xinwei.minas.server.mcbts.facade.McBtsTypeDDFacadeImpl" />
+
+	<bean id="mcBtsBizFacade" class="com.xinwei.minas.server.mcbts.facade.McBtsBizFacadeImpl" />
+
+	<bean id="mcBtsBasicFacade"
+		class="com.xinwei.minas.server.mcbts.facade.McBtsBasicFacadeImpl" />
+
+	<bean id="l1GeneralSettingFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer1.L1GeneralSettingFacadeImpl" />
+
+	<bean id="calibrationTypeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer1.CalibrationTypeFacadeImpl" />
+
+	<bean id="calibrationDataFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer1.CalibrationDataFacadeImpl" />
+
+	<bean id="airlinkFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer2.AirlinkFacadeImpl" />
+
+	<bean id="loadBalanceFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.LoadBalanceFacadeImpl" />
+
+	<bean id="weakFaultFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.WeakFaultFacadeImpl" />
+
+	<bean id="resManagementFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer2.ResManagementFacadeImpl" />
+
+	<bean id="sAGParamFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.SAGParamFacadeImpl" />
+
+	<bean id="wcpeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.WCPEFacadeImpl" />
+
+	<bean id="remoteBtsFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.RemoteBtsFacadeImpl" />
+
+	<bean id="mbmsBtsFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.MBMSBtsFacadeImpl" />
+
+	<bean id="changeAlgParamFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer2.ChangeAlgParamFacadeImpl" />
+
+	<bean id="antijammingParamFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer2.AntijammingParamFacadeImpl" />
+
+	<bean id="rcpeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.RCPEFacadeImpl" />
+
+	<bean id="neighbourFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.NeighbourFacadeImpl" />
+
+	<bean id="tosConfFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.TosConfFacadeImpl" />
+
+	<bean id="terminalParamFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.TerminalParamFacadeImpl" />
+
+	<bean id="aCLFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.ACLFacadeImpl" />
+
+	<bean id="SysFreqFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.SysFreqFacadeImpl" />
+
+	<bean id="repeaterFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.RepeaterFacadeImpl" />
+
+	<bean id="vlanFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.VlanFacadeImpl" />
+
+	<bean id="locAreaFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.LocAreaFacadeImpl" />
+
+	<bean id="mcBtsDiagToolFacade"
+		class="com.xinwei.minas.server.mcbts.facade.tools.McBtsDiagToolFacadeImpl" />
+
+	<bean id="calibrationResultFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer1.CalibrationResultFacadeImpl" />
+
+	<bean id="syncConfigFacade"
+		class="com.xinwei.minas.server.mcbts.facade.oamManage.McBtsSynConfigFacadeImpl" />
+
+	<bean id="terminalVersionManageFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.TerminalVersionManageFacadeImpl" />
+
+	<bean id="tvForceUpdateFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.TerminalVersionForceUpdateFacadeImpl" />
+
+	<bean id="tvUpgradeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.TerminalVersionUpgradeFacadeImpl" />
+
+	<bean id="tvRestartFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.TerminalRestartFacadeImpl" />
+
+	<bean id="tvDetectiveFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.TerminalDetectiveFacadeImpl" />
+
+	<bean id="mcBtsVersionManageFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.McBtsVersionManageFacadeImpl" />
+
+	<bean id="gpsDataFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.GPSDataFacadeImpl" />
+
+	<bean id="rruResetFacade"
+		class="com.xinwei.minas.server.mcbts.facade.RRUReset.RRUResetFacadeImpl" />
+
+	<bean id="mcBtsTemplateManageFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.McBtsTemplateManageFacadeImpl" />
+
+	<bean id="mcBtsSNFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.McBtsSNFacadeImpl" />
+
+	<bean id="mcBtsStateQueryFacade"
+		class="com.xinwei.minas.server.mcbts.facade.oamManage.BtsSateQueryFacadeImpl" />
+
+	<bean id="mcBtsRfPanelStatusFacade"
+		class="com.xinwei.minas.server.mcbts.facade.oamManage.BtsRfPanelStatusFacadeImpl" />
+
+	<bean id="mcBtsUserCountsQueryFacade"
+		class="com.xinwei.minas.server.mcbts.facade.oamManage.BtsUserCountsQueryFacadeImpl" />
+	<bean id="mcBtsOnlineTerminalListFacade"
+		class="com.xinwei.minas.server.mcbts.facade.oamManage.McBtsOnlineTerminalListFacadeImpl" />
+
+	<bean id="microBtsSignalSendSettingFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.MicroBtsSignalSendSettingFacadeImpl" />
+
+	<bean id="mcbtsModeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.McBtsModeFacadeImpl" />
+
+	<bean id="mcBtsUserInfoBizFacade"
+		class="com.xinwei.minas.server.mcbts.facade.McBtsUserInfoBizFacadeImpl" />
+
+	<bean id="minasServerVersionFacade"
+		class="com.xinwei.minas.server.core.secu.facade.MinasServerVersionFacadeImpl" />
+
+	<bean id="SDMAConfigFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer2.SDMAConfigFacadeImpl" />
+
+	<bean id="perfLogConfigFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.PerfLogConfigFacadeImpl" />
+
+	<bean id="dataPackageFilterFacade"
+		class="com.xinwei.minas.server.mcbts.facade.layer3.DataPackageFilterFacadeImpl" />
+
+	<bean id="switchOptimizeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.SwitchOptimizeFacadeImpl" />
+
+	<bean id="mcBtsBatchUpgradeFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.McBtsBatchUpgradeFacadeImpl" />
+
+	<bean id="districtManageFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.DistrictManageFacadeImpl" />
+
+	<bean id="simulcastManageFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.SimulcastManageFacadeImpl" />
+
+	<bean id="mcBtsConfigFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.McBtsConfigFacadeImpl" />
+	
+	<bean id="validatorFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.ValidatorFacadeImpl"> 
+		<property name="validatorService" ref="validatorService" />
+	</bean>
+		
+	<bean id="preventBroadcastFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.PreventBroadcastFacadeImpl" />
+		
+	<bean id="btsReleaseVoiceTimer"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.BtsReleaseVoiceTimerImpl" />
+		
+	<bean id="commonChannelFacade"
+		class="com.xinwei.minas.server.mcbts.facade.common.CommonChannelFacadeImpl"> 
+		<property name="commonChannelService" ref="commonChannelService" />
+	</bean>
+	
+	<bean id="powerSupplyManagerFacade"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.PowerSupplyManagerFacadeImpl"> 
+		<property name="mPowerSupplyManagerService" ref="mPowerSupplyManagerService" />
+	</bean>
+
+	<bean id="channelComparableModeFacadeImpl"
+		class="com.xinwei.minas.server.mcbts.facade.sysManage.ChannelComparableModeFacadeImpl" />
+</beans>

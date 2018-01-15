@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+<link type="text/css" href="${base}/Manager/js/date/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/date/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/alarm/blackboxfile.js"></script>
+<style>
+	.bb_condition_div{
+		padding:10px 10px;
+		border-bottom:solid 1px #cccccc;
+		height:180px;
+	}
+	.gap_10{
+		margin:0 10px;
+	}
+	.time_ul li{ 
+		line-height:60px;
+	}
+	.bb_content_div{
+		padding:10px 10px;
+	}
+	.bb_content_table_action{
+		height:30px;
+	}
+	#queryBB_info{
+		float:right;
+		margin-top:20px;
+	}
+	#enb_device{
+		height:150px;
+		width:300px;
+		border:solid 1px #cccccc;
+		overflow:auto;
+	}
+	#bb_condition{
+		height:150px;
+		width:300px;
+		border:solid 1px #cccccc;
+		overflow:auto;
+	}
+	#bb_condition li{
+		white-space:nowrap;
+	}
+	#pageTable td{
+		border:none;
+	}
+</style>
+<title>黑匣子文件分析</title>
+</head>
+<body style="overflow: hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>故障管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>黑匣子文件分析</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>黑匣子文件分析</a>
+	</div>
+	<div class="ltePage">
+		<div class="bb_condition_div">
+			<ul class="bb_condition_ul">
+				<li class="fleft">
+					<div class="gap_10">
+						<label>设备: </label>
+						<div id="enb_device">
+							<ul>
+								<li>&nbsp;<input type="checkbox" id="checkfather_device" value=""></input>&nbsp;全选</li>
+								<#list enbModelList! as enb>
+								<li>
+									&nbsp;<input type="checkbox" name="checkson_device" value="${enb.enbId}">&nbsp;${enb.enbId}(${enb.enb.name})</input>
+								</li>
+								</#list>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="fleft">
+					<div class="gap_10">
+						<label>复位原因: </label>
+						<div id="bb_condition" style="width: 500px">
+							<ul>
+								<li>&nbsp;<input type="checkbox" id="checkfather_condition" value=""></input>&nbsp;全选</li>
+								<#list resetReasonMap?keys! as key>
+								<li>
+									&nbsp;<input type="checkbox" name="checkson_condition" value="${key}">&nbsp;${resetReasonMap[key]}</input>
+								</li>
+								</#list>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="fleft">
+					<div class="gap_10">
+						<ul class="time_ul">
+							<li>
+								<div>
+									<label>开始时间: </label>
+									<input type="text" name="beginTime" class="ui_timepicker" readonly="readonly" />
+								</div>
+							</li>
+							<li>
+								<div>
+									<label>结束时间: </label>
+									<input type="text" name="endTime" class="ui_timepicker" readonly="readonly" />
+								</div>
+							</li>
+							<li>
+								<div>
+									<input type="button" value="查询" id="queryBB_info" onclick=""></input>
+								</div>
+							</li>				
+						</ul>
+					</div>
+				</li>						
+			</ul>
+		</div>
+		<div class="bb_content_div">
+			<div class="bb_content_table_action">
+				<ul >
+					<li class="fleft gap_10">
+						<input type="button" value="批量下载" id="batch_download"></input>
+					</li>
+					<li class="fleft">
+						<input type="button" value="刷新" id="fresh" ></input>
+					</li>
+				</ul>
+			</div>
+			<table width="100%" class="changeRowColor">
+				<thead>
+					<tr>
+						<th class="checkWidth"><input type="checkbox" value="checkbox" id="checkfather"/></th>
+						<th>基站标识</th>
+						<th>黑匣子采集时间</th>
+						<th>复位原因</th>
+						<th>文件名</th>
+						<th>下载</th>
+					</tr>
+				</thead>
+				<tbody id="blackBoxFile_content">
+					
+				</tbody>
+			</table>
+			<div style="float:right;">
+				<div style="padding: 5px;">
+					<table id="pageTable" style="width: 316px;">
+						<tr>
+							<td><span id="currentPage"></span></td>
+							<td>/</td>
+							<td><span id="totalPage"></span></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/first_page.png" id="firstPage" style="cursor: pointer;"/></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/previous_page.png" id="previousPage" style="cursor: pointer;"/></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/next_page.png" id="nextPage" style="cursor: pointer;"/></td>
+							<td style="width: 58px;"><img src="${base}/Manager/images/end_page.png" id="endPage" style="cursor: pointer;"/></td>
+							<td><input type="text" style="width: 20px; height: 18px; line-height: 18px;" id="targetPageInput" value="" /></td>
+							<td><img src="${base}/Manager/images/change_page_bt.png" id="targetPage" style="cursor: pointer;"/></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id = "basePath" value = "${base}"/>
+</body>
+</html>

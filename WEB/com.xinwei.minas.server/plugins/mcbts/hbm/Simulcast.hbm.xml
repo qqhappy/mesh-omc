@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013-5-21 19:06:42 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.xinwei.minas.mcbts.core.model.sysManage.Simulcast"
+		table="simulcast">
+		<id name="idx" type="java.lang.Long">
+			<column name="idx" not-null="true" />
+			<generator class="assigned" />
+		</id>
+		<property name="districtId" type="java.lang.Long">
+			<column name="districtId" not-null="true" />
+		</property>
+		<property name="freqType" type="java.lang.Integer">
+			<column name="freqType" not-null="true" />
+		</property>
+		<property name="freqOffset" type="java.lang.Integer">
+			<column name="freqOffset" not-null="true" />
+		</property>
+		<property name="freq" type="java.lang.Double">
+			<column name="freq" not-null="true" />
+		</property>
+		<property name="minNum" type="java.lang.Integer">
+			<column name="minNum" not-null="true" />
+		</property>
+		<property name="maxNum" type="java.lang.Integer">
+			<column name="maxNum" not-null="true" />
+		</property>
+		<property name="maxMbmsNum" type="java.lang.Integer">
+			<column name="maxMbmsNum" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

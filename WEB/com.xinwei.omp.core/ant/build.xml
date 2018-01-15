@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="GB2312"?>
+
+<project name="minas" basedir="." default="all">
+
+<!--===================property definations==================== -->
+    <property file="build.properties"/>
+		
+<!--===================compilation classpath==================== -->    
+    
+	<path id="compile.classpath">	   
+	</path>
+
+<!--===================Build targets below here==================== -->    
+		
+		
+	<target name="help">
+		<echo message="Please specified a target![usage: ant &lt;targetname&gt;]"/>			
+	</target>
+	
+	<target name="clear" description="clear up">
+		<delete dir="${build.home}"/>			
+		<delete dir="${dist.home}"/>
+		<delete dir="${server.home}/plugins/${app.name}.jar"/>
+	</target>	
+	
+	<target name="prepare" description="prepare">
+		<echo message="eshop server home=${server.home}"/>		
+		<mkdir dir="${build.home}"/>
+		<mkdir dir="${build.classes}"/>	
+		<mkdir dir="${dist.plugins}"/>					
+	</target>	
+	
+	<target name="build" depends="prepare" description="builds the jar file for the application">		
+		<javac classpathref="compile.classpath" destdir="${build.classes}" includes="com/xinwei/**" debug="yes">				
+			<src path="${src.home}"/>					
+		</javac>			
+		<jar destfile="${build.home}/${app.name}.jar">				
+			<fileset dir="${build.classes}"/>
+		</jar>		
+	</target>
+	
+	<target name="dist" depends="build" description="dist the application to application server">
+		<copy todir="${dist.plugins}" file="${build.home}/${app.name}.jar"/>		
+	</target>
+	
+	<target name="deploy" depends="dist" description="dist the application to application server">
+		<copy todir="${server.home}/plugins/">
+			<fileset dir="${dist.plugins}"/>
+		</copy>
+	</target>
+	
+	
+	<target name="all" depends="clear, dist, deploy" description="all"/>
+		
+</project>

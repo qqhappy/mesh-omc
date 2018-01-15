@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/t_cel_ptt.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb/enbDetailJs/xw7400/3.0.8/fieldLevel_modify.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#u8TcchTransType").val('${record.fieldMap["u8TcchTransType"].value}');
+		$("#u8PttPeriodPagingCycle").val('${record.fieldMap["u8PttPeriodPagingCycle"].value}');
+		//
+		$("#u8PttBPagingCycle option").each(function(index){
+			if($("#u8PttBPagingCycle option:eq("+index+")").val() == ${record.fieldMap["u8PttBPagingCycle"].value}){
+				$("#u8PttBPagingCycle option:eq("+index+")").attr("selected",true);
+			}
+		});
+		$("#u8PtForPDSCH option").each(function(index){
+			if($("#u8PtForPDSCH option:eq("+index+")").val() == ${record.fieldMap["u8PtForPDSCH"].value}){
+				$("#u8PtForPDSCH option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		$("#u8PttSpsInterval option").each(function(index){
+			if($("#u8PttSpsInterval option:eq("+index+")").val() == ${record.fieldMap["u8PttSpsInterval"].value}){
+				$("#u8PttSpsInterval option:eq("+index+")").attr("selected",true);
+			}
+		});
+		//
+		for(var i=1;i<3;i++){
+			if($("#radioSPS"+i).val() == ${record.fieldMap["u8PttSpsSwitch"].value}){
+				$("#radioSPS"+i).attr("checked","checked");
+			}
+		}
+		for(var i=1;i<3;i++){
+			if($("#radioDlRb"+i).val() == ${record.fieldMap["b8PttDlRbEnable"].value}){
+				$("#radioDlRb"+i).attr("checked","checked");
+			}
+		}
+		
+		var u8PttSpsThrRbNum = ${record.fieldMap["u8PttSpsThrRbNum"].value};
+		var u8PttSpsThrRbNumLit = accDiv(u8PttSpsThrRbNum,100);
+		$("#u8PttSpsThrRbNum").val(u8PttSpsThrRbNumLit);
+		
+		//联动
+		if(${record.fieldMap["u8PttBPagingCycle"].value} != 6){
+			$("#u8PttBPagingFN_Max").html(accSub(Math.pow(2,parseInt((parseInt(${record.fieldMap["u8PttBPagingCycle"].value}) + parseInt(1)))),1));
+		}else{
+			$("#u8PttBPagingFN_Max").html("127");
+		}
+		
+		//
+		function accAdd(arg1,arg2){
+			var r1,r2,m;
+			try{
+				r1 = arg1.toString().split(".")[1].length;	
+			}catch(e){
+				r1 = 0;	
+			}
+			try{
+				r2 = arg2.toString().split(".")[1].length;	
+			}catch(e){
+				r2 = 0;	
+			}
+			m = Math.pow(10,Math.max(r1,r2));
+			return (arg1*m + arg2*m)/m;
+		}
+		function accSub(arg1,arg2){
+			var r1,r2,m,n;
+			try{
+				r1 = arg1.toString().split(".")[1].length;	
+			}catch(e){
+				r1 = 0;	
+			}
+			try{
+				r2 = arg2.toString().split(".")[1].length;	
+			}catch(e){
+				r2 = 0;	
+			}
+			m = Math.pow(10,Math.max(r1,r2));
+			n = (r1>=r2)?r1:r2;
+			return ((arg1*m - arg2*m)/m).toFixed(n);
+		}
+		function accMul(arg1,arg2){
+			var m = 0;
+			var s1 = arg1.toString();
+			var s2 = arg2.toString();
+			try{
+				m += s1.split(".")[1].length	
+			}catch(e){}
+			try{
+				m += s2.split(".")[1].length	
+			}catch(e){}
+			return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
+		}
+		function accDiv(arg1,arg2){
+			var t1 = 0;
+			var t2 = 0;
+			var r1,r2;
+			try{
+				t1 = arg1.toString().split(".")[1].length;
+			}catch(e){}
+			try{
+				t2 = arg2.toString().split(".")[1].length;	
+			}catch(e){}
+			with(Math){
+				r1 = Number(arg1.toString().replace(".",""));
+				r2 = Number(arg2.toString().replace(".",""));
+				return (r1/r2)*pow(10,t2-t1);
+			}
+		}
+	});
+</script>
+<!--<script type="text/javascript" src="${base}/Manager/js/new_lte/boss_select.js"></script>-->
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>业务表管理</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>小区集群配置参数表</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>修改</a>
+	</div>
+		<div style="overflow:auto" class="add_div">
+		<form action="${base}/lte/queryEnbBiz_xw7400.do" method="get" id="form_add">
+			<div class="clearfix wrap ad_Input" style="width:900px;">	<div class="title">&nbsp;</div>
+				<div class="content">
+				<input type="hidden" value='${fieldLevelString}' id="fieldLevelString"/>
+		<input type="hidden" value="${enbVersion}" name="enbVersion" id="enbVersion"/>
+					<input type="hidden" value="${moId}" name="moId" id="moId"/>
+					<input type="hidden" id="basePath"  value="${base}"/>
+					<input type="hidden" value="T_CEL_PTT-3.0.8" name="tableName"/>
+					<input type="hidden" value="config" name="operType"/>
+					<input type="hidden"  name="browseTime"/>
+					<input type="hidden" name="parameters" id="parameters"/>
+					<table class="McWillTable" style="line-height:35px;">
+						<tr class="u8CId">
+							<td>小区标识 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:250px;">
+								<select  style="width:251px;border:1px solid #fff"  disabled="disabled" id="u8CId">
+									<option value="${record.fieldMap['u8CId'].value}">${record.fieldMap["u8CId"].value}</option>
+								</select></div>
+								<input type="hidden" value="${record.fieldMap['u8CId'].value}"/>
+							</td>
+							<td id="u8CIdError" class="error"></td>
+						</tr>
+						<tr class="u8PttBPagingCycle">
+							<td>集群广播寻呼周期 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PttBPagingCycle">
+									<option value="0">rf2</option>
+									<option value="1">rf4</option>
+									<option value="2">rf8</option>
+									<option value="3">rf16</option>
+									<option value="4">rf32</option>
+									<option value="5">rf64</option>
+									<option value="6">rf128</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8PttBPagingFN">
+							<td>集群广播寻呼帧号(0~<span id="u8PttBPagingFN_Max"></span>) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8PttBPagingFN" value="${record.fieldMap['u8PttBPagingFN'].value}"/></td>
+							<td id="u8PttBPagingFNError" class="error"></td>
+						</tr>
+						<tr class="u8PttBPagingSubFN">
+							<td>集群广播寻呼子帧号(0~9) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8PttBPagingSubFN" value="${record.fieldMap['u8PttBPagingSubFN'].value}"/></td>
+							<td id="u8PttBPagingSubFNError" class="error"></td>
+						</tr>
+						<tr class="u8PtForPDSCH">
+							<td>集群组呼的PA配置 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8PtForPDSCH">
+									<option value="0">dB-6</option>
+									<option value="1">dB-4dot77</option>
+									<option value="2">dB-3</option>
+									<option value="3">dB-1dot77</option>
+									<option value="4">dB0</option>
+									<option value="5">dB1</option>
+									<option value="6">dB2</option>
+									<option value="7">dB3</option>
+								</select></div>
+							</td>
+							<td id="u8PtForPDSCHError" class="error"></td>
+						</tr>
+						<tr class="u8PttSignalMCS">
+							<td>组呼下行TSRB MCS(0~28) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8PttSignalMCS" value="${record.fieldMap['u8PttSignalMCS'].value}"/></td>
+							<td id="u8PttSignalMCSError" class="error"></td>
+						</tr>
+						<tr class="u8PttDataMCS">
+							<td>组呼下行TDRB MCS(0~28) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8PttDataMCS" value="${record.fieldMap['u8PttDataMCS'].value}"/></td>
+							<td id="u8PttDataMCSError" class="error"></td>
+						</tr>
+						<tr class="u8TcchTransType">
+							<td>TCCH消息发送方式 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff"  id="u8TcchTransType">
+									<option value="0">周期</option>
+									<option value="1">绑定寻呼</option>
+								</select></div>
+							</td>
+							<td id="u8TcchTransTypeError" class="error"></td>
+						</tr>
+						<tr class="u16PttCfgSendCycle">
+							<td>TCCH信道的组呼配置发送周期(128~2560)(ms) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u16PttCfgSendCycle" value="${record.fieldMap['u16PttCfgSendCycle'].value}"/></td>
+							<td id="u16PttCfgSendCycleError" class="error"></td>
+						</tr>
+						<tr class="u16PttNbrCfgSendCycle">
+							<td>TCCH信道的组呼邻区配置发送周期(128~2560)(ms) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u16PttNbrCfgSendCycle" value="${record.fieldMap['u16PttNbrCfgSendCycle'].value}"/></td>
+							<td id="u16PttNbrCfgSendCycleError" class="error"></td>
+						</tr>
+						<tr class="u8PttPeriodPagingCycle">
+							<td>集群组呼的迟后寻呼周期 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PttPeriodPagingCycle">
+									<option value="0">rf2</option>
+									<option value="1">rf4</option>
+									<option value="2">rf8</option>
+									<option value="3">rf16</option>
+									<option value="4">rf32</option>
+									<option value="5">rf64</option>
+									<option value="6">rf128</option>
+									<option value="7">rf256</option>
+									<option value="8">rf512</option>
+									<option value="9">rf1024</option>
+								</select></div>
+							</td>
+							<td id="u8PttPeriodPagingCycleError" class="error"></td>
+						</tr>
+						<tr class="u8PttSpsSwitch">
+							<td>集群SPS开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="u8PttSpsSwitch" id="radioSPS1" value="0">关</input>
+								<input type="radio" name="u8PttSpsSwitch" id="radioSPS2"  value="1" style="margin-left:71px;">开</input>
+							</td>
+						</tr>
+						<tr class="u8PttSpsInterval">
+							<td>集群SPS周期(sf) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<div style="border:1px solid #C6D7E7;overflow:hidden;width:251px;">
+								<select  style="width:251px;border:1px solid #fff" id="u8PttSpsInterval">
+									<option value="0">10</option>
+									<option value="1">20</option>
+									<option value="2">30</option>
+									<option value="3">40</option>
+									<option value="4">60</option>
+									<option value="5">80</option>
+									<option value="6">120</option>
+									<option value="7">160</option>
+									<option value="8">320</option>
+									<option value="9">640</option>
+								</select></div>
+							</td>
+						</tr>
+						<tr class="u8PttSpsThrRbNum">
+							<td>SPS RB 门限(0~1,精确至小数点后2位) :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="text"  style="width:240px;" id="u8PttSpsThrRbNum"/>
+							</td>
+							<td id="u8PttSpsThrRbNumError" class="error"></td>
+						</tr>
+						<tr class="b8PttDlRbEnable">
+							<td>集群下行RB分配限制开关 :</td>
+							<td class="blankTd"></td>
+							<td>
+								<input type="radio" name="b8PttDlRbEnable" id="radioDlRb1" value="0">关</input>
+								<input type="radio" name="b8PttDlRbEnable" id="radioDlRb2"  value="1" style="margin-left:71px;">开</input>
+							</td>
+						</tr>
+						<tr class="u8PttDlMaxRbNum">
+							<td>集群下行最大分配RB数(0~100) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8PttDlMaxRbNum" value="${record.fieldMap['u8PttDlMaxRbNum'].value}"/></td>
+							<td id="u8PttDlMaxRbNumError" class="error"></td>
+						</tr>
+						<tr class="u16PttSpsPackSizeMin">
+							<td>集群SPS稳态判断包长下限(0~500) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u16PttSpsPackSizeMin" value="${record.fieldMap['u16PttSpsPackSizeMin'].value}"/></td>
+							<td id="u16PttSpsPackSizeMinError" class="error"></td>
+						</tr>
+						<tr class="u16PttSpsPackSizeMax">
+							<td>集群SPS稳态判断包长上限(0~500) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u16PttSpsPackSizeMax" value="${record.fieldMap['u16PttSpsPackSizeMax'].value}"/></td>
+							<td id="u16PttSpsPackSizeMaxError" class="error"></td>
+						</tr>
+						<tr class="u8SpsJitter">
+							<td>集群SPS稳态判断抖动范围(0~60) :</td>
+							<td class="blankTd"></td>
+							<td><input type="text"  style="width:240px;"  id="u8SpsJitter" value="${record.fieldMap['u8SpsJitter'].value}"/></td>
+							<td id="u8SpsJitterError" class="error"></td>
+						</tr>
+						<tr class="justForView">
+							<td></td>
+							<td></td>
+							<td>
+								 <input type="button"  value="确定"  style="padding:3px 25px;" id="submit_add">
+								
+
+								 <input type="button"  value="取消"  style="padding:3px 25px;" id="cancelx">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div> 		
+		</form>
+		</div>
+</body>
+</html>

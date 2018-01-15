@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mapper>
+
+	<biz operId="0xb4" action="0x05" bizName="视频监控设备配置表批量查询请求-应答">
+		<oss operObject="0xb4" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="monitorName" tag="28882" />
+			<item name="monitorIndex" tag="28881" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="vmgCfgInfo" tag="31771"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="monitorIndex" tag="28881" />
+				<inner name="monitorName" tag="28882" />
+				<inner name="monitorType" tag="28883" />
+				<inner name="monitorIp" tag="28884" />
+				<inner name="monitorPort" tag="28885" />
+				<inner name="userName" tag="28886" />
+				<inner name="userPassword" tag="28887" />
+				<inner name="comment" tag="28888" />
+			</item>
+		</response>
+	</biz>
+	<biz operId="0xb4" action="0x01" bizName="视频监控设备配置表新增请求--应答">
+		<oss operObject="0xb4" operType="0x01" />
+		<request>
+			<item name="monitorName" tag="28882" />
+			<item name="monitorType" tag="28883" />
+			<item name="monitorIp" tag="28884" />
+			<item name="monitorPort" tag="28885" />
+			<item name="userName" tag="28886" />
+			<item name="userPassword" tag="28887" />
+			<item name="comment" tag="28888" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb4" action="0x02" bizName="视频监控设备配置表删除请求--应答">
+		<oss operObject="0xb4" operType="0x02" />
+		<request>
+			<item name="monitorIndex" tag="28881" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb4" action="0x03" bizName="视频监控设备配置表修改请求--应答">
+		<oss operObject="0xb4" operType="0x03" />
+		<request>
+			<item name="monitorIndex" tag="28881" />
+			<item name="monitorName" tag="28882" />
+			<item name="monitorType" tag="28883" />
+			<item name="monitorIp" tag="28884" />
+			<item name="monitorPort" tag="28885" />
+			<item name="userName" tag="28886" />
+			<item name="userPassword" tag="28887" />
+			<item name="comment" tag="28888" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb5" action="0x05" bizName="视频监控号码表批量查询请求--应答">
+		<oss operObject="0xb5" operType="0x05" />
+		<request>
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="monitorName" tag="28882" />
+			<item name="callNumberIndex" tag="28889" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+			<item name="ltePageSize" tag="28674" />
+			<item name="ltePageIndex" tag="28673" />
+			<item name="lteTotalQueryCount" tag="28672" />
+			<item name="vmgNumInfo" tag="31772"
+				parser="com.xinwei.oss.adapter.parser.impl.TLVParser">
+				<inner name="callNumberIndex" tag="28889" />
+				<inner name="callNumber" tag="28890" />
+				<inner name="authPassword" tag="28891" />
+				<inner name="monitorName" tag="28882" />
+				<inner name="channelId" tag="28892" />
+				<inner name="comment" tag="28888" />
+			</item>
+		</response>
+	</biz>
+
+	<biz operId="0xb5" action="0x01" bizName="视频监控号码表新增请求--应答">
+		<oss operObject="0xb5" operType="0x01" />
+		<request>
+			<item name="callNumber" tag="28890" />
+			<item name="authPassword" tag="28891" />
+			<item name="monitorName" tag="28882" />
+			<item name="channelId" tag="28892" />
+			<item name="comment" tag="28888" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb5" action="0x02" bizName="视频监控号码表删除请求--应答">
+		<oss operObject="0xb5" operType="0x02" />
+		<request>
+			<item name="callNumberIndex" tag="28889" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+	<biz operId="0xb5" action="0x03" bizName="视频监控号码表修改请求--应答">
+		<oss operObject="0xb5" operType="0x03" />
+		<request>
+			<item name="callNumberIndex" tag="28889" />
+			<item name="callNumber" tag="28890" />
+			<item name="authPassword" tag="28891" />
+			<item name="monitorName" tag="28882" />
+			<item name="channelId" tag="28892" />
+			<item name="comment" tag="28888" />
+		</request>
+		<response>
+			<item name="lteFlag" tag="28678" />
+		</response>
+	</biz>
+</mapper>

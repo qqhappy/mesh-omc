@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/ems/enb_config.js"></script>
+<style type="text/css">
+	.hideTable{display:none};
+</style>
+<script type="text/javascript">
+	$(function(){
+		$("#detailTitle").addClass("hideTable");
+		$(".detailDiv_hide").addClass("hideTable");
+		
+		// 如果有错误则显示错误
+		var error=$("#error").val();
+		if(error != null && error != "") {
+			alert(error);
+			return;
+		}
+		var compareFlag=$("#compareFlag").val();
+
+		// 开始进行数据比较
+		if(compareFlag == "") {
+			compareData();
+		} else {
+			// 同步网管数据到基站
+			$("#syncEmsDataToNe").click(function(){
+				syncEnbData(0);
+			});
+
+			// 同步基站数据到网管
+			$("#syncNeDataToEms").click(function(){
+				syncEnbData(1);
+			});
+			
+			function syncEnbData(syncDirection) {
+				var basePath=$("#basePath").val();
+				var moId=$("#moId").val();
+				$.ajax({
+					type:"post",
+					url:"syncEnbData.do",
+					data:"moId="+moId+
+						"&basePath="+basePath+
+						"&syncDirection="+syncDirection+
+						"&browseTime="+getBrowseTime(),
+					dataType:"json",
+					async:false,
+					success:function(data){
+						if(!sessionsCheck(data,basePath)){
+							return false;
+						}
+						var errorModel = data.errorModel;
+						if(errorModel == null) {
+							alert("数据同步成功!");
+						} else {
+							var error = errorModel.error;
+							if(error != null && error != ""){
+								alert("数据同步失败!\n"+error);
+							}
+						}
+						// 同步结束后重新比较
+						compareData();
+					}
+				});	
+			}
+		}
+		
+		// 比较数据
+		function compareData() {
+			var basePath=$("#basePath").val();
+			var moId=$("#moId").val();
+			var href = basePath+"/lte/compareData.do?moId="+moId+"&compareFlag=1&browseTime="+getBrowseTime();
+			window.location.href=href;
+		}
+
+		
+		//显示详细信息
+		$(".showDetailButton").click(function(){
+			var tableName = $(this).attr("link");
+			$(".detailDiv_hide").addClass("hideTable");
+			$("#detailTitle").removeClass("hideTable");
+			$("#detailDiv-"+tableName).removeClass("hideTable"); 
+		});
+	});	
+</script>
+
+<title>配置数据比较</title>
+</head>
+<body style="overflow:hidden;">
+	<div>
+		<input type="hidden" id="basePath" name="basePath" value="${base}"/>
+		<input type="hidden" id="moId" name="moId" value="${moId}"/>
+		<input type="hidden" id="compareFlag" name="compareFlag" value="${compareFlag!}"/>
+		<input type="hidden" id="error" name="error" value="${error!}"/>
+		<div class="path_nav">
+			<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+			<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>基站设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>系统配置</a><img src="${base}/Manager/images/tnc/arrow.png" />
+			<a>配置数据比较</a>
+		</div>
+		<div class="ltePage">
+<!-- 			<a name="resultTable"></a> -->
+			<div class="toolBar">
+				<ul>
+					<li><label></label><input type="button" id="syncEmsDataToNe" value="下发到基站"/></li>
+					<li><label></label><input type="button" id="syncNeDataToEms" value="更新到网管"/></li>
+				</ul>
+			</div>
+	
+			<div class="tableHeight">			
+				<table width="100%" id="all_tables" class="changeRowColor">
+					<tr>
+						<th scope="col" class="justForView" width="60px;">表名</th>
+						<th scope="col" class="justForView" width="60px;">比较结果</th>
+						<th scope="col" class="justForView" width="60px;">查看详情</th>
+					</tr>
+					<#list compareResults! as compareResult>
+					<tr>
+						<td class="justForView">${compareResult.tableDesc!}</td>
+						<#if compareResult.result == 0>
+							<td class="justForView">相同</td>
+						<#else>
+							<td class="justForView" style="color:red">不相同</td>
+						</#if>
+						<td class="justForView" style="cursor:pointer;">
+							<a link="${compareResult.tableName}" href="#mao-${compareResult.tableName}" class="showDetailButton">查看详情</a>
+							<input type="hidden" id="tableName" name="moId" value="${compareResult.tableName}"/>
+						</td>
+					</tr>
+					
+					</#list>
+				</table>
+			</div>
+			
+			<div style="padding-top:20px;">
+			<div class="path_nav" id="detailTitle">
+				<img src="${base}/Manager/images/tnc/arrow.png" /><a>比较详情 </a>
+			</div>
+			
+			<!-- 比较详情 -->
+			<#list compareResults! as compareResult>
+				<div style="padding-top:10px;padding-bottom:10px;" id="detailDiv-${compareResult.tableName}" class="detailDiv_hide">
+						<a name="mao-${compareResult.tableName}">${compareResult.tableDesc}</a>		
+						<#if compareResult.result == 0>
+							<a style="margin-left:10px;">比较结果: 相同</a>
+						<#else>
+							<a style="color:red;margin-left:10px;">比较结果: 不相同</a>
+						</#if>				
+						<table width="100%" style="white-space:nowrap;" id="compare_detail-${compareResult.tableName}" class="forBoldFlag">
+							<tr>
+								<th style="padding-left:4px;padding-right:4px;">${compareResult.tableDesc}</th>
+								<!-- 列出字段名 -->
+								<#list compareResult.fieldList! as fieldName>
+								<th style="padding-left:4px;padding-right:4px;">${fieldName}</th>
+								</#list>
+							</tr>
+							<!-- 遍历记录 -->
+							<#if compareResult.dataDetails?size == 0>
+								<tr>
+									<td>暂无记录</td>
+									<!-- 列出字段的值 -->
+									<#list compareResult.fieldList! as fieldName>
+										<td style="padding-left:4px;padding-right:4px;"></td>
+									</#list>
+								</tr>
+							<#else>							
+							<#list compareResult.dataDetails! as dataDetail>
+								<tr height="5px"></tr>
+								<tr class="emsRecord">
+									<td>网管记录</td>
+									<!-- 列出字段的值 -->
+									<#list dataDetail.fieldDetails! as fieldDetail>
+										<#if fieldDetail.flag == 0>
+											<td>${fieldDetail.emsValue}</td>
+										<#else>
+											<td style="color:red;">${fieldDetail.emsValue}</td>
+										</#if>
+									</#list>
+								</tr>
+								<tr class="neRecord">
+									<td style="background-color:#f6f6f6">基站记录</td>
+									<!-- 列出字段的值 -->
+									<#list dataDetail.fieldDetails! as fieldDetail>
+										<#if fieldDetail.flag == 0>
+											<td>${fieldDetail.neValue}</td>
+										<#else>
+											<td style="color:red;">${fieldDetail.neValue}</td>
+										</#if>
+									</#list>
+								</tr>
+							</#list>
+							</#if>
+						</table>
+				</div>			
+			</#list>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>

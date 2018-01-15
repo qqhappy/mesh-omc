@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.mcbts.core.model.common.UpgradeInfo" table="mcbts_upgrade_info">
+  <id name="idx" type="java.lang.Long">
+   <column name="idx" not-null="true"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="moId" type="java.lang.Long">
+   <column name="moId" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="btsId" type="java.lang.String">
+   <column name="btsId" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="btsType" type="java.lang.Integer">
+   <column name="btsType" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="status" type="java.lang.Integer">
+   <column name="status" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="downloadVersion" type="java.lang.String">
+   <column name="downloadVersion" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="version" type="java.lang.String">
+   <column name="version" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="mcuVersion" type="java.lang.String">
+   <column name="mcuVersion" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="fpgaVersion" type="java.lang.String">
+   <column name="fpgaVersion" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="target" type="java.lang.Integer">
+   <column name="target" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="startSign" type="java.lang.Integer">
+   <column name="startSign" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="scheduledTime" type="java.util.Date">
+   <column name="scheduledTime" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="startTime" type="java.util.Date">
+   <column name="startTime" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="endTime" type="java.util.Date">
+   <column name="endTime" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="errorCode" type="java.lang.Integer">
+   <column name="errorCode" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="transactionId" type="java.lang.Integer">
+   <column name="transactionId" not-null="false"/>
+  </property>
+ </class>
+</hibernate-mapping>

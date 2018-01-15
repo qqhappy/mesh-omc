@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="${base}/Manager/css/new_lte/global.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/new_lte/index.css" rel="stylesheet" type="text/css" />
+<link href="${base}/Manager/css/lte/lte_system_user.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/Manager/js/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="${base}/Manager/js/enb/enb_config.js"></script>
+<script type="text/javascript">
+	$(function(){
+		checkUserNumQuery();
+		
+		var first = $("#firstHidden").val();
+		
+		if(first != 0){
+			var queryType = $("#queryTypeHidden").val();
+			var queryValue = $("#queryValueHidden").val();
+			$("#queryType option").each(function(){
+				var val = $(this).val();
+				if(val == queryType){
+					$(this).attr("selected",true);
+				}
+			});
+			if(queryType == '1'){
+				$("#usr_number_query").val(queryValue);
+				checkUserNumQuery();				
+				$("#usr_number_query").show();
+				$("#us_ip_query").hide();
+				$("#imsi_query").hide();
+				$("#us_emmstate_query").hide();
+			}else if(queryType == '2'){
+				$("#us_ip_query").val(queryValue);
+				checkUsIpQuery();
+				$("#usr_number_query").hide();
+				$("#us_ip_query").show();
+				$("#imsi_query").hide();
+				$("#us_emmstate_query").hide();		
+			}else if(queryType == '3'){
+				$("#imsi_query").val(queryValue);
+				checkImsiQuery();
+				$("#usr_number_query").hide();
+				$("#us_ip_query").hide();
+				$("#imsi_query").show();
+				$("#us_emmstate_query").hide();		
+			}else{
+				$("#us_emmstate_query option").each(function(){
+					var val = $(this).val();
+					if(val == queryValue){
+						$(this).attr("selected",true);
+					}
+				});
+				$("#usr_number_query").hide();
+				$("#us_ip_query").hide();
+				$("#imsi_query").hide();
+				$("#us_emmstate_query").show();
+			}
+		
+		}
+		
+		//查询
+		$("#searchBtn").click(function(){
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			
+			var queryType = $("#queryType").val();
+			var queryValue = "";
+			if(queryType == '1'){
+				var valTest = /^[0-9]\d*$/;
+				queryValue = $("#usr_number_query").val();
+				if(!valTest.test(queryValue)){
+					return false;
+				}
+			}else if(queryType == '2'){
+				var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+				queryValue = $("#us_ip_query").val();
+				if(!ipTest.test(queryValue)){
+					return false;
+				}
+			}else if(queryType == '3'){
+				var valTest = /^[0-9]\d*$/;
+				queryValue = $("#imsi_query").val();
+				if(!valTest.test(queryValue)){
+					return false;
+				}
+			}else{
+				queryValue = $("#us_emmstate_query").val();
+			}
+			
+			$("#queryform").attr("action",basePath+"/lte/turntoUserStatus.do?queryUserStatusModel.first=1"+
+					"&queryUserStatusModel.queryType="+queryType+
+					"&queryUserStatusModel.queryValue="+queryValue+
+					"&onlinePage.totalPages="+totalPages);
+			$("#queryform").submit();
+		});
+		
+		//跳页
+		$("#turnPageImg").click(function(){
+			var turnPageInputVal = $.trim($("#turnPageInput").val());	
+			var totalPages = $("#totalPages").val();
+			var basePath = $("#basePath").val();
+			var isNum = /^\d+$/;
+			if(isNum.test(turnPageInputVal)){
+				if(turnPageInputVal >= 1 && turnPageInputVal<= parseInt(totalPages)){
+					window.location=basePath+"/lte/turntoUserStatus.do?onlinePage.currentPageNum="+turnPageInputVal+"&onlinePage.totalPages="+totalPages;
+				}else if(turnPageInputVal <= 1){
+					window.location=basePath+"/lte/turntoUserStatus.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+				}else{
+					window.location=basePath+"/lte/turntoUserStatus.do?onlinePage.currentPageNum="+totalPages+"&onlinePage.totalPages="+totalPages;
+				}
+			}else{
+				window.location=basePath+"/lte/turntoUserStatus.do?onlinePage.currentPageNum="+1+"&onlinePage.totalPages="+totalPages;
+			}
+		});
+		$("#queryType").change(function(){
+			var val = $(this).val();
+			$("#query_value").val("");
+			if(val == '1'){
+				checkUserNumQuery();
+				$("#usr_number_query").show();
+				$("#us_ip_query").hide();
+				$("#imsi_query").hide();
+				$("#us_emmstate_query").hide();				
+			}else if(val == '2'){
+				checkUsIpQuery();
+				$("#usr_number_query").hide();
+				$("#us_ip_query").show();
+				$("#imsi_query").hide();
+				$("#us_emmstate_query").hide();			
+			}else if (val == '3'){		
+				checkImsiQuery();
+				$("#usr_number_query").hide();
+				$("#us_ip_query").hide();
+				$("#imsi_query").show();
+				$("#us_emmstate_query").hide();			
+			}else{
+				$("#usr_number_query").hide();
+				$("#us_ip_query").hide();
+				$("#imsi_query").hide();
+				$("#us_emmstate_query").show();		
+			}
+		});
+	})
+	
+//验证查询时用户号码
+function checkUserNumQuery(){
+	$("#usr_number_query").blur(function(){
+		var valTest = /^[0-9]\d*$/;
+		var mmes1_id = $(this).val();
+
+		if(!valTest.test(mmes1_id)){
+			$(this).val("查询条件为整数");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#usr_number_query").focus(function(){
+		var valTest = /^[0-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+	
+//验证查询时当前IP地址
+function checkUsIpQuery(){
+	$("#us_ip_query").blur(function(){
+		var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+		var mmes1_id = $(this).val();
+		if(!ipTest.test(mmes1_id)){
+			$(this).val("格式错误");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#us_ip_query").focus(function(){
+		var ipTest = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+		var mmes1_id = $(this).val();
+		if(!ipTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+
+//验证查询时IMSI
+function checkImsiQuery(){
+	$("#imsi_query").blur(function(){
+		var valTest = /^[0-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("查询条件为整数");
+			$(this).css("color","red");
+			$(this).css("font-style","italic");
+		}else{
+			$(this).css("color","black");
+			$(this).css("font-style","normal");
+		}
+	});
+	
+	$("#imsi_query").focus(function(){
+		var valTest = /^[0-9]\d*$/;
+		var mmes1_id = $(this).val();
+		if(!valTest.test(mmes1_id)){
+			$(this).val("");
+		}			
+	});
+}
+function turnPageFunction(curP){
+	var basePath = $("#basePath").val();
+	var first = $("#firstHidden").val();
+	var queryType = $("#queryTypeHidden").val();
+	var queryValue = $("#queryValueHidden").val();
+	var currentPageNum = parseInt($("#currentPageNum").val());
+	var totalPages = $("#totalPages").val();
+	if(curP=="" || curP=="1"){
+		curP=1;
+	}else if(curP=="pre"){
+		curP=currentPageNum-1;  
+	}else if(curP=="next"){
+		curP=currentPageNum+1;  
+	}else if(curP=="max"){
+		curP=totalPages;   			
+	}
+	var myForm = '<form action="'+basePath+'/lte/turntoUserStatus.do" id="myForm" method="post">'+
+					'<input name="queryUserStatusModel.first" value="'+first+'">'+				
+					'<input name="onlinePage.currentPageNum" value="'+curP+'">'+
+					'<input name="onlinePage.totalPages" value="'+totalPages+'">'+
+					'<input name="queryUserStatusModel.queryType" value="'+queryType+'">'+
+					'<input name="queryUserStatusModel.queryValue" value="'+queryValue+'">'+
+				 '</form>';
+	 $("#hiddenDiv").html(myForm);
+	 $("#myForm").submit();
+	 $("#hiddenDiv").html("");
+	
+}
+
+function alertInfo(i){
+	if(i == 1){
+		alert("已是首页");
+	}else{
+		alert("已是尾页");
+	}
+}
+function queryUserStatus(){
+	var basePath = $("#basePath").val();
+	var currentPageNum = $("#currentPageNum").val();
+	var queryTypeHidden = $("#queryTypeHidden").val();
+	var queryValueHidden = $("#queryValueHidden").val();
+	var firstHidden = $("#firstHidden").val();
+	window.location.href = basePath+"/lte/turntoUserStatus.do?onlinePage.currentPageNum="+currentPageNum+
+			               "&queryUserStatusModel.queryType="+queryTypeHidden+
+			               "&queryUserStatusModel.queryValue="+queryValueHidden+
+			               "&queryUserStatusModel.first="+firstHidden;
+	
+	
+}
+function queryUserStatusUsingAjax()
+{
+	var basePath = $("#basePath").val();
+	var currentPageNum = $("#currentPageNum").val();
+	var queryTypeHidden = $("#queryTypeHidden").val();
+	var queryValueHidden = $("#queryValueHidden").val();
+	var firstHidden = $("#firstHidden").val();
+	$.ajax({
+		type:"post",
+		url:basePath+"/lte/turntoUserStatus.do",
+		data:"onlinePage.currentPageNum="+currentPageNum+
+        "&queryUserStatusModel.queryType="+queryTypeHidden+
+        "&queryUserStatusModel.queryValue="+queryValueHidden+
+        "&queryUserStatusModel.first="+firstHidden,
+		dataType:"html",
+		success:function(htmlData){
+			$(".record").remove();
+			$(".firstrecord").after($(htmlData).find(".record"));
+			//alert($(htmlData).find("tr"));
+		},
+		error:function(htmlData){
+			alert("实时查询用户状态失败 ");
+		}
+	});		
+}
+//自动刷新
+setInterval(queryUserStatusUsingAjax,80000);
+</script>
+<title>无标题文档</title>
+</head>
+<body style="overflow:hidden;">
+	<div class="path_nav">
+		<span><img src="${base}/Manager/images/enbImage/home.png" /></span> 
+		<a>配置管理 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端设备</a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>终端用户注册 </a><img src="${base}/Manager/images/tnc/arrow.png" />
+		<a>用户状态</a>
+	</div>
+	<div class="enbPage">
+		<div class="toolBar" style="height:24px;">
+		<ul>
+			<li><input type="button" onclick="queryUserStatus()" value="刷新" /></li>
+		</ul>
+			<div class="fright">				
+				<form action="" method="post" id="queryform">
+					<select style="width:100px;height:21px;font-size:13px;margin-top:1px;" id="queryType">
+						<option value="1">用户号码</option>
+						<option value="2">当前IP地址</option>
+						<option value="3">IMSI</option>
+						<option value="4">接入状态</option>
+					</select>
+					<input type="text" id="usr_number_query" style="margin-top:1px;" class="sys_user_info_input" title="取值为整数"/>
+					<input type="text" id="us_ip_query" style="display:none;margin-top:1px;" class="sys_user_info_input" title="格式:“xxx.xxx.xxx.xxx” 取值范围:每个“xxx”为0~255 类型:每个“xxx”为十进制数字"/>
+					<input type="text" id="imsi_query" style="display:none;margin-top:1px;" class="sys_user_info_input" title="取值为整数"/>
+					<select style="display:none; width:162px;height:21px;font-size:13px;margin-top:1px;" id="us_emmstate_query">
+						<option value="0">DEREG</option>
+						<option value="1">IDLE</option>
+						<option value="2">CONN</option>
+					</select>
+					<!-- <label for="templateId">模板ID:</label><input type="text" id="templateId" class="sys_user_info_input"/>
+					<label for="templateName">模板名:</label><input type="text" id="templateName" class="sys_user_info_input"/>
+					默认模板标识:
+					<select class="system_config_select" id="templateMark">
+						<option></option>
+						<option value="0">NO</option>
+						<option value="1">YES</option>
+					</select> -->
+					<input type="button" id="searchBtn" value="查询"/>
+				</form>				
+			</div> 
+		</div>
+		<table width="100%" class="enbTable changeRowColor">
+		  <tr class="firstrecord">
+			<th scope="col" width="12%">用户号码</th>
+			<th scope="col">IMSI</th>  
+			<th scope="col" width="12%">US_GUTI</th>
+			<th scope="col" width="12%">US_TAI</th>
+			<th scope="col" width="12%">US_EMMSTATE</th>
+			<th scope="col" width="12%">当前IP地址</th>
+			<th scope="col" width="12%">当前APN</th>
+		  </tr>
+		  
+		  <#list userStatusModelList! as userStatusModel>
+			  <tr class="record">
+			  	
+			  	 	<td>${userStatusModel.usr_number!}</td>
+			  	 	<td>${userStatusModel.imsi!}</td>
+					<td>${userStatusModel.us_guti!}</td>
+					<td>${userStatusModel.us_tai!}</td>
+					<#if userStatusModel.us_emmstate! == '0'>
+						<td>DEREG</td>
+					<#elseif userStatusModel.us_emmstate! == '1'>
+						<td>IDLE</td>
+					<#else>
+						<td>CONN</td>
+					</#if>
+					<td>${userStatusModel.us_ip!}</td>
+					<td>${userStatusModel.us_apn_ip!}</td>
+			  	
+			  </tr>	
+		  </#list>
+		  	
+		  <#if userStatusModelList?size < 1>
+	  			<tr class="record">
+	  				<td class="hide1">${showMessage!}</td>
+	  				<td></td>			  		
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  				<td></td>
+	  			</tr>
+		  </#if>  
+		</table>
+		<div style="float:right;">
+			<div style="padding:5px;">
+				<table style="width:316px;">
+					<tr>
+						<td><span>${onlinePage.currentPageNum!}</span></td>
+						<td>/</td>
+						<td><span>${onlinePage.totalPages!}</span></td>
+						<td style="width:58px;"><img src="${base}/Manager/images/first_page.png" style="cursor:pointer;" onclick="turnPageFunction('1')"></td>
+						<#if onlinePage.currentPageNum! != 1>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="turnPageFunction('pre')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/previous_page.png"  style="cursor:pointer;" onclick="alertInfo(1)"></td>
+						</#if>
+						<#if onlinePage.currentPageNum! != onlinePage.totalPages!>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="turnPageFunction('next')"></td>
+						<#else>
+						<td style="width:58px;"><img src="${base}/Manager/images/next_page.png"  style="cursor:pointer;" onclick="alertInfo(2)"></td>
+						</#if>
+						<td style="width:58px;"><img src="${base}/Manager/images/end_page.png"  style="cursor:pointer;" onclick="turnPageFunction('max')"></td>
+						<td><input type="text" style="width:20px;height:18px;line-height:18px;" value="${onlinePage.currentPageNum!}" id="turnPageInput"/></td>
+						<td><img src="${base}/Manager/images/change_page_bt.png" id="turnPageImg" style="cursor:pointer;"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+		<div id="hiddenDiv" style="display:none">	
+		</div>
+		
+<input type="hidden" value="${onlinePage.currentPageNum!}" id="currentPageNum"/>
+<input type="hidden" value="${onlinePage.totalPages!}" id="totalPages"/>
+<input type="hidden" value="${base!}" id="basePath"/>
+<input type="hidden" value="${queryUserStatusModel.first!}" id="firstHidden"/>
+<input type="hidden" value="${queryUserStatusModel.queryType!}" id="queryTypeHidden"/>
+<input type="hidden" value="${queryUserStatusModel.queryValue!}" id="queryValueHidden"/>
+</body>
+</html>

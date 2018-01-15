@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.xinwei.minas.ut.core.model.UTBacthUpgradeResult" table="mcbts_ut_upgrade_batch_result">
+  <id name="idx" type="java.lang.Long">
+   <column name="idx" not-null="true"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="pid" type="java.lang.String">
+   <column name="pid" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="btsId" type="java.lang.Long">
+   <column name="bts_id" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="upgradeTime" type="java.util.Date">
+   <column name="upgrade_time" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="utType" type="java.lang.String">
+   <column name="ut_type" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="utTargetVersion" type="java.lang.String">
+   <column name="ut_target_version" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="utUpgradeFlag" type="java.lang.Integer">
+   <column name="ut_upgrade_flag" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="utUpgradeDesc" type="java.lang.String">
+   <column name="ut_upgrade_desc" not-null="false"/>
+  </property>
+  <property generated="never" lazy="false" name="utUpgradeProgress" type="java.lang.String">
+   <column name="ut_upgrade_progress" not-null="false"/>
+  </property>
+ </class>
+</hibernate-mapping>

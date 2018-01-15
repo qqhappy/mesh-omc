@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop 
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="mcbts.startInit"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="logger" />
+		<property name="targetMethod" value="info" />
+		<property name="arguments">
+			<list>
+				<value>Initialize mcbts module ...</value>
+			</list>
+		</property>	
+	</bean>
+
+	<bean id="mcBtsModule" class="com.xinwei.minas.server.mcbts.McBtsModule" factory-method="getInstance"/>
+	<bean id="mcBtsModule.init" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="targetObject"><ref local="mcBtsModule"/></property>
+	    <property name="targetMethod"><value>initialize</value></property>	
+	    <property name="arguments">
+			<list>
+				<ref bean="mcBtsBasicDAO" />	
+				<ref bean="supportedBizDAO" />
+				<ref bean="mcBtsTemplateManageDao" />
+				<ref bean="mcBtsTemplateDataManageDao" />
+				<ref bean="rfConfigDAO" />	
+				<ref bean="airlinkConfigDAO" />
+			</list>
+		</property>	         
+	</bean>
+
+	<import resource="mcbts-dao.xml" />
+	<import resource="mcbts-net.xml" />
+	<import resource="mcbts-proxy.xml" />
+	<import resource="mcbts-service.xml" />	
+	<import resource="mcbts-task.xml" />
+	<import resource="mcbts-facade.xml" />
+
+	 		
+	<bean id="mcbts.endInit"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="logger" />
+		<property name="targetMethod" value="info" />
+		<property name="arguments">
+			<list>
+				<value>OK.</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+</beans>
